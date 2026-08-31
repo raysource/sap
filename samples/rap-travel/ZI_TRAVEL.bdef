@@ -1,0 +1,24 @@
+managed implementation in class zbp_i_travel unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZI_Travel alias Travel
+persistent table ztravel
+lock master
+authorization master ( instance )
+etag master LastChangedAt
+
+field ( readonly : update ) TravelID, CreatedBy, CreatedAt, LastChangedBy, LastChangedAt;
+field ( mandatory : create ) CustomerID, AgencyID, BeginDate, EndDate;
+
+create;
+update;
+delete;
+
+action ( features : instance ) AcceptTravel result [1] $self;
+action ( features : instance ) RejectTravel result [1] $self;
+
+validation validateCustomer on save { field CustomerID; }
+
+mapping for ztravel
+{ TravelID = travelid; AgencyID = agencyid; CustomerID = customerid; }

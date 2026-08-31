@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 B1 章：BTP 与 HANA Cloud 概述 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../../index.html">首页</a>
+      <a class="tab" href="../../rap/overview.html">RAP 培训</a>
+      <a class="tab active" href="../overview.html">CAP 培训</a>
+      <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">CAP 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="../overview.html"><span class="num">1</span>CAP 概述</a>
+      <a class="snav" href="../prep.html"><span class="num">2</span>环境准备</a>
+      <a class="snav" href="../step1-init.html"><span class="num">3</span>手顺1：项目初始化</a>
+      <a class="snav" href="../step2-model.html"><span class="num">4</span>手顺2：数据模型与服务</a>
+      <a class="snav" href="../step3-implement.html"><span class="num">5</span>手顺3：业务逻辑实现</a>
+      <a class="snav" href="../step4-test.html"><span class="num">6</span>手顺4：启动、测试与 Fiori</a>
+      <a class="snav" href="../testdata.html"><span class="num">7</span>测试数据</a>
+    </nav>
+    <div class="snav-group">CAP for Java（Java 运行时）</div>
+    <a class="snav" href="../java/overview.html"><span class="num">J1</span>Java 概述</a>
+    <a class="snav" href="../java/prep.html"><span class="num">J2</span>环境准备</a>
+    <a class="snav" href="../java/step1-project.html"><span class="num">J3</span>手顺1：建立 Java 项目</a>
+    <a class="snav" href="../java/step2-db.html"><span class="num">J4</span>手顺2：配置链接与建库建表</a>
+    <a class="snav" href="../java/step3-dto.html"><span class="num">J5</span>手顺3：DTO → 生成模型与服务</a>
+    <a class="snav" href="../java/step4-test.html"><span class="num">J6</span>手顺4：运行与测试</a>
+    <div class="snav-group">BTP 与 HANA Cloud（云环境 + BAS）</div>
+    <a class="snav active" href="overview.html"><span class="num">B1</span>BTP 与 HANA Cloud 概述</a>
+    <a class="snav" href="prep.html"><span class="num">B2</span>环境准备（BTP 账号）</a>
+    <a class="snav" href="step1-hana.html"><span class="num">B3</span>手顺1：创建 HANA Cloud 实例</a>
+    <a class="snav" href="step2-sql.html"><span class="num">B4</span>手顺2：HANA SQL 建表与数据</a>
+    <a class="snav" href="step3-bas.html"><span class="num">B5</span>手顺3：BAS 入门</a>
+    <a class="snav" href="step4-dir.html"><span class="num">B6</span>手顺4：模式一 目录式</a>
+    <a class="snav" href="step5-maven.html"><span class="num">B7</span>手顺5：模式二 Maven</a>
+    <a class="snav" href="step6-spring.html"><span class="num">B8</span>手顺6：模式三 Spring Boot</a>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+<a class="snav" href="../../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 B1 章：BTP 与 HANA Cloud 概述</h1>
+      <p class="page-sub">从「本地 CAP」到「云端动手」——认识 BTP 平台、HANA Cloud 数据库与 BAS 开发环境</p>
+      <p class="lead">前面的 CAP 主路线与 Java 路线都在<b>本地</b>（SQLite 数据库、自己的终端）完成。本章开始把同一套 Bookshop 场景搬到<b>SAP BTP 云平台</b>：用 <b>HANA Cloud</b> 存数据、用 <b>Business Application Studio（BAS）</b> 写 Java 代码。你将亲手从<b>注册账号</b>走到<b>三种 Java 构建模式连上云端数据库</b>，完成一次完整的「本地 → 云」动手。</p>
+
+      <p>
+        <span class="badge blue">SAP BTP</span>
+        <span class="badge teal">HANA Cloud</span>
+        <span class="badge teal">Business Application Studio</span>
+        <span class="badge gray">Cloud Foundry</span>
+        <span class="badge gray">JDBC / ngdbc</span>
+      </p>
+
+      <h2 id="what">B1.1 BTP 是什么</h2>
+      <p><b>SAP Business Technology Platform（BTP）</b> 是 SAP 的企业级 PaaS（平台即服务）云平台。开发者在这上面部署应用、接入数据库、集成系统、扩展 S/4HANA。本课程用到它的三样东西：</p>
+      <table class="doc">
+        <thead>
+          <tr><th>BTP 能力</th><th>本课程的用途</th><th>出现章节</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>Cloud Foundry 运行时</b></td><td>承载应用运行环境（org / space 两级空间）</td><td>B2</td></tr>
+          <tr><td><b>HANA Cloud</b></td><td>云端内存数据库——我们建 Bookshop 库、灌数据、被 Java 连</td><td>B3 / B4</td></tr>
+          <tr><td><b>Business Application Studio（BAS）</b></td><td>云端开发环境——浏览器里的 VS Code 风格 IDE + 终端</td><td>B5–B8</td></tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <span class="note-title">📌 本轨与前面路线的衔接</span>
+        前面的 CAP 路线在本地用 <b>SQLite</b> + <code>cds watch</code>；本轨用 <b>HANA Cloud</b> + <b>JDBC</b> 直接连库。两者共用同一份 Bookshop 数据模型与 10 本书种子数据——数据库换了，数据长一样。
+      </div>
+
+      <h2 id="marketplace">B1.2 认识 Service Marketplace</h2>
+      <p>BTP 的「服务市场（Service Marketplace）」列着所有可创建的服务。B3 章要从这里创建 HANA Cloud 实例；这里先看看长什么样：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="btp">
+            <div class="btp-head"><span class="crumb">SAP BTP Cockpit</span><span>/</span><span class="crumb">Global Account</span><span>/</span><span class="crumb"><b>Trial</b></span><span>/</span><span class="crumb">Service Marketplace</span></div>
+            <div class="btp-sub">
+              <div class="stabs"><span>Overview</span><span class="on">Service Marketplace</span><span>Instances &amp; Subscriptions</span><span>Security</span></div>
+            </div>
+            <div style="padding:10px;background:#fff">
+              <div style="display:flex;gap:10px;flex-wrap:wrap">
+                <div class="btp-card" style="width:220px"><div class="t">🗄️ HANA Cloud</div><div class="s">SAP HANA Cloud（含 HANA / HANA Cloud Vector Engine）</div><div class="b">创建实例 →</div></div>
+                <div class="btp-card" style="width:220px"><div class="t">🟢 Cloud Foundry Runtime</div><div class="s">Node.js / Java 应用运行环境</div><div class="b">创建组织 →</div></div>
+                <div class="btp-card" style="width:220px"><div class="t">🧩 Business Application Studio</div><div class="s">云端开发环境（Dev Space）</div><div class="b">订阅 →</div></div>
+                <div class="btp-card" style="width:220px"><div class="t">🔑 Destination</div><div class="s">连接外部系统</div><div class="b">配置 →</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 B1-1</b> Service Marketplace 服务列表——本章三个主角 HANA Cloud / Cloud Foundry Runtime / Business Application Studio 都在这里</div>
+      </div>
+
+      <h2 id="compare">B1.3 三种环境一表对比</h2>
+      <p>本轨帮你打通「本地开发 → 云端数据库」的链路。先看清三种环境各自扮演的角色：</p>
+      <table class="cmp-table">
+        <thead>
+          <tr>
+            <th style="width:150px">维度</th>
+            <th class="cap-c">RAP（S/4HANA on-premise）</th>
+            <th class="cap-c">CAP 本地开发</th>
+            <th style="background:#0b6ab3">本轨（BTP + HANA Cloud）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="dim">运行位置</td><td>企业自己的 S/4HANA 系统</td><td>你自己的电脑</td><td>SAP 云（BTP）</td></tr>
+          <tr><td class="dim">数据库</td><td>系统内置 HANA</td><td>SQLite（本地文件）</td><td><b>HANA Cloud</b>（云端实例）</td></tr>
+          <tr><td class="dim">开发环境</td><td>ADT（Eclipse）</td><td>VS Code + cds</td><td><b>BAS</b>（浏览器 IDE + 终端）</td></tr>
+          <tr><td class="dim">连接方式</td><td>SE11 / ADT 内</td><td>CDS 自动建表</td><td><b>JDBC（ngdbc 驱动）</b></td></tr>
+          <tr><td class="dim">是否免费</td><td>需系统许可</td><td>完全免费</td><td>trial 免费（每日自动停）</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="path">B1.4 本轨学习路径</h2>
+      <p>共 8 章（B1–B8），前 4 章把云端数据库搭起来，后 4 章用三种 Java 构建模式连上它。建议顺序跟做：</p>
+      <ol class="path cap">
+        <li><a href="prep.html">环境准备（BTP 账号）</a><span class="psub">注册 → Cockpit → 子账号</span></li>
+        <li><a href="step1-hana.html">手顺1：创建 HANA Cloud 实例</a><span class="psub">创建 → 等 RUNNING → 记连接信息</span></li>
+        <li><a href="step2-sql.html">手顺2：HANA SQL 建表与数据</a><span class="psub">schema + 3 表 + 10 本书</span></li>
+        <li><a href="step3-bas.html">手顺3：BAS 入门</a><span class="psub">Dev Space + 终端 + 驱动</span></li>
+        <li><a href="step4-dir.html">手顺4：模式一 目录式</a><span class="psub">纯 javac / java</span></li>
+        <li><a href="step5-maven.html">手顺5：模式二 Maven</a><span class="psub">archetype + exec</span></li>
+        <li><a href="step6-spring.html">手顺6：模式三 Spring Boot</a><span class="psub">REST + curl</span></li>
+      </ol>
+
+      <div class="note">
+        <span class="note-title">🎯 终点长什么样</span>
+        B8 完成后，你会在 BAS 里跑起一个 Spring Boot 应用，<code>curl http://localhost:8080/api/books</code> 会返回 HANA Cloud 里那 10 本书的 JSON——一条「注册 → 建库 → 写 Java → 连库 → 出数据」的完整云链路。
+      </div>
+
+      <div class="pagenav">
+        <a href="../java/step4-test.html"><small>← 上一章</small><b>第 J6 章：CAP Java 运行与测试</b></a>
+        <a class="next" href="prep.html"><small>下一章 →</small><b>环境准备（BTP 账号）</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · BTP 与 HANA Cloud · 第 B1 章 概述</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

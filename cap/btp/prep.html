@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 B2 章：环境准备（BTP 账号） | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../../index.html">首页</a>
+      <a class="tab" href="../../rap/overview.html">RAP 培训</a>
+      <a class="tab active" href="../overview.html">CAP 培训</a>
+      <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">CAP 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="../overview.html"><span class="num">1</span>CAP 概述</a>
+      <a class="snav" href="../prep.html"><span class="num">2</span>环境准备</a>
+      <a class="snav" href="../step1-init.html"><span class="num">3</span>手顺1：项目初始化</a>
+      <a class="snav" href="../step2-model.html"><span class="num">4</span>手顺2：数据模型与服务</a>
+      <a class="snav" href="../step3-implement.html"><span class="num">5</span>手顺3：业务逻辑实现</a>
+      <a class="snav" href="../step4-test.html"><span class="num">6</span>手顺4：启动、测试与 Fiori</a>
+      <a class="snav" href="../testdata.html"><span class="num">7</span>测试数据</a>
+    </nav>
+    <div class="snav-group">CAP for Java（Java 运行时）</div>
+    <a class="snav" href="../java/overview.html"><span class="num">J1</span>Java 概述</a>
+    <a class="snav" href="../java/prep.html"><span class="num">J2</span>环境准备</a>
+    <a class="snav" href="../java/step1-project.html"><span class="num">J3</span>手顺1：建立 Java 项目</a>
+    <a class="snav" href="../java/step2-db.html"><span class="num">J4</span>手顺2：配置链接与建库建表</a>
+    <a class="snav" href="../java/step3-dto.html"><span class="num">J5</span>手顺3：DTO → 生成模型与服务</a>
+    <a class="snav" href="../java/step4-test.html"><span class="num">J6</span>手顺4：运行与测试</a>
+    <div class="snav-group">BTP 与 HANA Cloud（云环境 + BAS）</div>
+    <a class="snav" href="overview.html"><span class="num">B1</span>BTP 与 HANA Cloud 概述</a>
+    <a class="snav active" href="prep.html"><span class="num">B2</span>环境准备（BTP 账号）</a>
+    <a class="snav" href="step1-hana.html"><span class="num">B3</span>手顺1：创建 HANA Cloud 实例</a>
+    <a class="snav" href="step2-sql.html"><span class="num">B4</span>手顺2：HANA SQL 建表与数据</a>
+    <a class="snav" href="step3-bas.html"><span class="num">B5</span>手顺3：BAS 入门</a>
+    <a class="snav" href="step4-dir.html"><span class="num">B6</span>手顺4：模式一 目录式</a>
+    <a class="snav" href="step5-maven.html"><span class="num">B7</span>手顺5：模式二 Maven</a>
+    <a class="snav" href="step6-spring.html"><span class="num">B8</span>手顺6：模式三 Spring Boot</a>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+<a class="snav" href="../../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 B2 章：环境准备（BTP 账号）</h1>
+      <p class="page-sub">注册 SAP 账号 → 进入 Cockpit → 建子账号 → 启用 Cloud Foundry —— 拿到「云上动手」的入场券</p>
+      <p class="lead">本轨所有云端操作都发生在 <b>SAP BTP Cockpit</b>（浏览器管理台）里。第一步是有一个账号：个人学习用 <b>SAP Trial（免费试用）</b> 就够；企业开发用 <b>Enterprise 账号</b>。本章把从注册到「子账号 + Cloud Foundry 空间」就绪的链路走通。</p>
+
+      <p>
+        <span class="badge blue">SAP BTP Cockpit</span>
+        <span class="badge teal">Global Account</span>
+        <span class="badge teal">子账号</span>
+        <span class="badge gray">Cloud Foundry org / space</span>
+        <span class="badge gray">cf CLI（可选）</span>
+      </p>
+
+      <h2 id="register">B2.1 注册 SAP 账号</h2>
+      <p>前往 <a href="https://www.sap.com/products/technology-platform.html" rel="noreferrer">SAP BTP 官网</a> 或用搜索引擎搜「SAP BTP trial」，找到 <b>Start a free trial</b> / <b>Free Tier</b> 入口注册。注册时需要一个工作邮箱，按邮件激活。之后进入 Cockpit：</p>
+
+      <ul>
+        <li><b>Trial 账号</b>：免费，随开随用；会自动送你一个 trial Global Account 与子账号（地区可选，如 US East / Japan）。<b>缺点：HANA Cloud 实例每日自动停止</b>（B3 章会提醒）。</li>
+        <li><b>Enterprise 账号</b>：公司付费账号，功能与容量不受 trial 限制。操作界面与 trial 一致，本课程手顺通用。</li>
+      </ul>
+
+      <div class="note">
+        <span class="note-title">📌 地区选择</span>
+        注册时选的地区决定你的数据中心与 HANA Cloud 主机后缀（如 <code>trial-us10</code>）。选离你近的即可；本课程示例主机 <code>xxxx.hana.trial-us10.hanacloud.ondemand.com</code> 就是「us10」地区——你的会不同，B3 章会教你从实例里复制真正的地址。
+      </div>
+
+      <h2 id="cockpit">B2.2 进入 Cockpit：Global Account 与子账号</h2>
+      <p>登录后先看 <b>Global Account</b>（全局账户，公司/个人的顶层容器），里面可以建多个 <b>子账号（Subaccount）</b>——每个子账号是独立的资源配置单元。Trial 会自动建好一个子账号，你通常直接在里面干活：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="btp">
+            <div class="btp-head"><span class="crumb">SAP BTP Cockpit</span><span>/</span><span class="crumb"><b>Global Account</b></span><span>/</span><span class="crumb">Subaccounts</span></div>
+            <div class="btp-sub">
+              <div class="stabs"><span class="on">Overview</span><span>Service Marketplace</span><span>Security</span></div>
+              <span style="margin-left:auto;color:var(--text-soft);font-size:11.5px">☰ 创建子账号 / 查看</span>
+            </div>
+            <div style="padding:12px 16px;background:#fff">
+              <div style="font-size:12px;color:var(--text-faint);margin-bottom:6px">子账号列表</div>
+              <div style="border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px">
+                <div style="display:flex;background:var(--surface-2);padding:6px 10px;color:var(--text-soft)"><span style="width:40%">名称</span><span style="width:30%">区域</span><span>状态</span></div>
+                <div style="display:flex;padding:8px 10px;border-top:1px solid var(--border-soft)"><span style="width:40%"><b>trial</b>（自动创建）</span><span style="width:30%">US East (VA) - us10</span><span><span class="ok">SUBACCOUNT AVAILABLE</span></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 B2-1</b> Cockpit 子账号列表：Trial 自动建好一个，点名称进入它——后面所有操作都在子账号里做</div>
+      </div>
+
+      <h2 id="cf">B2.3 启用 Cloud Foundry（org / space）</h2>
+      <p>在子账号的 <b>Overview</b> 页，找到 <b>Cloud Foundry Environment</b>，点 <b>Create</b> 启用。这里会设置两级空间：</p>
+      <table class="doc">
+        <thead>
+          <tr><th>概念</th><th>含义</th><th>本课程取值</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>Organization（组织）</b></td><td>Cloud Foundry 的顶层容器，绑定一个区域</td><td>默认组织名（如 <code>trial</code>）</td></tr>
+          <tr><td><b>Space（空间）</b></td><td>组织下的部署/开发空间</td><td><code>dev</code></td></tr>
+        </tbody>
+      </table>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">子账号 trial · Overview — 启用 Cloud Foundry</span></div>
+          <div class="wizard">
+            <div class="wsteps">
+              <div class="on"><span class="wnum">1</span>基本信息</div>
+              <div class="on"><span class="wnum">2</span>Cloud Foundry</div>
+              <div><span class="wnum">3</span>其他服务（可跳过）</div>
+            </div>
+            <div class="wbody">
+              <div style="font-size:12.5px;margin-bottom:10px"><b>Enable Cloud Foundry</b></div>
+              <div style="font-size:12px;line-height:1.9">
+                <div>Plan：<b>trial</b>（免费）</div>
+                <div>Organization name：<input value="trial" style="font:inherit;font-size:12px;padding:2px 6px;border:1px solid var(--border);border-radius:4px"></div>
+                <div>Space name：<input value="dev" style="font:inherit;font-size:12px;padding:2px 6px;border:1px solid var(--border);border-radius:4px"></div>
+                <div>Region：<b>us10</b></div>
+              </div>
+              <div style="margin-top:12px"><span class="fbtn sm" style="background:var(--blue);color:#fff">Enable</span> <span class="fbtn sm">Cancel</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 B2-2</b> 启用 Cloud Foundry 向导：填组织名与空间名（<code>trial</code> / <code>dev</code>），点 <b>Enable</b>，几秒后创建完成</div>
+      </div>
+
+      <h2 id="cli">B2.4（可选）cf CLI 登录</h2>
+      <p>云数据库的创建走界面（B3 章）；若之后要用 <code>cf</code> 命令行部署，可顺手装 <b>Cloud Foundry CLI</b> 并登录。macOS：<code>brew install cloudfoundry/tap/cf-cli@8</code>。登录命令里的 <b>API endpoint</b> 可在子账号 Overview 的 <b>Cloud Foundry Environment</b> 区块查到（形如 <code>api.cf.us10.hana.ondemand.com</code>）：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">终端 — cf login</span></div>
+          <div class="term">
+            <div><span class="p">$</span> <span class="path">cf login -a https://api.cf.us10.hana.ondemand.com</span></div>
+            <div><span class="info">API endpoint</span>: https://api.cf.us10.hana.ondemand.com</div>
+            <div>&nbsp;</div>
+            <div><span class="info">Email</span>: you@example.com</div>
+            <div><span class="info">Password</span>: ********</div>
+            <div>&nbsp;</div>
+            <div><span class="ok">Authenticating...</span></div>
+            <div>OK</div>
+            <div>&nbsp;</div>
+            <div>Targeted org <span class="ok">trial</span>, space <span class="ok">dev</span>.</div>
+          </div>
+        </div>
+        <div class="cap"><b>图 B2-3</b> <code>cf login</code>：输入 API endpoint、邮箱与口令，看到 <b>Targeted org trial, space dev</b> 即登录成功。本轨主要用界面，此步可先跳过</div>
+      </div>
+
+      <h2 id="steps">B2.5 操作手顺</h2>
+      <ol class="steps teal">
+        <li>
+          <span class="step-title">注册 SAP 账号</span>
+          <p>在 SAP BTP 官网点 <b>Start a free trial</b>，用工作邮箱注册并激活。有企业账号则直接用企业账号。</p>
+        </li>
+        <li>
+          <span class="step-title">进入 Cockpit，确认子账号</span>
+          <p>登录后进入 Global Account → Subaccounts，确认存在 <b>trial</b> 子账号（Enterprise 账号则手动创建一个子账号，区域任选）。点名称进入子账号（见<a href="#cockpit">图 B2-1</a>）。</p>
+        </li>
+        <li>
+          <span class="step-title">启用 Cloud Foundry</span>
+          <p>子账号 Overview → <b>Cloud Foundry Environment → Create</b>，Organization 填 <code>trial</code>、Space 填 <code>dev</code>，点 Enable（见<a href="#cf">图 B2-2</a>）。</p>
+        </li>
+        <li>
+          <span class="step-title">记下子账号关键信息</span>
+          <p>记下 <b>子账号名称</b> 与 <b>区域（Region）</b>（如 us10）。B3 章在 Service Marketplace 创建 HANA Cloud 时要用。</p>
+        </li>
+        <li>
+          <span class="step-title">整体验证</span>
+          <p>子账号 Overview 显示 <b>Cloud Foundry Environment: CREATED</b>，且能看到 org / space 即可。B3 章将在这里创建 HANA Cloud 实例。</p>
+        </li>
+      </ol>
+
+      <div class="note warn">
+        <span class="note-title">⚠️ 常见问题</span>
+        <ul style="margin-bottom:0">
+          <li><b>找不到 trial 入口</b>：SAP 官网改版频繁，直接搜「SAP BTP trial sign up」，或从 <code>help.sap.com</code> 的 Getting Started 页面进入。</li>
+          <li><b>地区与免费额度</b>：trial 的 HANA Cloud 只有特定地区有免费额（如 us10）；若所选地区不可创建，换一个地区重开 trial。</li>
+          <li><b>子账号里没有 Cloud Foundry</b>：Enterprise 账号默认不自动建 CF，需在子账号 → Overview → Cloud Foundry 手动 <b>Create</b>，并绑定一个 quota。</li>
+        </ul>
+      </div>
+
+      <div class="pagenav">
+        <a href="overview.html"><small>← 上一章</small><b>第 B1 章：BTP 与 HANA Cloud 概述</b></a>
+        <a class="next" href="step1-hana.html"><small>下一章 →</small><b>手顺1：创建 HANA Cloud 实例</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · BTP 与 HANA Cloud · 第 B2 章 环境准备</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

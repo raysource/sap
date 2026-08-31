@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>手顺1：建立 Java 项目 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../../index.html">首页</a>
+      <a class="tab" href="../../rap/overview.html">RAP 培训</a>
+      <a class="tab active" href="../overview.html">CAP 培训</a>
+      <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">CAP 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="../overview.html"><span class="num">1</span>CAP 概述</a>
+      <a class="snav" href="../prep.html"><span class="num">2</span>环境准备</a>
+      <a class="snav" href="../step1-init.html"><span class="num">3</span>手顺1：项目初始化</a>
+      <a class="snav" href="../step2-model.html"><span class="num">4</span>手顺2：数据模型与服务</a>
+      <a class="snav" href="../step3-implement.html"><span class="num">5</span>手顺3：业务逻辑实现</a>
+      <a class="snav" href="../step4-test.html"><span class="num">6</span>手顺4：启动、测试与 Fiori</a>
+      <a class="snav" href="../testdata.html"><span class="num">7</span>测试数据</a>
+    </nav>
+    <div class="snav-group">CAP for Java（Java 运行时）</div>
+    <a class="snav" href="overview.html"><span class="num">J1</span>Java 概述</a>
+    <a class="snav" href="prep.html"><span class="num">J2</span>环境准备</a>
+    <a class="snav active" href="step1-project.html"><span class="num">J3</span>手顺1：建立 Java 项目</a>
+    <a class="snav" href="step2-db.html"><span class="num">J4</span>手顺2：配置链接与建库建表</a>
+    <a class="snav" href="step3-dto.html"><span class="num">J5</span>手顺3：DTO → 生成模型与服务</a>
+    <a class="snav" href="step4-test.html"><span class="num">J6</span>手顺4：运行与测试</a>
+    <div class="snav-group">BTP 与 HANA Cloud（云环境 + BAS）</div>
+    <a class="snav" href="../btp/overview.html"><span class="num">B1</span>BTP 与 HANA Cloud 概述</a>
+    <a class="snav" href="../btp/prep.html"><span class="num">B2</span>环境准备（BTP 账号）</a>
+    <a class="snav" href="../btp/step1-hana.html"><span class="num">B3</span>手顺1：创建 HANA Cloud 实例</a>
+    <a class="snav" href="../btp/step2-sql.html"><span class="num">B4</span>手顺2：HANA SQL 建表与数据</a>
+    <a class="snav" href="../btp/step3-bas.html"><span class="num">B5</span>手顺3：BAS 入门</a>
+    <a class="snav" href="../btp/step4-dir.html"><span class="num">B6</span>手顺4：模式一 目录式</a>
+    <a class="snav" href="../btp/step5-maven.html"><span class="num">B7</span>手顺5：模式二 Maven</a>
+    <a class="snav" href="../btp/step6-spring.html"><span class="num">B8</span>手顺6：模式三 Spring Boot</a>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+<a class="snav" href="../../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 J3 章：手顺1 — 建立 Java 项目</h1>
+      <p class="page-sub">从「一个简单的 Java DTO」到「一个可运行的 CAP Java 项目」</p>
+      <p class="lead">这一章回答「Java 项目从哪来」。我们先写一个最普通的 <b>Java DTO</b>（数据传输对象），看清手写模式的痛点；然后 <code>cds init --java</code> 生成基于 <b>Maven</b> 的 Spring Boot 项目，由框架把 DTO 该干的活全部自动完成。</p>
+
+      <p>
+        <span class="badge teal">DTO</span>
+        <span class="badge teal">cds init --java</span>
+        <span class="badge teal">Maven 多模块</span>
+        <span class="badge gray">Spring Boot</span>
+        <span class="badge gray">cds-maven-plugin</span>
+      </p>
+
+      <h2 id="dto">J3.1 起点：一个简单的 Java DTO</h2>
+      <p>在传统 Java Web 开发里，你通常先写一个 DTO 来对应一张表/一个接口的字段。比如我们的 <code>Book</code>：</p>
+
+      <pre><code class="language-java">package com.acme.bookshop.model;
+
+import java.math.BigDecimal;
+
+/** 图书数据传输对象：对应 Books 表 */
+public class Book {
+
+    private Integer  id;
+    private String   title;
+    private String   descr;
+    private Integer  stock;
+    private BigDecimal price;
+    private String   currency;
+
+    public Integer getId()          { return id; }
+    public void    setId(Integer v) { this.id = v; }
+    public String  getTitle()       { return title; }
+    public void    setTitle(String v){ this.title = v; }
+    // …… 其余字段的 getter / setter 略（手写重复劳动）
+}</code></pre>
+
+      <p>有了 DTO 之后，传统方案还缺一大串配套：</p>
+      <ul>
+        <li>一个 <b>Repository / DAO</b> 写增删改查 SQL；</li>
+        <li>一个 <b>Controller</b> 暴露 REST/OData 接口、做参数与序列化；</li>
+        <li>一张 <b>数据库表</b> 的 DDL，还要和 DTO 字段保持同步；</li>
+        <li>DTO ↔ 实体 ↔ 表的三套映射代码。</li>
+      </ul>
+
+      <div class="note warn">
+        <span class="note-title">⚠️ 手写模式的痛点</span>
+        字段一多、实体一改，三处代码要同步改，极易漏改。CAP Java 的思路完全不同：<b>模型（CDS）写一次，DTO 对应的类、表结构、OData 接口全部由框架生成</b>，你只写业务规则。
+      </div>
+
+      <h2 id="generate">J3.2 CAP 的做法：模型一次，类自动生成</h2>
+      <p>对比关系一目了然——你不再手写 <code>Book</code> 这个 DTO，而是写一行 CDS 实体，构建时自动得到「等价但更强」的 <code>Books</code> 类（含类型映射、关联、CdsData 接口、服务事件）：</p>
+
+      <table class="cmp-table">
+        <thead>
+          <tr><th style="width:150px">关注点</th><th>传统 Java（手写 DTO）</th><th class="cap-c">CAP Java</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="dim">结构定义</td><td><code>Book.java</code> 手写字段 + getter/setter</td><td><code>schema.cds</code> 写一行 <code>entity Books { ... }</code></td></tr>
+          <tr><td class="dim">数据库表</td><td>另写 <code>CREATE TABLE</code> 并保持同步</td><td>启动时按模型自动建表</td></tr>
+          <tr><td class="dim">接口</td><td>另写 Controller / 序列化 / OData 映射</td><td>OData V4 自动生成</td></tr>
+          <tr><td class="dim">CRUD</td><td>Repository + SQL 手写</td><td>框架默认 CRUD，覆盖前先可用</td></tr>
+          <tr><td class="dim">你要写的</td><td>以上全部</td><td>仅业务逻辑（事件处理器）</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="init">J3.3 cds init --java：生成项目骨架</h2>
+      <p>打开终端，进入一个空目录，执行（注意与 Node 版只差一个 <code>--java</code> 参数）：</p>
+
+      <div class="mockup">
+        <div class="term">
+          <div><span class="p">$</span> <span class="path">cds init bookshop --java</span></div>
+          <div><span class="info">[init]</span> creating project in folder ./bookshop ...</div>
+          <div><span class="ok">   ✓</span> pom.xml&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Maven 父工程（cds-parent）</div>
+          <div><span class="ok">   ✓</span> package.json&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cds 工具配置</div>
+          <div><span class="ok">   ✓</span> .gitignore&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 忽略 target / node_modules</div>
+          <div><span class="ok">   ✓</span> db/schema.cds&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CDS 数据模型（初始为空）</div>
+          <div><span class="ok">   ✓</span> srv/pom.xml&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; srv 模块（Spring Boot 应用）</div>
+          <div><span class="ok">   ✓</span> srv/src/main/java/com/acme/bookshop/Application.java</div>
+          <div><span class="ok">   ✓</span> srv/src/main/resources/application.yaml</div>
+          <div><span class="info">[init]</span> type &nbsp;<span class="ok">cd bookshop</span>&nbsp; to start</div>
+          <div><span class="p">$</span> <span class="path">cd bookshop</span></div>
+        </div>
+        <div class="cap"><b>图 J3-1</b> <code>cds init bookshop --java</code>：生成 Maven 多模块的 Spring Boot 项目</div>
+      </div>
+
+      <h2 id="structure">J3.4 项目结构：Maven 多模块</h2>
+      <p>Java 版是典型的 <b>Maven 多模块</b>工程——根 <code>pom.xml</code> 聚合一个 <code>srv</code> 子模块，所有源码都放在 <code>srv</code> 里：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">bookshop — Java 项目结构</span></div>
+          <div class="tree">
+            <div class="row"><span class="i">▾</span><span class="folder">📁</span> bookshop/</div>
+            <div class="row"><span class="pad"></span><span class="i"></span><span class="file">📄</span> <b>pom.xml</b> <span style="color:var(--text-faint);font-size:11px">← 父工程：版本、模块、依赖管理</span></div>
+            <div class="row"><span class="pad"></span><span class="i"></span><span class="file">📄</span> package.json <span style="color:var(--text-faint);font-size:11px">← cds 工具（init/build）用</span></div>
+            <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> db/ <span style="color:var(--text-faint);font-size:11px">← 数据模型（与 Node 版共用）</span></div>
+            <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> schema.cds</div>
+            <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> srv/ <span style="color:var(--text-faint);font-size:11px">← Spring Boot 应用模块</span></div>
+            <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> pom.xml</div>
+            <div class="row"><span class="pad"></span><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> src/main/java/com/acme/bookshop/</div>
+            <div class="row"><span class="pad"></span><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> Application.java <span style="color:var(--text-faint);font-size:11px">← Spring Boot 启动类</span></div>
+            <div class="row"><span class="pad"></span><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> src/main/resources/</div>
+            <div class="row"><span class="pad"></span><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> application.yaml <span style="color:var(--text-faint);font-size:11px">← 数据源/配置（手顺2 重点）</span></div>
+          </div>
+        </div>
+        <div class="cap"><b>图 J3-2</b> Java 版结构：根 pom + srv 模块；业务代码在 <code>srv/src/main/java</code></div>
+      </div>
+
+      <h3>生成的启动类 <code>Application.java</code></h3>
+      <pre><code class="language-java">package com.acme.bookshop;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class Application {
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}</code></pre>
+
+      <h2 id="pom">J3.5 关键构建配置：pom.xml</h2>
+      <p>父 <code>pom.xml</code> 继承 CAP 官方 <code>cds-parent</code>（自动带来依赖版本管理与 <code>cds-maven-plugin</code>），聚合 <code>srv</code> 模块：</p>
+
+      <pre><code class="language-xml">&lt;!-- 根 pom.xml（节选） --&gt;
+&lt;project&gt;
+  &lt;parent&gt;
+    &lt;groupId&gt;com.sap.cds&lt;/groupId&gt;
+    &lt;artifactId&gt;cds-parent&lt;/artifactId&gt;   &lt;!-- CAP Java 依赖/插件管理 --&gt;
+    &lt;version&gt;2.7.0&lt;/version&gt;
+  &lt;/parent&gt;
+  &lt;groupId&gt;com.acme&lt;/groupId&gt;
+  &lt;artifactId&gt;bookshop&lt;/artifactId&gt;
+  &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+  &lt;packaging&gt;pom&lt;/packaging&gt;
+  &lt;modules&gt;
+    &lt;module&gt;srv&lt;/module&gt;                    &lt;!-- 唯一的应用模块 --&gt;
+  &lt;/modules&gt;
+&lt;/project&gt;</code></pre>
+
+      <p><code>srv/pom.xml</code> 引入 CAP 的 Spring Boot 启动器；<code>cds-maven-plugin</code> 在编译期把 CDS 编译成 Java（就是 J1 章说的「模型到代码」）：</p>
+
+      <pre><code class="language-xml">&lt;!-- srv/pom.xml（节选） --&gt;
+&lt;project&gt;
+  &lt;parent&gt;
+    &lt;groupId&gt;com.acme&lt;/groupId&gt;
+    &lt;artifactId&gt;bookshop&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+  &lt;/parent&gt;
+  &lt;artifactId&gt;srv&lt;/artifactId&gt;
+  &lt;packaging&gt;jar&lt;/packaging&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;com.sap.cds&lt;/groupId&gt;
+      &lt;artifactId&gt;cds-starter-spring-boot-starter&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;   &lt;!-- 本地开发用 SQLite（手顺2 详解） --&gt;
+      &lt;groupId&gt;org.xerial&lt;/groupId&gt;
+      &lt;artifactId&gt;sqlite-jdbc&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;com.sap.cds&lt;/groupId&gt;
+        &lt;artifactId&gt;cds-maven-plugin&lt;/artifactId&gt;  &lt;!-- CDS → Java 编译 --&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;&lt;goals&gt;&lt;goal&gt;clean&lt;/goal&gt;&lt;/goals&gt;&lt;/execution&gt;
+          &lt;execution&gt;&lt;goals&gt;&lt;goal&gt;generate&lt;/goal&gt;&lt;/goals&gt;&lt;/execution&gt;
+        &lt;/executions&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+&lt;/project&gt;</code></pre>
+
+      <h2 id="build">J3.6 首次构建</h2>
+      <p>回到项目根目录执行 <code>mvn clean install</code>。首次会下载依赖（较慢），重点是观察 <b>generate</b> 阶段的输出：</p>
+
+      <div class="mockup">
+        <div class="term">
+          <div><span class="p">$</span> <span class="path">mvn clean install</span></div>
+          <div><span class="info">[INFO]</span> Scanning for projects...</div>
+          <div><span class="info">[INFO]</span> --- cds-maven-plugin:generate ---</div>
+          <div><span class="info">[INFO]</span> Compiling CDS model files...</div>
+          <div><span class="ok">[INFO]</span> Writing to target/generated-sources/cds</div>
+          <div><span class="ok">[INFO]</span>   - sap/capire/bookshop/Books.java</div>
+          <div><span class="ok">[INFO]</span>   - sap/capire/bookshop/CatalogService.java</div>
+          <div><span class="ok">[INFO]</span>   - sap/capire/bookshop/CatalogService_.java</div>
+          <div><span class="info">[INFO]</span> --- spring-boot-maven-plugin:repackage ---</div>
+          <div><span class="ok">[INFO]</span> BUILD SUCCESS</div>
+          <div><span class="ok">[INFO]</span> Total time: 01:23 min</div>
+        </div>
+        <div class="cap"><b>图 J3-3</b> 首次构建：<code>cds-maven-plugin</code> 把 CDS 编译成 Java，之后 <code>Books.java</code> 等即可被业务代码 import</div>
+      </div>
+
+      <div class="note">
+        <span class="note-title">💡 构建生成在 target 下，别手改</span>
+        生成的 Java 在 <code>srv/target/generated-sources/cds</code>，属于构建产物。<b>不要手改</b>——改模型后重新 <code>mvn</code> 即可。你的业务代码（处理器）放在 <code>src/main/java</code> 下 import 它们（下一章）。</div>
+
+      <h2 id="steps">J3.7 操作手顺</h2>
+      <ol class="steps teal">
+        <li>
+          <span class="step-title">确认工具就绪</span>
+          <p>终端执行 <code>java -version</code>（JDK 17+）与 <code>mvn -version</code>（Maven 3.8+）；未安装见 <a href="prep.html">环境准备</a>。</p>
+        </li>
+        <li>
+          <span class="step-title">生成项目</span>
+          <p>空目录下执行 <code>cds init bookshop --java</code>，然后 <code>cd bookshop</code>。</p>
+        </li>
+        <li>
+          <span class="step-title">对照 DTO 心智</span>
+          <p>打开 <code>db/schema.cds</code>（目前为空模板）。回想 J3.1 手写的 <code>Book</code> DTO——接下来这一步就是「把 DTO 的字段声明交给 CDS」，见<a href="step2-db.html">手顺2</a>。</p>
+        </li>
+        <li>
+          <span class="step-title">首次构建</span>
+          <p>根目录执行 <code>mvn clean install</code>，确认 <code>BUILD SUCCESS</code>，<code>target/generated-sources/cds</code> 下出现模型类。</p>
+        </li>
+        <li>
+          <span class="step-title">验证工程可运行</span>
+          <p>（可选）在 <code>srv</code> 目录执行 <code>mvn spring-boot:run</code>，浏览器访问 <code>http://localhost:8080</code>，能返回 Spring Boot 默认页即工程链路 OK。</p>
+        </li>
+      </ol>
+
+      <div class="note ok">
+        <span class="note-title">✅ 本章成果</span>
+        一个基于 Maven + Spring Boot 的 CAP Java 项目骨架，构建成功，模型→代码的「生成通道」已打通。接下来手顺2 配置数据库连接、建立表；手顺3 亲手写业务代码。
+      </div>
+
+      <div class="note warn">
+        <span class="note-title">💡 常见问题</span>
+        <ul style="margin-bottom:0">
+          <li><b>首次构建慢</b>：在下载依赖，属正常；国内可配 Maven 镜像（阿里云 <code>mirrors.aliyun.com</code>）。</li>
+          <li><b>找不到 <code>cds</code> 命令</b>：说明未装 <code>@sap/cds-dk</code>，见<a href="prep.html">环境准备 J2</a>。</li>
+          <li><b>端口 8080 被占</b>：在 <code>application.yaml</code> 改 <code>server.port</code>（手顺2 会写到这个文件）。</li>
+          <li><b>不要用 <code>cds watch</code></b>：它是 Node 版的启动方式；Java 版用 <code>mvn spring-boot:run</code>。</li>
+        </ul>
+      </div>
+
+      <div class="pagenav">
+        <a href="prep.html"><small>← 上一章</small><b>环境准备</b></a>
+        <a class="next" href="step2-db.html"><small>下一章 →</small><b>手顺2：配置链接与建库建表</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · CAP for Java · 第 J3 章 手顺1 建立 Java 项目</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

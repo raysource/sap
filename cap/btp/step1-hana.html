@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 B3 章：手顺1 创建 HANA Cloud 实例 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../../index.html">首页</a>
+      <a class="tab" href="../../rap/overview.html">RAP 培训</a>
+      <a class="tab active" href="../overview.html">CAP 培训</a>
+      <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">CAP 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="../overview.html"><span class="num">1</span>CAP 概述</a>
+      <a class="snav" href="../prep.html"><span class="num">2</span>环境准备</a>
+      <a class="snav" href="../step1-init.html"><span class="num">3</span>手顺1：项目初始化</a>
+      <a class="snav" href="../step2-model.html"><span class="num">4</span>手顺2：数据模型与服务</a>
+      <a class="snav" href="../step3-implement.html"><span class="num">5</span>手顺3：业务逻辑实现</a>
+      <a class="snav" href="../step4-test.html"><span class="num">6</span>手顺4：启动、测试与 Fiori</a>
+      <a class="snav" href="../testdata.html"><span class="num">7</span>测试数据</a>
+    </nav>
+    <div class="snav-group">CAP for Java（Java 运行时）</div>
+    <a class="snav" href="../java/overview.html"><span class="num">J1</span>Java 概述</a>
+    <a class="snav" href="../java/prep.html"><span class="num">J2</span>环境准备</a>
+    <a class="snav" href="../java/step1-project.html"><span class="num">J3</span>手顺1：建立 Java 项目</a>
+    <a class="snav" href="../java/step2-db.html"><span class="num">J4</span>手顺2：配置链接与建库建表</a>
+    <a class="snav" href="../java/step3-dto.html"><span class="num">J5</span>手顺3：DTO → 生成模型与服务</a>
+    <a class="snav" href="../java/step4-test.html"><span class="num">J6</span>手顺4：运行与测试</a>
+    <div class="snav-group">BTP 与 HANA Cloud（云环境 + BAS）</div>
+    <a class="snav" href="overview.html"><span class="num">B1</span>BTP 与 HANA Cloud 概述</a>
+    <a class="snav" href="prep.html"><span class="num">B2</span>环境准备（BTP 账号）</a>
+    <a class="snav active" href="step1-hana.html"><span class="num">B3</span>手顺1：创建 HANA Cloud 实例</a>
+    <a class="snav" href="step2-sql.html"><span class="num">B4</span>手顺2：HANA SQL 建表与数据</a>
+    <a class="snav" href="step3-bas.html"><span class="num">B5</span>手顺3：BAS 入门</a>
+    <a class="snav" href="step4-dir.html"><span class="num">B6</span>手顺4：模式一 目录式</a>
+    <a class="snav" href="step5-maven.html"><span class="num">B7</span>手顺5：模式二 Maven</a>
+    <a class="snav" href="step6-spring.html"><span class="num">B8</span>手顺6：模式三 Spring Boot</a>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+<a class="snav" href="../../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 B3 章：手顺1 创建 HANA Cloud 实例</h1>
+      <p class="page-sub">Service Marketplace 创建实例 → 等 RUNNING → 打开 Database Explorer → 记下连接信息</p>
+      <p class="lead">本章创建本轨的「数据库主角」：一个 <b>HANA Cloud 实例</b>。创建要等十几分钟到半小时（trial 也要等），期间可以先做 B5 章的 BAS 部分。创建完成后，拿到三样关键信息：<b>SQL End Point 主机</b>、<b>端口</b>、<b>DBADMIN 口令</b>——后面所有 Java 代码都靠它们连库。</p>
+
+      <p>
+        <span class="badge blue">SAP HANA Cloud</span>
+        <span class="badge teal">SAP HANA Database Explorer</span>
+        <span class="badge gray">RUNNING 状态</span>
+        <span class="badge gray">SQL End Point</span>
+      </p>
+
+      <h2 id="create">B3.1 从 Service Marketplace 创建实例</h2>
+      <p>在子账号（trial）里，进 <b>Service Marketplace</b>，搜索 <b>HANA Cloud</b>，点卡片上的 <b>Create Instance</b>。向导如下：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">创建 HANA Cloud 实例 — 向导</span></div>
+          <div class="wizard">
+            <div class="wsteps">
+              <div class="on"><span class="wnum">1</span>基本信息</div>
+              <div><span class="wnum">2</span>安全</div>
+              <div><span class="wnum">3</span>可用性与恢复</div>
+              <div><span class="wnum">4</span>高级设置</div>
+              <div><span class="wnum">5</span>审查</div>
+            </div>
+            <div class="wbody">
+              <div style="font-size:12.5px;margin-bottom:10px"><b>New SAP HANA Cloud Instance</b></div>
+              <div style="font-size:12px;line-height:2">
+                <div>Service：<b>SAP HANA Cloud</b></div>
+                <div>Plan：<b>hana</b>（trial 免费）</div>
+                <div>Instance name：<input value="bookshop-hana" style="font:inherit;font-size:12px;padding:2px 6px;border:1px solid var(--border);border-radius:4px"></div>
+                <div>Region / Environment：<b>us10 · Cloud Foundry</b></div>
+                <div style="color:var(--text-faint);font-size:11.5px">设置管理员口令（DBADMIN）：设置一个强口令，<b>务必记下来</b>——它就是数据库管理员的密码。</div>
+              </div>
+              <div style="margin-top:12px"><span class="fbtn sm" style="background:var(--blue);color:#fff">Create</span> <span class="fbtn sm">Cancel</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 B3-1</b> 创建向导第一步：实例名 <code>bookshop-hana</code>，Plan 选 <code>hana</code>（trial 免费）；管理员口令是 DBADMIN 的密码，创建后无法找回，务必记录</div>
+      </div>
+
+      <p>创建后回到 <b>SAP HANA Cloud（Central）</b> 页面（子账号 → 左侧菜单 → Services → SAP HANA Cloud，或直接搜索进入）。实例会经历 <code>CREATING</code> → <code>RUNNING</code> 两个状态，整个过程 trial 也要 10–30 分钟：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">SAP HANA Cloud（Central）· All Instances</span></div>
+          <div class="btp">
+            <div class="btp-head"><span class="crumb">SAP BTP Cockpit</span><span>/</span><span class="crumb">trial</span><span>/</span><span class="crumb"><b>SAP HANA Cloud</b></span></div>
+            <div style="padding:12px 16px;background:#fff">
+              <div style="border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px">
+                <div style="display:flex;background:var(--surface-2);padding:6px 10px;color:var(--text-soft)"><span style="width:30%">名称</span><span style="width:22%">状态</span><span style="width:18%">类型</span><span>操作（⋮）</span></div>
+                <div style="display:flex;padding:8px 10px;border-top:1px solid var(--border-soft)"><span style="width:30%">bookshop-hana</span><span style="width:22%"><span class="info">CREATING…</span></span><span style="width:18%">HANA Cloud</span><span>…</span></div>
+                <div style="display:flex;padding:8px 10px;border-top:1px solid var(--border-soft)"><span style="width:30%">bookshop-hana</span><span style="width:22%"><span class="ok">RUNNING</span> ✓</span><span style="width:18%">HANA Cloud</span><span>⋮ <span class="path">Open SAP HANA Database Explorer</span></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 B3-2</b> 实例状态：上半是 <code>CREATING</code>（等待），下半是 <code>RUNNING</code>（就绪）。状态行的 <b>⋮ 菜单 → Open SAP HANA Database Explorer</b> 是打开数据库管理台的方式</div>
+      </div>
+
+      <div class="note">
+        <span class="note-title">⏳ 等待期间做什么</span>
+        实例创建要等十几分钟。这段时间可以先去 <a href="step3-bas.html">B5 章</a> 创建 BAS Dev Space、搭好开发环境；也可以先看 B4 章把 SQL 读懂，等实例就绪直接跑。
+      </div>
+
+      <h2 id="dbexplorer">B3.2 打开 Database Explorer</h2>
+      <p>实例 <b>RUNNING</b> 后，点实例行右侧 <b>⋮</b> → <b>Open SAP HANA Database Explorer</b>（也可点实例详情里的同名按钮）。这是一个在浏览器里管理 HANA 数据库的工具，B4 章的所有建表/灌数 SQL 都在这执行：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">SAP HANA Database Explorer</span></div>
+          <div style="display:flex;background:#f7f9fb">
+            <div style="width:220px;border-right:1px solid var(--border-soft)">
+              <div class="tree" style="border:none">
+                <div class="row"><span class="i">▾</span><span class="folder">📁</span> <b>bookshop-hana</b> <span style="color:var(--text-faint);font-size:11px">（DBADMIN 已连接）</span></div>
+                <div class="row sel"><span class="pad"></span><span class="i"></span><span class="file">🔤</span> SQL Console</div>
+                <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> Catalog</div>
+                <div class="row"><span class="pad"></span><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> BOOKSHOP（Schema）</div>
+                <div class="row"><span class="pad"></span><span class="pad"></span><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> Tables</div>
+                <div class="row"><span class="pad"></span><span class="pad"></span><span class="pad"></span><span class="pad"></span><span class="file">📄</span> AUTHORS</div>
+                <div class="row"><span class="pad"></span><span class="pad"></span><span class="pad"></span><span class="pad"></span><span class="file">📄</span> BOOKS</div>
+                <div class="row"><span class="pad"></span><span class="pad"></span><span class="pad"></span><span class="pad"></span><span class="file">📄</span> GENRES</div>
+              </div>
+            </div>
+            <div style="flex:1;min-width:0">
+              <div class="ed-tabs" style="display:flex;background:var(--surface-2);border-bottom:1px solid var(--border-soft);font-size:11.5px"><span class="on" style="padding:6px 14px;background:#fff;color:var(--blue);border-top:2px solid var(--blue);font-weight:600">SQL Console</span></div>
+              <div style="padding:10px 14px;font-size:12.5px;font-family:var(--mono);color:#233448">SELECT COUNT(*) AS CNT FROM BOOKSHOP.BOOKS;</div>
+              <div style="padding:4px 14px;font-size:11px;color:var(--text-faint)">行：1 · 执行耗时 0.012s <span style="margin-left:12px;color:var(--ok,green)">成功</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 B3-3</b> Database Explorer：左侧树能看到 Catalog → 各 Schema → 表；右侧是 SQL Console（B4 章在这跑建表/灌数 SQL）。这是管理 HANA Cloud 的主要入口</div>
+      </div>
+
+      <h2 id="connect">B3.3 记录连接信息（SQL End Point）</h2>
+      <p>回到 HANA Cloud（Central）→ 点实例名进入详情，找到 <b>Copy SQL End Point</b> 按钮——它就是 Java 程序连库用的主机与端口：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">实例详情 bookshop-hana</span></div>
+          <div style="padding:14px 18px;background:#fff;font-size:12.5px;line-height:1.9">
+            <div><b>SQL End Point</b></div>
+            <div class="term" style="margin:6px 0">
+              <div>bcb7a5f2-xxxx.hana.trial-us10.hanacloud.ondemand.com<b style="color:var(--blue)">:443</b></div>
+            </div>
+            <div style="color:var(--text-faint);font-size:11.5px">↑ 点 <b>Copy SQL End Point</b> 复制。这就是 JDBC URL 里的主机 + 端口（443）。</div>
+            <div style="margin-top:10px;color:var(--text-faint);font-size:11.5px">管理员用户：<b>DBADMIN</b>（创建实例时设的口令就是它的密码）</div>
+          </div>
+        </div>
+        <div class="cap"><b>图 B3-4</b> 实例详情页：<b>Copy SQL End Point</b> 给的是 <code>主机:端口</code>（端口固定 <code>443</code>）。把它和 DBADMIN 口令记到你的笔记里——B6–B8 章的三个 Java 程序都要用</div>
+      </div>
+
+      <div class="note">
+        <span class="note-title">📌 本轨连接信息速记表</span>
+        后面每个 Java 程序都会出现这几个占位符，统一替换成你的真实值：<code>主机 = SQL End Point 的前半段</code>、<code>端口 = 443</code>、<code>用户名 = DBADMIN</code>、<code>口令 = 创建实例时设置的密码</code>。JDBC URL 统一格式：<code>jdbc:sap://&lt;主机&gt;:443?encrypt=true&amp;validateCertificate=true</code>。
+      </div>
+
+      <h2 id="steps">B3.4 操作手顺</h2>
+      <ol class="steps teal">
+        <li>
+          <span class="step-title">进入 Service Marketplace</span>
+          <p>子账号 → <b>Service Marketplace</b>，搜 <b>HANA Cloud</b>，点卡片 <b>Create Instance</b>。</p>
+        </li>
+        <li>
+          <span class="step-title">填写向导并创建</span>
+          <p>实例名 <code>bookshop-hana</code>，Plan <code>hana</code>（trial 免费），设置并<b>记录 DBADMIN 口令</b>，点 Create（见<a href="#create">图 B3-1</a>）。</p>
+        </li>
+        <li>
+          <span class="step-title">等待 RUNNING</span>
+          <p>在 <b>SAP HANA Cloud（Central）</b> 观察状态 <code>CREATING → RUNNING</code>，约 10–30 分钟（见<a href="#dbexplorer">图 B3-2</a>）。期间可先做 B5 章。</p>
+        </li>
+        <li>
+          <span class="step-title">打开 Database Explorer 并连通</span>
+          <p>实例行 <b>⋮ → Open SAP HANA Database Explorer</b>，确认左侧出现 <b>bookshop-hana</b> 且已连接（见<a href="#dbexplorer">图 B3-3</a>）。</p>
+        </li>
+        <li>
+          <span class="step-title">记录连接信息</span>
+          <p>实例详情 → <b>Copy SQL End Point</b>，记录主机与端口 443；确认 DBADMIN 口令（见<a href="#connect">图 B3-4</a>）。B4 章开始用。</p>
+        </li>
+      </ol>
+
+      <div class="note warn">
+        <span class="note-title">⚠️ 常见问题</span>
+        <ul style="margin-bottom:0">
+          <li><b>创建很慢 / 报错</b>：trial 地区可能没有免费额度，换 us10 / jp10 等地区重开；Enterprise 需先给子账号分配 HANA Cloud quota。</li>
+          <li><b>实例每日自动停止</b>：trial 版 HANA Cloud 每天会自动 <code>STOPPED</code>，连不上时回实例详情点 <b>Start</b> 手动重启（约几分钟）。</li>
+          <li><b>Database Explorer 打不开</b>：先确认实例 <b>RUNNING</b>；打不开时改用 B5 章 BAS 里装的 Database Explorer 扩展连接同一实例。</li>
+          <li><b>口令忘了</b>：无法找回，只能删实例重建（建表数据也随之丢失）。务必记在密码管理器里。</li>
+        </ul>
+      </div>
+
+      <div class="pagenav">
+        <a href="prep.html"><small>← 上一章</small><b>第 B2 章：环境准备（BTP 账号）</b></a>
+        <a class="next" href="step2-sql.html"><small>下一章 →</small><b>手顺2：HANA SQL 建表与数据</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · BTP 与 HANA Cloud · 第 B3 章 创建 HANA Cloud 实例</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

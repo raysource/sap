@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 B8 章：手顺6 模式三 Spring Boot | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../../index.html">首页</a>
+      <a class="tab" href="../../rap/overview.html">RAP 培训</a>
+      <a class="tab active" href="../overview.html">CAP 培训</a>
+      <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">CAP 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="../overview.html"><span class="num">1</span>CAP 概述</a>
+      <a class="snav" href="../prep.html"><span class="num">2</span>环境准备</a>
+      <a class="snav" href="../step1-init.html"><span class="num">3</span>手顺1：项目初始化</a>
+      <a class="snav" href="../step2-model.html"><span class="num">4</span>手顺2：数据模型与服务</a>
+      <a class="snav" href="../step3-implement.html"><span class="num">5</span>手顺3：业务逻辑实现</a>
+      <a class="snav" href="../step4-test.html"><span class="num">6</span>手顺4：启动、测试与 Fiori</a>
+      <a class="snav" href="../testdata.html"><span class="num">7</span>测试数据</a>
+    </nav>
+    <div class="snav-group">CAP for Java（Java 运行时）</div>
+    <a class="snav" href="../java/overview.html"><span class="num">J1</span>Java 概述</a>
+    <a class="snav" href="../java/prep.html"><span class="num">J2</span>环境准备</a>
+    <a class="snav" href="../java/step1-project.html"><span class="num">J3</span>手顺1：建立 Java 项目</a>
+    <a class="snav" href="../java/step2-db.html"><span class="num">J4</span>手顺2：配置链接与建库建表</a>
+    <a class="snav" href="../java/step3-dto.html"><span class="num">J5</span>手顺3：DTO → 生成模型与服务</a>
+    <a class="snav" href="../java/step4-test.html"><span class="num">J6</span>手顺4：运行与测试</a>
+    <div class="snav-group">BTP 与 HANA Cloud（云环境 + BAS）</div>
+    <a class="snav" href="overview.html"><span class="num">B1</span>BTP 与 HANA Cloud 概述</a>
+    <a class="snav" href="prep.html"><span class="num">B2</span>环境准备（BTP 账号）</a>
+    <a class="snav" href="step1-hana.html"><span class="num">B3</span>手顺1：创建 HANA Cloud 实例</a>
+    <a class="snav" href="step2-sql.html"><span class="num">B4</span>手顺2：HANA SQL 建表与数据</a>
+    <a class="snav" href="step3-bas.html"><span class="num">B5</span>手顺3：BAS 入门</a>
+    <a class="snav" href="step4-dir.html"><span class="num">B6</span>手顺4：模式一 目录式</a>
+    <a class="snav" href="step5-maven.html"><span class="num">B7</span>手顺5：模式二 Maven</a>
+    <a class="snav active" href="step6-spring.html"><span class="num">B8</span>手顺6：模式三 Spring Boot</a>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+<a class="snav" href="../../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 B8 章：手顺6 模式三 Spring Boot</h1>
+      <p class="page-sub">最接近真实生产的模式：start.spring.io 生成 Web 工程 → JdbcTemplate 读库 → REST 接口 /api/books → curl 验证</p>
+      <p class="lead">模式三是把程序变成<b>一个真正的 Web 服务</b>：用 <b>Spring Boot</b> 起一个 HTTP 服务器，暴露 <code>GET /api/books</code>，浏览器或 <code>curl</code> 一调就返回 HANA Cloud 里那 10 本书的 <b>JSON</b>。JDBC 不再手写样板，交给 Spring 的 <b>JdbcTemplate</b>。这也是 CAP Java（J1–J6）的运行底座。</p>
+
+      <p>
+        <span class="badge blue">start.spring.io</span>
+        <span class="badge teal">Spring Boot Web</span>
+        <span class="badge teal">JdbcTemplate</span>
+        <span class="badge gray">@RestController</span>
+        <span class="badge gray">curl JSON</span>
+      </p>
+
+      <h2 id="init">B8.1 用 start.spring.io 生成工程</h2>
+      <p>Spring 官方脚手架 start.spring.io 会生成一个可直接跑的工程。用 <code>curl</code> 拉 zip（依赖 <code>web</code> + <code>jdbc</code>，Java 17），解压：</p>
+
+<pre><code class="language-bash">cd projects
+
+curl -G https://start.spring.io/starter.zip \
+  -d dependencies=web,jdbc -d type=maven-project \
+  -d language=java -d javaVersion=17 \
+  -d groupId=com.acme -d artifactId=bookshop-spring \
+  -o bookshop-spring.zip
+
+unzip bookshop-spring.zip
+cd bookshop-spring</code></pre>
+
+      <div class="note">
+        <span class="note-title">📌 没有 curl？也可以开浏览器</span>
+        打开 <code>https://start.spring.io</code>，左侧选 <b>Maven · Java · 17</b>，Dependencies 搜 <b>Spring Web</b> 与 <b>Spring Data JDBC</b> 添加，Project 填 <code>com.acme</code> / <code>bookshop-spring</code>，点 <b>Generate</b> 下载 zip，解压到 projects。效果与 curl 一致。
+      </div>
+
+      <h2 id="pom">B8.2 给 pom.xml 加 ngdbc 依赖</h2>
+      <p>生成的 <code>pom.xml</code> 已含 <code>spring-boot-starter-web</code> 与 <code>spring-boot-starter-jdbc</code>（Spring Boot 版本由 start.spring.io 决定，无需改）。只需加入 <b>ngdbc</b> 依赖块：</p>
+
+<pre><code class="language-xml">&lt;!-- 加在 pom.xml 的 &lt;dependencies&gt; 里 -->
+&lt;dependency&gt;
+  &lt;groupId&gt;com.sap.cloud.db.jdbc&lt;/groupId&gt;
+  &lt;artifactId&gt;ngdbc&lt;/artifactId&gt;
+  &lt;version&gt;2.28.8&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+
+      <p>（版本号同样以 <a href="https://central.sonatype.com/artifact/com.sap.cloud.db.jdbc/ngdbc" rel="noreferrer">Maven Central</a> 为准。）</p>
+
+      <h2 id="props">B8.3 配置 application.properties</h2>
+      <p>Spring Boot 用 <code>src/main/resources/application.properties</code> 配置数据源。把 <code>spring.datasource.*</code> 指到你的 HANA Cloud（<b>注意 JDBC URL 里的 <code>&amp;</code> 在 properties 中也要原样保留</b>，主机与口令换成 B3.3 记的）：</p>
+
+<pre><code class="language-properties"># 连接 HANA Cloud 的 BOOKSHOP 库
+spring.datasource.url=jdbc:sap://xxxx.hana.trial-us10.hanacloud.ondemand.com:443?encrypt=true&amp;validateCertificate=true
+spring.datasource.username=DBADMIN
+spring.datasource.password=你的数据库口令
+
+server.port=8080</code></pre>
+
+      <p>Spring Boot 会自动把 <code>spring.datasource</code> 前缀的配置接成 <code>DataSource</code>，注入给 JdbcTemplate——<b>这行配置就是 B7 里 <code>DriverManager.getConnection(URL, USER, PASSWORD)</code> 的「声明式」版本</b>。</p>
+
+      <h2 id="code">B8.4 写应用代码（入口 + DTO + Controller）</h2>
+      <p>三个文件：入口 <code>Application.java</code>、数据类 <code>Book.java</code>（record，自动序列化为 JSON）、接口 <code>BookController.java</code>（JdbcTemplate 查库）。都放在 <code>src/main/java/com/acme/bookshop/</code>：</p>
+
+<pre><code class="language-java">package com.acme.bookshop;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+/** 模式三 · Spring Boot 应用入口 */
+@SpringBootApplication
+public class Application {
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}</code></pre>
+
+<pre><code class="language-java">package com.acme.bookshop;
+
+/**
+ * 图书 DTO：对应 BOOKSHOP.BOOKS 联表查询结果，直接序列化为 JSON
+ * （Spring Boot 对 record 自动做 JSON 序列化，无需 getter）
+ */
+public record Book(
+        int id,
+        String title,
+        String author,
+        String genre,
+        int stock,
+        double price,
+        String currency) {
+}</code></pre>
+
+<pre><code class="language-java">package com.acme.bookshop;
+
+import java.util.List;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * GET /api/books → 用 JdbcTemplate 读 HANA Cloud 的 BOOKSHOP.BOOKS，
+ * 联表取出作者名 / 分类名，返回 JSON 数组（10 个对象）。
+ */
+@RestController
+public class BookController {
+
+    private final JdbcTemplate jdbc;
+
+    public BookController(JdbcTemplate jdbc) {
+        this.jdbc = jdbc;
+    }
+
+    @GetMapping("/api/books")
+    public List&lt;Book&gt; books() {
+        String sql =
+            "SELECT b.ID, b.TITLE, a.NAME AS AUTHOR, g.NAME AS GENRE, " +
+            "       b.STOCK, b.PRICE, b.CURRENCY " +
+            "  FROM BOOKSHOP.BOOKS b " +
+            "  JOIN BOOKSHOP.AUTHORS a ON a.ID = b.AUTHOR_ID " +
+            "  JOIN BOOKSHOP.GENRES  g ON g.ID = b.GENRE_ID " +
+            " ORDER BY b.ID";
+        return jdbc.query(sql, (rs, rowNum) -&gt; new Book(
+                rs.getInt("ID"), rs.getString("TITLE"), rs.getString("AUTHOR"),
+                rs.getString("GENRE"), rs.getInt("STOCK"),
+                rs.getDouble("PRICE"), rs.getString("CURRENCY")));
+    }
+}</code></pre>
+
+      <h2 id="run">B8.5 运行与测试</h2>
+      <p>一条命令起服务；另开一个终端用 <code>curl</code> 调接口。Spring Boot 内嵌 Tomcat，监听 <b>8080</b>（properties 里设的）：</p>
+
+<pre><code class="language-bash">mvn spring-boot:run</code></pre>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">BAS 终端 — mvn spring-boot:run</span></div>
+          <div class="term">
+            <div><span class="p">$</span> <span class="path">mvn spring-boot:run</span></div>
+            <div><span class="info">[INFO]</span> Started Application in 4.2 seconds</div>
+            <div><span class="ok">Tomcat started on port 8080</span></div>
+            <div><span class="info">[INFO]</span> ...</div>
+            <div>&nbsp;</div>
+            <div><span class="p">$</span> <span class="path">curl http://localhost:8080/api/books</span></div>
+            <div>[{<span class="s">"id"</span>:1,<span class="s">"title"</span>:<span class="s">"Wuthering Heights"</span>,<span class="s">"author"</span>:<span class="s">"Emily Brontë"</span>,<span class="s">"genre"</span>:<span class="s">"Fiction"</span>,<span class="s">"stock"</span>:12,<span class="s">"price"</span>:11.11,<span class="s">"currency"</span>:<span class="s">"EUR"</span>}, …]</div>
+          </div>
+        </div>
+        <div class="cap"><b>图 B8-1</b> 服务启动后 <code>curl http://localhost:8080/api/books</code> 返回 10 个对象的 JSON 数组——HANA Cloud 的数据通过 REST 接口对外可用了</div>
+      </div>
+
+      <div class="note">
+        <span class="note-title">🎉 本轨终点</span>
+        到这里，你完成了一条完整的「注册 BTP → 创建 HANA Cloud → 建库灌数 → BAS 写 Java → 三种方式连库」链路。最贴近生产的模式三已经是一个可部署的 Web 服务：往前再走一步，就是把这个 Spring Boot 应用 `cf push` 到 BTP Cloud Foundry（进阶内容，本站其他路线会覆盖）。
+      </div>
+
+      <h2 id="steps">B8.6 操作手顺</h2>
+      <ol class="steps teal">
+        <li>
+          <span class="step-title">生成工程</span>
+          <p>执行 B8.1 的 curl（或浏览器 start.spring.io）生成 <code>bookshop-spring</code> 并解压、进入目录。</p>
+        </li>
+        <li>
+          <span class="step-title">加 ngdbc 依赖</span>
+          <p>在生成 <code>pom.xml</code> 的 <code>&lt;dependencies&gt;</code> 里加 ngdbc 依赖块（见<a href="#pom">B8.2</a>）。</p>
+        </li>
+        <li>
+          <span class="step-title">配置数据源</span>
+          <p>覆盖 <code>src/main/resources/application.properties</code>，填主机与 DBADMIN 口令（见<a href="#props">B8.3</a>）。</p>
+        </li>
+        <li>
+          <span class="step-title">写三个 Java 文件</span>
+          <p>覆盖/新建 <code>Application.java</code>、<code>Book.java</code>、<code>BookController.java</code>（见<a href="#code">B8.4</a>）。</p>
+        </li>
+        <li>
+          <span class="step-title">启动并测试</span>
+          <p><code>mvn spring-boot:run</code> 起服务，另开终端 <code>curl http://localhost:8080/api/books</code>，看到 10 本书 JSON 即成功（见<a href="#run">图 B8-1</a>）。</p>
+        </li>
+        <li>
+          <span class="step-title">三种模式横向对照</span>
+          <p>回到 B6/B7 的输出，三者读的是同一张 <code>BOOKSHOP.BOOKS</code>、同一段 SQL，数据必然一致——只是「构建方式」从手编、到 Maven、再到 Spring 框架的差别。</p>
+        </li>
+      </ol>
+
+      <div class="note warn">
+        <span class="note-title">⚠️ 常见问题</span>
+        <ul style="margin-bottom:0">
+          <li><b>端口被占</b>：改 <code>server.port=8081</code> 再试；或 <code>lsof -i :8080</code> 看占用进程。</li>
+          <li><b>Connection refused</b>：确认 HANA Cloud 实例 <b>RUNNING</b>（trial 每日自动停，需手动 Start）。</li>
+          <li><b>Properties 里密码含特殊字符</b>：<code>#</code>、<code>!</code> 等在 properties 里要转义或用引号；更稳妥是放进环境变量（进阶做法）。</li>
+          <li><b>start.spring.io 返回的 boot 版本要求更高 JDK</b>：若编译报「invalid source release」或「requires JDK 21」，在 start.spring.io 页面把 <b>Java 版本</b>调低一档（如 17 → 21 匹配新 JDK，或改用 Boot 2.7 系 + Java 17）。</li>
+          <li><b>curl 返回 500</b>：看服务端日志堆栈——通常是连接参数或 SQL 前缀（非默认 schema 用户要去掉 <code>BOOKSHOP.</code>）。</li>
+        </ul>
+      </div>
+
+      <div class="pagenav">
+        <a href="step5-maven.html"><small>← 上一章</small><b>第 B7 章：手顺5 模式二 Maven</b></a>
+        <a class="next" href="../../downloads.html"><small>素材包 →</small><b>📦 下载本轨代码与 SQL</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · BTP 与 HANA Cloud · 第 B8 章 模式三 Spring Boot</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

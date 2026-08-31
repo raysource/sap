@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 B7 章：手顺5 模式二 Maven | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../../index.html">首页</a>
+      <a class="tab" href="../../rap/overview.html">RAP 培训</a>
+      <a class="tab active" href="../overview.html">CAP 培训</a>
+      <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">CAP 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="../overview.html"><span class="num">1</span>CAP 概述</a>
+      <a class="snav" href="../prep.html"><span class="num">2</span>环境准备</a>
+      <a class="snav" href="../step1-init.html"><span class="num">3</span>手顺1：项目初始化</a>
+      <a class="snav" href="../step2-model.html"><span class="num">4</span>手顺2：数据模型与服务</a>
+      <a class="snav" href="../step3-implement.html"><span class="num">5</span>手顺3：业务逻辑实现</a>
+      <a class="snav" href="../step4-test.html"><span class="num">6</span>手顺4：启动、测试与 Fiori</a>
+      <a class="snav" href="../testdata.html"><span class="num">7</span>测试数据</a>
+    </nav>
+    <div class="snav-group">CAP for Java（Java 运行时）</div>
+    <a class="snav" href="../java/overview.html"><span class="num">J1</span>Java 概述</a>
+    <a class="snav" href="../java/prep.html"><span class="num">J2</span>环境准备</a>
+    <a class="snav" href="../java/step1-project.html"><span class="num">J3</span>手顺1：建立 Java 项目</a>
+    <a class="snav" href="../java/step2-db.html"><span class="num">J4</span>手顺2：配置链接与建库建表</a>
+    <a class="snav" href="../java/step3-dto.html"><span class="num">J5</span>手顺3：DTO → 生成模型与服务</a>
+    <a class="snav" href="../java/step4-test.html"><span class="num">J6</span>手顺4：运行与测试</a>
+    <div class="snav-group">BTP 与 HANA Cloud（云环境 + BAS）</div>
+    <a class="snav" href="overview.html"><span class="num">B1</span>BTP 与 HANA Cloud 概述</a>
+    <a class="snav" href="prep.html"><span class="num">B2</span>环境准备（BTP 账号）</a>
+    <a class="snav" href="step1-hana.html"><span class="num">B3</span>手顺1：创建 HANA Cloud 实例</a>
+    <a class="snav" href="step2-sql.html"><span class="num">B4</span>手顺2：HANA SQL 建表与数据</a>
+    <a class="snav" href="step3-bas.html"><span class="num">B5</span>手顺3：BAS 入门</a>
+    <a class="snav" href="step4-dir.html"><span class="num">B6</span>手顺4：模式一 目录式</a>
+    <a class="snav active" href="step5-maven.html"><span class="num">B7</span>手顺5：模式二 Maven</a>
+    <a class="snav" href="step6-spring.html"><span class="num">B8</span>手顺6：模式三 Spring Boot</a>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+<a class="snav" href="../../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 B7 章：手顺5 模式二 Maven</h1>
+      <p class="page-sub">用 Maven 标准工程组织代码：archetype 生成骨架 → pom 声明 ngdbc → mvn compile exec:java</p>
+      <p class="lead">模式一让你看清 JDBC 的本质；模式二把工程交给 <b>Maven</b> 管理——依赖（ngdbc）写在 <code>pom.xml</code> 里自动下载，编译运行一条命令。这是 Java 开发者的<b>标准姿势</b>，也是模式三 Spring Boot 的地基。</p>
+
+      <p>
+        <span class="badge blue">Maven archetype</span>
+        <span class="badge teal">pom.xml</span>
+        <span class="badge teal">exec-maven-plugin</span>
+        <span class="badge gray">ngdbc 依赖</span>
+        <span class="badge gray">mvn compile exec:java</span>
+      </p>
+
+      <h2 id="archetype">B7.1 用 archetype 生成骨架</h2>
+      <p>Maven 的 <code>archetype:generate</code> 按模板生成标准工程骨架。<code>maven-archetype-quickstart</code> 是最小 Java 工程；用 <code>-D...=...</code> 传参数、<code>-DinteractiveMode=false</code> 跳过交互提问：</p>
+
+<pre><code class="language-bash">cd projects
+
+mvn archetype:generate \
+  -DarchetypeGroupId=org.apache.maven.archetypes \
+  -DarchetypeArtifactId=maven-archetype-quickstart \
+  -DarchetypeVersion=1.4 \
+  -DgroupId=com.acme.bookshop \
+  -DartifactId=bookshop-maven \
+  -DinteractiveMode=false
+
+cd bookshop-maven</code></pre>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">BAS 终端 — archetype 生成</span></div>
+          <div class="term">
+            <div><span class="p">$</span> <span class="path">mvn archetype:generate -DarchetypeGroupId=org.apache.maven.archetypes ...</span></div>
+            <div>…</div>
+            <div><span class="ok">[INFO] BUILD SUCCESS</span></div>
+            <div><span class="p">$</span> <span class="path">cd bookshop-maven &amp;&amp; find src -type f</span></div>
+            <div>src/main/java/com/acme/bookshop/App.java</div>
+            <div>src/test/java/com/acme/bookshop/AppTest.java</div>
+          </div>
+        </div>
+        <div class="cap"><b>图 B7-1</b> 骨架生成成功：目录下出现 <code>src/main/java/com/acme/bookshop/App.java</code> 与 <code>pom.xml</code>（含一个测试类 AppTest）</div>
+      </div>
+
+      <h2 id="pom">B7.2 配置 pom.xml（加 ngdbc 依赖 + exec 插件）</h2>
+      <p>骨架的 <code>pom.xml</code> 只有 JUnit 测试依赖。我们加上：① <b>ngdbc</b> 依赖（连 HANA 的驱动）；② <b>exec-maven-plugin</b>（直接运行 <code>main</code>，免打包）；③ 明确 <code>maven.compiler.release=17</code>。整体覆盖成下面这份：</p>
+
+<pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+  &lt;groupId&gt;com.acme.bookshop&lt;/groupId&gt;
+  &lt;artifactId&gt;bookshop-maven&lt;/artifactId&gt;
+  &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+  &lt;packaging&gt;jar&lt;/packaging&gt;
+
+  &lt;name&gt;bookshop-maven&lt;/name&gt;
+
+  &lt;properties&gt;
+    &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;maven.compiler.release&gt;17&lt;/maven.compiler.release&gt;
+  &lt;/properties&gt;
+
+  &lt;dependencies&gt;
+    &lt;!-- SAP HANA JDBC 驱动（版本以 Maven Central 为准） --&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;com.sap.cloud.db.jdbc&lt;/groupId&gt;
+      &lt;artifactId&gt;ngdbc&lt;/artifactId&gt;
+      &lt;version&gt;2.28.8&lt;/version&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;!-- 用 exec 插件直接运行 main，无需打包 --&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+        &lt;artifactId&gt;exec-maven-plugin&lt;/artifactId&gt;
+        &lt;version&gt;3.2.0&lt;/version&gt;
+        &lt;configuration&gt;
+          &lt;mainClass&gt;com.acme.bookshop.App&lt;/mainClass&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+&lt;/project&gt;</code></pre>
+
+      <h2 id="app">B7.3 替换 App.java</h2>
+      <p>把骨架的 <code>App.java</code> 覆盖成我们的读库程序。这里用一个 <code>COUNT</code> 先取总数、再联表查询打印，逻辑与 B6 相同，只是交给 Maven 编译：</p>
+
+<pre><code class="language-java">package com.acme.bookshop;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+/**
+ * 模式二 · Maven 工程（archetype 骨架 + exec 插件）
+ * JDBC 连接 HANA Cloud 的 BOOKSHOP 库，联表读取 Books 打印。
+ */
+public class App {
+
+    // TODO: 换成你 HANA Cloud 实例的 SQL End Point 主机（B3 章「Copy SQL End Point」）
+    static final String HOST = "xxxx.hana.trial-us10.hanacloud.ondemand.com";
+    static final String URL =
+        "jdbc:sap://" + HOST + ":443?encrypt=true&amp;validateCertificate=true";
+    static final String USER = "DBADMIN";
+    static final String PASSWORD = "你的数据库口令";   // TODO: 替换为 DBADMIN 口令
+
+    static final String COUNT_SQL = "SELECT COUNT(*) AS CNT FROM BOOKSHOP.BOOKS";
+
+    static final String SQL =
+        "SELECT b.ID, b.TITLE, a.NAME AS AUTHOR, g.NAME AS GENRE, " +
+        "       b.STOCK, b.PRICE, b.CURRENCY " +
+        "  FROM BOOKSHOP.BOOKS b " +
+        "  JOIN BOOKSHOP.AUTHORS a ON a.ID = b.AUTHOR_ID " +
+        "  JOIN BOOKSHOP.GENRES  g ON g.ID = b.GENRE_ID " +
+        " ORDER BY b.ID";
+
+    public static void main(String[] args) throws Exception {
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            int total;
+            try (PreparedStatement ps = conn.prepareStatement(COUNT_SQL);
+                 ResultSet rs = ps.executeQuery()) {
+                rs.next();
+                total = rs.getInt("CNT");
+            }
+            System.out.println("共读取 " + total + " 本书（BOOKSHOP.BOOKS）");
+            System.out.printf("%-2s  %-22s  %-18s  %-16s  %4s  %8s  %s%n",
+                    "ID", "TITLE", "AUTHOR", "GENRE", "STOCK", "PRICE", "CURR");
+            try (PreparedStatement ps = conn.prepareStatement(SQL);
+                 ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    System.out.printf("%-2d  %-22s  %-18s  %-16s  %4d  %8.2f  %s%n",
+                            rs.getInt("ID"), rs.getString("TITLE"), rs.getString("AUTHOR"),
+                            rs.getString("GENRE"), rs.getInt("STOCK"),
+                            rs.getDouble("PRICE"), rs.getString("CURRENCY"));
+                }
+            }
+        }
+    }
+}</code></pre>
+
+      <h2 id="run">B7.4 编译并运行</h2>
+      <p><code>mvn compile</code> 编译并下载 ngdbc；<code>exec:java</code> 用 exec 插件直接跑 <code>main</code>。两步合并成一条命令：</p>
+
+<pre><code class="language-bash">mvn compile exec:java</code></pre>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">BAS 终端 — mvn compile exec:java</span></div>
+          <div class="term">
+            <div><span class="p">$</span> <span class="path">mvn compile exec:java</span></div>
+            <div><span class="info">[INFO]</span> Scanning for projects...</div>
+            <div><span class="info">[INFO]</span> Downloaded ngdbc:2.28.8 (2.3 MB)</div>
+            <div><span class="info">[INFO]</span> BUILD SUCCESS</div>
+            <div><span class="info">[INFO]</span> --- exec-maven-plugin:3.2.0:java</div>
+            <div><span class="ok">共读取 10 本书（BOOKSHOP.BOOKS）</span></div>
+            <div>ID  TITLE                   AUTHOR             GENRE             STOCK    PRICE  CURR</div>
+            <div>1   Wuthering Heights       Emily Brontë       Fiction             12     11.11  EUR</div>
+            <div>…   （共 10 行）</div>
+          </div>
+        </div>
+        <div class="cap"><b>图 B7-2</b> Maven 自动下载 ngdbc、编译、执行；输出与 B6 相同。首次运行会下载较多依赖，稍等片刻</div>
+      </div>
+
+      <div class="note">
+        <span class="note-title">💡 为什么用 <code>mvn compile exec:java</code> 而不是 <code>mvn package</code></span>
+        archetype 骨架默认带一个会跑的 JUnit 测试类 <code>AppTest</code>，<code>package</code> 阶段会执行它（通常也会过，但多余）。直接 <code>compile</code> + <code>exec:java</code> 只编译并运行 main，最省事。想真正打包发布再走 <code>mvn package</code>。
+      </div>
+
+      <h2 id="steps">B7.5 操作手顺</h2>
+      <ol class="steps teal">
+        <li>
+          <span class="step-title">生成骨架</span>
+          <p>在 <code>projects/</code> 下执行 B7.1 的 <code>mvn archetype:generate</code>，进入生成的 <code>bookshop-maven/</code>。</p>
+        </li>
+        <li>
+          <span class="step-title">覆盖 pom.xml</span>
+          <p>把根 <code>pom.xml</code> 覆盖成 B7.2 的内容（加 ngdbc + exec 插件，编译目标 17）。</p>
+        </li>
+        <li>
+          <span class="step-title">覆盖 App.java</span>
+          <p>把 <code>src/main/java/com/acme/bookshop/App.java</code> 覆盖成 B7.3 的内容，替换 <b>HOST / PASSWORD</b> 占位符。</p>
+        </li>
+        <li>
+          <span class="step-title">编译并运行</span>
+          <p>执行 <code>mvn compile exec:java</code>，看到「共读取 10 本书」+ 10 行即成功（见<a href="#run">图 B7-2</a>）。</p>
+        </li>
+        <li>
+          <span class="step-title">对照验证</span>
+          <p>与 B4.5 的 SQL 结果、B6 的输出三方比对，数据一致即链路正确。</p>
+        </li>
+      </ol>
+
+      <div class="note warn">
+        <span class="note-title">⚠️ 常见问题</span>
+        <ul style="margin-bottom:0">
+          <li><b>archetype 卡在下载</b>：首次会拉一堆插件。BAS 网络一般没问题；若慢，检查 <code>~/.m2/settings.xml</code> 是否配了镜像。</li>
+          <li><b>编译版本错误</b>：报「release version 17 not supported」说明 BAS 默认 JDK 不是 17。先 <code>java -version</code> 确认；或改 <code>&lt;maven.compiler.release&gt;</code> 匹配你的 JDK。</li>
+          <li><b>ngdbc 版本找不到</b>：版本号以 Maven Central 为准，<code>2.28.8</code> 只是示例，去 <a href="https://central.sonatype.com/artifact/com.sap.cloud.db.jdbc/ngdbc" rel="noreferrer">Central</a> 看最新版本替换。</li>
+          <li><b>exec:java 报 NoClassDefFound</b>：多为依赖未解析，先 <code>mvn -q dependency:resolve</code> 再运行。</li>
+        </ul>
+      </div>
+
+      <div class="pagenav">
+        <a href="step4-dir.html"><small>← 上一章</small><b>第 B6 章：手顺4 模式一 目录式</b></a>
+        <a class="next" href="step6-spring.html"><small>下一章 →</small><b>手顺6：模式三 Spring Boot</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · BTP 与 HANA Cloud · 第 B7 章 模式二 Maven</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

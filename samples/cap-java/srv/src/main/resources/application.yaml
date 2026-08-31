@@ -1,0 +1,8 @@
+# srv/src/main/resources/application.yaml —— 本地开发（SQLite）
+# 与《CAP for Java》手顺2（J4.3）一致。
+spring:
+  datasource:
+    url: jdbc:sqlite:./db.sqlite
+    driver-class-name: org.sqlite.JDBC
+server:
+  port: 8080

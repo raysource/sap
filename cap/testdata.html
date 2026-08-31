@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>测试数据 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../index.html">首页</a>
+      <a class="tab" href="../rap/overview.html">RAP 培训</a>
+      <a class="tab active" href="overview.html">CAP 培训</a>
+      <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">CAP 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="overview.html"><span class="num">1</span>CAP 概述</a>
+      <a class="snav" href="prep.html"><span class="num">2</span>环境准备</a>
+      <a class="snav" href="step1-init.html"><span class="num">3</span>手顺1：项目初始化</a>
+      <a class="snav" href="step2-model.html"><span class="num">4</span>手顺2：数据模型与服务</a>
+      <a class="snav" href="step3-implement.html"><span class="num">5</span>手顺3：业务逻辑实现</a>
+      <a class="snav" href="step4-test.html"><span class="num">6</span>手顺4：启动、测试与 Fiori</a>
+      <a class="snav active" href="testdata.html"><span class="num">7</span>测试数据</a>
+    </nav>
+    <div class="snav-group">CAP for Java（Java 运行时）</div>
+    <a class="snav" href="java/overview.html"><span class="num">J1</span>Java 概述</a>
+    <a class="snav" href="java/prep.html"><span class="num">J2</span>环境准备</a>
+    <a class="snav" href="java/step1-project.html"><span class="num">J3</span>手顺1：建立 Java 项目</a>
+    <a class="snav" href="java/step2-db.html"><span class="num">J4</span>手顺2：配置链接与建库建表</a>
+    <a class="snav" href="java/step3-dto.html"><span class="num">J5</span>手顺3：DTO → 生成模型与服务</a>
+    <a class="snav" href="java/step4-test.html"><span class="num">J6</span>手顺4：运行与测试</a>
+    <div class="snav-group">BTP 与 HANA Cloud（云环境 + BAS）</div>
+    <a class="snav" href="btp/overview.html"><span class="num">B1</span>BTP 与 HANA Cloud 概述</a>
+    <a class="snav" href="btp/prep.html"><span class="num">B2</span>环境准备（BTP 账号）</a>
+    <a class="snav" href="btp/step1-hana.html"><span class="num">B3</span>手顺1：创建 HANA Cloud 实例</a>
+    <a class="snav" href="btp/step2-sql.html"><span class="num">B4</span>手顺2：HANA SQL 建表与数据</a>
+    <a class="snav" href="btp/step3-bas.html"><span class="num">B5</span>手顺3：BAS 入门</a>
+    <a class="snav" href="btp/step4-dir.html"><span class="num">B6</span>手顺4：模式一 目录式</a>
+    <a class="snav" href="btp/step5-maven.html"><span class="num">B7</span>手顺5：模式二 Maven</a>
+    <a class="snav" href="btp/step6-spring.html"><span class="num">B8</span>手顺6：模式三 Spring Boot</a>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+<a class="snav" href="../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 7 章：测试数据</h1>
+      <p class="page-sub">可直接复制的 Bookshop CSV 种子数据与完整测试场景</p>
+      <p class="lead">本章给出第 4 章用到的<b>完整 CSV 种子数据</b>（分类 5 条、作者 4 位、图书 10 本、订单 2 条），以及覆盖 OData 查询、增删改、下单 Action 的<b>测试场景清单</b>。所有文件直接放进 <code>db/data/</code>，<code>cds watch</code> 启动即自动导入。</p>
+
+      <p>
+        <span class="badge teal">Genres ×5</span>
+        <span class="badge teal">Authors ×4</span>
+        <span class="badge teal">Books ×10</span>
+        <span class="badge gray">Orders ×2</span>
+        <span class="badge gray">curl 测试场景</span>
+      </p>
+
+      <h2 id="verify-load">7.1 数据导入验证</h2>
+      <p>把 CSV 放进 <code>db/data/</code> 后启动 <code>cds watch</code>，首次访问会自动建表并导入数据。用 <code>$count=true</code> 验证条数：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">终端 — 启动并验证数据</span></div>
+          <div class="term">
+            <div><span class="p">$</span> <span class="path">cds watch</span></div>
+            <div><span class="info">[cds]</span> - serving CatalogService { path: <span class="ok">'/odata/v4/catalog'</span> }</div>
+            <div><span class="info">[cds]</span> - server listening on <span class="ok">http://localhost:4004</span></div>
+            <div>&nbsp;</div>
+            <div><span class="p">$</span> <span class="path">curl "http://localhost:4004/odata/v4/catalog/Books?\$count=true"</span></div>
+            <div>{&nbsp;"@odata.count":&nbsp;10,&nbsp;"value":&nbsp;[&nbsp;{&nbsp;"ID":&nbsp;1,&nbsp;"title":&nbsp;"Wuthering&nbsp;Heights",&nbsp;...&nbsp;},&nbsp;...&nbsp;]&nbsp;}</div>
+            <div>&nbsp;</div>
+            <div><span class="p">$</span> <span class="path">curl "http://localhost:4004/odata/v4/catalog/Authors?\$count=true"</span></div>
+            <div>{&nbsp;"@odata.count":&nbsp;4,&nbsp;"value":&nbsp;[&nbsp;...&nbsp;]&nbsp;}</div>
+          </div>
+        </div>
+        <div class="cap"><b>图 7-1</b> <code>$count=true</code> 验证种子数据导入：Books=10 条、Authors=4 条</div>
+      </div>
+
+      <p>数据渲染成 Fiori List Report 后，应能看到完整的 10 本图书（第 6 章 <code>srv.after</code> 会为库存 &gt; 100 的书追加「-- 畅销」）：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="fi">
+            <div class="fi-top">
+              <span class="ftitle">Books</span>
+              <span class="fsearch">🔍 搜索书名或作者...</span>
+              <span class="fbtn ghost" style="margin-left:auto">⌁ 适应筛选项</span>
+              <span class="fbtn">📊 视图设置</span>
+            </div>
+            <div class="fi-nav"><span class="on">Books</span><span>Authors</span><span>Genres</span></div>
+            <div class="fi-body">
+              <div class="fi-main">
+                <div class="fbar">
+                  <span class="field">书名<select class="fc dd"><option>全部</option></select></span>
+                  <span class="field">价格区间<select class="fc dd"><option>全部</option></select></span>
+                  <span class="fbtn primary">筛选</span>
+                  <span class="fbtn ghost">重置</span>
+                  <span class="fbtn teal" style="margin-left:auto">创建</span>
+                </div>
+                <table class="tbl">
+                  <thead><tr><th>书名</th><th>作者</th><th>价格</th><th>库存</th></tr></thead>
+                  <tbody>
+                    <tr><td>Wuthering Heights</td><td>Emily Brontë</td><td class="num">11.11 EUR</td><td class="num">12</td></tr>
+                    <tr><td>Jane Eyre</td><td>Emily Brontë</td><td class="num">22.00 EUR</td><td class="num">11</td></tr>
+                    <tr><td>The Raven -- 畅销</td><td>George Orwell</td><td class="num">8.00 EUR</td><td class="num">333</td></tr>
+                    <tr><td>Eleonora</td><td>George Orwell</td><td class="num">7.99 EUR</td><td class="num">0</td></tr>
+                    <tr><td>Catweazle</td><td>Jane Austen</td><td class="num">19.99 EUR</td><td class="num">5</td></tr>
+                    <tr><td>Pride and Prejudice</td><td>Jane Austen</td><td class="num">24.99 EUR</td><td class="num">10</td></tr>
+                    <tr><td>1Q84</td><td>Haruki Murakami</td><td class="num">33.00 EUR</td><td class="num">100</td></tr>
+                    <tr><td>Kafka on the Shore</td><td>Haruki Murakami</td><td class="num">32.99 EUR</td><td class="num">42</td></tr>
+                    <tr><td>Dandelion Wine</td><td>George Orwell</td><td class="num">27.50 EUR</td><td class="num">8</td></tr>
+                    <tr><td>Norwegian Wood -- 畅销</td><td>Haruki Murakami</td><td class="num">35.50 EUR</td><td class="num">150</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 7-2</b> Fiori List Report 渲染完整种子数据：10 本图书；库存 &gt; 100 的 <code>The Raven</code> 与 <code>Norwegian Wood</code> 带「-- 畅销」标记</div>
+      </div>
+
+      <h3>加载数据操作手顺</h3>
+      <ol class="steps teal">
+        <li><p><span class="step-title">创建 db/data/ 目录</span></p>
+          <p>在项目根目录下确认 <code>db/data/</code> 存在（不存在则创建）。</p>
+        </li>
+        <li><p><span class="step-title">复制 CSV 文件</span></p>
+          <p>把 7.2–7.5 的四个 CSV 按文件名放入 <code>db/data/</code>，保存为 UTF-8（无 BOM）。</p>
+        </li>
+        <li><p><span class="step-title">启动并验证条数</span></p>
+          <p>执行 <code>cds watch</code>，用 <code>curl "...?\$count=true"</code> 核对 Genres=5、Authors=4、Books=10（见<a href="#verify-load">图 7-1</a>）。</p>
+        </li>
+        <li><p><span class="step-title">执行测试场景</span></p>
+          <p>对照 7.6 的场景清单逐一用 curl 验证，确认每个操作的预期结果。</p>
+        </li>
+      </ol>
+
+      <h2 id="genres">7.2 Genres 分类数据</h2>
+      <p>文件：<code>db/data/sap.capire.bookshop-Genres.csv</code>（表头对应实体 <code>Genres</code>：<code>ID / name / descr</code>）</p>
+
+<pre><code class="language-csv">ID,name,descr
+201,Fiction,虚构类文学作品
+202,Non-Fiction,非虚构类作品
+203,Science Fiction,科幻类
+204,Romance,爱情与浪漫类
+205,Essay,随笔散文
+</code></pre>
+
+      <h2 id="authors">7.3 Authors 作者数据</h2>
+      <p>文件：<code>db/data/sap.capire.bookshop-Authors.csv</code>（<code>ID / name / dateOfBirth / placeOfBirth</code>）</p>
+
+<pre><code class="language-csv">ID,name,dateOfBirth,placeOfBirth
+101,Emily Brontë,1818-07-30,Thornton England
+102,George Orwell,1903-06-25,Motihari India
+103,Jane Austen,1775-12-16,Steventon England
+104,Haruki Murakami,1949-01-12,Kyoto Japan
+</code></pre>
+
+      <h2 id="books">7.4 Books 图书数据</h2>
+      <p>文件：<code>db/data/sap.capire.bookshop-Books.csv</code>（<code>ID / title / descr / author_ID / genre_ID / stock / price / currency</code>）</p>
+      <p>设计要点：<b>price</b> 同时覆盖 &lt; 30 与 ≥ 30 两档（验证 <code>$filter</code>）；<b>stock</b> 覆盖 0 / 小 / 大三档（验证下单库存校验与 <code>srv.after</code> 的「-- 畅销」逻辑）。</p>
+
+<pre><code class="language-csv">ID,title,descr,author_ID,genre_ID,stock,price,currency
+1,Wuthering Heights,哥特小说代表作,101,201,12,11.11,EUR
+2,Jane Eyre,夏洛蒂·勃朗特经典,101,201,11,22.00,EUR
+3,The Raven,爱伦坡诗作,102,203,333,8.00,EUR
+4,Eleonora,爱伦坡短篇,102,203,0,7.99,EUR
+5,Catweazle,幻想小说,103,204,5,19.99,EUR
+6,Pride and Prejudice,简·奥斯汀代表作,103,204,10,24.99,EUR
+7,1Q84,村上春树长篇,104,201,100,33.00,EUR
+8,Kafka on the Shore,村上春树长篇,104,201,42,32.99,EUR
+9,Dandelion Wine,怀旧随笔,102,202,8,27.50,EUR
+10,Norwegian Wood,村上春树爱情小说,104,204,150,35.50,EUR
+</code></pre>
+
+      <h2 id="orders">7.5 Orders 订单数据（示例）</h2>
+      <p>第 5 章定义了 <code>Orders : cuid</code> 实体（UUID 主键），可放置 1-2 条示例订单。文件：<code>db/data/sap.capire.bookshop-Orders.csv</code>（<code>ID / book_ID / quantity / total / status</code>）：</p>
+
+<pre><code class="language-csv">ID,book_ID,quantity,total,status
+11111111-2222-3333-4444-555555555555,1,2,22.22,submitted
+22222222-3333-4444-5555-666666666666,5,1,19.99,submitted
+</code></pre>
+
+      <ul>
+        <li>第 1 条：书 1（<code>Wuthering Heights</code>，单价 11.11）× 2 = <code>total</code> 22.22。</li>
+        <li>第 2 条：书 5（<code>Catweazle</code>，单价 19.99）× 1 = <code>total</code> 19.99。</li>
+        <li><code>status</code> 用字符串状态（<code>submitted</code>），与实体默认值 <code>'pending'</code> 保持一致的含义。</li>
+      </ul>
+
+      <h2 id="scenarios">7.6 测试场景清单</h2>
+      <p>以下场景覆盖第 6 章的全部能力。表格中的命令均可直接复制到终端执行。</p>
+
+      <table class="doc">
+        <thead>
+          <tr><th style="width:170px">场景</th><th style="width:380px">命令或操作</th><th>预期结果</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>查全部图书</td><td><code>curl http://localhost:4004/odata/v4/catalog/Books</code></td><td>返回 JSON 数组，含全部 10 本（<code>@odata.count</code> 需要加 <code>?$count=true</code>）</td></tr>
+          <tr><td>过滤低价书</td><td><code>curl "http://localhost:4004/odata/v4/catalog/Books?\$filter=price%20lt%2030"</code></td><td>只返回价格 &lt; 30 的书（书 1/2/3/4/5/6/9）</td></tr>
+          <tr><td>展开作者关联</td><td><code>curl "http://localhost:4004/odata/v4/catalog/Books?\$expand=author"</code></td><td>每本书带 <code>author</code> 内嵌对象（含 <code>name</code>、<code>dateOfBirth</code>）</td></tr>
+          <tr><td>创建新书</td><td><code>curl -X POST http://localhost:4004/odata/v4/catalog/Books -H "Content-Type: application/json" -d '{"ID":101,"title":"CAP in Action","author_ID":104,"genre_ID":201,"stock":5,"price":19.99,"currency":"EUR"}'</code></td><td>返回 <code>201 Created</code> 与新书实体，<code>GET Books(101)</code> 可查到</td></tr>
+          <tr><td>修改价格</td><td><code>curl -X PATCH http://localhost:4004/odata/v4/catalog/Books(101) -H "Content-Type: application/json" -d '{"price":25.50}'</code></td><td>返回 <code>200 OK</code>，价格更新为 25.50</td></tr>
+          <tr><td>删除图书</td><td><code>curl -X DELETE http://localhost:4004/odata/v4/catalog/Books(101)</code></td><td>返回 <code>204 No Content</code>，再次读取返回 404</td></tr>
+          <tr><td>下单（库存充足）</td><td><code>curl -X POST http://localhost:4004/odata/v4/catalog/submitOrder -H "Content-Type: application/json" -d '{"book":1,"quantity":5}'</code></td><td>返回 <code>{"updated":5}</code>，随后查询书 1 库存由 12 减为 7</td></tr>
+          <tr><td>下单（库存不足）</td><td><code>curl -X POST http://localhost:4004/odata/v4/catalog/submitOrder -H "Content-Type: application/json" -d '{"book":4,"quantity":1}'</code></td><td>返回 <code>400</code>，消息 <code>1 exceeds stock for book #4</code>（书 4 库存为 0）</td></tr>
+          <tr><td>删除不存在的 ID</td><td><code>curl -X DELETE http://localhost:4004/odata/v4/catalog/Books(99999)</code></td><td>返回 <code>404</code>，消息提示资源未找到</td></tr>
+        </tbody>
+      </table>
+
+      <p>完整命令串（可直接复制）：</p>
+
+<pre><code class="language-bash"># 读取与查询
+curl http://localhost:4004/odata/v4/catalog/Books
+curl "http://localhost:4004/odata/v4/catalog/Books?\$filter=price%20lt%2030"
+curl "http://localhost:4004/odata/v4/catalog/Books?\$expand=author"
+
+# 创建 → 修改 → 删除（以 ID 101 为例）
+curl -X POST http://localhost:4004/odata/v4/catalog/Books \
+  -H "Content-Type: application/json" \
+  -d '{"ID":101,"title":"CAP in Action","descr":"新书","author_ID":104,"genre_ID":201,"stock":5,"price":19.99,"currency":"EUR"}'
+curl -X PATCH http://localhost:4004/odata/v4/catalog/Books(101) \
+  -H "Content-Type: application/json" \
+  -d '{"price":25.50}'
+curl -X DELETE http://localhost:4004/odata/v4/catalog/Books(101)
+
+# 下单 Action
+curl -X POST http://localhost:4004/odata/v4/catalog/submitOrder \
+  -H "Content-Type: application/json" \
+  -d '{"book":1,"quantity":5}'        # 库存充足 → {"updated":5}
+curl -X POST http://localhost:4004/odata/v4/catalog/submitOrder \
+  -H "Content-Type: application/json" \
+  -d '{"book":4,"quantity":1}'        # 库存不足 → 400
+
+# 删除不存在 ID → 404
+curl -X DELETE http://localhost:4004/odata/v4/catalog/Books(99999)
+</code></pre>
+
+      <h2 id="tips">7.7 数据设计小贴士</h2>
+      <div class="note">
+        <span class="note-title">💡 种子数据设计原则</span>
+        <ul>
+          <li><b>覆盖边界</b>：测试数据刻意包含边界值——库存 0（触发下单失败）、库存 100+（触发「-- 畅销」）、价格 &lt; 30 与 ≥ 30（验证 <code>$filter</code>）。</li>
+          <li><b>关联完整</b>：每本 <code>Books</code> 的 <code>author_ID</code> / <code>genre_ID</code> 都必须指向 <code>Authors</code> / <code>Genres</code> 里存在的 ID，否则外键解析失败、启动报错。</li>
+          <li><b>区分测试与生产</b>：这些 CSV 是本地演示数据；接入真实系统时应改为从 S/4HANA 或源系统抽取。</li>
+          <li><b>重置数据</b>：反复测试把库存改乱后，删除本地 <code>bookshop.db</code>（SQLite 文件）再 <code>cds watch</code>，数据会重新从 CSV 导入。</li>
+        </ul>
+      </div>
+
+      <div class="pagenav">
+        <a href="step4-test.html"><small>← 上一章</small><b>手顺4：启动、测试与 Fiori</b></a>
+        <a class="next" href="../rap/overview.html"><small>CAP 培训已学完 →</small><b>进入 RAP 培训</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · CAP 培训 · 第 7 章 测试数据</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

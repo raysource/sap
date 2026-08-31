@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>环境准备 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../index.html">首页</a>
+      <a class="tab" href="../rap/overview.html">RAP 培训</a>
+      <a class="tab active" href="overview.html">CAP 培训</a>
+      <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">CAP 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="overview.html"><span class="num">1</span>CAP 概述</a>
+      <a class="snav active" href="prep.html"><span class="num">2</span>环境准备</a>
+      <a class="snav" href="step1-init.html"><span class="num">3</span>手顺1：项目初始化</a>
+      <a class="snav" href="step2-model.html"><span class="num">4</span>手顺2：数据模型与服务</a>
+      <a class="snav" href="step3-implement.html"><span class="num">5</span>手顺3：业务逻辑实现</a>
+      <a class="snav" href="step4-test.html"><span class="num">6</span>手顺4：启动、测试与 Fiori</a>
+      <a class="snav" href="testdata.html"><span class="num">7</span>测试数据</a>
+    </nav>
+    <div class="snav-group">CAP for Java（Java 运行时）</div>
+    <a class="snav" href="java/overview.html"><span class="num">J1</span>Java 概述</a>
+    <a class="snav" href="java/prep.html"><span class="num">J2</span>环境准备</a>
+    <a class="snav" href="java/step1-project.html"><span class="num">J3</span>手顺1：建立 Java 项目</a>
+    <a class="snav" href="java/step2-db.html"><span class="num">J4</span>手顺2：配置链接与建库建表</a>
+    <a class="snav" href="java/step3-dto.html"><span class="num">J5</span>手顺3：DTO → 生成模型与服务</a>
+    <a class="snav" href="java/step4-test.html"><span class="num">J6</span>手顺4：运行与测试</a>
+    <div class="snav-group">BTP 与 HANA Cloud（云环境 + BAS）</div>
+    <a class="snav" href="btp/overview.html"><span class="num">B1</span>BTP 与 HANA Cloud 概述</a>
+    <a class="snav" href="btp/prep.html"><span class="num">B2</span>环境准备（BTP 账号）</a>
+    <a class="snav" href="btp/step1-hana.html"><span class="num">B3</span>手顺1：创建 HANA Cloud 实例</a>
+    <a class="snav" href="btp/step2-sql.html"><span class="num">B4</span>手顺2：HANA SQL 建表与数据</a>
+    <a class="snav" href="btp/step3-bas.html"><span class="num">B5</span>手顺3：BAS 入门</a>
+    <a class="snav" href="btp/step4-dir.html"><span class="num">B6</span>手顺4：模式一 目录式</a>
+    <a class="snav" href="btp/step5-maven.html"><span class="num">B7</span>手顺5：模式二 Maven</a>
+    <a class="snav" href="btp/step6-spring.html"><span class="num">B8</span>手顺6：模式三 Spring Boot</a>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+<a class="snav" href="../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 2 章：环境准备</h1>
+      <p class="page-sub">Node.js + cds-dk + VS Code —— 十分钟跑起本地 CAP 开发环境</p>
+      <p class="lead">CAP 开发只需要三样东西：<b>Node.js</b>（运行时）、<b>@sap/cds-dk</b>（命令行脚手架）、<b>VS Code</b>（编辑器）。数据库先用 CAP 内置的 <b>SQLite</b>，部署到云端时才需要 BTP 账号。</p>
+
+      <p>
+        <span class="badge teal">Node.js ≥ 18</span>
+        <span class="badge teal">@sap/cds-dk</span>
+        <span class="badge teal">VS Code</span>
+        <span class="badge gray">SQLite</span>
+        <span class="badge gray">git（可选）</span>
+        <span class="badge gray">BTP 账号（可选）</span>
+      </p>
+
+      <h2 id="prereq">2.1 前置要求：Node.js 与 npm</h2>
+      <p>CAP 的 Node.js 运行时要求 <b>Node.js ≥ 18</b>，官方推荐 <b>20 LTS</b>（长期支持版，2026 年仍在维护期内）。npm 随 Node.js 一起安装，无需单独安装。</p>
+      <ul>
+        <li>下载地址：<a href="https://nodejs.org" rel="noreferrer">https://nodejs.org</a>，选择 <b>20 LTS</b> 安装包。</li>
+        <li>macOS 用户也可以用 Homebrew：<code>brew install node@20</code>。</li>
+        <li>安装完成后，打开终端验证版本。</li>
+      </ul>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">终端 — 验证 Node.js</span></div>
+          <div class="term">
+            <div><span class="p">$</span> <span class="path">node -v</span></div>
+            <div><span class="ok">v20.11.1</span></div>
+            <div><span class="p">$</span> <span class="path">npm -v</span></div>
+            <div><span class="ok">10.2.4</span></div>
+            <div><span class="p">$</span> <span class="path">which node</span></div>
+            <div>/usr/local/bin/node</div>
+          </div>
+        </div>
+        <div class="cap"><b>图 2-1</b> 安装完成后在终端验证：<code>node -v</code> 输出 ≥ v18（推荐 v20），<code>npm -v</code> 输出 npm 版本号</div>
+      </div>
+
+      <h2 id="cdsdk">2.2 安装 cds-dk 脚手架</h2>
+      <p>cds-dk 是 CAP 的命令行工具包，提供 <code>cds init</code>（建项目）、<code>cds watch</code>（启动开发服务器）、<code>cds compile</code>（编译模型）等命令。用 npm 全局安装：</p>
+
+<pre><code class="language-bash">npm install -g @sap/cds-dk
+</code></pre>
+
+      <p>安装后用 <code>cds --version</code> 确认版本，用 <code>cds --help</code> 查看可用子命令。</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">终端 — 安装并验证 cds-dk</span></div>
+          <div class="term">
+            <div><span class="p">$</span> <span class="path">npm install -g @sap/cds-dk</span></div>
+            <div><span class="info">npm</span> - added 183 packages in 9s</div>
+            <div>&nbsp;</div>
+            <div><span class="p">$</span> <span class="path">cds --version</span></div>
+            <div><span class="ok">@sap/cds</span>&nbsp;&nbsp;&nbsp;&nbsp;: 8.4.1</div>
+            <div><span class="ok">@sap/cds-dk</span> : 8.2.1</div>
+            <div>&nbsp;</div>
+            <div><span class="p">$</span> <span class="path">cds --help</span></div>
+            <div><span class="info">Usage</span>: cds [options] [command]</div>
+            <div><span class="info">Commands</span>: init | watch | compile | build | add | serve | run | help ...</div>
+          </div>
+        </div>
+        <div class="cap"><b>图 2-2</b> <code>cds --version</code> 显示框架与脚手架版本，<code>cds --help</code> 列出全部子命令</div>
+      </div>
+
+      <h2 id="vscode">2.3 安装 VS Code 与必装扩展</h2>
+      <p>编辑器推荐 <b>VS Code</b>（免费、跨平台）。配合以下 4 个扩展可获得完整的 CDS 语法高亮、代码补全与 OData 调试体验：</p>
+      <table class="doc">
+        <thead>
+          <tr><th>扩展</th><th>发布方</th><th>作用</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>SAP CDS Language Support</code></td><td>SAP SE</td><td>CDS 语法高亮、智能补全、模型导航</td></tr>
+          <tr><td><code>SAP Fiori tools</code></td><td>SAP SE</td><td>Fiori Elements 应用模板、Application Modeler、XML Toolkit、运行预览</td></tr>
+          <tr><td><code>Prettier - Code formatter</code></td><td>Prettier</td><td>统一格式化 JS / JSON 代码</td></tr>
+          <tr><td><code>REST Client</code></td><td>Huachao Mao</td><td>在 VS Code 里直接发 HTTP / OData 请求调试</td></tr>
+        </tbody>
+      </table>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="vscode">
+            <div class="vs-top"><span>文件(F)</span><span>编辑(E)</span><span>选择(S)</span><span>查看(V)</span><span>运行(R)</span><span style="margin-left:auto">扩展市场 · 已安装 4/4 ✓</span></div>
+            <div class="vs-body" style="height:auto">
+              <div class="vs-activity"><span>📁</span><span>🔍</span><span class="on">🧩</span><span>🌿</span></div>
+              <div class="vs-explorer" style="width:340px; overflow:auto; border-right:1px solid #3c3c3c">
+                <div style="border:1px solid #3c3c3c;border-radius:4px;padding:4px 8px;color:#8a8a8a;margin-bottom:8px">在 Marketplace 中搜索扩展</div>
+                <div style="display:flex;gap:8px;align-items:center;padding:6px;border-bottom:1px solid #333">
+                  <div style="width:26px;height:26px;border-radius:5px;background:#0e639c;display:grid;place-items:center;font-size:13px;flex-shrink:0">🔧</div>
+                  <div style="flex:1;min-width:0">
+                    <div style="color:#fff;font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">SAP CDS Language Support</div>
+                    <div style="color:#8a8a8a;font-size:10.5px">SAP SE</div>
+                  </div>
+                  <span class="fbtn sm" style="flex-shrink:0">Install</span>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center;padding:6px;border-bottom:1px solid #333">
+                  <div style="width:26px;height:26px;border-radius:5px;background:#1876c8;display:grid;place-items:center;font-size:13px;flex-shrink:0">🚀</div>
+                  <div style="flex:1;min-width:0">
+                    <div style="color:#fff;font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">SAP Fiori tools</div>
+                    <div style="color:#8a8a8a;font-size:10.5px">SAP SE</div>
+                  </div>
+                  <span class="fbtn sm" style="flex-shrink:0">Install</span>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center;padding:6px;border-bottom:1px solid #333">
+                  <div style="width:26px;height:26px;border-radius:5px;background:#1a1a1a;border:1px solid #444;display:grid;place-items:center;font-size:13px;flex-shrink:0">✒️</div>
+                  <div style="flex:1;min-width:0">
+                    <div style="color:#fff;font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Prettier - Code formatter</div>
+                    <div style="color:#8a8a8a;font-size:10.5px">Prettier</div>
+                  </div>
+                  <span class="fbtn sm" style="flex-shrink:0">Install</span>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center;padding:6px;border-bottom:1px solid #333">
+                  <div style="width:26px;height:26px;border-radius:5px;background:#8a5a10;display:grid;place-items:center;font-size:13px;flex-shrink:0">🌐</div>
+                  <div style="flex:1;min-width:0">
+                    <div style="color:#fff;font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">REST Client</div>
+                    <div style="color:#8a8a8a;font-size:10.5px">Huachao Mao</div>
+                  </div>
+                  <span class="fbtn sm" style="flex-shrink:0">Install</span>
+                </div>
+              </div>
+            </div>
+            <div class="vs-status"><span>✓ SAP CDS Language Support</span><span>✓ SAP Fiori tools</span><span>✓ Prettier</span><span>✓ REST Client</span></div>
+          </div>
+        </div>
+        <div class="cap"><b>图 2-3</b> VS Code 扩展市场：搜索并逐个安装 4 个必装扩展</div>
+      </div>
+
+      <h2 id="optional">2.4 可选：SQLite 与 git</h2>
+      <ul>
+        <li><b>SQLite</b>：CAP 开发时默认使用 SQLite，数据库引擎与驱动由 <code>@sap/cds</code> 自动引入，<b>不需要手动安装</b>。首次启动时自动创建本地数据库文件。</li>
+        <li><b>git</b>：建议安装用于版本管理。macOS 自带 <code>git</code>；Windows 可安装 Git for Windows。</li>
+      </ul>
+
+      <h2 id="btp">2.5 （可选）BTP 账号</h2>
+      <p>如果要把应用部署到云端（Cloud Foundry），需要一个 <b>BTP（Business Technology Platform）trial 或 enterprise 账号</b>。本培训以<b>本地开发为主</b>，部署相关内容留到进阶课程，这里只做了解：</p>
+      <p class="path-note">☁️ <b>想现在就在云端动手？</b> 可跳到「BTP 与 HANA Cloud」子轨（<a href="btp/overview.html">B1</a> → <a href="btp/step1-hana.html">B3 建 HANA Cloud 实例</a> → <a href="btp/step2-sql.html">B4 建库灌数</a>），从注册账号到 Java 连库一气呵成。</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="btp">
+            <div class="btp-head"><span class="crumb">SAP BTP Cockpit</span><span>/</span><span class="crumb">Global Account</span><span>/</span><span class="crumb"><b>Trial</b></span></div>
+            <div class="btp-sub">
+              <div class="stabs"><span>Overview</span><span class="on">Service Marketplace</span><span>Instances &amp; Subscriptions</span></div>
+            </div>
+            <div class="btp-cards">
+              <div class="btp-card"><div class="t">🟢 Cloud Foundry Runtime</div><div class="s">Node.js / Java 应用运行环境</div><div class="b">创建子账户与空间 →</div></div>
+              <div class="btp-card"><div class="t">🗄️ HANA Cloud</div><div class="s">生产级内存数据库</div><div class="b">创建实例 →</div></div>
+              <div class="btp-card"><div class="t">🔑 Destination</div><div class="s">连接外部系统的目标配置</div><div class="b">配置 →</div></div>
+              <div class="btp-card"><div class="t">📊 Kyma Runtime</div><div class="s">Kubernetes 运行时</div><div class="b">了解更多 →</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 2-4</b> BTP Cockpit 的 Service Marketplace：部署到 Cloud Foundry 需要 BTP 账号；本培训本地开发为主，此步可跳过</div>
+      </div>
+
+      <h2 id="steps">2.6 操作手顺</h2>
+      <ol class="steps teal">
+        <li><p><span class="step-title">安装 Node.js LTS</span></p>
+          <p>访问 <code>https://nodejs.org</code> 下载 <b>20 LTS</b> 安装包，一路「Next」完成（macOS 亦可 <code>brew install node@20</code>）。</p>
+        </li>
+        <li><p><span class="step-title">验证 Node.js 与 npm</span></p>
+          <p>终端执行 <code>node -v</code> 与 <code>npm -v</code>，能输出版本号即成功（见<a href="#prereq">图 2-1</a>）。</p>
+        </li>
+        <li><p><span class="step-title">全局安装 cds-dk</span></p>
+          <p>执行 <code>npm install -g @sap/cds-dk</code>，随后用 <code>cds --version</code> 与 <code>cds --help</code> 验证（见<a href="#cdsdk">图 2-2</a>）。</p>
+        </li>
+        <li><p><span class="step-title">安装 VS Code 与 4 个必装扩展</span></p>
+          <p>安装 VS Code，在扩展市场安装 SAP CDS Language Support、SAP Fiori tools、Prettier、REST Client（见<a href="#vscode">图 2-3</a>）。</p>
+        </li>
+        <li><p><span class="step-title">整体验证环境就绪</span></p>
+          <p>在临时目录执行 <code>cds init smoke</code> 生成项目，再 <code>cd smoke &amp;&amp; cds watch</code>，看到 <code>server listening on http://localhost:4004</code> 即环境就绪（第 3 章详解每条命令）。</p>
+        </li>
+      </ol>
+
+      <div class="note warn">
+        <span class="note-title">⚠️ 网络与版本注意事项</span>
+        <ul>
+          <li><b>npm 镜像</b>：国内网络安装慢时，配置镜像源：<code>npm config set registry https://registry.npmmirror.com</code>。</li>
+          <li><b>全局安装权限不足</b>：报 <code>EACCES</code> 时用 <code>sudo npm install -g @sap/cds-dk</code>，或按 npm 官方文档把全局目录改到用户目录（无需 sudo）。</li>
+          <li><b>版本兼容</b>：cds-dk 8.x 要求 Node.js ≥ 18；Node 22 亦可运行，但生产环境推荐 20 LTS。</li>
+        </ul>
+      </div>
+
+      <div class="pagenav">
+        <a href="overview.html"><small>← 上一章</small><b>第 1 章：CAP 概述</b></a>
+        <a class="next" href="step1-init.html"><small>下一章 →</small><b>手顺1：项目初始化</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · CAP 培训 · 第 2 章 环境准备</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

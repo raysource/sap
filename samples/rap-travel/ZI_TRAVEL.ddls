@@ -1,0 +1,25 @@
+@EndUserText.label: 'Travel - 接口视图'
+@AccessControl.authorizationCheck: #CHECK
+@Metadata.ignorePropagatedAnnotations: true
+@ObjectModel.usageType:{
+  serviceQuality: #X,
+  sizeCategory: #S,
+  dataClass: #MIXED
+}
+define root view entity ZI_TRAVEL as select from ztravel
+{
+  key travelid            as TravelID,
+      agencyid            as AgencyID,
+      customerid          as CustomerID,
+      begindate           as BeginDate,
+      enddate             as EndDate,
+      bookingfee          as BookingFee,
+      totalprice          as TotalPrice,
+      currencycode        as CurrencyCode,
+      status              as Status,
+      description         as Description,
+      createdby           as CreatedBy,
+      createdat           as CreatedAt,
+      lastchangedby       as LastChangedBy,
+      lastchangedat       as LastChangedAt
+}

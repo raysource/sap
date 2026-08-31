@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>环境准备 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../../index.html">首页</a>
+      <a class="tab" href="../../rap/overview.html">RAP 培训</a>
+      <a class="tab active" href="../overview.html">CAP 培训</a>
+      <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">CAP 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="../overview.html"><span class="num">1</span>CAP 概述</a>
+      <a class="snav" href="../prep.html"><span class="num">2</span>环境准备</a>
+      <a class="snav" href="../step1-init.html"><span class="num">3</span>手顺1：项目初始化</a>
+      <a class="snav" href="../step2-model.html"><span class="num">4</span>手顺2：数据模型与服务</a>
+      <a class="snav" href="../step3-implement.html"><span class="num">5</span>手顺3：业务逻辑实现</a>
+      <a class="snav" href="../step4-test.html"><span class="num">6</span>手顺4：启动、测试与 Fiori</a>
+      <a class="snav" href="../testdata.html"><span class="num">7</span>测试数据</a>
+    </nav>
+    <div class="snav-group">CAP for Java（Java 运行时）</div>
+    <a class="snav" href="overview.html"><span class="num">J1</span>Java 概述</a>
+    <a class="snav active" href="prep.html"><span class="num">J2</span>环境准备</a>
+    <a class="snav" href="step1-project.html"><span class="num">J3</span>手顺1：建立 Java 项目</a>
+    <a class="snav" href="step2-db.html"><span class="num">J4</span>手顺2：配置链接与建库建表</a>
+    <a class="snav" href="step3-dto.html"><span class="num">J5</span>手顺3：DTO → 生成模型与服务</a>
+    <a class="snav" href="step4-test.html"><span class="num">J6</span>手顺4：运行与测试</a>
+    <div class="snav-group">BTP 与 HANA Cloud（云环境 + BAS）</div>
+    <a class="snav" href="../btp/overview.html"><span class="num">B1</span>BTP 与 HANA Cloud 概述</a>
+    <a class="snav" href="../btp/prep.html"><span class="num">B2</span>环境准备（BTP 账号）</a>
+    <a class="snav" href="../btp/step1-hana.html"><span class="num">B3</span>手顺1：创建 HANA Cloud 实例</a>
+    <a class="snav" href="../btp/step2-sql.html"><span class="num">B4</span>手顺2：HANA SQL 建表与数据</a>
+    <a class="snav" href="../btp/step3-bas.html"><span class="num">B5</span>手顺3：BAS 入门</a>
+    <a class="snav" href="../btp/step4-dir.html"><span class="num">B6</span>手顺4：模式一 目录式</a>
+    <a class="snav" href="../btp/step5-maven.html"><span class="num">B7</span>手顺5：模式二 Maven</a>
+    <a class="snav" href="../btp/step6-spring.html"><span class="num">B8</span>手顺6：模式三 Spring Boot</a>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+<a class="snav" href="../../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 J2 章：环境准备</h1>
+      <p class="page-sub">JDK 17 + Maven 3.8+ + cds-dk + IDE —— 搭起 CAP Java 的开发环境</p>
+      <p class="lead">CAP Java 基于 <b>Spring Boot</b> 与 <b>Maven</b>，环境比 Node 版多「一个 JDK、一个构建工具」。核心是四样：<b>JDK 17</b>（编译与运行）、<b>Maven 3.8+</b>（构建，且必须跑在 JDK 17 上）、<b>@sap/cds-dk</b>（脚手架，<code>cds init --java</code> 需要它）、任选一个 <b>IDE</b>。</p>
+
+      <p>
+        <span class="badge teal">JDK 17 LTS</span>
+        <span class="badge teal">Maven 3.8+</span>
+        <span class="badge teal">@sap/cds-dk</span>
+        <span class="badge teal">IntelliJ / Eclipse STS4</span>
+        <span class="badge gray">VS Code（轻量）</span>
+        <span class="badge gray">SQLite（无需手动装）</span>
+      </p>
+
+      <h2 id="jdk">J2.1 前置要求：JDK 17</h2>
+      <p>CAP Java 要求 <b>JDK 17 LTS</b>（长期支持版，2026 年仍在维护期内；<b>JDK 21</b> 亦可）。这是硬性要求——<code>cds-maven-plugin</code> 与 CAP 运行时都需要 Java 17 的特性。安装方式按系统选：</p>
+      <ul>
+        <li><b>macOS</b>（推荐）：Homebrew 安装 <code>brew install openjdk@17</code>；或从 <a href="https://adoptium.net" rel="noreferrer">Adoptium（Eclipse Temurin）</a> 下载安装包。</li>
+        <li><b>Windows</b>：从 Adoptium 或 Oracle 下载 <b>JDK 17</b> 安装包，安装后把 <code>JAVA_HOME</code> 与 <code>PATH</code> 指到安装目录。</li>
+        <li><b>Linux（Ubuntu/Debian）</b>：<code>sudo apt install openjdk-17-jdk</code>；Fedora/RHEL：<code>sudo dnf install java-17-openjdk-devel</code>。</li>
+      </ul>
+      <p>Homebrew 装的 <code>openjdk@17</code> 是 <b>keg-only</b>（不自动进 PATH），需要手动设置 <code>JAVA_HOME</code>；这一步对后续 Maven 至关重要：</p>
+
+<pre><code class="language-bash">brew install openjdk@17
+
+# openjdk@17 是 keg-only，需手动配置 JAVA_HOME（写入 ~/.zshrc 永久生效）
+export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+export PATH="$JAVA_HOME/bin:$PATH"
+</code></pre>
+
+      <p>装好后在<b>新开的终端</b>里验证版本：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">终端 — 验证 JDK</span></div>
+          <div class="term">
+            <div><span class="p">$</span> <span class="path">java -version</span></div>
+            <div><span class="ok">openjdk version "17.0.11" 2024-04-16 LTS</span></div>
+            <div>OpenJDK Runtime Environment Homebrew (build 17.0.11+0)</div>
+            <div>OpenJDK 64-Bit Server VM Homebrew (build 17.0.11+0, mixed mode, sharing)</div>
+            <div><span class="p">$</span> <span class="path">javac -version</span></div>
+            <div><span class="ok">javac 17.0.11</span></div>
+          </div>
+        </div>
+        <div class="cap"><b>图 J2-1</b> <code>java -version</code> 输出 17 即满足 CAP Java 要求；<code>javac -version</code> 确认编译器与运行时一致</div>
+      </div>
+
+      <h2 id="maven">J2.2 构建工具：Maven 3.8+</h2>
+      <p>CAP Java 用 <b>Maven</b> 管理依赖、编译、生成代码与启动。要求 <b>Maven 3.8+</b>，并且它必须运行在 JDK 17 之上（<code>JAVA_HOME</code> 指向 JDK 17，否则 <code>cds-maven-plugin</code> 会报「Java 版本太低」）。macOS 直接 Homebrew：</p>
+
+<pre><code class="language-bash">brew install maven
+</code></pre>
+
+      <p>验证 <code>mvn -version</code>，重点看最后那行 <b>Java version</b> 是不是 17：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">终端 — 验证 Maven</span></div>
+          <div class="term">
+            <div><span class="p">$</span> <span class="path">mvn -version</span></div>
+            <div>Apache Maven 3.9.6 (bc0240f3c744dd6b6ec2920b3cd08dcc9d4d3d47)</div>
+            <div>Maven home: /usr/local/Cellar/maven/3.9.6/libexec</div>
+            <div><span class="ok">Java version: 17.0.11</span>, vendor: Homebrew, runtime: /usr/local/Cellar/openjdk@17/17.0.11/...</div>
+            <div>Default locale: en_US, platform encoding: UTF-8</div>
+            <div>OS name: "mac", version: "14.5", arch: "aarch64", family: "mac"</div>
+          </div>
+        </div>
+        <div class="cap"><b>图 J2-2</b> <code>mvn -version</code> 里的 <b>Java version: 17.0.11</b> 说明 Maven 跑在 JDK 17 上——这是 CAP Java 构建的前提</div>
+      </div>
+
+      <div class="note">
+        <span class="note-title">💡 为什么 JAVA_HOME 这么关键</span>
+        Maven 启动时读 <code>JAVA_HOME</code> 决定用它自己的 JVM 版本。如果指向 JDK 8 / 11，即使系统默认 <code>java</code> 是 17，Maven 仍会以旧版本运行，<code>cds-maven-plugin</code> 编译 CDS 时会直接失败。设置后务必<b>重开终端</b>再验证。
+      </div>
+
+      <h2 id="cdsdk">J2.3 脚手架：@sap/cds-dk</h2>
+      <p><code>cds-dk</code> 是 CAP 的命令行工具包，提供 <code>cds init</code>（建项目）、<code>cds compile</code>（编译模型）等命令。它是 <b>Node.js 工具</b>，用 npm 全局安装——若尚未安装 Node.js ≥ 18，先按 <a href="../prep.html">CAP 主路线环境准备</a> 装好：</p>
+
+<pre><code class="language-bash">npm install -g @sap/cds-dk
+</code></pre>
+
+      <p>注意：Java 路线<b>不需要</b> Node.js 运行时（运行走 Spring Boot），Node.js 只用于跑 cds 命令行。安装后验证：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">终端 — 安装并验证 cds-dk</span></div>
+          <div class="term">
+            <div><span class="p">$</span> <span class="path">npm install -g @sap/cds-dk</span></div>
+            <div><span class="info">npm</span> - added 183 packages in 9s</div>
+            <div>&nbsp;</div>
+            <div><span class="p">$</span> <span class="path">cds --version</span></div>
+            <div><span class="ok">@sap/cds</span>&nbsp;&nbsp;&nbsp;&nbsp;: 8.4.1</div>
+            <div><span class="ok">@sap/cds-dk</span> : 8.2.1</div>
+            <div>&nbsp;</div>
+            <div><span class="p">$</span> <span class="path">cds init --help</span></div>
+            <div><span class="info">Options</span>: ... <span class="info">--java</span>  generate a Java project skeleton (Maven / Spring Boot)</div>
+          </div>
+        </div>
+        <div class="cap"><b>图 J2-3</b> <code>cds --version</code> 确认脚手架可用；<code>cds init --help</code> 能看到 <code>--java</code> 选项</div>
+      </div>
+
+      <h2 id="ide">J2.4 IDE：三种任选</h2>
+      <p>CAP 官方推荐 <b>IntelliJ IDEA</b>（Java 生态最顺手）；<b>Eclipse + Spring Tools 4（STS4）</b> 是经典选择；<b>VS Code + Java Extension Pack</b> 作为轻量选项也完全够用。三种 IDE 打开 CAP Java 项目的方式本质都是「把根 <code>pom.xml</code> 当 Maven 项目导入」：</p>
+      <table class="doc">
+        <thead>
+          <tr><th>IDE</th><th>打开项目的方式</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>IntelliJ IDEA</b>（官方推荐）</td><td>Open / File → Open… → 选根 <code>pom.xml</code></td><td>自动识别 Maven 多模块并下载依赖</td></tr>
+          <tr><td><b>Eclipse + STS4</b></td><td>File → Import → Maven → Existing Maven Projects → 选根 <code>pom.xml</code></td><td>STS4 需要 4.19+；导入后等依赖下载完</td></tr>
+          <tr><td><b>VS Code</b></td><td>安装 <code>Extension Pack for Java</code> + Maven 支持，打开文件夹</td><td>轻量；需 <code>Java: Import Java Projects</code> 命令触发一次</td></tr>
+        </tbody>
+      </table>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">IntelliJ IDEA — 打开 bookshop 根 pom.xml</span></div>
+          <div style="display:flex">
+            <div style="width:250px;background:#f7f9fb;border-right:1px solid var(--border-soft)">
+              <div class="tree" style="border:none">
+                <div class="row"><span class="i">▾</span><span class="folder">📁</span> bookshop <span style="color:var(--text-faint);font-size:11px">← 已导入为 Maven 项目</span></div>
+                <div class="row sel"><span class="pad"></span><span class="i"></span><span class="file">📄</span> <b>pom.xml</b> <span style="color:var(--text-faint);font-size:11px">（根工程）</span></div>
+                <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> db</div>
+                <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> schema.cds</div>
+                <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> srv</div>
+                <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> pom.xml</div>
+                <div class="row"><span class="pad"></span><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> src/main/java/com/acme/bookshop</div>
+                <div class="row"><span class="pad"></span><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> Application.java</div>
+              </div>
+            </div>
+            <div class="editor" style="flex:1;min-width:0">
+              <div class="ed-tabs"><span class="on">pom.xml</span></div>
+              <div class="ed-body">
+                <pre class="ed"><code class="language-xml">&lt;project&gt;
+  &lt;parent&gt;
+    &lt;groupId&gt;com.sap.cds&lt;/groupId&gt;
+    &lt;artifactId&gt;cds-parent&lt;/artifactId&gt;
+    &lt;version&gt;2.7.0&lt;/version&gt;
+  &lt;/parent&gt;
+  &lt;artifactId&gt;bookshop&lt;/artifactId&gt;
+  &lt;packaging&gt;pom&lt;/packaging&gt;
+  &lt;modules&gt;
+    &lt;module&gt;srv&lt;/module&gt;
+  &lt;/modules&gt;
+&lt;/project&gt;</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 J2-4</b> IntelliJ 里打开根 <code>pom.xml</code>：左侧 Project 树展开，右侧编辑 <code>pom.xml</code>，IDE 自动解析 Maven 依赖。Eclipse 用 File → Import → Existing Maven Projects 选择同一份 <code>pom.xml</code> 效果相同</div>
+      </div>
+
+      <h2 id="steps">J2.5 操作手顺</h2>
+      <ol class="steps teal">
+        <li>
+          <span class="step-title">安装 JDK 17</span>
+          <p>macOS <code>brew install openjdk@17</code>；Windows/Linux 用 Adoptium 安装包或包管理器。用 <code>java -version</code> 与 <code>javac -version</code> 验证（见<a href="#jdk">图 J2-1</a>）。</p>
+        </li>
+        <li>
+          <span class="step-title">设置 JAVA_HOME 并验证</span>
+          <p>把 <code>JAVA_HOME</code> 指向 JDK 17，写入 shell 配置文件（macOS：<code>export JAVA_HOME=$(/usr/libexec/java_home -v 17)</code>），重开终端确认生效。</p>
+        </li>
+        <li>
+          <span class="step-title">安装 Maven 3.8+</span>
+          <p>macOS <code>brew install maven</code>。用 <code>mvn -version</code> 确认 <b>Java version: 17</b>（见<a href="#maven">图 J2-2</a>）。</p>
+        </li>
+        <li>
+          <span class="step-title">全局安装 cds-dk</span>
+          <p>先确认 Node.js ≥ 18（见 CAP 主路线<a href="../prep.html">环境准备</a>），再 <code>npm install -g @sap/cds-dk</code>，用 <code>cds --version</code> 验证（见<a href="#cdsdk">图 J2-3</a>）。</p>
+        </li>
+        <li>
+          <span class="step-title">安装 IDE 并导入项目</span>
+          <p>任选 IntelliJ IDEA / Eclipse STS4 / VS Code。等 J3 章生成项目后，用「打开根 <code>pom.xml</code>」的方式导入（见<a href="#ide">图 J2-4</a>）。</p>
+        </li>
+        <li>
+          <span class="step-title">整体验证</span>
+          <p>临时目录执行 <code>cds init smoke --java</code> 生成项目，再 <code>cd smoke &amp;&amp; mvn -q compile</code>，看到 <code>BUILD SUCCESS</code> 即环境链路打通（J3 章详解每条命令）。</p>
+        </li>
+      </ol>
+
+      <div class="note warn">
+        <span class="note-title">⚠️ 常见问题</span>
+        <ul style="margin-bottom:0">
+          <li><b>JDK 版本不匹配</b>：<code>cds-maven-plugin</code> 明确要求 Java 17+，用 JDK 8/11 会在 <code>mvn</code> 编译时报「不受支持的 class file / 版本错误」。装 17 LTS 即可。</li>
+          <li><b>JAVA_HOME 未设置</b>：<code>mvn -version</code> 里 <code>Java version</code> 显示的是系统默认 JDK 而非 17，说明 <code>JAVA_HOME</code> 没指对或没在新终端里生效。</li>
+          <li><b>国内 Maven 下载慢</b>：在 <code>~/.m2/settings.xml</code> 配置阿里云镜像 <code>&lt;mirror&gt;</code> 指向 <code>https://maven.aliyun.com/repository/public</code>，首次构建会快很多。</li>
+          <li><b>Eclipse 太旧</b>：STS4 需 <b>4.19+</b> 才支持 Java 17 与 CAP 插件；老版本直接装不上或导入报错，建议用 IntelliJ Community 或升级 STS4。</li>
+        </ul>
+      </div>
+
+      <div class="pagenav">
+        <a href="overview.html"><small>← 上一章</small><b>第 J1 章：Java 概述</b></a>
+        <a class="next" href="step1-project.html"><small>下一章 →</small><b>手顺1：建立 Java 项目</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · CAP for Java · 第 J2 章 环境准备</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

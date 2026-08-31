@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAP RAP × CAP 培训中心</title>
+<meta name="description" content="面向 ABAP 与全栈开发者的 SAP RAP（ABAP RESTful 应用编程模型）与 CAP（Cloud Application Programming Model）实操培训网站，含界面示意图、操作手顺与测试数据。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab active" href="index.html">首页</a>
+      <a class="tab" href="rap/overview.html">RAP 培训</a>
+      <a class="tab" href="cap/overview.html">CAP 培训</a>
+      <a class="tab" href="fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">开始学习</div>
+    <nav class="side-nav">
+      <a class="snav" href="#overview">课程总览</a>
+      <a class="snav" href="#tracks">两条技术路线</a>
+      <a class="snav" href="#compare">RAP vs CAP 对比</a>
+      <a class="snav" href="#paths">学习路径</a>
+      <a class="snav" href="#testdata">测试数据速查</a>
+    </nav>
+    <div class="snav-group">培训章节</div>
+    <a class="snav" href="rap/overview.html"><span class="num">R</span>RAP：概述 → 手顺1-4</a>
+    <a class="snav" href="cap/btp/overview.html"><span class="num">B</span>BTP：云环境 + BAS</a>
+    <a class="snav" href="cap/overview.html"><span class="num">C</span>CAP：概述 → 手顺1-4</a>
+    <a class="snav" href="fiori/overview.html"><span class="num">F</span>Fiori：UI 层 → 手顺1-3</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <section id="overview">
+        <div class="hero">
+          <h1>SAP RAP × CAP 培训中心</h1>
+          <p class="lead">一套完整、可跟做的 SAP 现代化应用开发培训：从 <b>ABAP RESTful 应用编程模型（RAP）</b> 到 <b>Cloud Application Programming Model（CAP）</b>。每个章节配有高仿真界面示意图、逐步操作手顺与可直接使用的测试数据。</p>
+          <div class="hero-tags">
+            <span class="badge">S/4HANA on-premise</span>
+            <span class="badge">SAP BTP Cloud Foundry</span>
+            <span class="badge">ADT / Eclipse</span>
+            <span class="badge">Node.js</span>
+            <span class="badge">Java + Spring Boot</span>
+            <span class="badge">HANA Cloud</span>
+            <span class="badge">BAS</span>
+            <span class="badge">Fiori Elements</span>
+          </div>
+        </div>
+
+        <div class="note">
+          <span class="note-title">📌 适用读者</span>
+          有基本 ABAP 语法基础、想转型现代 ABAP（RAP）开发的开发者；或想从零掌握 CAP（Node.js / Java）全栈开发的开发者。CAP 除 Node.js 路线外，还提供一条<b>完整的 CAP for Java 路线</b>（JDK 17 + Maven + Spring Boot），从手写 DTO 一路到生成模型、配置数据库与 OData 服务；另有<b> BTP 云上手顺</b>（B1–B8：注册 → HANA Cloud 建库 → BAS 三种 Java 模式连库）。零基础也可从「环境准备」章节开始跟做。
+        </div>
+      </section>
+
+      <section id="tracks">
+        <h2>两条技术路线</h2>
+        <p class="lead">同一套业务场景（旅行社 / 书店），分别用 RAP 与 CAP 各实现一遍，对比两种模型的最佳实践。</p>
+        <div class="grid cols-2">
+          <a class="track-card rap" href="rap/overview.html">
+            <div class="tc-icon">🅰️</div>
+            <h3>RAP — ABAP RESTful 应用编程模型</h3>
+            <p>在 <b>S/4HANA on-premise</b> 上，用 CDS 视图 + Behavior + OData 服务构建 Fiori 应用。4 个手顺：数据模型 → 行为定义 → 服务定义/绑定 → Fiori 预览测试。场景：<b>旅行社 Travel</b> 业务对象。</p>
+            <span class="go">进入 RAP 培训 →</span>
+          </a>
+          <a class="track-card cap" href="cap/overview.html">
+            <div class="tc-icon">🌐</div>
+            <h3>CAP — Cloud Application Programming Model</h3>
+            <p>在 <b>SAP BTP / 本地</b> 用 Node.js 或 Java + CDS 快速构建云原生 OData 服务。Node.js 路线 4 个手顺：项目初始化 → 数据模型 → 业务逻辑 → 启动测试 + Fiori；另附一条<b>完整 Java 路线</b>（J1–J6：环境 → 项目 → 数据库 → DTO/模型 → 测试）与一条<b>云上手顺</b>（B1–B8：注册 BTP → 建 HANA Cloud 库 → BAS 用三种 Java 模式连库）。场景：<b>书店 Bookshop</b> 业务对象。</p>
+            <span class="go">进入 CAP 培训 →</span>
+          </a>
+          <a class="track-card cap" href="fiori/overview.html">
+            <div class="tc-icon">📱</div>
+            <h3>Fiori — Fiori Elements UI 层</h3>
+            <p>RAP 与 CAP 共同的<b>门面</b>：不写 UI5 代码，用 <code>@UI</code> 注解驱动生成企业级页面。3 个手顺：List Report → Object Page → Action 与双线集成；另附控件讲解（Smart Controls / sap.m 速查）与页面模板详解（Worklist / Overview / ALP / Form Entry / Custom Page）。场景：复用书店 <b>Bookshop</b> 的 OData 服务。</p>
+            <span class="go">进入 Fiori 培训 →</span>
+          </a>
+        </div>
+      </section>
+
+      <section id="compare">
+        <h2>RAP vs CAP 一图看懂</h2>
+        <p class="lead">两者都基于 CDS 与 OData，但运行环境、语言与部署完全不同。选择取决于你的代码运行在哪里：S/4HANA 内 vs 云上。</p>
+        <table class="cmp-table">
+          <thead>
+            <tr>
+              <th style="width:130px">维度</th>
+              <th class="rap-c">RAP（ABAP RESTful）</th>
+              <th class="cap-c">CAP（Cloud Application Programming）</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="dim">运行环境</td><td>S/4HANA / BTP ABAP 环境（Steampunk）</td><td>Node.js / Java 运行时，可部署 BTP Cloud Foundry、Kyma</td></tr>
+            <tr><td class="dim">编程语言</td><td>ABAP（CDS DDL / BDEF / 行为实现类）</td><td>JavaScript / TypeScript（或 Java）+ CDS</td></tr>
+            <tr><td class="dim">数据模型</td><td>CDS 视图（DDL Source）</td><td>CDS 模型（db/schema.cds）</td></tr>
+            <tr><td class="dim">业务逻辑承载</td><td>Behavior Definition（BDEF）+ 实现类</td><td>Service Handler（srv/*.js）或 Java 注解</td></tr>
+            <tr><td class="dim">服务暴露</td><td>Service Definition + Service Binding → OData V2/V4</td><td>service 块自动暴露 OData V4</td></tr>
+            <tr><td class="dim">UI</td><td>Fiori Elements / Freestyle（从 Binding 一键预览）</td><td>Fiori Elements / Freestyle（@sap/cds-fiori）</td></tr>
+            <tr><td class="dim">本地开发</td><td>ADT（Eclipse 插件），需连接系统</td><td>VS Code + <code>cds watch</code>，纯本地，SQLite</td></tr>
+            <tr><td class="dim">数据库</td><td>S/4HANA 底层数据库（HANA）</td><td>开发时 SQLite，生产 HANA Cloud / 其它</td></tr>
+            <tr><td class="dim">适合团队</td><td>现有 ABAP/S/4HANA 团队</td><td>前后端/全栈 / 云原生团队</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="paths">
+        <h2>建议学习路径</h2>
+        <div class="grid cols-2" style="align-items:start">
+          <div>
+            <h3>🅰️ RAP 路径 <span class="badge blue">S/4HANA</span></h3>
+            <ol class="path">
+              <li><a href="rap/prep.html">环境准备</a><span class="psub">ADT 安装</span></li>
+              <li><a href="rap/step1-cds.html">手顺1：CDS 数据模型</a><span class="psub">表 + 视图</span></li>
+              <li><a href="rap/step2-behavior.html">手顺2：行为定义与实现</a><span class="psub">BDEF + 类</span></li>
+              <li><a href="rap/step3-service.html">手顺3：服务定义与绑定</a><span class="psub">OData</span></li>
+              <li><a href="rap/step4-test.html">手顺4：Fiori 预览与测试</a><span class="psub">CRUD + Action</span></li>
+            </ol>
+          </div>
+          <div>
+            <h3>🌐 CAP 路径 <span class="badge teal">BTP / 本地</span></h3>
+            <ol class="path cap">
+              <li><a href="cap/prep.html">环境准备</a><span class="psub">Node.js + cds</span></li>
+              <li><a href="cap/step1-init.html">手顺1：项目初始化</a><span class="psub">cds init</span></li>
+              <li><a href="cap/step2-model.html">手顺2：数据模型与服务</a><span class="psub">schema + service</span></li>
+              <li><a href="cap/step3-implement.html">手顺3：业务逻辑实现</a><span class="psub">srv handler</span></li>
+              <li><a href="cap/step4-test.html">手顺4：启动、测试与 Fiori</a><span class="psub">cds watch</span></li>
+            </ol>
+            <p class="path-note">☕ <b>CAP for Java 路线</b>（JDK 17 + Maven + Spring Boot）</p>
+            <ol class="path cap">
+              <li><a href="cap/java/overview.html">Java 概述</a><span class="psub">vs Node / 代码生成</span></li>
+              <li><a href="cap/java/prep.html">环境准备</a><span class="psub">JDK 17 + Maven</span></li>
+              <li><a href="cap/java/step1-project.html">手顺1：建立 Java 项目</a><span class="psub">DTO → cds init --java</span></li>
+              <li><a href="cap/java/step2-db.html">手顺2：配置链接与建库建表</a><span class="psub">datasource + DDL</span></li>
+              <li><a href="cap/java/step3-dto.html">手顺3：DTO → 生成模型与服务</a><span class="psub">Books / handler</span></li>
+              <li><a href="cap/java/step4-test.html">手顺4：运行与测试</a><span class="psub">spring-boot:run + OData</span></li>
+            </ol>
+            <p class="path-note">☁️ <b>BTP 与 HANA Cloud 路线</b>（注册 → 云数据库 → BAS 三种 Java 模式）</p>
+            <ol class="path cap">
+              <li><a href="cap/btp/overview.html">BTP 与 HANA Cloud 概述</a><span class="psub">平台 / 服务市场 / BAS</span></li>
+              <li><a href="cap/btp/prep.html">环境准备（BTP 账号）</a><span class="psub">注册 + 子账号</span></li>
+              <li><a href="cap/btp/step1-hana.html">手顺1：创建 HANA Cloud 实例</a><span class="psub">RUNNING + 连接信息</span></li>
+              <li><a href="cap/btp/step2-sql.html">手顺2：HANA SQL 建表与数据</a><span class="psub">schema + 3 表 + 10 本书</span></li>
+              <li><a href="cap/btp/step3-bas.html">手顺3：BAS 入门</a><span class="psub">Dev Space + 终端</span></li>
+              <li><a href="cap/btp/step4-dir.html">手顺4：模式一 目录式</a><span class="psub">javac / java</span></li>
+              <li><a href="cap/btp/step5-maven.html">手顺5：模式二 Maven</a><span class="psub">archetype + exec</span></li>
+              <li><a href="cap/btp/step6-spring.html">手顺6：模式三 Spring Boot</a><span class="psub">REST + curl</span></li>
+            </ol>
+          </div>
+        </div>
+        <h3>📱 Fiori 路径 <span class="badge teal">UI 层 · RAP × CAP 共用</span></h3>
+        <p class="lead">两条后端路线做好后，UI 都通向 Fiori Elements。用 Bookshop 的 OData 服务跑通整套「列表 → 详情 → 操作」。</p>
+        <ol class="path cap">
+          <li><a href="fiori/overview.html">Fiori 概述</a><span class="psub">Elements 页面类型 + 注解驱动</span></li>
+          <li><a href="fiori/step1-list.html">手顺1：List Report</a><span class="psub">cds add fiori + 定制列</span></li>
+          <li><a href="fiori/step2-object.html">手顺2：Object Page 与 Facets</a><span class="psub">Header + 表单/子表</span></li>
+          <li><a href="fiori/step3-action.html">手顺3：Action 与双线集成</a><span class="psub">按钮 + RAP CDS @UI</span></li>
+        </ol>
+      </section>
+
+      <section id="downloads">
+        <h2>📦 素材包下载</h2>
+        <p class="lead">页面里的代码和测试数据都整理到了 <code>samples/</code> 目录：CAP Node.js 与 <b>CAP + Fiori 整体工程</b>都是<b>开箱即跑</b>的完整工程，CAP Java、RAP 与 BTP 是可直接粘贴的源码，Fiori 是复制进 Bookshop 工程即得完整页面的前端三件套，每份都配了「使用操作手顺」。</p>
+        <div class="grid cols-2">
+          <a class="track-card cap" href="downloads.html">
+            <div class="tc-icon">🌐</div>
+            <h3>CAP 素材包（Node.js + Java）</h3>
+            <p>Bookshop 工程：schema、service、业务逻辑、CSV 种子数据。Node 版 <code>npm install &amp;&amp; cds watch</code> 即跑；Java 版配合 <code>cds init --java</code> 使用。</p>
+            <span class="go">查看 CAP 素材包 →</span>
+          </a>
+          <a class="track-card rap" href="downloads.html">
+            <div class="tc-icon">🅰️</div>
+            <h3>RAP 素材包（ABAP）</h3>
+            <p>Travel 业务对象全套源码：视图 DDLS、BDEF、行为实现类、服务定义、测试数据程序 <code>ZR_INSERT_TESTDATA</code>。</p>
+            <span class="go">查看 RAP 素材包 →</span>
+          </a>
+          <a class="track-card cap" href="downloads.html">
+            <div class="tc-icon">☁️</div>
+            <h3>BTP 素材包（HANA Cloud + Java）</h3>
+            <p>HANA SQL 建表与 10 本书种子数据，加上三种 Java 构建模式源码（目录式 / Maven / Spring Boot），配合 BTP 课程 B4–B8 使用。</p>
+            <span class="go">查看 BTP 素材包 →</span>
+          </a>
+          <a class="track-card cap" href="downloads.html#fiori">
+            <div class="tc-icon">📱</div>
+            <h3>Fiori 素材包（Fiori Elements）</h3>
+            <p>List Report + Object Page 前端三件套（annotate.cds / manifest.json / index.html），复制进 Bookshop 工程即得完整页面，配合 Fiori 培训 F2–F4 使用。</p>
+            <span class="go">查看 Fiori 素材包 →</span>
+          </a>
+          <a class="track-card cap" href="downloads.html#cap-fiori">
+            <div class="tc-icon">🚀</div>
+            <h3>CAP + Fiori 整体工程</h3>
+            <p>开箱即跑：CAP 后端 + Fiori Elements 前端一步到位，F4 状态徽标已在服务端实现。<code>npm install &amp;&amp; cds watch</code> 即得带筛选/详情/下单的完整应用。</p>
+            <span class="go">查看整体工程 →</span>
+          </a>
+        </div>
+      </section>
+
+      <section id="testdata">
+        <h2>测试数据速查</h2>
+        <div class="grid cols-2">
+          <div class="card">
+            <h3>🅰️ RAP 旅行社场景</h3>
+            <p>业务对象 <code>ZRAP_TRAVEL</code>：主数据 <code>ZTRAVEL</code> + 子表 <code>ZTRAVEL_BOOKING</code>。含 5 条 Header 数据、状态（新/审批中/已批准/已拒绝）与完整测试场景。</p>
+            <p><a class="fbtn" href="rap/testdata.html">查看 RAP 测试数据 →</a></p>
+          </div>
+          <div class="card">
+            <h3>🌐 CAP 书店场景</h3>
+            <p>实体 <code>Books</code> / <code>Authors</code> / <code>Genres</code>，含 10 本书、4 位作者与 CSV 种子数据，可直接 <code>cds watch</code> 启动测试。<b>Node.js、Java 与 BTP（HANA Cloud）三条路线共用同一份模型与数据</b>。</p>
+            <p><a class="fbtn" href="cap/testdata.html">查看 CAP 测试数据 →</a></p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>章节内容一览</h2>
+        <table class="doc">
+          <thead>
+            <tr><th>章节</th><th>核心产出</th><th>关键工具 / 概念</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><a href="rap/overview.html">RAP 概述</a></td><td>理解三大支柱与分层</td><td>CDS、BDEF、OData、Draft</td></tr>
+            <tr><td><a href="rap/step1-cds.html">RAP 手顺1</a></td><td>数据库表 + CDS 视图栈</td><td>SE11、ADT、DDL Source、Projection</td></tr>
+            <tr><td><a href="rap/step2-behavior.html">RAP 手顺2</a></td><td>行为定义 + 实现类 + Action</td><td>BDEF、managed、EML</td></tr>
+            <tr><td><a href="rap/step3-service.html">RAP 手顺3</a></td><td>OData 服务可用</td><td>Service Definition / Binding</td></tr>
+            <tr><td><a href="rap/step4-test.html">RAP 手顺4</a></td><td>Fiori 预览 + OData 测试</td><td>Fiori Elements、/sap/opu/odata4</td></tr>
+            <tr><td><a href="cap/overview.html">CAP 概述</a></td><td>理解项目结构与运行时</td><td>CDS、srv/db/app、OData</td></tr>
+            <tr><td><a href="cap/step1-init.html">CAP 手顺1</a></td><td>可运行的项目骨架</td><td>cds init、package.json</td></tr>
+            <tr><td><a href="cap/step2-model.html">CAP 手顺2</a></td><td>数据模型 + 服务定义 + 种子数据</td><td>schema.cds、service.cds、CSV</td></tr>
+            <tr><td><a href="cap/step3-implement.html">CAP 手顺3</a></td><td>自定义业务逻辑</td><td>srv/*.js、srv.on()</td></tr>
+            <tr><td><a href="cap/step4-test.html">CAP 手顺4</a></td><td>启动、OData 测试、Fiori 预览</td><td>cds watch、curl、metadata</td></tr>
+            <tr><td><a href="cap/java/overview.html">CAP Java 概述</a></td><td>Java 版 vs Node 版对比</td><td>Spring Boot、cds-maven-plugin、代码生成</td></tr>
+            <tr><td><a href="cap/java/step1-project.html">CAP Java 手顺1</a></td><td>从 DTO 到 Java 项目</td><td>cds init --java、Maven 多模块、pom.xml</td></tr>
+            <tr><td><a href="cap/java/step2-db.html">CAP Java 手顺2</a></td><td>配置链接 + 建库建表</td><td>application.yaml、SQLite、自动 DDL</td></tr>
+            <tr><td><a href="cap/java/step3-dto.html">CAP Java 手顺3</a></td><td>DTO → 生成模型与服务</td><td>Books、CatalogService_、事件处理器</td></tr>
+            <tr><td><a href="cap/java/step4-test.html">CAP Java 手顺4</a></td><td>运行与 OData 测试</td><td>spring-boot:run、curl、submitOrder</td></tr>
+            <tr><td><a href="cap/btp/overview.html">BTP 概述</a></td><td>理解 BTP 平台 / HANA Cloud / BAS 定位</td><td>BTP Cockpit、Service Marketplace、Cloud Foundry</td></tr>
+            <tr><td><a href="cap/btp/prep.html">BTP 环境准备</a></td><td>注册账号 + 子账号 + 启用 Cloud Foundry</td><td>trial / enterprise、org / space、cf CLI</td></tr>
+            <tr><td><a href="cap/btp/step1-hana.html">BTP 手顺1</a></td><td>创建 HANA Cloud 实例并记录连接信息</td><td>Service Marketplace、Database Explorer、SQL End Point</td></tr>
+            <tr><td><a href="cap/btp/step2-sql.html">BTP 手顺2</a></td><td>HANA SQL 建 schema、建表、灌入 10 本书</td><td>CREATE SCHEMA、CREATE COLUMN TABLE、外键、INSERT</td></tr>
+            <tr><td><a href="cap/btp/step3-bas.html">BTP 手顺3</a></td><td>BAS Dev Space 就绪 + 准备 ngdbc 驱动</td><td>Full Stack Cloud Application 模板、内置终端</td></tr>
+            <tr><td><a href="cap/btp/step4-dir.html">BTP 手顺4</a></td><td>模式一·目录式 javac 连 HANA 读 Books</td><td>javac / java、classpath、JDBC</td></tr>
+            <tr><td><a href="cap/btp/step5-maven.html">BTP 手顺5</a></td><td>模式二·Maven 工程连 HANA</td><td>archetype、pom.xml、exec-maven-plugin</td></tr>
+            <tr><td><a href="cap/btp/step6-spring.html">BTP 手顺6</a></td><td>模式三·Spring Boot REST 服务读 HANA</td><td>start.spring.io、JdbcTemplate、@RestController、curl</td></tr>
+            <tr><td><a href="fiori/overview.html">Fiori 概述</a></td><td>理解 Fiori Elements 页面类型与注解驱动</td><td>List Report、Object Page、@UI 注解</td></tr>
+            <tr><td><a href="fiori/step1-list.html">Fiori 手顺1</a></td><td>脚手架生成 List Report + 定制列/筛选</td><td>cds add fiori、annotate.cds、manifest.json</td></tr>
+            <tr><td><a href="fiori/step2-object.html">Fiori 手顺2</a></td><td>Object Page 详情页布局</td><td>@UI.Facet、FieldGroup、内嵌子表</td></tr>
+            <tr><td><a href="fiori/step3-action.html">Fiori 手顺3</a></td><td>Action 按钮 + RAP/CAP 双线收口</td><td>submitOrder、Criticality、Draft、CDS @UI</td></tr>
+            <tr><td><a href="fiori/elements.html">Fiori 控件讲解</a></td><td>主要元素控件：Smart Controls 与 sap.m 速查</td><td>Smart Filter Bar、Smart Table、Smart Form、注解→控件对照</td></tr>
+            <tr><td><a href="fiori/templates.html">Fiori 模板详解</a></td><td>全套页面模板逐个讲透</td><td>List Report、Worklist、Object Page、Overview Page、ALP、Form Entry、Custom Page</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · 内部培训材料 · 界面示意图为教学用途的高仿真 Mockup，非真实系统截图</div>
+      <div style="margin-top:4px">RAP 场景基于 S/4HANA Travel 参考模型 · CAP 场景基于 Bookshop 参考模型</div>
+    </footer>
+  </main>
+</div>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

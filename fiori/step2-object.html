@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>手顺2：Object Page 与 Facets | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../index.html">首页</a>
+      <a class="tab" href="../rap/overview.html">RAP 培训</a>
+      <a class="tab" href="../cap/overview.html">CAP 培训</a>
+      <a class="tab active" href="overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">Fiori 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="overview.html"><span class="num">F1</span>Fiori 概述</a>
+      <a class="snav" href="step1-list.html"><span class="num">F2</span>手顺1：List Report</a>
+      <a class="snav active" href="step2-object.html"><span class="num">F3</span>手顺2：Object Page 与 Facets</a>
+      <a class="snav" href="step3-action.html"><span class="num">F4</span>手顺3：Action 与双线集成</a>
+      <a class="snav" href="elements.html"><span class="num">F5</span>主要元素控件讲解</a>
+      <a class="snav" href="templates.html"><span class="num">F6</span>页面模板详解</a>
+    </nav>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <a class="snav" href="../cap/overview.html"><span class="num">C</span>CAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 F3 章：手顺2 —— Object Page 与 Facets</h1>
+      <p class="page-sub">点列表行进详情页 · Header + @UI.Facet 组织表单与子表</p>
+      <p class="lead">Fiori Elements 的「List Report + Object Page」是天生一对：在 List Report 里点任意一行，自动进入该条数据的 <b>Object Page</b> 详情页。详情页长什么样，完全由 <code>@UI.Facet</code> 注解决定——本章把 Books 的详情页拆成「基本信息」表单与「订单」子表两个区块。</p>
+
+      <p>
+        <span class="badge teal">Object Page</span>
+        <span class="badge teal">@UI.Facet</span>
+        <span class="badge blue">FieldGroup</span>
+        <span class="badge gray">Header</span>
+        <span class="badge gray">关联子表</span>
+      </p>
+
+      <h2 id="facets">F3.1 Facet 是什么</h2>
+      <p><b>Facet</b>（页签/区块）是 Object Page 的内容组织单元。每个 Facet 是一块区域，可以是表单（<code>FieldGroup</code>）、子表（<code>LineItem</code>）、图表或纯文本。<code>UI.Facet</code> 数组决定这些区块的<b>顺序与嵌套</b>，三个最常用的子类型：</p>
+      <table class="doc">
+        <thead>
+          <tr><th>Facet 类型</th><th>渲染效果</th><th>典型用途</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>UI.Identification</code></td><td>对象页顶部 <b>Header</b> 的附加字段</td><td>关键业务字段常驻头部</td></tr>
+          <tr><td><code>UI.FieldGroup</code></td><td>表单区块（字段+标签网格）</td><td>基本信息、地址、备注</td></tr>
+          <tr><td><code>UI.LineItem</code>（在 Facet 内）</td><td>内嵌子表</td><td>子实体列表：订单、明细行、预订</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="code">F3.2 annotate.cds：声明详情页布局</h2>
+      <p>继续在 <code>app/books/annotate.cds</code> 上扩展。给 <code>Books</code> 追加 <code>UI.Facet</code> 与字段分组，同时为子表准备好 <code>Orders</code> 的投影——子表数据来自 <code>Orders</code> 实体（Bookshop 模型里 <code>Orders.book</code> 指向 <code>Books</code>）：</p>
+
+<pre><code class="language-cds">// app/books/annotate.cds —— 追加对象页布局
+using CatalogService as service from '../../srv/cat-service';
+
+annotate service.Books with @(
+  UI : {
+    HeaderInfo : {
+      TypeName : 'Book', TypeNamePlural : 'Books',
+      Title : { Value : 'title' },
+      Description : { Value : 'author.name' }
+    },
+    // —— 对象页 Facet 布局：基本信息 + 订单子表 + 补充信息 ——
+    Facets : [
+      { $Type : 'UI.ReferenceFacet', Target : '@UI.FieldGroup#general',    Label : '基本信息' },
+      { $Type : 'UI.ReferenceFacet', Target : '@UI.LineItem#orders',       Label : '订单' },
+      { $Type : 'UI.ReferenceFacet', Target : '@UI.FieldGroup#more',       Label : '补充信息' }
+    ],
+    FieldGroup #general : {
+      Data : [
+        { Value : 'title', Label : '书名' },
+        { Value : 'author.name', Label : '作者' },
+        { Value : 'genre.name', Label : '分类' },
+        { Value : 'descr', Label : '描述' }
+      ]
+    },
+    FieldGroup #more : {
+      Data : [
+        { Value : 'price', Label : '价格' },
+        { Value : 'currency', Label : '币种' },
+        { Value : 'stock', Label : '库存' }
+      ]
+    },
+    LineItem #orders : [
+      { Value : 'ID', Label : '订单号' },
+      { Value : 'quantity', Label : '数量' },
+      { Value : 'createdAt', Label : '下单时间' }
+    ],
+    HeaderInfo : { TypeName : 'Book', TypeNamePlural : 'Books' }
+  },
+  Common.SemanticKey : ['ID']
+);
+
+// —— Orders 投影：子表数据源（含 createdAt）——
+annotate service.Orders with @(
+  UI.LineItem : [
+    { Value : 'ID', Label : '订单号' },
+    { Value : 'quantity', Label : '数量' },
+    { Value : 'createdAt', Label : '下单时间' }
+  ]
+);
+</code></pre>
+
+      <ul>
+        <li><b><code>UI.Facets</code></b>：对象页主内容区的区块列表，按声明顺序从上到下排列；<code>Target</code> 用 <code>@UI.xxx#key</code> 引用下方命名的注解块。</li>
+        <li><b><code>FieldGroup #general</code></b>：带 <code>#</code> 后缀的「命名注解块」，<code>Data</code> 数组声明表单字段与标签。</li>
+        <li><b><code>LineItem #orders</code></b>：内嵌子表列定义；对象页里子表自动显示在对应 Facet 区块。</li>
+        <li><b>子实体也要注解</b>：子表实际渲染的是 <code>Orders</code> 实体的列表，所以对 <code>service.Orders</code> 同样给出 <code>UI.LineItem</code>。</li>
+      </ul>
+
+      <div class="note">
+        <span class="note-title">⚠️ 子表需要关联与权限</span>
+        Fiori Elements 渲染子表要求实体间存在<b>可导航关联</b>（<code>Orders.book → Books</code>）且服务已暴露 <code>Orders</code>。素材包的 <code>cat-service.cds</code> 已暴露 Orders；若你的服务没暴露，先回到 <a href="../cap/step2-model.html">CAP 手顺2</a> 把 <code>Orders</code> 加进服务定义。
+      </div>
+
+      <h2 id="preview">F3.3 预览 Object Page</h2>
+      <p>刷新后从 List Report 点击任意一行（如 <b>Wuthering Heights</b>），浏览器地址变为 <code>.../Books(1)</code>，进入对象页：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">Fiori Elements — Object Page（Book 1）</span></div>
+          <div class="fi">
+            <div class="fi-body" style="flex-direction:column">
+              <div class="fi-main" style="padding-bottom:6px">
+                <div class="obj-head">
+                  <div class="obj-title">
+                    <h2>Wuthering Heights</h2>
+                    <div class="oid">Book 1 · ID 1</div>
+                  </div>
+                  <div class="obj-fields">
+                    <span class="of">作者<b>Emily Brontë</b></span>
+                    <span class="of">分类<b>Fiction</b></span>
+                    <span class="of">价格<b>11.11 EUR</b></span>
+                    <span class="of">库存<b>12</b></span>
+                  </div>
+                  <div class="obj-actions">
+                    <span class="fbtn ghost">编辑</span>
+                    <span class="fbtn primary">下单</span>
+                  </div>
+                </div>
+                <div class="facet">
+                  <div class="facet-head">📋 基本信息</div>
+                  <div class="facet-body">
+                    <div class="fform">
+                      <span class="ff">书名<b>Wuthering Heights</b></span>
+                      <span class="ff">作者<b>Emily Brontë</b></span>
+                      <span class="ff">分类<b>Fiction</b></span>
+                      <span class="ff">描述<b>1847 年的经典小说</b></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="facet">
+                  <div class="facet-head">🧾 订单</div>
+                  <div class="facet-body" style="padding:0">
+                    <table class="tbl" style="border:none">
+                      <thead><tr><th>订单号</th><th>数量</th><th>下单时间</th></tr></thead>
+                      <tbody>
+                        <tr><td class="num">1001</td><td class="num">2</td><td class="date">2024-06-01 10:23</td></tr>
+                        <tr><td class="num">1005</td><td class="num">1</td><td class="date">2024-06-15 14:02</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="facet">
+                  <div class="facet-head">➕ 补充信息</div>
+                  <div class="facet-body">
+                    <div class="fform">
+                      <span class="ff">价格<b>11.11 EUR</b></span>
+                      <span class="ff">币种<b>EUR</b></span>
+                      <span class="ff">库存<b>12</b></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 F3-1</b> Object Page：顶部 Header（标题 + 关键字段 + 操作按钮），下方按 <code>UI.Facets</code> 顺序渲染「基本信息 / 订单 / 补充信息」三个区块</div>
+      </div>
+
+      <h2 id="steps">F3.4 操作手顺</h2>
+      <ol class="steps teal">
+        <li><p><span class="step-title">扩展注解</span></p>
+          <p>在 <code>app/books/annotate.cds</code> 追加 <code>UI.Facets</code> + 两个 <code>FieldGroup</code> + <code>LineItem #orders</code>，并对 <code>service.Orders</code> 补充 <code>UI.LineItem</code>（见<a href="#code">F3.2</a>）。</p>
+        </li>
+        <li><p><span class="step-title">确认服务暴露 Orders</span></p>
+          <p>检查 <code>srv/cat-service.cds</code> 中 <code>Orders</code> 已在服务内（素材包已含）；缺失则补上并重启 <code>cds watch</code>。</p>
+        </li>
+        <li><p><span class="step-title">预览与点击导航</span></p>
+          <p>刷新 <code>http://localhost:4004/app/books/index.html</code>，点击任意一行进入对象页，核对三个 Facet 区块与<a href="#preview">图 F3-1</a>一致。</p>
+        </li>
+      </ol>
+
+      <div class="pagenav">
+        <a href="step1-list.html"><small>← 上一章</small><b>手顺1：List Report</b></a>
+        <a class="next" href="step3-action.html"><small>下一步 →</small><b>手顺3：Action 与双线集成</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · Fiori 培训 · 第 F3 章 手顺2 Object Page 与 Facets</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>手顺3：业务逻辑实现 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../index.html">首页</a>
+      <a class="tab" href="../rap/overview.html">RAP 培训</a>
+      <a class="tab active" href="overview.html">CAP 培训</a>
+      <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">CAP 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="overview.html"><span class="num">1</span>CAP 概述</a>
+      <a class="snav" href="prep.html"><span class="num">2</span>环境准备</a>
+      <a class="snav" href="step1-init.html"><span class="num">3</span>手顺1：项目初始化</a>
+      <a class="snav" href="step2-model.html"><span class="num">4</span>手顺2：数据模型与服务</a>
+      <a class="snav active" href="step3-implement.html"><span class="num">5</span>手顺3：业务逻辑实现</a>
+      <a class="snav" href="step4-test.html"><span class="num">6</span>手顺4：启动、测试与 Fiori</a>
+      <a class="snav" href="testdata.html"><span class="num">7</span>测试数据</a>
+    </nav>
+    <div class="snav-group">CAP for Java（Java 运行时）</div>
+    <a class="snav" href="java/overview.html"><span class="num">J1</span>Java 概述</a>
+    <a class="snav" href="java/prep.html"><span class="num">J2</span>环境准备</a>
+    <a class="snav" href="java/step1-project.html"><span class="num">J3</span>手顺1：建立 Java 项目</a>
+    <a class="snav" href="java/step2-db.html"><span class="num">J4</span>手顺2：配置链接与建库建表</a>
+    <a class="snav" href="java/step3-dto.html"><span class="num">J5</span>手顺3：DTO → 生成模型与服务</a>
+    <a class="snav" href="java/step4-test.html"><span class="num">J6</span>手顺4：运行与测试</a>
+    <div class="snav-group">BTP 与 HANA Cloud（云环境 + BAS）</div>
+    <a class="snav" href="btp/overview.html"><span class="num">B1</span>BTP 与 HANA Cloud 概述</a>
+    <a class="snav" href="btp/prep.html"><span class="num">B2</span>环境准备（BTP 账号）</a>
+    <a class="snav" href="btp/step1-hana.html"><span class="num">B3</span>手顺1：创建 HANA Cloud 实例</a>
+    <a class="snav" href="btp/step2-sql.html"><span class="num">B4</span>手顺2：HANA SQL 建表与数据</a>
+    <a class="snav" href="btp/step3-bas.html"><span class="num">B5</span>手顺3：BAS 入门</a>
+    <a class="snav" href="btp/step4-dir.html"><span class="num">B6</span>手顺4：模式一 目录式</a>
+    <a class="snav" href="btp/step5-maven.html"><span class="num">B7</span>手顺5：模式二 Maven</a>
+    <a class="snav" href="btp/step6-spring.html"><span class="num">B8</span>手顺6：模式三 Spring Boot</a>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+<a class="snav" href="../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 5 章：手顺3 —— 业务逻辑实现</h1>
+      <p class="page-sub">用 srv/cat-service.js 注入事件处理，给服务添加业务规则</p>
+      <p class="lead">模型与服务是「声明式」的，业务规则（参数校验、库存校验、下单、日志）需要<b>命令式</b>代码。CAP 用 <code>srv/*.js</code> 文件以<b>事件处理器</b>的方式注入逻辑：写一个与 <code>cat-service.cds</code> 同名的 <code>cat-service.js</code>，导出函数即可自动注册。本章覆盖 CAP 开发的五大核心：<b>校验、before 事件、after 事件、自定义 Action/Function、事务</b>。</p>
+
+      <p>
+        <span class="badge teal">srv.before</span>
+        <span class="badge teal">srv.on</span>
+        <span class="badge teal">srv.after</span>
+        <span class="badge teal">SELECT / UPDATE / INSERT</span>
+        <span class="badge teal">req.reject</span>
+        <span class="badge gray">Action / Function</span>
+        <span class="badge gray">事务</span>
+      </p>
+
+      <h2 id="events">5.1 CAP 事件模型</h2>
+      <p>每次 OData 请求都会按固定顺序经过三类事件处理器，你可以在任意阶段插入自定义逻辑：</p>
+      <ul>
+        <li><b><code>srv.before(事件, 实体, handler)</code></b>：在框架处理<b>之前</b>执行，适合鉴权、参数校验、日志。除了实体事件（<code>CREATE</code> / <code>UPDATE</code> / <code>DELETE</code> / <code>READ</code>），也适用于自定义 Action / Function（如 <code>srv.before('submitOrder', ...)</code>），本章 5.4 有完整示例。</li>
+        <li><b><code>srv.on(事件, 实体, handler)</code></b>：<b>替换或补充</b>框架的默认处理，业务核心逻辑通常写在这里。<code>handler</code> 接收 <code>req</code>（请求对象，含 <code>req.data</code>、<code>req.query</code>），返回结果会作为响应体。</li>
+        <li><b><code>srv.after(事件, 实体, handler)</code></b>：在框架处理<b>之后</b>执行，<code>handler</code> 接收 <code>each</code>（读出的每行结果，可改写）或 <code>results</code>（数组），用于结果加工、填充计算字段。</li>
+        <li><b><code>srv.emit(事件, 数据)</code></b>：服务内部触发自定义事件，可配合 <code>srv.on</code> 形成松耦合的扩展点。</li>
+      </ul>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">事件处理顺序</span></div>
+          <div style="padding:14px 16px">
+            <div style="display:flex;flex-direction:column;gap:6px;max-width:560px">
+              <div style="background:#e8f2fb;border:1px solid #b9d6f0;border-radius:8px;padding:8px 12px;font-size:12.5px"><b>① 客户端请求</b> — READ / GET / POST submitOrder</div>
+              <div style="align-self:center;color:var(--blue);font-weight:700;line-height:1">▼</div>
+              <div style="background:#eef6f4;border:1px solid #bfe2da;border-radius:8px;padding:8px 12px;font-size:12.5px"><b>② srv.before(…)</b> — 前置处理：鉴权、参数校验、日志</div>
+              <div style="align-self:center;color:var(--teal);font-weight:700;line-height:1">▼</div>
+              <div style="background:#eef1f5;border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:12.5px"><b>③ srv.on(…)</b> — 核心处理：读写数据、业务规则、<code>req.reject</code></div>
+              <div style="align-self:center;color:var(--blue);font-weight:700;line-height:1">▼</div>
+              <div style="background:#f3e9fb;border:1px solid #ddc4f0;border-radius:8px;padding:8px 12px;font-size:12.5px"><b>④ srv.after(…)</b> — 后置加工：改写 <code>each</code>、填充关联字段</div>
+              <div style="align-self:center;color:var(--blue);font-weight:700;line-height:1">▼</div>
+              <div style="background:#fbf1e0;border:1px solid #ecd9ac;border-radius:8px;padding:8px 12px;font-size:12.5px"><b>⑤ OData 响应</b> — 返回给客户端</div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 5-1</b> CAP 事件处理顺序：before → on → after；<code>srv.emit</code> 可在处理器间触发自定义事件</div>
+      </div>
+
+      <h2 id="orders">5.2 扩展模型：订单实体 Orders</h2>
+      <p>为了演示下单 Action，先给 <code>db/schema.cds</code> 追加一个 <code>Orders</code> 实体。这次用 <code>cuid</code> 生成 <b>UUID 主键</b>，与前面 Integer 主键形成对照：</p>
+
+<pre><code class="language-cds">// db/schema.cds —— 追加订单实体（追加到文件末尾）
+entity Orders : cuid {
+  book     : Association to Books;
+  quantity : Integer;
+  total    : Decimal(9,2);
+  status   : String(16) default 'pending';
+}
+</code></pre>
+
+      <ul>
+        <li><b><code>Orders : cuid</code></b>：<code>cuid</code> 是 CAP 公共类型，自带 <code>ID : UUID</code> 主键、<code>createdAt</code>、<code>createdBy</code>、<code>modifiedAt</code> 等审计字段，写入时自动填充，无需手工维护。</li>
+        <li><b><code>book : Association to Books</code></b>：订单关联到图书，外键列自动生成为 <code>book_ID</code>。</li>
+        <li><b><code>status default 'pending'</code></b>：字段默认值。</li>
+      </ul>
+
+      <h2 id="action">5.3 声明 Action 与 Function</h2>
+      <p>把 <code>srv/cat-service.cds</code> 更新为：启用 <code>Orders</code> 投影，声明自定义 Action <code>submitOrder</code> 与自定义 Function <code>stockOf</code>：</p>
+
+<pre><code class="language-cds">// srv/cat-service.cds —— 加入 Orders 投影、submitOrder Action 与 stockOf Function
+using { sap.capire.bookshop as my } from '../db/schema';
+
+service CatalogService {
+  @readonly entity Books   as projection on my.Books;
+  @readonly entity Authors as projection on my.Authors;
+  @readonly entity Genres  as projection on my.Genres;
+  @readonly entity Orders  as projection on my.Orders;
+
+  action   submitOrder(book: Books, quantity: Integer) returns Integer;
+  function stockOf(book: Integer) returns Integer;
+}
+</code></pre>
+
+      <p><b><code>action submitOrder(book: Books, quantity: Integer) returns Integer;</code></b>：声明一个名为 <code>submitOrder</code> 的 Action，接收图书（引用 <code>Books</code> 实体，实际传 <code>ID</code>）与数量，返回一个整数（成功时返回下单数量）。客户端通过 <code>POST /odata/v4/catalog/submitOrder</code> 调用。</p>
+      <p><b><code>function stockOf(book: Integer) returns Integer;</code></b>：声明一个名为 <code>stockOf</code> 的 Function，按 <code>ID</code> 查询图书当前库存。客户端通过 <code>GET /odata/v4/catalog/stockOf(book=1)</code> 调用——注意 Function 的参数写在 <b>URL 括号里</b>，而不是请求体。</p>
+      <div class="note">
+        <span class="note-title">🧭 Action vs Function</span>
+        <ul style="margin:8px 0 0;padding-left:20px">
+          <li><b>Action</b>：<code>POST</code> 调用，允许<b>副作用</b>（写数据），适合下单、审批这类会改变状态的业务操作。</li>
+          <li><b>Function</b>：<code>GET</code> 调用，约定<b>只读、无副作用</b>，适合查询类操作（查库存、算价格）。</li>
+          <li>两种参数写法：<code>book: Books</code>（实体引用，客户端传 <code>ID</code> 即可）与 <code>book: Integer</code>（标量）效果等价，选一种即可，本章混用两种以作对照。</li>
+        </ul>
+      </div>
+
+      <h2 id="impl">5.4 实现业务逻辑 srv/cat-service.js</h2>
+      <p>新建 <code>srv/cat-service.js</code>，文件名与 <code>cat-service.cds</code> 同名（不含扩展名），CAP 自动把导出的函数绑定为该服务的处理器。完整代码：</p>
+
+<pre><code class="language-js">const cds = require('@sap/cds')
+
+module.exports = (srv) => {
+  srv.on('READ', 'Books', (req) => {
+    console.log('-> Reading books...')
+  })
+
+  // ① before：在 on 之前执行 —— 参数校验（同样适用于 CREATE/UPDATE 等实体事件）
+  srv.before('submitOrder', (req) => {
+    const { quantity } = req.data
+    if (!Number.isInteger(quantity) || quantity <= 0) {
+      return req.reject(400, `quantity must be a positive integer, got: ${quantity}`)
+    }
+  })
+
+  // ② on：核心业务逻辑 —— 库存规则校验 + 多步写入（同一事务，任一步失败全部回滚）
+  srv.on('submitOrder', async (req) => {
+    const { book, quantity } = req.data
+    const { Books, Orders } = cds.entities
+    const bookRecord = await SELECT.one.from(Books).where({ ID: book })
+    if (!bookRecord) return req.reject(404, `Book #${book} not found`)
+    if (quantity > bookRecord.stock) {
+      return req.reject(400, `${quantity} exceeds stock for book #${book}`)
+    }
+    await UPDATE(Books).set({ stock: bookRecord.stock - quantity }).where({ ID: book })
+    await INSERT.into(Orders).entries({ book_ID: book, quantity, total: bookRecord.price * quantity })
+    return { updated: quantity }
+  })
+
+  // ③ function：GET 语义的自定义函数 —— 只读、无副作用
+  srv.on('stockOf', async (req) => {
+    const { book } = req.data
+    const bookRecord = await SELECT.one.from(cds.entities.Books).where({ ID: book })
+    return bookRecord ? bookRecord.stock : 0
+  })
+
+  // ④ after：读完之后逐行加工结果
+  srv.after('READ', 'Books', (each) => {
+    if (each.stock > 100) each.title += ' -- 畅销'
+  })
+}
+</code></pre>
+
+      <p>各段代码的作用：</p>
+      <ul>
+        <li><b><code>srv.on('READ', 'Books', ...)</code></b>：注册读取 <code>Books</code> 的事件处理器。这里只打日志（不返回值），框架仍执行默认读取。每次 GET 图书都会在终端打印 <code>-&gt; Reading books...</code>。</li>
+        <li><b>① <code>srv.before('submitOrder', ...)</code></b>：在 <code>on</code> 处理器<b>之前</b>执行，做<b>参数校验</b>——数量必须是正整数，否则 <code>req.reject(400, ...)</code> 立即中断请求。before 也适用于实体事件：<code>srv.before('CREATE', 'Orders', ...)</code> 会在框架插入订单前拦截，典型用法是校验必填字段、外键是否存在、写审计日志。</li>
+        <li><b>② <code>srv.on('submitOrder', ...)</code></b>：核心业务逻辑。先查库做<b>业务规则校验</b>（库存充足性——依赖数据库状态，所以必须在 on 里查库判断），再执行两步写：<code>UPDATE</code> 扣减库存 + <code>INSERT</code> 生成订单。两步在同一事务里，见 5.6。</li>
+        <li><b><code>req.reject(404/400, ...)</code></b>：抛出 OData 错误响应（HTTP 状态码 + 消息）并<b>回滚事务</b>。404 表示资源不存在；400 表示参数或业务规则不合法。带 <code>return</code> 是为了立即停止后续代码。</li>
+        <li><b>③ <code>srv.on('stockOf', ...)</code></b>：Function 的处理器，与 Action 用同一个 <code>srv.on</code> 注册。从 <code>req.data</code> 取参数，返回一个标量（库存数）作为响应体。</li>
+        <li><b>④ <code>srv.after('READ', 'Books', (each) =&gt; ...)</code></b>：读取后对<b>每一行</b>结果做加工——库存大于 100 的书在标题后追加「-- 畅销」。<code>each</code> 是单行结果对象，直接改写其字段即可；批量场景用 <code>(results) =&gt;</code> 接收整个数组。</li>
+        <li><b><code>const { Books, Orders } = cds.entities</code></b>：<code>cds.entities</code> 是全部领域实体的注册表（数据层），<code>SELECT / UPDATE / INSERT</code> 都通过它访问实体做读写。</li>
+        <li><b><code>module.exports = (srv) =&gt; {...}</code></b>：文件导出函数，CAP 启动时调用并注入服务实例 <code>srv</code>，你的处理器都挂在其上。</li>
+      </ul>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="vscode">
+            <div class="vs-top"><span>文件(F)</span><span>编辑(E)</span><span>选择(S)</span><span>查看(V)</span><span>运行(R)</span><span style="margin-left:auto">bookshop — srv/cat-service.js</span></div>
+            <div class="vs-body" style="height:430px">
+              <div class="vs-activity"><span class="on">📁</span><span>🔍</span><span>🌿</span><span>▶️</span></div>
+              <div class="vs-explorer">
+                <div style="color:#8a8a8a;font-size:11px;padding:4px 6px">资源管理器</div>
+                <div class="tree">
+                  <div class="row"><span class="i">▾</span><span class="folder">📁</span> BOOKSHOP</div>
+                  <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> db</div>
+                  <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> schema.cds</div>
+                  <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> srv</div>
+                  <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> cat-service.cds</div>
+                  <div class="row sel"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> cat-service.js</div>
+                  <div class="row"><span class="pad"></span><span class="i"></span><span class="file">📄</span> package.json</div>
+                </div>
+              </div>
+              <div class="vs-editor">
+                <pre class="ed" style="padding-top:38px"><code class="language-js">module.exports = (srv) =&gt; {
+  srv.on('READ', 'Books', (req) =&gt; {
+    console.log('-&gt; Reading books...')
+  })
+
+  // ① before：参数校验
+  srv.before('submitOrder', (req) =&gt; {
+    const { quantity } = req.data
+    if (!Number.isInteger(quantity) || quantity &lt;= 0) {
+      return req.reject(400, `quantity must be a positive integer, got: ${quantity}`)
+    }
+  })
+
+  // ② on：扣库存 + 生成订单（同一事务）
+  srv.on('submitOrder', async (req) =&gt; {
+    const { book, quantity } = req.data
+    const { Books, Orders } = cds.entities
+    const bookRecord = await SELECT.one.from(Books).where({ ID: book })
+    if (quantity &gt; bookRecord.stock) {
+      return req.reject(400, `${quantity} exceeds stock for book #${book}`)
+    }
+    await UPDATE(Books).set({ stock: bookRecord.stock - quantity }).where({ ID: book })
+    await INSERT.into(Orders).entries({ book_ID: book, quantity, total: bookRecord.price * quantity })
+    return { updated: quantity }
+  })
+
+  // ③ function：查库存（GET 只读）
+  srv.on('stockOf', async (req) =&gt; {
+    const { book } = req.data
+    const bookRecord = await SELECT.one.from(cds.entities.Books).where({ ID: book })
+    return bookRecord ? bookRecord.stock : 0
+  })
+
+  // ④ after：畅销标注
+  srv.after('READ', 'Books', (each) =&gt; {
+    if (each.stock &gt; 100) each.title += ' -- 畅销'
+  })
+}</code></pre>
+              </div>
+            </div>
+            <div style="background:#0a0f18;color:#c7d9ea;font-family:var(--mono);font-size:11.5px;padding:8px 12px;border-top:2px solid #007acc">
+              <div style="display:flex;gap:10px;color:#7aa2d8;font-size:10.5px;padding-bottom:4px"><span>问题</span><span style="color:#fff">输出</span><span>调试控制台</span><span>终端</span></div>
+              <div><span style="color:#6cc5a7">$</span> <span style="color:#6cc5a7">cds watch</span></div>
+              <div><span style="color:#7aa2d8">[cds]</span> - server listening on <span style="color:#6fd08c">http://localhost:4004</span></div>
+              <div><span style="color:#7aa2d8">[cds]</span> - GET /odata/v4/catalog/Books</div>
+              <div><span style="color:#e5b567">-&gt; Reading books...</span></div>
+            </div>
+            <div class="vs-status"><span>✓ 0 错误</span><span>✓ 0 警告</span><span>Ln 1, Col 1</span></div>
+          </div>
+        </div>
+        <div class="cap"><b>图 5-2</b> 编辑 <code>srv/cat-service.js</code>，下方终端面板实时显示 <code>console.log</code> 输出</div>
+      </div>
+
+      <h2 id="validation">5.5 校验（Validation）</h2>
+      <p>CAP 里校验分<b>声明式</b>和<b>命令式</b>两层，从简单到复杂按需选择：</p>
+      <ul>
+        <li><b>声明式（模型注解，零代码）</b>：在 <code>.cds</code> 模型里用 <code>@assert</code> 标注约束，框架自动校验、自动返回 400，无需写 handler。适合与数据库状态无关的字段规则：</li>
+      </ul>
+
+<pre><code class="language-cds">// db/schema.cds —— 声明式校验：quantity 必须介于 1~100，框架自动拦截
+entity Orders : cuid {
+  book     : Association to Books;
+  quantity : Integer @assert.range : [1, 100];
+  total    : Decimal(9,2);
+  status   : String(16) default 'pending';
+}
+</code></pre>
+
+      <ul>
+        <li><b>命令式（handler 里 req.reject）</b>：需要查库、跨字段或与业务状态相关时，在 before / on 处理器里手动校验。分工惯例：
+          <ul>
+            <li><b>before</b>：参数格式、必填项、鉴权——只依赖请求本身，不依赖数据库（5.4 里 <code>quantity</code> 的正整数校验）。</li>
+            <li><b>on</b>：业务规则——必须查库才能判断的，如库存充足性（5.4 里 <code>submitOrder</code> 的库存校验）。</li>
+          </ul>
+        </li>
+        <li><b><code>req.reject</code> 状态码速查</b>：<code>400</code> 参数不合法 / <code>403</code> 无权限 / <code>404</code> 资源不存在 / <code>409</code> 状态冲突。reject 会立即中止请求并<b>回滚事务</b>（见 5.6）。</li>
+      </ul>
+
+      <h2 id="tx">5.6 事务（Transaction）</h2>
+      <p>CAP 把<b>每个请求自动包裹在一个数据库事务里</b>：处理器正常返回 → 自动 <b>commit</b>；任何处理器抛出错误或调用 <code>req.reject</code> → 自动 <b>rollback</b>。你<b>不需要</b>手写 begin / commit / rollback。</p>
+      <p>为什么重要：5.4 的 <code>submitOrder</code> 包含两步写——<code>UPDATE</code> 扣库存、<code>INSERT</code> 生成订单。没有事务的话，任一步失败都会留下「库存扣了但订单没生成」的半成品数据。放在同一个请求（同一个事务）里，要么两步都成功，要么都回滚。</p>
+      <ul>
+        <li><b>事务边界 = 一个请求</b>：before → on → after 全程在同一个事务里，跨 handler 的读写彼此可见。</li>
+        <li><b>验证回滚</b>：把 <code>submitOrder</code> 里的 <code>INSERT</code> 故意改成写一个不存在的字段（或直接 <code>return req.reject(500, 'boom')</code>），再下一次单——你会看到库存<b>没有减少</b>，因为 UPDATE 和 INSERT 一起回滚了。</li>
+        <li><b>手动控制（一般用不到）</b>：<code>req.tx</code> 可拿到当前事务对象；<code>const tx = await cds.tx(req)</code> 可另开事务，配合 <code>await tx.commit()</code> / <code>await tx.rollback()</code> 做细粒度控制。日常开发交给默认行为即可。</li>
+      </ul>
+
+      <h2 id="verify">5.7 验证</h2>
+      <ol class="steps teal">
+        <li><p><span class="step-title">保存所有改动</span></p>
+          <p>确认 <code>db/schema.cds</code> 追加了 <code>Orders</code>，<code>srv/cat-service.cds</code> 声明了 <code>submitOrder</code> 与 <code>stockOf</code>，<code>srv/cat-service.js</code> 写好 before / on / after 处理器。</p>
+        </li>
+        <li><p><span class="step-title">重启开发服务器</span></p>
+          <p><code>cds watch</code> 在保存文件时会自动重载；若报错，<code>Ctrl+C</code> 后重新执行 <code>cds watch</code>。终端应无红色错误。</p>
+        </li>
+        <li><p><span class="step-title">观察 READ 日志与 after 加工</span></p>
+          <p>浏览器访问 <code>http://localhost:4004/odata/v4/catalog/Books</code>，回到终端能看到 <code>-&gt; Reading books...</code> 且返回的 <code>Books</code> 中库存大于 100 的 <code>title</code> 带有「-- 畅销」后缀。</p>
+        </li>
+        <li><p><span class="step-title">测试 Action / Function / 校验 / 事务</span></p>
+          <p>用 curl 依次验证本章新特性（第 6 章会系统测试）：</p>
+<pre><code class="language-bash"># ① before 参数校验：quantity 不是正整数 → 400
+curl -X POST http://localhost:4004/odata/v4/catalog/submitOrder \
+  -H "Content-Type: application/json" -d '{"book":1,"quantity":0}'
+# 期望输出：400 "quantity must be a positive integer, got: 0"
+
+# ② 正常下单：扣库存 + 生成订单（同一事务；书 1 库存 12，下 5 本）
+curl -X POST http://localhost:4004/odata/v4/catalog/submitOrder \
+  -H "Content-Type: application/json" -d '{"book":1,"quantity":5}'
+# 期望输出：{ "updated": 5 }
+
+# ③ 业务规则校验：库存不足（书 4 库存 0）→ 400
+curl -X POST http://localhost:4004/odata/v4/catalog/submitOrder \
+  -H "Content-Type: application/json" -d '{"book":4,"quantity":1}'
+# 期望输出：400 "1 exceeds stock for book #4"
+
+# ④ 自定义 Function（GET 只读）：书 1 库存应为 12 - 5 = 7
+curl "http://localhost:4004/odata/v4/catalog/stockOf(book=1)"
+# 期望输出：{"value":7}
+
+# ⑤ 事务结果：Orders 里应多出一笔订单（下单自动生成）
+curl "http://localhost:4004/odata/v4/catalog/Orders"
+# 期望输出：包含 book_ID=1、quantity=5 的订单行
+</code></pre>
+        </li>
+      </ol>
+
+      <div class="note warn">
+        <span class="note-title">⚠️ handler 编写注意事项</span>
+        <ul>
+          <li><b>文件位置与命名</b>：JS 文件必须在 <code>srv/</code> 下，且与 <code>.cds</code> 服务文件<b>同名</b>（如 <code>cat-service.cds</code> ↔ <code>cat-service.js</code>），否则不会自动注册。</li>
+          <li><b>避免阻塞</b>：handler 里不要写同步的耗时操作（大循环、同步文件读写），会阻塞 Node.js 事件循环；用 <code>async/await</code> 写异步逻辑。</li>
+          <li><b>改动生效</b>：修改 <code>*.js</code> 后 <code>cds watch</code> 会自动重启生效；但修改 <code>*.cds</code>（模型结构）后建议手动重启一次，避免数据库结构未刷新。</li>
+          <li><b>SELECT 的写法</b>：示例中 <code>SELECT.one.from(cds.entities.Books)</code> 与 <code>const { Books } = cds.entities</code> 后 <code>SELECT.one.from(Books)</code> 等价，二选一即可。</li>
+        </ul>
+      </div>
+
+      <div class="pagenav">
+        <a href="step2-model.html"><small>← 上一章</small><b>手顺2：数据模型与服务</b></a>
+        <a class="next" href="step4-test.html"><small>下一章 →</small><b>手顺4：启动、测试与 Fiori</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · CAP 培训 · 第 5 章 手顺3：业务逻辑实现</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

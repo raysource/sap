@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>手顺3：DTO → 生成模型与服务 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../../index.html">首页</a>
+      <a class="tab" href="../../rap/overview.html">RAP 培训</a>
+      <a class="tab active" href="../overview.html">CAP 培训</a>
+      <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">CAP 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="../overview.html"><span class="num">1</span>CAP 概述</a>
+      <a class="snav" href="../prep.html"><span class="num">2</span>环境准备</a>
+      <a class="snav" href="../step1-init.html"><span class="num">3</span>手顺1：项目初始化</a>
+      <a class="snav" href="../step2-model.html"><span class="num">4</span>手顺2：数据模型与服务</a>
+      <a class="snav" href="../step3-implement.html"><span class="num">5</span>手顺3：业务逻辑实现</a>
+      <a class="snav" href="../step4-test.html"><span class="num">6</span>手顺4：启动、测试与 Fiori</a>
+      <a class="snav" href="../testdata.html"><span class="num">7</span>测试数据</a>
+    </nav>
+    <div class="snav-group">CAP for Java（Java 运行时）</div>
+    <a class="snav" href="overview.html"><span class="num">J1</span>Java 概述</a>
+    <a class="snav" href="prep.html"><span class="num">J2</span>环境准备</a>
+    <a class="snav" href="step1-project.html"><span class="num">J3</span>手顺1：建立 Java 项目</a>
+    <a class="snav" href="step2-db.html"><span class="num">J4</span>手顺2：配置链接与建库建表</a>
+    <a class="snav active" href="step3-dto.html"><span class="num">J5</span>手顺3：DTO → 生成模型与服务</a>
+    <a class="snav" href="step4-test.html"><span class="num">J6</span>手顺4：运行与测试</a>
+    <div class="snav-group">BTP 与 HANA Cloud（云环境 + BAS）</div>
+    <a class="snav" href="../btp/overview.html"><span class="num">B1</span>BTP 与 HANA Cloud 概述</a>
+    <a class="snav" href="../btp/prep.html"><span class="num">B2</span>环境准备（BTP 账号）</a>
+    <a class="snav" href="../btp/step1-hana.html"><span class="num">B3</span>手顺1：创建 HANA Cloud 实例</a>
+    <a class="snav" href="../btp/step2-sql.html"><span class="num">B4</span>手顺2：HANA SQL 建表与数据</a>
+    <a class="snav" href="../btp/step3-bas.html"><span class="num">B5</span>手顺3：BAS 入门</a>
+    <a class="snav" href="../btp/step4-dir.html"><span class="num">B6</span>手顺4：模式一 目录式</a>
+    <a class="snav" href="../btp/step5-maven.html"><span class="num">B7</span>手顺5：模式二 Maven</a>
+    <a class="snav" href="../btp/step6-spring.html"><span class="num">B8</span>手顺6：模式三 Spring Boot</a>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+<a class="snav" href="../../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 J5 章：手顺3 — DTO → 生成模型与服务</h1>
+      <p class="page-sub">看看 CAP 帮你生成的 Books 类与服务接口，再亲手写唯一需要的业务代码——事件处理器</p>
+      <p class="lead">J3.1 里我们手写过一个 <code>Book</code> DTO，还抱怨过要配套 Controller / DAO / DDL。这一章看 CAP 在编译期替你生成的「等价但更强」的 <code>Books</code> 类与 <code>CatalogService_</code> 服务接口，然后写一个事件处理器（Handler）完成「给高库存书加畅销标注」和「提交订单扣库存」两段业务逻辑。</p>
+
+      <p>
+        <span class="badge teal">CdsData</span>
+        <span class="badge teal">CatalogService_</span>
+        <span class="badge teal">@After / @On</span>
+        <span class="badge teal">PersistenceService</span>
+        <span class="badge gray">CqnSelect / Update</span>
+        <span class="badge gray">ServiceException</span>
+      </p>
+
+      <h2 id="recap">J5.1 回顾：J3.1 手写的 Book DTO</h2>
+      <p>在 <a href="step1-project.html#dto">手顺1 J3.1</a> 我们手写过 <code>Book</code>：一个字段 + getter/setter 的 JavaBean，还得另配 Repository/DAO、Controller、建表 DDL，字段一改三处同步改。这章看 CAP 的替代方案——<b>模型写一次，DTO 对应的类与接口全部编译期生成</b>。</p>
+
+      <h2 id="generated-model">J5.2 生成的模型类 Books</h2>
+      <p>执行 <code>mvn clean install</code> 后，<code>cds-maven-plugin</code> 把 <code>entity Books</code> 编译成 Java 接口，落在 <code>srv/target/generated-sources/cds/sap/capire/bookshop/Books.java</code>。示意如下（<b>字段与 CDS 完全一致</b>，为便于阅读省略了部分 getter/setter）：</p>
+
+<pre><code class="language-java">// sap/capire/bookshop/Books.java —— 由 schema.cds 的 entity Books 生成（示意）
+package sap.capire.bookshop;
+
+import java.math.BigDecimal;
+import com.sap.cds.CdsData;
+
+public interface Books extends CdsData {
+    String ID = "ID";
+    String TITLE = "title";
+    String STOCK = "stock";
+    String PRICE = "price";
+    String AUTHOR = "author";
+
+    Integer getId();
+    Books setId(Integer id);
+    String getTitle();
+    Books setTitle(String title);
+    Integer getStock();
+    Books setStock(Integer stock);
+    BigDecimal getPrice();
+    Books setPrice(BigDecimal price);
+    Authors getAuthor();           // 关联 → 类型化访问
+    Books setAuthor(Authors author);
+}
+</code></pre>
+
+      <p>对照 J3.1 手写的 <code>Book</code> DTO，几处「升级」：</p>
+      <ul>
+        <li><b>字段类型由 CDS 推断</b>：<code>Decimal(9,2)</code> → <code>BigDecimal</code>；<code>Date</code> 字段会映射成 <code>LocalDate</code>；<code>Integer</code> 主键 → <code>Integer</code>。</li>
+        <li><b>关联变成类型化对象</b>：<code>getAuthor()</code> 返回 <code>Authors</code>，导航属性类型安全，不用手写外键映射。</li>
+        <li><b>多了列名常量</b>：<code>Books.STOCK</code>、<code>Books.PRICE</code> 等，供查询/更新时引用（见 J5.4）。</li>
+        <li><b>实现 <code>CdsData</code></b>：框架用它做 OData 序列化与 CDS 数据访问，这是手写 DTO 没有的「内功」。</li>
+      </ul>
+
+      <h2 id="generated-service">J5.3 生成的服务接口 CatalogService_</h2>
+      <p>由 <code>srv/cat-service.cds</code> 的 <code>service CatalogService</code> 生成，命名约定是「服务名 + 下划线」。它把服务名与 CDS 里声明的 action 变成<b>常量</b>，让业务代码用常量绑定事件而非字符串拼写：</p>
+
+<pre><code class="language-java">// sap/capire/bookshop/CatalogService_.java —— 由 cat-service.cds 生成（示意）
+package sap.capire.bookshop;
+
+import com.sap.cds.services.cds.CdsService;
+
+public interface CatalogService_ extends CdsService {
+    String CDS_NAME = "CatalogService";               // 与 service 块同名
+    String EVENT_SUBMIT_ORDER = "submitOrder";        // CDS 里声明的 action
+}
+</code></pre>
+
+      <p>用法两条：</p>
+      <ul>
+        <li><b>绑定服务</b>：处理器类上用 <code>@ServiceName(CatalogService_.CDS_NAME)</code>，声明「我只处理 CatalogService 的事件」。</li>
+        <li><b>绑定事件</b>：方法上用 <code>@On(event = CatalogService_.EVENT_SUBMIT_ORDER)</code>，替代手写的事件名常量，拼错即编译报错。</li>
+      </ul>
+
+      <h2 id="handler">J5.4 事件处理器：你唯一手写的业务代码</h2>
+      <p>这是整条 Java 路线唯一要你写的业务代码。新建 <code>com.acme.bookshop.handlers</code> 包，写入 <code>CatalogServiceHandler.java</code>：</p>
+
+<pre><code class="language-java">// srv/src/main/java/com/acme/bookshop/handlers/CatalogServiceHandler.java
+package com.acme.bookshop.handlers;
+
+import java.util.List;
+import org.springframework.stereotype.Component;
+
+import com.sap.capire.bookshop.Books;
+import com.sap.capire.bookshop.CatalogService_;
+
+import com.sap.cds.services.cds.CdsBeforeCreateContext;
+import com.sap.cds.services.cds.CdsOnEventContext;
+import com.sap.cds.services.cds.CdsService;
+import com.sap.cds.services.handler.EventHandler;
+import com.sap.cds.services.handler.annotations.After;
+import com.sap.cds.services.handler.annotations.Before;
+import com.sap.cds.services.handler.annotations.On;
+import com.sap.cds.services.handler.annotations.ServiceName;
+import com.sap.cds.ql.CqnSelect;
+import com.sap.cds.ql.Select;
+import com.sap.cds.ql.Update;
+import com.sap.cds.services.ErrorStatuses;
+import com.sap.cds.services.ServiceException;
+import com.sap.cds.services.persistence.PersistenceService;
+
+import io.vertx.core.json.JsonObject;
+
+@Component
+@ServiceName(CatalogService_.CDS_NAME)
+public class CatalogServiceHandler implements EventHandler {
+
+    private final PersistenceService db;
+
+    public CatalogServiceHandler(PersistenceService db) {   // Spring 注入
+        this.db = db;
+    }
+
+    @After(event = CdsService.EVENT_READ)
+    public void markBestseller(List&lt;Books&gt; books) {
+        books.forEach(b -&gt; {
+            if (b.getStock() != null &amp;&amp; b.getStock() &gt; 100) {
+                b.setTitle(b.getTitle() + "（畅销）");
+            }
+        });
+    }
+
+    @Before(event = CdsService.EVENT_CREATE)
+    public void validateNewBook(CdsBeforeCreateContext context) {
+        JsonObject data = context.getData();
+        Integer stock = data.getInteger("stock");
+        if (stock != null && stock < 0) {
+            throw new ServiceException(ErrorStatuses.BAD_REQUEST,
+                "stock must not be negative, got: " + stock);
+        }
+    }
+
+    @On(event = CatalogService_.EVENT_SUBMIT_ORDER)
+    public void submitOrder(CdsOnEventContext context) {
+        JsonObject data = context.getData();
+        int bookId   = data.getInt("book");
+        int quantity = data.getInt("quantity");
+
+        CqnSelect sel = Select.from(Books.class).where(b -&gt; b.ID().eq(bookId));
+        Books book = db.run(sel).single(Books.class);
+
+        if (book == null) {
+            throw new ServiceException(ErrorStatuses.NOT_FOUND, "Book #" + bookId + " not found");
+        }
+        if (quantity &gt; book.getStock()) {
+            throw new ServiceException(ErrorStatuses.BAD_REQUEST,
+                quantity + " exceeds stock for book #" + bookId);
+        }
+        db.run(Update.entity(Books.class)
+            .data(Books.STOCK, book.getStock() - quantity)
+            .where(b -&gt; b.ID().eq(bookId)));
+    }
+}
+</code></pre>
+
+      <p>逐块解释：</p>
+      <ul>
+        <li><b><code>@Component + @ServiceName(CatalogService_.CDS_NAME)</code></b>：把类注册为 Spring 组件，并声明它处理 <code>CatalogService</code> 的事件。<code>@Component</code> 保证它被 Spring Boot 组件扫描到（<code>Application</code> 在 <code>com.acme.bookshop</code> 包，能扫到 <code>handlers</code> 子包）。</li>
+        <li><b>构造器注入 <code>PersistenceService</code></b>：Spring 自动注入持久化服务，后续用 <code>db.run(...)</code> 执行 CDS 查询与更新。</li>
+        <li><b><code>@After(event = CdsService.EVENT_READ)</code></b>：读操作<b>之后</b>触发。<code>List&lt;Books&gt;</code> 是本次读出的数据行，遍历时给库存 &gt; 100 的书标题加上「（畅销）」——只改返回给客户端的对象，不改库。</li>
+        <li><b><code>@Before(event = CdsService.EVENT_CREATE)</code></b>：写操作（POST）<b>之前</b>触发，做<b>参数校验</b>。<code>context.getData()</code> 是待写入的载荷，这里拦截库存为负的新书并抛 400——校验失败时数据不会被写入。@Before 与 @After 构成前置校验 / 后置加工的一对，@On 是中间的核心处理。</li>
+        <li><b><code>@On(event = CatalogService_.EVENT_SUBMIT_ORDER)</code></b>：处理 <code>submitOrder</code> action（<code>@On</code> 代表「接管」，覆盖默认行为）。<code>context.getData()</code> 返回 <code>JsonObject</code>，<code>getInt("book")</code> 取 action 参数。</li>
+        <li><b><code>Select.from(Books.class).where(b -&gt; b.ID().eq(bookId))</code></b>：用<b>生成的模型类</b>做类型化查询。<code>b.ID()</code> 是生成接口提供的方法引用，<code>db.run(sel).single(Books.class)</code> 返回第一行（无则 null）。</li>
+        <li><b><code>Update.entity(Books.class).data(Books.STOCK, ...)</code></b>：类型化更新，用列名常量 <code>Books.STOCK</code> 指定字段，<code>where</code> 定位行。</li>
+        <li><b><code>ServiceException(ErrorStatuses.NOT_FOUND / BAD_REQUEST, ...)</code></b>：抛异常会由框架自动转成<b>OData 错误响应</b>（4xx + JSON 错误体），J6 章能看到效果。</li>
+        <li><b>事务</b>：与 Node 版一致，CAP Java 把<b>每个请求自动包裹在一个事务里</b>——handler 正常返回 → 自动 commit；抛 <code>ServiceException</code> 或其他异常 → 自动 rollback。一个 <code>@On</code> 处理器里的多次 <code>db.run</code>（如先更新、后插入）要么全部生效，要么全部回滚，不需要手写事务边界。</li>
+      </ul>
+
+      <h2 id="compare">J5.5 对照表：手写 DTO 全家桶 vs CAP Java 一个 Handler</h2>
+      <table class="doc">
+        <thead>
+          <tr><th style="width:150px">关注点</th><th>传统 Java（手写 DTO + Controller + DAO）</th><th class="cap-c">CAP Java（一个 Handler）</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>字段/类型定义</b></td><td><code>Book.java</code> 手写字段 + getter/setter，与表同步维护</td><td><code>schema.cds</code> 写一行实体，<code>Books</code> 类编译期生成</td></tr>
+          <tr><td><b>表结构</b></td><td>另写 <code>CREATE TABLE</code>，字段一改两边改</td><td>启动按模型自动建表（J4 章）</td></tr>
+          <tr><td><b>接口暴露</b></td><td>手写 Controller + 序列化 + OData 映射</td><td>OData V4 自动生成，无需路由代码</td></tr>
+          <tr><td><b>CRUD 数据访问</b></td><td>DAO 手写 SQL / ORM 映射</td><td>框架默认 CRUD + 类型化 <code>db.run(Select/Update)</code></td></tr>
+          <tr><td><b>业务逻辑</b></td><td>散落在 Service/Controller 各层</td><td>集中在 <code>@After / @On</code> 注解方法里</td></tr>
+          <tr><td><b>估算工作量</b></td><td>DTO + Repository + Controller ≈ 150+ 行重复代码</td><td>一个 <code>CatalogServiceHandler</code> ≈ 40 行业务逻辑</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="ide">J5.6 IDE 里的样子：Tree + 编辑器</h2>
+      <p>IntelliJ / Eclipse 中，<code>handlers</code> 包下是你的处理器，<code>target/generated-sources</code> 下是生成的类（只读、勿改）。打开 <code>CatalogServiceHandler.java</code>，语法高亮与代码补全都能识别生成类：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">IntelliJ IDEA — CatalogServiceHandler.java</span></div>
+          <div style="display:flex">
+            <div style="width:270px;background:#f7f9fb;border-right:1px solid var(--border-soft)">
+              <div class="tree" style="border:none">
+                <div class="row"><span class="i">▾</span><span class="folder">📁</span> bookshop</div>
+                <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> srv/src/main/java/com/acme/bookshop</div>
+                <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> Application.java</div>
+                <div class="row"><span class="pad"></span><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> handlers</div>
+                <div class="row sel"><span class="pad"></span><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> <b>CatalogServiceHandler.java</b></div>
+                <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> srv/target/generated-sources/cds/sap/capire/bookshop</div>
+                <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> Books.java <span style="color:var(--text-faint);font-size:11px">（生成，勿改）</span></div>
+                <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> CatalogService.java</div>
+                <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> CatalogService_.java</div>
+              </div>
+            </div>
+            <div class="editor" style="flex:1;min-width:0">
+              <div class="ed-tabs"><span class="on">CatalogServiceHandler.java</span></div>
+              <div class="ed-body">
+                <pre class="ed"><code class="language-java">@Component
+@ServiceName(CatalogService_.CDS_NAME)
+public class CatalogServiceHandler implements EventHandler {
+
+  @After(event = CdsService.EVENT_READ)
+  public void markBestseller(List&lt;Books&gt; books) {
+    books.forEach(b -&gt; {
+      if (b.getStock() != null &amp;&amp; b.getStock() &gt; 100) {
+        b.setTitle(b.getTitle() + "（畅销）");
+      }
+    });
+  }
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 J5-1</b> 项目树里 <code>handlers/CatalogServiceHandler.java</code>（你写的）与 <code>target/generated-sources/cds</code> 下的生成类（框架生成的）并列；编辑器右侧高亮显示处理器代码</div>
+      </div>
+
+      <h2 id="steps">J5.7 操作手顺</h2>
+      <ol class="steps teal">
+        <li>
+          <span class="step-title">构建以生成类</span>
+          <p>项目根目录执行 <code>mvn clean install</code>，确认 <code>target/generated-sources/cds/sap/capire/bookshop/</code> 下出现 <code>Books.java</code>、<code>CatalogService_.java</code>。</p>
+        </li>
+        <li>
+          <span class="step-title">建 handlers 包</span>
+          <p>在 <code>srv/src/main/java/com/acme/bookshop/</code> 下新建 <code>handlers</code> 包（IDEA/Eclipse 里右键 → New Package）。</p>
+        </li>
+        <li>
+          <span class="step-title">写处理器</span>
+          <p>把 J5.4 的 <code>CatalogServiceHandler.java</code> 完整写入，保存后确认无编译错误（IDE 能识别生成的 <code>Books</code> / <code>CatalogService_</code>）。</p>
+        </li>
+        <li>
+          <span class="step-title">重启应用</span>
+          <p>在 <code>srv/</code> 目录 <code>mvn spring-boot:run</code>（或根目录 <code>mvn -pl srv spring-boot:run</code>），等 <code>Tomcat started on port 8080</code>。</p>
+        </li>
+        <li>
+          <span class="step-title">验证业务逻辑</span>
+          <p>浏览器访问 <code>http://localhost:8080/odata/v4/catalog/Books</code>，看库存 &gt; 100 的《The Raven》(333) 标题是否带「（畅销）」；再用 curl 调 <code>submitOrder</code>（见<a href="#verify">图 J5-2</a>）。</p>
+        </li>
+      </ol>
+
+      <h2 id="verify">J5.8 验证：畅销标注与下单扣库存</h2>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">终端 — 验证处理器生效</span></div>
+          <div class="term">
+            <div><span class="p">$</span> <span class="path">curl http://localhost:8080/odata/v4/catalog/Books</span></div>
+            <div>{&nbsp;"value":&nbsp;[</div>
+            <div>&nbsp;&nbsp;{&nbsp;"ID":&nbsp;1,&nbsp;"title":&nbsp;"Wuthering&nbsp;Heights",&nbsp;"stock":&nbsp;12,&nbsp;...&nbsp;},</div>
+            <div>&nbsp;&nbsp;{&nbsp;"ID":&nbsp;3,&nbsp;"title":&nbsp;"The&nbsp;Raven&nbsp;<span class="ok">（畅销）</span>",&nbsp;"stock":&nbsp;333,&nbsp;...&nbsp;},</div>
+            <div>&nbsp;&nbsp;...&nbsp;</div>
+            <div>&nbsp;]&nbsp;}</div>
+            <div>&nbsp;</div>
+            <div><span class="p">$</span> <span class="path">curl -X POST http://localhost:8080/odata/v4/catalog/submitOrder \</span></div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="path">-H "Content-Type: application/json" -d '{"book":1,"quantity":2}'</span></div>
+            <div>{}</div>
+            <div><span class="p">$</span> <span class="path">sqlite3 srv/db.sqlite "SELECT ID, stock FROM sap_capire_bookshop_Books WHERE ID=1;"</span></div>
+            <div>1|<span class="ok">10</span></div>
+          </div>
+        </div>
+        <div class="cap"><b>图 J5-2</b> 读 Books 时库存 333 的《The Raven》标题带「（畅销）」；调 <code>submitOrder</code> 后书 #1 库存从 12 降到 10——两段业务逻辑都生效</div>
+      </div>
+
+      <div class="note warn">
+        <span class="note-title">⚠️ 注意点</span>
+        <ul style="margin-bottom:0">
+          <li><b>生成的类在 target 下，勿改</b>：<code>Books.java</code> 等是构建产物，改模型后重新 <code>mvn clean</code> 会覆盖你的修改。业务代码一律放 <code>src/main/java</code>。</li>
+          <li><b><code>Books.class</code> 是接口</b>：生成的模型是 <b>interface</b>（extends <code>CdsData</code>），<code>Select.from(Books.class)</code> 传的是它的 Class 对象，用法与实体类一致。</li>
+          <li><b><code>CqnSelect</code> 类型</b>：<code>Select.from(...)</code> 返回 <code>CqnSelect</code>，交给 <code>db.run(sel)</code> 执行；结果用 <code>.single(Books.class)</code> 映射为类型化对象。</li>
+          <li><b>组件扫描</b>：处理器类加 <code>@Component</code> 即可被 Spring 扫描。前提是它位于 <code>@SpringBootApplication</code> 启动类所在包（<code>com.acme.bookshop</code>）之下。</li>
+          <li><b><code>context.getData()</code></b>：action 的入参在 <code>JsonObject</code> 里，<code>data.getInt("book")</code> 取 CDS 里声明的 <code>book</code> 参数。</li>
+        </ul>
+      </div>
+
+      <div class="pagenav">
+        <a href="step2-db.html"><small>← 上一章</small><b>手顺2：配置链接与建库建表</b></a>
+        <a class="next" href="step4-test.html"><small>下一章 →</small><b>手顺4：运行与测试</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · CAP for Java · 第 J5 章 手顺3 DTO → 生成模型与服务</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>手顺2：配置链接与建库建表 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../../index.html">首页</a>
+      <a class="tab" href="../../rap/overview.html">RAP 培训</a>
+      <a class="tab active" href="../overview.html">CAP 培训</a>
+      <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">CAP 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="../overview.html"><span class="num">1</span>CAP 概述</a>
+      <a class="snav" href="../prep.html"><span class="num">2</span>环境准备</a>
+      <a class="snav" href="../step1-init.html"><span class="num">3</span>手顺1：项目初始化</a>
+      <a class="snav" href="../step2-model.html"><span class="num">4</span>手顺2：数据模型与服务</a>
+      <a class="snav" href="../step3-implement.html"><span class="num">5</span>手顺3：业务逻辑实现</a>
+      <a class="snav" href="../step4-test.html"><span class="num">6</span>手顺4：启动、测试与 Fiori</a>
+      <a class="snav" href="../testdata.html"><span class="num">7</span>测试数据</a>
+    </nav>
+    <div class="snav-group">CAP for Java（Java 运行时）</div>
+    <a class="snav" href="overview.html"><span class="num">J1</span>Java 概述</a>
+    <a class="snav" href="prep.html"><span class="num">J2</span>环境准备</a>
+    <a class="snav" href="step1-project.html"><span class="num">J3</span>手顺1：建立 Java 项目</a>
+    <a class="snav active" href="step2-db.html"><span class="num">J4</span>手顺2：配置链接与建库建表</a>
+    <a class="snav" href="step3-dto.html"><span class="num">J5</span>手顺3：DTO → 生成模型与服务</a>
+    <a class="snav" href="step4-test.html"><span class="num">J6</span>手顺4：运行与测试</a>
+    <div class="snav-group">BTP 与 HANA Cloud（云环境 + BAS）</div>
+    <a class="snav" href="../btp/overview.html"><span class="num">B1</span>BTP 与 HANA Cloud 概述</a>
+    <a class="snav" href="../btp/prep.html"><span class="num">B2</span>环境准备（BTP 账号）</a>
+    <a class="snav" href="../btp/step1-hana.html"><span class="num">B3</span>手顺1：创建 HANA Cloud 实例</a>
+    <a class="snav" href="../btp/step2-sql.html"><span class="num">B4</span>手顺2：HANA SQL 建表与数据</a>
+    <a class="snav" href="../btp/step3-bas.html"><span class="num">B5</span>手顺3：BAS 入门</a>
+    <a class="snav" href="../btp/step4-dir.html"><span class="num">B6</span>手顺4：模式一 目录式</a>
+    <a class="snav" href="../btp/step5-maven.html"><span class="num">B7</span>手顺5：模式二 Maven</a>
+    <a class="snav" href="../btp/step6-spring.html"><span class="num">B8</span>手顺6：模式三 Spring Boot</a>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+<a class="snav" href="../../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 J4 章：手顺2 — 配置链接与建库建表</h1>
+      <p class="page-sub">模型驱动建表：你只配置「连哪个数据库」，表结构、DDL、种子数据由框架自动完成</p>
+      <p class="lead">CAP Java 的「库与表」是<b>模型驱动</b>的——表结构由 <code>db/schema.cds</code> 定义，应用启动时框架按模型自动执行 DDL 建表，<b>不需要手写任何 <code>CREATE TABLE</code></b>。你要做的只是：定义模型、告诉框架连哪个数据库、把种子数据 CSV 放对位置。</p>
+
+      <p>
+        <span class="badge teal">schema.cds</span>
+        <span class="badge teal">application.yaml</span>
+        <span class="badge teal">SQLite</span>
+        <span class="badge teal">自动 DDL</span>
+        <span class="badge gray">sqlite-jdbc</span>
+        <span class="badge gray">CSV 种子数据</span>
+      </p>
+
+      <h2 id="concept">J4.1 概念：库与表是「模型驱动」的</h2>
+      <p>传统 Java 开发里建表要写 <code>CREATE TABLE</code>，还要让表字段与 Java 实体保持同步。CAP Java 把这一步<b>完全自动化</b>：</p>
+      <ul>
+        <li><b>实体 = 表</b>：<code>schema.cds</code> 里每个 <code>entity</code> 启动时自动变成一张表，字段类型自动映射（<code>String</code> → <code>VARCHAR</code>、<code>Decimal</code> → <code>DECIMAL</code>、<code>Date</code> → <code>DATE</code>）。</li>
+        <li><b>关联 = 外键</b>：<code>Association</code> 自动变成外键列（<code>author</code> → <code>author_ID</code>）。</li>
+        <li><b>你只配置数据源</b>：在 <code>application.yaml</code> 里写一行 JDBC URL，告诉框架「连 SQLite 的这个文件」。建表语句由框架生成并执行。</li>
+      </ul>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">bookshop — 建表相关的文件布局</span></div>
+          <div class="tree">
+            <div class="row"><span class="i">▾</span><span class="folder">📁</span> bookshop/</div>
+            <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> db/ <span style="color:var(--text-faint);font-size:11px">← 模型与种子数据</span></div>
+            <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> <b>schema.cds</b> <span style="color:var(--text-faint);font-size:11px">← 实体 = 表</span></div>
+            <div class="row"><span class="pad"></span><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> data/ <span style="color:var(--text-faint);font-size:11px">← 启动时导入的 CSV</span></div>
+            <div class="row"><span class="pad"></span><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> sap.capire.bookshop-Books.csv</div>
+            <div class="row"><span class="pad"></span><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> sap.capire.bookshop-Authors.csv</div>
+            <div class="row"><span class="pad"></span><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> sap.capire.bookshop-Genres.csv</div>
+            <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> srv/</div>
+            <div class="row"><span class="pad"></span><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> src/main/resources/</div>
+            <div class="row"><span class="pad"></span><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> <b>application.yaml</b> <span style="color:var(--text-faint);font-size:11px">← 数据源配置（本章重点）</span></div>
+            <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> pom.xml <span style="color:var(--text-faint);font-size:11px">← 含 sqlite-jdbc 依赖</span></div>
+          </div>
+        </div>
+        <div class="cap"><b>图 J4-1</b> 建表只靠三样东西：<code>db/schema.cds</code>（模型）、<code>srv/src/main/resources/application.yaml</code>（数据源）、<code>db/data/</code>（种子 CSV）</div>
+      </div>
+
+      <h2 id="schema">J4.2 ① 复用 Bookshop 模型 db/schema.cds</h2>
+      <p>沿用与 <a href="../step2-model.html">Node 版手顺2</a> <b>完全一致</b>的 Bookshop 模型——同一份 <code>schema.cds</code>，Node 版运行时解释、Java 版编译成类。完整写入 <code>db/schema.cds</code>：</p>
+
+<pre><code class="language-cds">// db/schema.cds —— 领域模型（数据层），Java 版与 Node 版完全一致
+namespace sap.capire.bookshop;
+
+entity Genres {
+  key ID    : Integer;
+      name  : String(64) @title : 'Genre';
+      descr : String(512);
+}
+
+entity Authors {
+  key ID          : Integer;
+      name        : String(128) @title : 'Author';
+      dateOfBirth : Date;
+      placeOfBirth : String(128);
+      books       : Association to many Books on books.author = $self;
+}
+
+entity Books {
+  key ID     : Integer;
+      title  : String(256) @title : 'Title';
+      descr  : String(1024);
+      author : Association to Authors;
+      genre  : Association to Genres;
+      stock  : Integer @title : 'Stock';
+      price  : Decimal(9,2) @title : 'Price';
+      currency : String(3);
+}
+</code></pre>
+
+      <p>要点：</p>
+      <ul>
+        <li><b><code>namespace sap.capire.bookshop;</code></b>：给所有实体加命名空间前缀，完整实体名是 <code>sap.capire.bookshop.Books</code>。它同时决定表名（见 J4.6 的下划线约定）与 CSV 文件名。</li>
+        <li><b><code>key ID : Integer;</code></b>：主键。这里用自增 <code>Integer</code>，构建后对应 Java 的 <code>Integer</code> 类型。</li>
+        <li><b><code>Association to Authors / to Genres</code></b>：对一关联，启动时变成 <code>author_ID</code> / <code>genre_ID</code> 外键列，OData 里可 <code>$expand</code>。</li>
+        <li><b><code>@title : 'Genre'</code></b>：CDS 注解，提供 UI 友好的显示名，会体现在 OData <code>$metadata</code> 与 Fiori UI 上。</li>
+      </ul>
+
+      <p>同时还要一个服务定义 <code>srv/cat-service.cds</code>（与 Node 版 4.2 同源，但去掉 <code>@readonly</code>，让 <code>Books</code> 可写，便于 J6 章练习 OData 增删改；并声明自定义 Action <code>submitOrder</code>，J5 章用它写业务逻辑）：</p>
+
+<pre><code class="language-cds">// srv/cat-service.cds —— 服务定义（服务层），Java 版
+using { sap.capire.bookshop as my } from '../db/schema';
+
+service CatalogService {
+  entity Books   as projection on my.Books;
+  entity Authors as projection on my.Authors;
+  entity Genres  as projection on my.Genres;
+
+  action submitOrder(book : Integer, quantity : Integer);   // 提交订单，扣减库存
+}
+</code></pre>
+
+      <h3>种子数据：放对位置才会被导入</h3>
+      <p>CAP 的约定：CSV 放进 <code>db/data/</code>，文件名必须是 <code>&lt;命名空间&gt;-&lt;实体名&gt;.csv</code>（点号换成连字符），表头与实体字段一一对应。这里给出 <code>Books</code> 的完整数据（<code>Genres / Authors</code> 的同名 CSV 同样放在该目录，完整数据集见 <a href="../testdata.html">测试数据</a>）：</p>
+
+      <p><b>① <code>db/data/sap.capire.bookshop-Books.csv</code></b></p>
+<pre><code class="language-csv">ID,title,descr,author_ID,genre_ID,stock,price,currency
+1,Wuthering Heights,哥特小说代表作,101,201,12,11.11,EUR
+2,Jane Eyre,夏洛蒂·勃朗特经典,101,201,11,22.00,EUR
+3,The Raven,爱伦坡诗作,102,203,333,8.00,EUR
+4,Eleonora,爱伦坡短篇,102,203,0,7.99,EUR
+5,Catweazle,幻想小说,103,204,5,19.99,EUR
+6,Pride and Prejudice,简·奥斯汀代表作,103,204,10,24.99,EUR
+7,1Q84,村上春树长篇,104,201,100,33.00,EUR
+8,Kafka on the Shore,村上春树长篇,104,201,42,32.99,EUR
+9,Dandelion Wine,怀旧随笔,102,202,8,27.50,EUR
+10,Norwegian Wood,村上春树爱情小说,104,204,150,35.50,EUR
+</code></pre>
+
+      <ul>
+        <li><b>关联列名</b>：外键写成 <code>author_ID</code>、<code>genre_ID</code>（实体名首字母小写 + <code>_ID</code>），CAP 据此填入外键值。</li>
+        <li><b>stock 三档</b>：0 / 小（5、10、12）/ 大（100、150、333），方便后续验证 <code>$filter</code> 与「畅销」标注、超卖校验。</li>
+        <li><b>price 两档</b>：有 &lt; 30 的廉价书，也有 ≥ 30 的书，便于 <code>$filter=price lt 30</code>。</li>
+      </ul>
+
+      <h2 id="datasource">J4.3 ② 配置数据源 application.yaml</h2>
+      <p>本地开发用 <b>SQLite</b>（文件型数据库，零配置）。编辑 <code>srv/src/main/resources/application.yaml</code>：</p>
+
+<pre><code class="language-yaml"># srv/src/main/resources/application.yaml —— 本地开发（SQLite）
+spring:
+  datasource:
+    url: jdbc:sqlite:./db.sqlite
+    driver-class-name: org.sqlite.JDBC
+server:
+  port: 8080
+</code></pre>
+
+      <p>逐行解释：</p>
+      <ul>
+        <li><b><code>spring.datasource.url</code></b>：JDBC 连接串。<code>jdbc:sqlite:</code> 是驱动前缀，<code>./db.sqlite</code> 是数据库<b>文件路径</b>（相对启动时的工作目录——在 <code>srv/</code> 目录跑 <code>mvn spring-boot:run</code> 则文件在 <code>srv/db.sqlite</code>）。文件不存在时首次启动会自动创建。</li>
+        <li><b><code>driver-class-name</code></b>：JDBC 驱动类 <code>org.sqlite.JDBC</code>，来自 <code>sqlite-jdbc</code> 依赖（见 J4.4）。</li>
+        <li><b><code>server.port</code></b>：Spring Boot 监听端口，CAP Java 版默认 <b>8080</b>（Node 版是 4004）。</li>
+      </ul>
+
+      <h2 id="dep">J4.4 ③ 添加 JDBC 驱动依赖</h2>
+      <p>在 J3 章生成的 <code>srv/pom.xml</code> 示例里已经出现过 <code>org.xerial:sqlite-jdbc</code>——它的作用就是<b>提供 SQLite 的 JDBC 驱动</b>，没有它 <code>application.yaml</code> 里的 <code>driver-class-name</code> 就找不到类：</p>
+
+<pre><code class="language-xml">&lt;!-- srv/pom.xml（节选） --&gt;
+&lt;dependency&gt;   &lt;!-- SQLite 驱动：本地开发用 --&gt;
+  &lt;groupId&gt;org.xerial&lt;/groupId&gt;
+  &lt;artifactId&gt;sqlite-jdbc&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+
+      <div class="note">
+        <span class="note-title">💡 一句话对照：H2 vs SQLite</span>
+        若想在<b>自动化测试</b>里用内存数据库 H2，只需把依赖换成 <code>com.h2database:h2</code>，并把 <code>application.yaml</code> 的 <code>url</code> 改成 <code>jdbc:h2:mem:testdb</code>——模型、代码、建表逻辑零改动。本培训本地开发统一用 SQLite。
+      </div>
+
+      <h2 id="start">J4.5 ④ 启动：自动建表 + 导入种子数据</h2>
+      <p>一切就绪，构建并启动。启动瞬间 CAP 读取编译后的 CSN 模型，在 SQLite 里<b>自动建表</b>并<b>导入 <code>db/data</code> 的 CSV</b>：</p>
+
+<pre><code class="language-bash">mvn clean install        # 编译模型 → 生成 Java 类
+cd srv
+mvn spring-boot:run      # 启动应用（自动建表 + 导入数据）
+</code></pre>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">终端 — spring-boot:run 启动日志</span></div>
+          <div class="term">
+            <div><span class="p">$</span> <span class="path">cd srv &amp;&amp; mvn spring-boot:run</span></div>
+            <div><span class="info">[INFO]</span> --- cds-maven-plugin:generate ---</div>
+            <div><span class="info">[cds]</span> - db: connect <span class="ok">sqlite:file:/Users/me/bookshop/srv/db.sqlite</span></div>
+            <div><span class="info">[cds]</span> - model loaded (3 entities from db/schema.cds)</div>
+            <div><span class="info">[cds]</span> - schema deployed:</div>
+            <div><span class="ok">   +</span> create table <b>sap_capire_bookshop_Genres</b></div>
+            <div><span class="ok">   +</span> create table <b>sap_capire_bookshop_Authors</b></div>
+            <div><span class="ok">   +</span> create table <b>sap_capire_bookshop_Books</b></div>
+            <div><span class="info">[cds]</span> - data imported from db/data:</div>
+            <div><span class="ok">   +</span> inserted 5 rows into sap_capire_bookshop_Genres</div>
+            <div><span class="ok">   +</span> inserted 4 rows into sap_capire_bookshop_Authors</div>
+            <div><span class="ok">   +</span> inserted 10 rows into sap_capire_bookshop_Books</div>
+            <div>&nbsp;</div>
+            <div><span class="ok">Tomcat started on port(s): 8080 (http)</span></div>
+            <div><span class="ok">Started Application in 7.9 seconds</span></div>
+          </div>
+        </div>
+        <div class="cap"><b>图 J4-2</b> 启动日志三段关键信息：<code>db: connect</code> 连上 SQLite → <code>create table</code> 自动建表 → <code>inserted ... rows</code> 导入 CSV；最后 <code>Tomcat started on 8080</code></div>
+      </div>
+
+      <h2 id="ddl">J4.6 ⑤ 查看生成的 DDL</h2>
+      <p>想确认「模型到底变成了什么表」，用 <code>cds compile</code> 直接把 CDS 编译成 SQL（不启动应用也能看）：</p>
+
+<pre><code class="language-bash">cds compile db/schema.cds --to sql --dialect sqlite
+</code></pre>
+
+      <p>输出的核心是 <code>Books</code> 表——注意<b>「点号命名空间 → 下划线表名」</b>的约定：<code>sap.capire.bookshop.Books</code> 变成 <code>sap_capire_bookshop_Books</code>，关联字段自动带上 <code>_ID</code> 后缀，最后还有外键约束：</p>
+
+<pre><code class="language-sql">-- cds compile db/schema.cds --to sql --dialect sqlite（节选）
+CREATE TABLE sap_capire_bookshop_Books (
+  ID INTEGER NOT NULL,
+  title VARCHAR(256) NULL,
+  descr VARCHAR(1024) NULL,
+  author_ID INTEGER NULL,
+  genre_ID INTEGER NULL,
+  stock INTEGER NULL,
+  price DECIMAL(9,2) NULL,
+  currency VARCHAR(3) NULL,
+  PRIMARY KEY(ID)
+);
+
+ALTER TABLE sap_capire_bookshop_Books
+  ADD FOREIGN KEY(author_ID) REFERENCES sap_capire_bookshop_Authors(ID);
+ALTER TABLE sap_capire_bookshop_Books
+  ADD FOREIGN KEY(genre_ID) REFERENCES sap_capire_bookshop_Genres(ID);
+</code></pre>
+
+      <p>对照模型，一眼能看懂映射：<code>key ID : Integer</code> → <code>ID INTEGER NOT NULL ... PRIMARY KEY(ID)</code>；<code>title : String(256)</code> → <code>title VARCHAR(256)</code>；<code>price : Decimal(9,2)</code> → <code>price DECIMAL(9,2)</code>；<code>Association to Authors</code> → 外键列 <code>author_ID</code> + <code>FOREIGN KEY</code> 约束。Genres / Authors 同理，前缀统一为 <code>sap_capire_bookshop_</code>。</p>
+
+      <h2 id="cloud">J4.7 ⑥ 生产/云：换 HANA Cloud</h2>
+      <p>部署到 <b>HANA Cloud</b>（生产级内存数据库）时，<b>代码与模型零改动</b>：CAP 在 Cloud Foundry 上自动读取服务绑定（Service Binding）注入 HANA 数据源，覆盖 <code>application.yaml</code> 里的本地 URL。DDL 仍由框架启动时执行，种子数据导入逻辑不变。本地「写完模型 → 启动建表」的心智，直接迁移到云端。</p>
+
+      <div class="path-note">
+        ☁️ 想在云端<b>手把手</b>建 HANA Cloud 实例、用 HANA SQL 建同样的 Bookshop 库并灌入 10 本书、再用纯 JDBC 连库验证？见 <a href="../btp/step1-hana.html">B3 创建 HANA Cloud 实例</a> 与 <a href="../btp/step2-sql.html">B4 HANA SQL 建表与数据</a>。
+      </div>
+
+      <div class="note">
+        <span class="note-title">💡 本地开发为什么要用 SQLite</span>
+        SQLite 是<b>文件型数据库</b>，无独立服务器、无端口、零安装，特别适合脚手架与快速验证；HANA 与之最大的差异只在连接方式与方言细节，模型层的体验完全一致。
+      </div>
+
+      <h2 id="verify">J4.8 验证：用 sqlite3 查看生成的表</h2>
+      <p>启动成功后，用命令行工具（macOS 自带 <code>sqlite3</code>；也可用 <b>DB Browser for SQLite</b> 图形化查看）直接检查数据库文件：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">终端 — sqlite3 检查数据库</span></div>
+          <div class="term">
+            <div><span class="p">$</span> <span class="path">cd srv</span></div>
+            <div><span class="p">$</span> <span class="path">sqlite3 db.sqlite ".tables"</span></div>
+            <div><span class="ok">sap_capire_bookshop_Authors&nbsp;&nbsp;sap_capire_bookshop_Books&nbsp;&nbsp;&nbsp;sap_capire_bookshop_Genres</span></div>
+            <div><span class="p">$</span> <span class="path">sqlite3 db.sqlite "SELECT ID, title, stock FROM sap_capire_bookshop_Books LIMIT 3;"</span></div>
+            <div>1|Wuthering Heights|12</div>
+            <div>2|Jane Eyre|11</div>
+            <div>3|The Raven|333</div>
+            <div><span class="p">$</span> <span class="path">sqlite3 db.sqlite "SELECT COUNT(*) FROM sap_capire_bookshop_Books;"</span></div>
+            <div><span class="ok">10</span></div>
+          </div>
+        </div>
+        <div class="cap"><b>图 J4-3</b> <code>.tables</code> 列出三张按命名空间生成的表；<code>SELECT</code> 返回 CSV 导入的种子数据——建表与导数据全部自动完成</div>
+      </div>
+
+      <h2 id="steps">J4.9 操作手顺</h2>
+      <ol class="steps teal">
+        <li>
+          <span class="step-title">写 schema.cds</span>
+          <p>把 J4.2 的模型完整写入 <code>db/schema.cds</code>，把 <code>cat-service.cds</code> 写入 <code>srv/</code>（含 <code>submitOrder</code> action）。</p>
+        </li>
+        <li>
+          <span class="step-title">放种子数据 CSV</span>
+          <p>在 <code>db/data/</code> 下创建三个 CSV 文件（文件名、表头按 J4.2，完整数据见<a href="../testdata.html">测试数据</a>）。</p>
+        </li>
+        <li>
+          <span class="step-title">写 application.yaml</span>
+          <p>在 <code>srv/src/main/resources/application.yaml</code> 配 SQLite 数据源与端口 8080（见 J4.3）。</p>
+        </li>
+        <li>
+          <span class="step-title">确认 sqlite-jdbc 依赖</span>
+          <p>检查 <code>srv/pom.xml</code> 含 <code>org.xerial:sqlite-jdbc</code>；没有就补上（见 J4.4）。</p>
+        </li>
+        <li>
+          <span class="step-title">构建</span>
+          <p>项目根目录执行 <code>mvn clean install</code>，确认 <code>BUILD SUCCESS</code>，模型被编译成 Java 类与 CSN。</p>
+        </li>
+        <li>
+          <span class="step-title">启动并验证</span>
+          <p><code>cd srv &amp;&amp; mvn spring-boot:run</code>，观察建表/导入日志（见<a href="#start">图 J4-2</a>）；再用 <code>sqlite3 db.sqlite</code> 查表与数据（见<a href="#verify">图 J4-3</a>）。</p>
+        </li>
+      </ol>
+
+      <div class="note warn">
+        <span class="note-title">⚠️ 注意点</span>
+        <ul style="margin-bottom:0">
+          <li><b>CSV 必须在 <code>db/data/</code></b>：放错目录（如直接放 <code>db/</code>）启动时不会导入，表是空的。</li>
+          <li><b>SQLite 是文件型</b>：无服务器进程、无端口，别去找「SQLite 服务」。数据库就是一个 <code>db.sqlite</code> 文件。</li>
+          <li><b>模型变化会重建表</b>：<code>schema.cds</code> 改动后重新 <code>mvn</code> 编译再启动，框架会按新模型重建表——本地 SQLite 直接重建即可；生产 HANA 需走部署迁移，不要手工 <code>DROP</code>。</li>
+          <li><b>生产勿用 SQLite</b>：SQLite 单机单写、并发弱，只用于本地开发；生产用 HANA Cloud（见 J4.7）。</li>
+        </ul>
+      </div>
+
+      <div class="pagenav">
+        <a href="step1-project.html"><small>← 上一章</small><b>手顺1：建立 Java 项目</b></a>
+        <a class="next" href="step3-dto.html"><small>下一章 →</small><b>手顺3：DTO → 生成模型与服务</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · CAP for Java · 第 J4 章 手顺2 配置链接与建库建表</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

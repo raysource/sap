@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>手顺1：项目初始化 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../index.html">首页</a>
+      <a class="tab" href="../rap/overview.html">RAP 培训</a>
+      <a class="tab active" href="overview.html">CAP 培训</a>
+      <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">CAP 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="overview.html"><span class="num">1</span>CAP 概述</a>
+      <a class="snav" href="prep.html"><span class="num">2</span>环境准备</a>
+      <a class="snav active" href="step1-init.html"><span class="num">3</span>手顺1：项目初始化</a>
+      <a class="snav" href="step2-model.html"><span class="num">4</span>手顺2：数据模型与服务</a>
+      <a class="snav" href="step3-implement.html"><span class="num">5</span>手顺3：业务逻辑实现</a>
+      <a class="snav" href="step4-test.html"><span class="num">6</span>手顺4：启动、测试与 Fiori</a>
+      <a class="snav" href="testdata.html"><span class="num">7</span>测试数据</a>
+    </nav>
+    <div class="snav-group">CAP for Java（Java 运行时）</div>
+    <a class="snav" href="java/overview.html"><span class="num">J1</span>Java 概述</a>
+    <a class="snav" href="java/prep.html"><span class="num">J2</span>环境准备</a>
+    <a class="snav" href="java/step1-project.html"><span class="num">J3</span>手顺1：建立 Java 项目</a>
+    <a class="snav" href="java/step2-db.html"><span class="num">J4</span>手顺2：配置链接与建库建表</a>
+    <a class="snav" href="java/step3-dto.html"><span class="num">J5</span>手顺3：DTO → 生成模型与服务</a>
+    <a class="snav" href="java/step4-test.html"><span class="num">J6</span>手顺4：运行与测试</a>
+    <div class="snav-group">BTP 与 HANA Cloud（云环境 + BAS）</div>
+    <a class="snav" href="btp/overview.html"><span class="num">B1</span>BTP 与 HANA Cloud 概述</a>
+    <a class="snav" href="btp/prep.html"><span class="num">B2</span>环境准备（BTP 账号）</a>
+    <a class="snav" href="btp/step1-hana.html"><span class="num">B3</span>手顺1：创建 HANA Cloud 实例</a>
+    <a class="snav" href="btp/step2-sql.html"><span class="num">B4</span>手顺2：HANA SQL 建表与数据</a>
+    <a class="snav" href="btp/step3-bas.html"><span class="num">B5</span>手顺3：BAS 入门</a>
+    <a class="snav" href="btp/step4-dir.html"><span class="num">B6</span>手顺4：模式一 目录式</a>
+    <a class="snav" href="btp/step5-maven.html"><span class="num">B7</span>手顺5：模式二 Maven</a>
+    <a class="snav" href="btp/step6-spring.html"><span class="num">B8</span>手顺6：模式三 Spring Boot</a>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+<a class="snav" href="../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 3 章：手顺1 —— 项目初始化</h1>
+      <p class="page-sub">cds init bookshop：一行命令生成可运行的项目骨架</p>
+      <p class="lead">环境就绪后，我们用 <code>cds init</code> 生成书店 <b>Bookshop</b> 项目骨架，安装依赖，最后用 <code>cds watch</code> 验证服务器能启动。本章只搭骨架，业务内容从第 4 章开始填写。</p>
+
+      <p>
+        <span class="badge teal">cds init</span>
+        <span class="badge teal">Node.js</span>
+        <span class="badge teal">package.json</span>
+        <span class="badge gray">cds watch</span>
+      </p>
+
+      <h2 id="init">3.1 cds init 生成项目</h2>
+      <p><code>cds init</code> 是 cds-dk 提供的项目脚手架命令，默认生成一个 <b>Node.js 运行时</b>的最小骨架。常用参数：</p>
+      <table class="doc">
+        <thead>
+          <tr><th>参数</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>cds init bookshop</code></td><td>在当前目录下创建 <code>bookshop/</code> 项目（默认 Node.js 运行时）</td></tr>
+          <tr><td><code>--mta</code></td><td>同时生成 MTA（Multitarget Application）部署描述文件，供后续部署到 Cloud Foundry 使用</td></tr>
+          <tr><td><code>--java</code></td><td>改用 Java 运行时（本项目用 Node.js，不使用）</td></tr>
+          <tr><td><code>--force</code></td><td>目录已存在时强制覆盖</td></tr>
+        </tbody>
+      </table>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">终端 — cds init bookshop</span></div>
+          <div class="term">
+            <div><span class="p">$</span> <span class="path">cds init bookshop</span></div>
+            <div><span class="info">Creating new project in folder ./bookshop</span></div>
+            <div>&nbsp;</div>
+            <div>&nbsp;&nbsp;creating ./bookshop/app</div>
+            <div>&nbsp;&nbsp;creating ./bookshop/db</div>
+            <div>&nbsp;&nbsp;creating ./bookshop/srv</div>
+            <div>&nbsp;&nbsp;creating ./bookshop/package.json</div>
+            <div>&nbsp;&nbsp;creating ./bookshop/.cdsrc.json</div>
+            <div>&nbsp;&nbsp;creating ./bookshop/README.md</div>
+            <div>&nbsp;&nbsp;creating ./bookshop/.gitignore</div>
+            <div>&nbsp;</div>
+            <div><span class="ok">Done. Next steps:</span></div>
+            <div>&nbsp;&nbsp;cd bookshop</div>
+            <div>&nbsp;&nbsp;npm install</div>
+            <div>&nbsp;&nbsp;cds watch</div>
+          </div>
+        </div>
+        <div class="cap"><b>图 3-1</b> <code>cds init bookshop</code> 生成项目骨架，并提示下一步操作</div>
+      </div>
+
+      <h2 id="structure">3.2 生成的项目结构</h2>
+      <p>生成的 <code>bookshop/</code> 目录遵循 CAP 的「三目录」约定（对照第 1 章）：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">bookshop — 初始项目结构</span></div>
+          <div class="tree">
+            <div class="row"><span class="i">▾</span><span class="folder">📁</span> bookshop/</div>
+            <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> app/ <span style="color:var(--text-faint);font-size:11px">← 前端（Fiori / UI5）目录，先为空</span></div>
+            <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> db/ <span style="color:var(--text-faint);font-size:11px">← 数据模型 + 种子数据</span></div>
+            <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> schema.cds <span style="color:var(--text-faint);font-size:11px">（空模板）</span></div>
+            <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> srv/ <span style="color:var(--text-faint);font-size:11px">← 服务定义 + 业务逻辑，先为空</span></div>
+            <div class="row"><span class="pad"></span><span class="i"></span><span class="file">📄</span> package.json</div>
+            <div class="row"><span class="pad"></span><span class="i"></span><span class="file">📄</span> .cdsrc.json</div>
+            <div class="row"><span class="pad"></span><span class="i"></span><span class="file">📄</span> README.md</div>
+            <div class="row"><span class="pad"></span><span class="i"></span><span class="file">📄</span> .gitignore</div>
+          </div>
+        </div>
+        <div class="cap"><b>图 3-2</b> 初始骨架只有三个顶层目录 <code>app</code> / <code>db</code> / <code>srv</code> 加上配置文件</div>
+      </div>
+
+      <p>逐目录职责：</p>
+      <div class="grid cols-3">
+        <div class="card">
+          <h3>📁 app/</h3>
+          <p>前端应用目录。存放 Fiori Elements / UI5 应用（如第 6 章的 List Report）。初始为空。</p>
+        </div>
+        <div class="card">
+          <h3>📁 db/</h3>
+          <p>数据层。核心文件 <code>schema.cds</code> 声明实体；<code>db/data/</code> 放 CSV 种子数据。</p>
+        </div>
+        <div class="card">
+          <h3>📁 srv/</h3>
+          <p>服务层。<code>srv/*.cds</code> 声明 OData 服务，<code>srv/*.js</code> 写业务逻辑。</p>
+        </div>
+      </div>
+
+      <h2 id="install">3.3 安装依赖</h2>
+      <p><code>cds init</code> 只生成了 <code>package.json</code>，还没有安装 <code>@sap/cds</code> 等依赖。进入目录执行 <code>npm install</code>：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">终端 — npm install</span></div>
+          <div class="term">
+            <div><span class="p">$</span> <span class="path">cd bookshop</span></div>
+            <div><span class="p">$</span> <span class="path">npm install</span></div>
+            <div><span class="info">npm</span> notice created a lockfile as package-lock.json.</div>
+            <div><span class="info">npm</span> warn optional SKIPPING OPTIONAL DEPENDENCY: fsevents@2.3.3 (node_modules/fsevents)</div>
+            <div>&nbsp;</div>
+            <div><span class="info">added</span> 121 packages, and audited 122 packages in 9s</div>
+            <div><span class="ok">found 0 vulnerabilities</span></div>
+          </div>
+        </div>
+        <div class="cap"><b>图 3-3</b> <code>npm install</code> 安装 <code>@sap/cds</code> 及全部传递依赖，生成 <code>package-lock.json</code></div>
+      </div>
+
+      <h2 id="vscode-open">3.4 用 VS Code 打开项目</h2>
+      <p>安装完依赖，用 <code>code bookshop</code> 命令把项目目录交给 VS Code（<code>code</code> 命令由 VS Code 安装时自动加入 PATH）：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="vscode">
+            <div class="vs-top"><span>文件(F)</span><span>编辑(E)</span><span>选择(S)</span><span>查看(V)</span><span>运行(R)</span><span style="margin-left:auto">bookshop — db/schema.cds</span></div>
+            <div class="vs-body">
+              <div class="vs-activity"><span class="on">📁</span><span>🔍</span><span>🌿</span><span>▶️</span></div>
+              <div class="vs-explorer">
+                <div style="color:#8a8a8a;font-size:11px;padding:4px 6px">资源管理器</div>
+                <div class="tree">
+                  <div class="row"><span class="i">▾</span><span class="folder">📁</span> BOOKSHOP</div>
+                  <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> app</div>
+                  <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> db</div>
+                  <div class="row sel"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> schema.cds</div>
+                  <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> srv</div>
+                  <div class="row"><span class="pad"></span><span class="i"></span><span class="file">📄</span> .cdsrc.json</div>
+                  <div class="row"><span class="pad"></span><span class="i"></span><span class="file">📄</span> package.json</div>
+                  <div class="row"><span class="pad"></span><span class="i"></span><span class="file">📄</span> README.md</div>
+                  <div class="row"><span class="pad"></span><span class="i"></span><span class="file">📄</span> .gitignore</div>
+                </div>
+              </div>
+              <div class="vs-editor">
+                <pre class="ed" style="padding-top:38px"><code class="language-cds">// db/schema.cds —— 数据模型（第 4 章开始填写）</code></pre>
+              </div>
+            </div>
+            <div class="vs-status"><span>✓ 0 错误</span><span>✓ 0 警告</span><span>UTF-8</span><span>Ln 1, Col 1</span></div>
+          </div>
+        </div>
+        <div class="cap"><b>图 3-4</b> VS Code 打开项目：资源管理器显示骨架文件，编辑器打开空的 <code>db/schema.cds</code> 模板</div>
+      </div>
+
+      <h2 id="config">3.5 认识 package.json 与 .cdsrc.json</h2>
+      <p><code>package.json</code> 声明了项目的依赖与脚本（<code>cds init</code> 生成的默认内容）：</p>
+
+<pre><code class="language-json">{
+  "name": "bookshop",
+  "version": "1.0.0",
+  "description": "A simple bookshop for demonstration purposes",
+  "dependencies": {
+    "@sap/cds": "^8"
+  },
+  "scripts": {
+    "start": "cds serve",
+    "watch": "cds watch"
+  }
+}
+</code></pre>
+
+      <ul>
+        <li><b><code>"dependencies"</code></b>：核心依赖 <code>@sap/cds</code>（CAP 运行时）。后续第 4 章加模型、第 6 章加 Fiori 时，可能需要追加依赖。</li>
+        <li><b><code>"scripts"</code></b>：<code>npm start</code> 等价 <code>cds serve</code>（生产启动）；<code>npm run watch</code> 等价 <code>cds watch</code>（开发热重载）。</li>
+      </ul>
+
+      <p><code>.cdsrc.json</code> 是 CAP 的配置文件，可以放部署（mta）、数据库、日志等全局配置。初始内容很简略：</p>
+
+<pre><code class="language-json">{
+  "mta": {
+    "name": "bookshop"
+  },
+  "db": {
+    "database": "sqlite"
+  }
+}
+</code></pre>
+
+      <p><code>"db": { "database": "sqlite" }</code> 明确本地开发使用 SQLite，生产部署时替换为 HANA Cloud。</p>
+
+      <h2 id="verify">3.6 首次启动验证</h2>
+      <p>骨架搭好了，先跑一次 <code>cds watch</code> 确认服务器能启动（OData 接口与业务内容的测试放到第 6 章深入）。<code>cds watch</code> 会实时监听文件变化，改动保存后自动重载：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">终端 — cds watch</span></div>
+          <div class="term">
+            <div><span class="p">$</span> <span class="path">cds watch</span></div>
+            <div><span class="info">[cds]</span> - watching for changes ...</div>
+            <div><span class="info">[cds]</span> - serving empty service { path: '/' }</div>
+            <div><span class="info">[cds]</span> - server listening on <span class="ok">http://localhost:4004</span></div>
+            <div><span class="info">[cds]</span> - [ terminate with ^C ]</div>
+          </div>
+        </div>
+        <div class="cap"><b>图 3-5</b> <code>cds watch</code> 启动开发服务器，监听 <code>http://localhost:4004</code>；此时还没有任何服务，第 4 章添加模型后此处会列出服务路径</div>
+      </div>
+
+      <h2 id="steps">3.7 操作手顺</h2>
+      <ol class="steps teal">
+        <li><p><span class="step-title">生成项目骨架</span></p>
+          <p>在想要放项目的目录执行 <code>cds init bookshop</code>（需要 MTA 部署文件可加 <code>--mta</code>），确认输出见<a href="#init">图 3-1</a>。</p>
+        </li>
+        <li><p><span class="step-title">查看项目结构</span></p>
+          <p>对照<a href="#structure">图 3-2</a>逐目录检查 <code>app/</code>、<code>db/</code>、<code>srv/</code> 与配置文件是否齐全。</p>
+        </li>
+        <li><p><span class="step-title">安装依赖</span></p>
+          <p>执行 <code>cd bookshop &amp;&amp; npm install</code>，等待出现 <code>added 121 packages ... found 0 vulnerabilities</code>（见<a href="#install">图 3-3</a>）。</p>
+        </li>
+        <li><p><span class="step-title">用 VS Code 打开项目</span></p>
+          <p>执行 <code>code bookshop</code>，确认资源管理器能看到项目文件（见<a href="#vscode-open">图 3-4</a>）。</p>
+        </li>
+        <li><p><span class="step-title">启动验证</span></p>
+          <p>执行 <code>cds watch</code>，看到 <code>server listening on http://localhost:4004</code> 即骨架可运行（见<a href="#verify">图 3-5</a>）。按 <code>Ctrl+C</code> 停止。</p>
+        </li>
+      </ol>
+
+      <div class="note warn">
+        <span class="note-title">⚠️ 首次安装与端口注意事项</span>
+        <ul>
+          <li><b>首次 npm install 较慢</b>：需要下载上百个包，耐心等待；若卡住可先配置镜像源（见第 2 章）。</li>
+          <li><b>端口 4004 被占用</b>：报 <code>EADDRINUSE</code> 时换个端口：<code>cds watch --port 4005</code>。</li>
+          <li><b>包版本</b>：<code>@sap/cds: ^8</code> 会解析为当前最新的 8.x，功能与本教材一致。</li>
+        </ul>
+      </div>
+
+      <div class="pagenav">
+        <a href="prep.html"><small>← 上一章</small><b>第 2 章：环境准备</b></a>
+        <a class="next" href="step2-model.html"><small>下一章 →</small><b>手顺2：数据模型与服务</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · CAP 培训 · 第 3 章 手顺1：项目初始化</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>主要元素控件讲解 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../index.html">首页</a>
+      <a class="tab" href="../rap/overview.html">RAP 培训</a>
+      <a class="tab" href="../cap/overview.html">CAP 培训</a>
+      <a class="tab active" href="overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">Fiori 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="overview.html"><span class="num">F1</span>Fiori 概述</a>
+      <a class="snav" href="step1-list.html"><span class="num">F2</span>手顺1：List Report</a>
+      <a class="snav" href="step2-object.html"><span class="num">F3</span>手顺2：Object Page 与 Facets</a>
+      <a class="snav" href="step3-action.html"><span class="num">F4</span>手顺3：Action 与双线集成</a>
+      <a class="snav active" href="elements.html"><span class="num">F5</span>主要元素控件讲解</a>
+      <a class="snav" href="templates.html"><span class="num">F6</span>页面模板详解</a>
+    </nav>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <a class="snav" href="../cap/overview.html"><span class="num">C</span>CAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 F5 章：主要元素控件讲解</h1>
+      <p class="page-sub">Smart Controls 与 UI5 基础控件 · 「注解 → 控件」的装配对照</p>
+      <p class="lead">Fiori Elements 页面上的每个部件都对应一个<b>控件</b>：筛选栏、表格、表单、按钮、徽标……本章把「注解写到哪 → 页面上长出什么控件」的对应关系讲透，再速查一组最常用的 <b>sap.m 基础控件</b>（做 Freestyle 扩展时手写它们）。</p>
+
+      <p>
+        <span class="badge teal">Smart Controls</span>
+        <span class="badge teal">sap.m</span>
+        <span class="badge blue">Smart Filter Bar</span>
+        <span class="badge blue">Smart Table</span>
+        <span class="badge blue">Smart Form</span>
+        <span class="badge gray">Freestyle 扩展</span>
+      </p>
+
+      <h2 id="layers">F5.1 两个层次：Smart Controls 与 UI5 基础控件</h2>
+      <p>Fiori 前端控件分两层，职责完全不同：</p>
+      <div class="grid cols-2">
+        <div class="card">
+          <h3>① Smart Controls（智能控件）</h3>
+          <p>Fiori Elements 的<b>装配件</b>：读取 OData 元数据与 <code>@UI</code> 注解自动生成内容。你声明「有什么」，它决定「长什么样」。例如 Smart Filter Bar 根据 <code>SelectionFields</code> 自动生成筛选项，改注解即改 UI。</p>
+        </div>
+        <div class="card">
+          <h3>② UI5 基础控件（sap.m / sap.ui.table…）</h3>
+          <p>UI5 框架的<b>原子积木</b>：Input、Table、Button 这类单个控件。Smart Controls 内部也是由它们拼装的；你在 <b>Freestyle 页面 / 自定义扩展</b>里手写的就是这一层。</p>
+        </div>
+      </div>
+      <div class="note">
+        <span class="note-title">💡 一句话区分</span>
+        用 Fiori Elements 默认模板 → 你碰 Smart Controls（写注解）；写自定义页面、自定义列、自定义 View 扩展 → 你碰 UI5 基础控件（写 XML/JS）。Smart Controls 是「别人按注解帮你拼好的 UI5 基础控件」。
+      </div>
+
+      <h2 id="map">F5.2 一张图看懂 List Report 上的控件</h2>
+      <p>以 F2 的 Books 列表页为例，标注每个区域由哪个（类）控件渲染：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">List Report — 控件标注</span></div>
+          <div class="fi">
+            <div class="fi-top">
+              <span class="ftitle">① Books</span>
+              <span class="fsearch">② 🔍 搜索...</span>
+              <span class="fbtn ghost" style="margin-left:auto">③ ⌁ 适应筛选项</span>
+              <span class="fbtn">④ 📊 视图设置</span>
+            </div>
+            <div class="fi-nav"><span class="on">⑤ Books</span><span>Authors</span><span>Genres</span></div>
+            <div class="fi-body">
+              <div class="fi-main">
+                <div class="fbar">
+                  <span class="field">⑥ 书名<select class="fc"><option>全部</option></select></span>
+                  <span class="field">作者<select class="fc dd"><option>全部</option></select></span>
+                  <span class="field">价格<select class="fc dd"><option>全部</option></select></span>
+                  <span class="fbtn primary">⑦ 筛选</span>
+                  <span class="fbtn ghost">重置</span>
+                  <span class="fbtn teal" style="margin-left:auto">⑧ 创建</span>
+                </div>
+                <table class="tbl">
+                  <thead><tr><th>⑨ 书名</th><th>作者</th><th>分类</th><th>价格</th><th>库存</th></tr></thead>
+                  <tbody>
+                    <tr><td>⑩ Wuthering Heights</td><td>Emily Brontë</td><td>Fiction</td><td class="num">⑪ 11.11 EUR</td><td class="num"><span class="st a">充足</span></td></tr>
+                    <tr><td>The Raven -- 畅销</td><td>George Orwell</td><td>Poetry</td><td class="num">8.00 EUR</td><td class="num">333</td></tr>
+                    <tr><td>Pride and Prejudice</td><td>Jane Austen</td><td>Fiction</td><td class="num">24.99 EUR</td><td class="num">10</td></tr>
+                  </tbody>
+                </table>
+                <div style="margin-top:8px;display:flex;gap:6px;align-items:center;font-size:11px;color:var(--text-faint)">
+                  <span>⑫ 共 10 条</span><span>·</span><span>‹ 1 2 3 ›</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 F5-1</b> List Report 各区域对应控件（①②③…见下方对照表）</div>
+      </div>
+
+      <table class="doc">
+        <thead>
+          <tr><th style="width:60px">编号</th><th>页面区域</th><th>渲染控件</th><th>由什么注解/配置生成</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>①</td><td>页面标题</td><td><code>sap.m.Title</code>（List Report 页头）</td><td><code>UI.HeaderInfo</code> 的 TypeNamePlural</td></tr>
+          <tr><td>②</td><td>全局搜索</td><td><code>SearchField</code></td><td>模板内置（可搜注解为 <code>@Search.searchable</code> 的字段）</td></tr>
+          <tr><td>③④</td><td>视图设置 / 变式</td><td><code>Smart Variant Management</code></td><td>模板内置，保存筛选条件为「变式」</td></tr>
+          <tr><td>⑤</td><td>导航页签</td><td><code>sap.m.IconTabBar</code></td><td>模板内置（多实体时自动分页签）</td></tr>
+          <tr><td>⑥</td><td>筛选栏</td><td><code>Smart Filter Bar</code></td><td><code>UI.SelectionFields</code> 列出的字段</td></tr>
+          <tr><td>⑦</td><td>筛选/重置按钮</td><td><code>sap.m.Button</code>（FilterBar 动作区）</td><td>Smart Filter Bar 自动生成</td></tr>
+          <tr><td>⑧</td><td>创建按钮</td><td><code>sap.m.Button</code>（工具栏）</td><td>实体可写（非 <code>@readonly</code>）时自动出现</td></tr>
+          <tr><td>⑨</td><td>表格列头</td><td><code>Smart Table</code> + <code>sap.m.Column</code></td><td><code>UI.LineItem</code> 数组每个元素一列</td></tr>
+          <tr><td>⑩</td><td>单元格（链接）</td><td><code>sap.m.Link</code></td><td>SemanticKey 字段自动变成跳转链接</td></tr>
+          <tr><td>⑪</td><td>数值单元格</td><td><code>sap.m.Text</code> + 右对齐格式</td><td>字段类型（Decimal/Integer）自动格式化</td></tr>
+          <tr><td>⑫</td><td>分页/计数</td><td><code>sap.m.PagingButton</code> / 计数文本</td><td>Smart Table 根据 <code>$count</code> 生成</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="smart">F5.3 Smart Controls 速查</h2>
+      <p>Fiori Elements 里真正「智能」的装配控件集中在 <code>sap.ui.comp</code> 与 <code>sap.uxap</code>：</p>
+      <table class="doc">
+        <thead>
+          <tr><th>控件</th><th>作用</th><th>出现的页面</th><th>对应注解</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>Smart Filter Bar</b></td><td>按元数据生成筛选表单，支持范围、下拉、日期</td><td>List Report 筛选栏</td><td><code>UI.SelectionFields</code></td></tr>
+          <tr><td><b>Smart Table</b></td><td>自动建表 + 分页 + 个性化列 + 变式保存</td><td>List Report 主体 / Object Page 子表</td><td><code>UI.LineItem</code></td></tr>
+          <tr><td><b>Smart Form</b> / <b>Smart Field</b></td><td>按字段类型与注解渲染表单：输入框、下拉、日期、值帮助</td><td>Object Page Facet 表单 / 编辑页</td><td><code>UI.FieldGroup</code>、<code>UI.Identification</code></td></tr>
+          <tr><td><b>Smart Variant Management</b></td><td>把筛选+列设置存成「变式」，供团队复用</td><td>List Report / Object Page 顶栏</td><td>模板内置</td></tr>
+          <tr><td><b>Object Page Layout</b></td><td>详情页骨架：Header + Facet 区块、页签、锚点导航</td><td>Object Page 本身</td><td><code>UI.Facets</code>（内容区块）</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="uibasics">F5.4 UI5 基础控件速查（sap.m 为主）</h2>
+      <p>做 Freestyle 页面或给 Fiori Elements 写扩展时，手写的是这些原子控件。按用途分组记忆：</p>
+
+      <div class="grid cols-2">
+        <div class="card">
+          <h3>输入类</h3>
+          <table class="tbl">
+            <tbody>
+              <tr><td><code>Input</code></td><td>单行文本框（可配 valueHelp）</td></tr>
+              <tr><td><code>Select / ComboBox</code></td><td>下拉选择（Select 静态 / ComboBox 可输入）</td></tr>
+              <tr><td><code>DatePicker</code></td><td>日期选择器（含日历弹层）</td></tr>
+              <tr><td><code>CheckBox / Switch</code></td><td>勾选 / 开关</td></tr>
+              <tr><td><code>RadioButton</code></td><td>单选</td></tr>
+              <tr><td><code>MultiInput</code></td><td>多值输入（邮箱、标签）</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h3>显示类</h3>
+          <table class="tbl">
+            <tbody>
+              <tr><td><code>Text / Label</code></td><td>文本 / 字段标签</td></tr>
+              <tr><td><code>ObjectStatus</code></td><td>状态徽标（绿/橙/红，对应 Criticality）</td></tr>
+              <tr><td><code>ObjectNumber</code></td><td>数值高亮（大数字 + 状态色）</td></tr>
+              <tr><td><code>ObjectHeader</code></td><td>对象页顶部大标题区</td></tr>
+              <tr><td><code>ProgressIndicator</code></td><td>进度条</td></tr>
+              <tr><td><code>RatingIndicator</code></td><td>星级评分</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h3>布局 / 容器</h3>
+          <table class="tbl">
+            <tbody>
+              <tr><td><code>SimpleForm</code></td><td>标签+字段表单布局（最常用）</td></tr>
+              <tr><td><code>Grid / FlexBox</code></td><td>栅格 / 弹性布局</td></tr>
+              <tr><td><code>Panel</code></td><td>带标题的面板</td></tr>
+              <tr><td><code>IconTabBar</code></td><td>页签（页签过滤、页签区）</td></tr>
+              <tr><td><code>Dialog / Popover</code></td><td>模态对话框 / 气泡</td></tr>
+              <tr><td><code>Toolbar</code></td><td>按钮工具条</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h3>数据展示 / 反馈 / 语义</h3>
+          <table class="tbl">
+            <tbody>
+              <tr><td><code>Table / List</code></td><td>表格 / 列表（sap.m）</td></tr>
+              <tr><td><code>sap.ui.table.Table</code></td><td>高性能表格（列固定、大数据）</td></tr>
+              <tr><td><code>MessageStrip / MessageBox</code></td><td>内嵌提示条 / 弹窗消息</td></tr>
+              <tr><td><code>BusyIndicator</code></td><td>加载遮罩</td></tr>
+              <tr><td><code>semantic.SemanticButton</code></td><td>语义按钮（保存/编辑/删除，图标+文案固定）</td></tr>
+              <tr><td><code>VizFrame</code></td><td>图表（sap.viz：柱/饼/线）</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <h2 id="freestyle">F5.5 什么时候手写控件：一个 Freestyle 小例子</h2>
+      <p>当注解表达不了需求（比如做一个特殊的统计卡片），就新建自定义页面，手写 UI5 控件。一个最小例子——用 <code>sap.m</code> 控件拼一张「库存速览」页（XML 视图 + 控制器里取数）：</p>
+
+<pre><code class="language-xml">&lt;!-- app/inventory/inventory.view.xml —— 手写 UI5 控件 --&gt;
+&lt;mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+          controllerName="cap.bookshop.inventory"&gt;
+  &lt;Page title="库存速览"&gt;
+    &lt;Toolbar&gt;
+      &lt;Input id="book" placeholder="输入书 ID" width="180px"/&gt;
+      &lt;Button text="查询" press="onQuery"/&gt;
+    &lt;/Toolbar&gt;
+    &lt;List id="list" items="{/Books}"&gt;
+      &lt;ObjectListItem
+          title="{title}"
+          number="{stock}"
+          numberUnit="件"
+          status="{= ${stock} &gt; 0 ? 'In Stock' : 'Sold Out'}"/&gt;
+    &lt;/List&gt;
+    &lt;MessageStrip id="msg" visible="false" type="Error" text="库存不足"/&gt;
+  &lt;/Page&gt;
+&lt;/mvc:View&gt;</code></pre>
+
+      <ul>
+        <li><b>Page</b>：页面骨架（页头 + 内容 + 页脚）。</li>
+        <li><b>Toolbar + Input + Button</b>：查询条件区；按钮事件绑到控制器 <code>onQuery</code>。</li>
+        <li><b>List + ObjectListItem</b>：数据绑定到 <code>/Books</code>（OData 集合），字段用 <code>{title}</code> 花括号表达式绑定。</li>
+        <li><b>MessageStrip</b>：业务校验失败时的内嵌错误提示。</li>
+        <li><b>表达式绑定</b>：<code>= ${stock} &gt; 0 ? …</code> 这种行内逻辑无需写控制器代码。</li>
+      </ul>
+      <div class="note">
+        <span class="note-title">📌 学习路径建议</span>
+        先掌握 F1–F4 的「注解优先」，把 Smart Controls 用熟；需要自由排版、复杂交互或图表时再引入 Freestyle 手写控件。Smart Controls 能覆盖 80% 的标准企业页面。
+      </div>
+
+      <h2 id="explore">F5.6 动手观察：在预览页里找控件</h2>
+      <ol class="steps teal">
+        <li><p><span class="step-title">打开 F2 的 List Report 预览</span></p>
+          <p><code>cds watch</code> 后访问 <code>http://localhost:4004/app/books/index.html</code>。</p>
+        </li>
+        <li><p><span class="step-title">按对照表逐区认领</span></p>
+          <p>用 F5.2 的编号在页面上找：筛选栏（Smart Filter Bar）、表格（Smart Table）、标题（HeaderInfo）、分页条。</p>
+        </li>
+        <li><p><span class="step-title">改注解看变化</span></p>
+          <p>给 <code>LineItem</code> 增删一列，或给 <code>SelectionFields</code> 增删一个筛选字段，刷新页面——观察对应控件区域随之变化，这就是「注解驱动」。</p>
+        </li>
+        <li><p><span class="step-title">F12 看控件树</span></p>
+          <p>浏览器按 F12 → Elements / 调试器，搜索 <code>smartfilterbar</code>、<code>smarttable</code> 等 DOM 节点，亲眼确认控件真实身份。</p>
+        </li>
+      </ol>
+
+      <div class="pagenav">
+        <a href="step3-action.html"><small>← 上一章</small><b>手顺3：Action 与双线集成</b></a>
+        <a class="next" href="../index.html"><small>完成 →</small><b>回到培训首页</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · Fiori 培训 · 第 F5 章 主要元素控件讲解</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

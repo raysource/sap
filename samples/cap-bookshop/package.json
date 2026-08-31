@@ -1,0 +1,13 @@
+{
+  "name": "bookshop",
+  "version": "1.0.0",
+  "description": "A simple bookshop for demonstration purposes",
+  "dependencies": {
+    "@sap/cds": "^8",
+    "sqlite3": "^5.1.7"
+  },
+  "scripts": {
+    "start": "cds serve",
+    "watch": "cds watch"
+  }
+}

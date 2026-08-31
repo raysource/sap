@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>手顺1：List Report | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../index.html">首页</a>
+      <a class="tab" href="../rap/overview.html">RAP 培训</a>
+      <a class="tab" href="../cap/overview.html">CAP 培训</a>
+      <a class="tab active" href="overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">Fiori 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="overview.html"><span class="num">F1</span>Fiori 概述</a>
+      <a class="snav active" href="step1-list.html"><span class="num">F2</span>手顺1：List Report</a>
+      <a class="snav" href="step2-object.html"><span class="num">F3</span>手顺2：Object Page 与 Facets</a>
+      <a class="snav" href="step3-action.html"><span class="num">F4</span>手顺3：Action 与双线集成</a>
+      <a class="snav" href="elements.html"><span class="num">F5</span>主要元素控件讲解</a>
+      <a class="snav" href="templates.html"><span class="num">F6</span>页面模板详解</a>
+    </nav>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <a class="snav" href="../cap/overview.html"><span class="num">C</span>CAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 F2 章：手顺1 —— List Report</h1>
+      <p class="page-sub">cds add fiori 脚手架生成 → annotate.cds 定制列与筛选 → 浏览器预览</p>
+      <p class="lead">在 <a href="../cap/step4-test.html">CAP 手顺4</a> 里我们手写过 <code>annotate.cds + manifest.json</code>；本章用<b>脚手架</b>（<code>cds add fiori</code>）自动生成同样的一堆文件，再通过注解把列表定制成想要的业务页面。前置条件：Bookshop 工程能 <code>cds watch</code> 启动（用 <a href="../downloads.html#cap-node">素材包</a> 即可）。</p>
+
+      <p>
+        <span class="badge teal">cds add fiori</span>
+        <span class="badge teal">annotate.cds</span>
+        <span class="badge teal">List Report</span>
+        <span class="badge gray">manifest.json</span>
+        <span class="badge gray">Fiori Tools</span>
+      </p>
+
+      <h2 id="scaffold">F2.1 步骤1：脚手架生成 List Report</h2>
+      <p>在工程根目录执行 <code>cds add fiori</code>（由 <code>@sap/cds-fiori</code> 插件提供；旧版需先 <code>npm i -D @sap/cds-fiori</code>）。命令是<b>交互式</b>的，按提示选择：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">终端 — cds add fiori</span></div>
+          <div class="term">
+            <div><span class="p">$</span> <span class="path">cds add fiori</span></div>
+            <div>&nbsp;</div>
+            <div>? &nbsp;Which service should be used? <span class="ok">CatalogService</span></div>
+            <div>? &nbsp;Which entity should be used? <span class="ok">Books</span></div>
+            <div>? &nbsp;Which template? <span class="ok">List Report Object Page</span></div>
+            <div>&nbsp;</div>
+            <div><span class="info">[fiori]</span> - adding app 'books' ...</div>
+            <div><span class="info">[fiori]</span> - writing app/books/manifest.json</div>
+            <div><span class="info">[fiori]</span> - writing app/books/annotate.cds</div>
+            <div><span class="info">[fiori]</span> - writing app/books/index.html</div>
+            <div><span class="ok">done</span></div>
+          </div>
+        </div>
+        <div class="cap"><b>图 F2-1</b> <code>cds add fiori</code> 交互选择服务 / 实体 / 模板，自动生成 <code>app/books/</code> 三件套</div>
+      </div>
+
+      <p>生成后工程多出 <code>app/books/</code> 目录，与手写方式的结构完全一致——脚手架只是把 <a href="../cap/step4-test.html#fiori">CAP 手顺4 6.3</a> 的「三件套」代劳了：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">bookshop — 生成后新增</span></div>
+          <div class="tree">
+            <div class="row"><span class="i">▾</span><span class="folder">📁</span> app/</div>
+            <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> books/ <span style="color:var(--text-faint);font-size:11px">← Fiori Elements List Report</span></div>
+            <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> annotate.cds <span style="color:var(--text-faint);font-size:11px">← @UI 注解（改 UI 就改这里）</span></div>
+            <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> manifest.json <span style="color:var(--text-faint);font-size:11px">← 应用配置 / 数据源</span></div>
+            <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> index.html <span style="color:var(--text-faint);font-size:11px">← 引导页</span></div>
+          </div>
+        </div>
+        <div class="cap"><b>图 F2-2</b> 生成结果：三个文件，每个职责单一；与手写方式的文件一一对应</div>
+      </div>
+
+      <h2 id="annotate">F2.2 步骤2：用 annotate.cds 定制列表</h2>
+      <p>打开 <code>app/books/annotate.cds</code>，把默认占位注解换成业务定制的：列表标题、可筛选字段（<code>SelectionFields</code>）与表格列（<code>LineItem</code>）：</p>
+
+<pre><code class="language-cds">// app/books/annotate.cds —— 定制 Books 列表
+using CatalogService as service from '../../srv/cat-service';
+
+annotate service.Books with @(
+  UI : {
+    HeaderInfo : {
+      TypeName : 'Book', TypeNamePlural : 'Books',
+      Title : { Value : 'title' },
+      Description : { Value : 'author.name' }
+    },
+    SelectionFields : ['title', 'author.name', 'price'],   // ← 筛选栏出现 3 个筛选项
+    LineItem : [
+      { Value : 'title', Label : '书名' },
+      { Value : 'author.name', Label : '作者' },
+      { Value : 'genre.name', Label : '分类' },
+      { Value : 'price', Label : '价格' },
+      { Value : 'stock', Label : '库存' },
+      { Value : 'stock', Label : '状态', Criticality : 'criticality' } // 预留，见 F4
+    ]
+  },
+  Common.SemanticKey : ['ID']
+);
+</code></pre>
+
+      <ul>
+        <li><b><code>UI.HeaderInfo</code></b>：列表页与对象页的标题区——单复数名、主标题字段、描述字段（这里直接显示作者姓名，<code>author.name</code> 是关联路径）。</li>
+        <li><b><code>UI.SelectionFields</code></b>：声明<b>筛选栏</b>出现哪些字段，用户可组合过滤；不声明则无筛选栏。</li>
+        <li><b><code>UI.LineItem</code></b>：表格列定义；<code>Value</code> 支持关联路径（<code>genre.name</code>）把外键列渲染成可读名称。</li>
+        <li><b>相对路径</b>：<code>annotate.cds</code> 在 <code>app/books/</code> 下时，<code>using ... from</code> 指向 <code>../../srv/cat-service</code>（回到<a href="../cap/step4-test.html">CAP 手顺4</a> 复习路径规则）。</li>
+      </ul>
+
+      <div class="note">
+        <span class="note-title">💡 脚手架 vs 手写</span>
+        <code>cds add fiori</code> 只是<b>生成初始文件</b>，之后定制仍靠手写注解。两种方式产出的文件与效果完全等价——脚手架适合起步，手写适合已存在的工程。企业级开发常用 VS Code 的 <b>Fiori Tools</b>（Application Generator）以向导方式完成同样的事，原理一致。<b>想直接拿最终成果</b>：<a href="../downloads.html#fiori">Fiori 素材包</a>（<code>samples/fiori-bookshop</code>）提供了做完 F2–F4 后的 <code>app/books/</code> 三件套，复制进 Bookshop 工程即得完整页面。
+      </div>
+
+      <h2 id="preview">F2.3 步骤3：预览</h2>
+      <p><code>cds watch</code> 会自动拾取 <code>app/</code> 下的新应用。浏览器打开 <code>http://localhost:4004/app/books/index.html</code>，即可看到定制后的 List Report——筛选栏、标题区、5 列表格全部来自注解：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">Fiori Elements — List Report（Books）</span></div>
+          <div class="fi">
+            <div class="fi-top">
+              <span class="ftitle">Books</span>
+              <span class="fsearch">🔍 搜索书名或作者...</span>
+              <span class="fbtn ghost" style="margin-left:auto">⌁ 适应筛选项</span>
+              <span class="fbtn">📊 视图设置</span>
+            </div>
+            <div class="fi-nav"><span class="on">Books</span><span>Authors</span><span>Genres</span></div>
+            <div class="fi-body">
+              <div class="fi-main">
+                <div class="fbar">
+                  <span class="field">书名<select class="fc"><option>全部</option><option>Wuthering Heights</option></select></span>
+                  <span class="field">作者<select class="fc dd"><option>全部</option></select></span>
+                  <span class="field">价格<select class="fc dd"><option>全部</option></select></span>
+                  <span class="fbtn primary">筛选</span>
+                  <span class="fbtn ghost">重置</span>
+                  <span class="fbtn teal" style="margin-left:auto">创建</span>
+                </div>
+                <table class="tbl">
+                  <thead><tr><th>书名</th><th>作者</th><th>分类</th><th>价格</th><th>库存</th></tr></thead>
+                  <tbody>
+                    <tr><td>Wuthering Heights</td><td>Emily Brontë</td><td>Fiction</td><td class="num">11.11 EUR</td><td class="num">12</td></tr>
+                    <tr class="sel"><td>The Raven -- 畅销</td><td>George Orwell</td><td>Poetry</td><td class="num">8.00 EUR</td><td class="num">333</td></tr>
+                    <tr><td>Pride and Prejudice</td><td>Jane Austen</td><td>Fiction</td><td class="num">24.99 EUR</td><td class="num">10</td></tr>
+                    <tr><td>1Q84</td><td>Haruki Murakami</td><td>Fiction</td><td class="num">33.00 EUR</td><td class="num">100</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 F2-3</b> 定制后的 List Report：筛选栏来自 <code>SelectionFields</code>，表格列来自 <code>LineItem</code>，数据来自 Bookshop 种子数据</div>
+      </div>
+
+      <h2 id="steps">F2.4 操作手顺</h2>
+      <ol class="steps teal">
+        <li><p><span class="step-title">启动工程</span></p>
+          <p>复制 <a href="../downloads.html#cap-node">素材包</a> <code>samples/cap-bookshop</code>，<code>npm install</code> 后 <code>cds watch</code>，确认 <code>http://localhost:4004/odata/v4/catalog</code> 可访问。</p>
+        </li>
+        <li><p><span class="step-title">生成脚手架</span></p>
+          <p>执行 <code>cds add fiori</code>，依次选择 <code>CatalogService</code> → <code>Books</code> → <code>List Report Object Page</code>（见<a href="#scaffold">图 F2-1</a>）。</p>
+        </li>
+        <li><p><span class="step-title">定制注解</span></p>
+          <p>按 <a href="#annotate">F2.2</a> 改写 <code>app/books/annotate.cds</code>：HeaderInfo、SelectionFields、LineItem。</p>
+        </li>
+        <li><p><span class="step-title">预览验证</span></p>
+          <p>刷新 <code>http://localhost:4004/app/books/index.html</code>，确认筛选栏 3 个筛选项、5 列表格与<a href="#preview">图 F2-3</a>一致。</p>
+        </li>
+      </ol>
+
+      <div class="pagenav">
+        <a href="overview.html"><small>← 上一章</small><b>F1 Fiori 概述</b></a>
+        <a class="next" href="step2-object.html"><small>下一步 →</small><b>手顺2：Object Page 与 Facets</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · Fiori 培训 · 第 F2 章 手顺1 List Report</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

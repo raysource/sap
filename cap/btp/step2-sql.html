@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 B4 章：手顺2 HANA SQL 建表与数据 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../../index.html">首页</a>
+      <a class="tab" href="../../rap/overview.html">RAP 培训</a>
+      <a class="tab active" href="../overview.html">CAP 培训</a>
+      <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">CAP 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="../overview.html"><span class="num">1</span>CAP 概述</a>
+      <a class="snav" href="../prep.html"><span class="num">2</span>环境准备</a>
+      <a class="snav" href="../step1-init.html"><span class="num">3</span>手顺1：项目初始化</a>
+      <a class="snav" href="../step2-model.html"><span class="num">4</span>手顺2：数据模型与服务</a>
+      <a class="snav" href="../step3-implement.html"><span class="num">5</span>手顺3：业务逻辑实现</a>
+      <a class="snav" href="../step4-test.html"><span class="num">6</span>手顺4：启动、测试与 Fiori</a>
+      <a class="snav" href="../testdata.html"><span class="num">7</span>测试数据</a>
+    </nav>
+    <div class="snav-group">CAP for Java（Java 运行时）</div>
+    <a class="snav" href="../java/overview.html"><span class="num">J1</span>Java 概述</a>
+    <a class="snav" href="../java/prep.html"><span class="num">J2</span>环境准备</a>
+    <a class="snav" href="../java/step1-project.html"><span class="num">J3</span>手顺1：建立 Java 项目</a>
+    <a class="snav" href="../java/step2-db.html"><span class="num">J4</span>手顺2：配置链接与建库建表</a>
+    <a class="snav" href="../java/step3-dto.html"><span class="num">J5</span>手顺3：DTO → 生成模型与服务</a>
+    <a class="snav" href="../java/step4-test.html"><span class="num">J6</span>手顺4：运行与测试</a>
+    <div class="snav-group">BTP 与 HANA Cloud（云环境 + BAS）</div>
+    <a class="snav" href="overview.html"><span class="num">B1</span>BTP 与 HANA Cloud 概述</a>
+    <a class="snav" href="prep.html"><span class="num">B2</span>环境准备（BTP 账号）</a>
+    <a class="snav" href="step1-hana.html"><span class="num">B3</span>手顺1：创建 HANA Cloud 实例</a>
+    <a class="snav active" href="step2-sql.html"><span class="num">B4</span>手顺2：HANA SQL 建表与数据</a>
+    <a class="snav" href="step3-bas.html"><span class="num">B5</span>手顺3：BAS 入门</a>
+    <a class="snav" href="step4-dir.html"><span class="num">B6</span>手顺4：模式一 目录式</a>
+    <a class="snav" href="step5-maven.html"><span class="num">B7</span>手顺5：模式二 Maven</a>
+    <a class="snav" href="step6-spring.html"><span class="num">B8</span>手顺6：模式三 Spring Boot</a>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+<a class="snav" href="../../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 B4 章：手顺2 HANA SQL 建表与数据</h1>
+      <p class="page-sub">在 Database Explorer 里执行 SQL：建 schema → 建 3 张表 → 灌入 10 本书 → 联表验证</p>
+      <p class="lead">HANA Cloud 实例就绪后，我们开始用 <b>HANA SQL</b> 构建 Bookshop 数据库。与前面 CAP 路线（CDS 自动建表）不同，这里是<b>手写 DDL</b>：一个 schema、三张表（含外键）、一批种子数据。数据与站点 CAP 路线<b>完全一致</b>——这样 B6–B8 三种 Java 模式连上来，读到的还是那 10 本书。</p>
+
+      <p>
+        <span class="badge blue">HANA SQL</span>
+        <span class="badge teal">CREATE SCHEMA</span>
+        <span class="badge teal">CREATE COLUMN TABLE</span>
+        <span class="badge gray">外键约束</span>
+        <span class="badge gray">种子数据</span>
+      </p>
+
+      <h2 id="console">B4.1 打开 SQL Console</h2>
+      <p>在 Database Explorer（B3.2 打开过）左侧选中实例 <code>bookshop-hana</code>，点工具栏的 <b>SQL Console</b>（或右键实例 → Open SQL Console）。右侧出现空白的 SQL 编辑区，把下面的 SQL 一段段粘进去执行（<kbd>Ctrl/Cmd + Enter</kbd> 或点 ▶ Run）：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">SAP HANA Database Explorer — SQL Console</span></div>
+          <div style="display:flex;background:#f7f9fb">
+            <div style="width:180px;border-right:1px solid var(--border-soft);font-family:var(--mono);font-size:12px;padding:8px">
+              <div class="tree" style="border:none">
+                <div class="row"><span class="i">▾</span><span class="folder">📁</span> <b>bookshop-hana</b></div>
+                <div class="row sel"><span class="pad"></span><span class="i"></span><span class="file">🔤</span> SQL Console</div>
+                <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> Catalog</div>
+              </div>
+            </div>
+            <div style="flex:1;min-width:0">
+              <div style="padding:10px 14px;font-size:12.5px;font-family:var(--mono);color:#233448;line-height:1.6">
+                <div><span style="color:var(--teal)">-- 01 建 schema</span></div>
+                <div><span style="color:#0a5fb0">CREATE</span> <span style="color:#0a5fb0">SCHEMA</span> BOOKSHOP;</div>
+                <div>&nbsp;</div>
+                <div><span style="color:var(--teal)">-- 02 建表 …</span></div>
+                <div style="color:var(--text-faint)">…（三张 CREATE COLUMN TABLE）</div>
+              </div>
+              <div style="padding:4px 14px;font-size:11px;color:var(--text-faint)">行：1 · 执行耗时 0.023s <span style="margin-left:12px;color:#2e9e5b">成功：已执行 4 条语句</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 B4-1</b> SQL Console：把每段 SQL 粘进去，选中语句后 <b>▶ Run</b> 执行。下方状态栏会显示成功与耗时</div>
+      </div>
+
+      <h2 id="schema">B4.2 建 schema</h2>
+      <p>schema（架构）是 HANA 里组织对象的第一层容器。DBADMIN 默认有 <code>CREATE SCHEMA</code> 权限，直接建：</p>
+
+<pre><code class="language-sql">-- 01 建 schema（BOOKSHOP）
+CREATE SCHEMA BOOKSHOP;</code></pre>
+
+      <p>成功后，左侧 Catalog 下会出现 <code>BOOKSHOP</code> 这个 schema。</p>
+
+      <h2 id="tables">B4.3 建三张表（含外键）</h2>
+      <p>Bookshop 数据模型是「书 → 作者 / 分类」：<code>BOOKS</code> 通过 <code>AUTHOR_ID</code> 引用 <code>AUTHORS</code>、<code>GENRE_ID</code> 引用 <code>GENRES</code>。HANA 用 <code>CREATE COLUMN TABLE</code>（列式存储，分析/OLTP 都推荐）建表：</p>
+
+<pre><code class="language-sql">-- 02 建表：GENRES（分类） / AUTHORS（作者） / BOOKS（书，含外键）
+-- 顺序：先父表，再子表（BOOKS 引用前两张表）
+CREATE COLUMN TABLE BOOKSHOP.GENRES (
+  ID    INT PRIMARY KEY,
+  NAME  NVARCHAR(64)  NOT NULL,
+  DESCR NVARCHAR(512)
+);
+
+CREATE COLUMN TABLE BOOKSHOP.AUTHORS (
+  ID             INT PRIMARY KEY,
+  NAME           NVARCHAR(128)  NOT NULL,
+  DATE_OF_BIRTH  DATE,
+  PLACE_OF_BIRTH NVARCHAR(128)
+);
+
+CREATE COLUMN TABLE BOOKSHOP.BOOKS (
+  ID        INT PRIMARY KEY,
+  TITLE     NVARCHAR(256) NOT NULL,
+  DESCR     NVARCHAR(1024),
+  AUTHOR_ID INT NOT NULL,
+  GENRE_ID  INT NOT NULL,
+  STOCK     INT DEFAULT 0,
+  PRICE     DECIMAL(9,2),
+  CURRENCY  NVARCHAR(3),
+  CONSTRAINT FK_BOOKS_AUTHOR FOREIGN KEY (AUTHOR_ID) REFERENCES BOOKSHOP.AUTHORS (ID),
+  CONSTRAINT FK_BOOKS_GENRE  FOREIGN KEY (GENRE_ID)  REFERENCES BOOKSHOP.GENRES  (ID)
+);</code></pre>
+
+      <div class="note">
+        <span class="note-title">💡 三个类型要点</span>
+        <ul style="margin:8px 0 0;padding-left:20px">
+          <li><b><code>NVARCHAR</code></b>：HANA 的 Unicode 变长字符串，中文「哥特小说代表作」这类描述用它。</li>
+          <li><b><code>INT PRIMARY KEY</code></b>：主键即内联的主键约束；外键用独立的 <code>CONSTRAINT ... FOREIGN KEY ... REFERENCES</code> 声明，保证 <code>BOOKS.AUTHOR_ID</code> 必须存在于 <code>AUTHORS</code>。</li>
+          <li><b><code>DECIMAL(9,2)</code></b>：金额用定点数，避免浮点误差（价格 11.11 / 33.00 这类）。</li>
+        </ul>
+      </div>
+
+      <h2 id="insert">B4.4 灌入种子数据</h2>
+      <p>用多行 <code>INSERT</code> 灌数据。数据与站点 CAP 路线的 CSV <b>逐条一致</b>：5 个分类、4 位作者、10 本书（含库存 <code>0</code> / <code>100</code> / <code>333</code> 边界值）：</p>
+
+<pre><code class="language-sql">-- 03 种子数据：5 分类 / 4 作者 / 10 本书（与站点 CSV 一致）
+INSERT INTO BOOKSHOP.GENRES (ID, NAME, DESCR) VALUES
+  (201, 'Fiction',         '虚构类文学作品'),
+  (202, 'Non-Fiction',     '非虚构类作品'),
+  (203, 'Science Fiction', '科幻类'),
+  (204, 'Romance',         '爱情与浪漫类'),
+  (205, 'Essay',           '随笔散文');
+
+INSERT INTO BOOKSHOP.AUTHORS (ID, NAME, DATE_OF_BIRTH, PLACE_OF_BIRTH) VALUES
+  (101, 'Emily Brontë',    '1818-07-30', 'Thornton England'),
+  (102, 'George Orwell',   '1903-06-25', 'Motihari India'),
+  (103, 'Jane Austen',     '1775-12-16', 'Steventon England'),
+  (104, 'Haruki Murakami', '1949-01-12', 'Kyoto Japan');
+
+INSERT INTO BOOKSHOP.BOOKS (ID, TITLE, DESCR, AUTHOR_ID, GENRE_ID, STOCK, PRICE, CURRENCY) VALUES
+  (1,  'Wuthering Heights',   '哥特小说代表作',   101, 201, 12,  11.11, 'EUR'),
+  (2,  'Jane Eyre',           '夏洛蒂·勃朗特经典', 101, 201, 11,  22.00, 'EUR'),
+  (3,  'The Raven',           '爱伦坡诗作',       102, 203, 333, 8.00,  'EUR'),
+  (4,  'Eleonora',            '爱伦坡短篇',       102, 203, 0,   7.99,  'EUR'),
+  (5,  'Catweazle',           '幻想小说',         103, 204, 5,   19.99, 'EUR'),
+  (6,  'Pride and Prejudice', '简·奥斯汀代表作',   103, 204, 10,  24.99, 'EUR'),
+  (7,  '1Q84',                '村上春树长篇',      104, 201, 100, 33.00, 'EUR'),
+  (8,  'Kafka on the Shore',  '村上春树长篇',      104, 201, 42,  32.99, 'EUR'),
+  (9,  'Dandelion Wine',      '怀旧随笔',         102, 202, 8,   27.50, 'EUR'),
+  (10, 'Norwegian Wood',      '村上春树爱情小说',  104, 204, 150, 35.50, 'EUR');</code></pre>
+
+      <h2 id="verify">B4.5 验证</h2>
+      <p>最后跑一段联表查询，把「书 + 作者名 + 分类名」取出来，并用计数核对总数。这段 SQL 与后面三个 Java 程序用的<b>完全一样</b>：</p>
+
+<pre><code class="language-sql">-- 04 验证：联表查询（Java 三种模式用同一条）
+SELECT b.ID, b.TITLE,
+       a.NAME AS AUTHOR, g.NAME AS GENRE,
+       b.STOCK, b.PRICE, b.CURRENCY
+FROM BOOKSHOP.BOOKS b
+  JOIN BOOKSHOP.AUTHORS a ON a.ID = b.AUTHOR_ID
+  JOIN BOOKSHOP.GENRES  g ON g.ID = b.GENRE_ID
+ORDER BY b.ID;
+
+-- 计数核对：期望 Books 10 / Authors 4 / Genres 5
+SELECT 'BOOKS' AS TBL, COUNT(*) AS CNT FROM BOOKSHOP.BOOKS
+UNION ALL
+SELECT 'AUTHORS', COUNT(*) FROM BOOKSHOP.AUTHORS
+UNION ALL
+SELECT 'GENRES',  COUNT(*) FROM BOOKSHOP.GENRES;</code></pre>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">SQL Console — 联表查询结果</span></div>
+          <div style="padding:10px 14px;font-size:12px">
+            <div style="border:1px solid var(--border);border-radius:6px;overflow:hidden;font-family:var(--mono)">
+              <div style="display:flex;background:var(--surface-2);padding:6px 10px;font-weight:600"><span style="width:34px">ID</span><span style="flex:1">TITLE</span><span style="width:130px">AUTHOR</span><span style="width:90px">GENRE</span><span style="width:50px">STOCK</span><span style="width:70px">PRICE</span></div>
+              <div style="display:flex;padding:5px 10px;border-top:1px solid var(--border-soft)"><span style="width:34px">1</span><span style="flex:1">Wuthering Heights</span><span style="width:130px">Emily Brontë</span><span style="width:90px">Fiction</span><span style="width:50px">12</span><span style="width:70px">11.11</span></div>
+              <div style="display:flex;padding:5px 10px;border-top:1px solid var(--border-soft)"><span style="width:34px">2</span><span style="flex:1">Jane Eyre</span><span style="width:130px">Emily Brontë</span><span style="width:90px">Fiction</span><span style="width:50px">11</span><span style="width:70px">22.00</span></div>
+              <div style="display:flex;padding:5px 10px;border-top:1px solid var(--border-soft);color:var(--text-faint)"><span style="width:34px">…</span><span style="flex:1">（共 10 行）</span></div>
+              <div style="display:flex;padding:5px 10px;border-top:1px solid var(--border-soft)"><span style="width:34px">10</span><span style="flex:1">Norwegian Wood</span><span style="width:130px">Haruki Murakami</span><span style="width:90px">Romance</span><span style="width:50px">150</span><span style="width:70px">35.50</span></div>
+            </div>
+            <div style="color:var(--text-faint);margin-top:6px">10 行返回 · 0.034s</div>
+          </div>
+        </div>
+        <div class="cap"><b>图 B4-2</b> 联表查询结果：10 行「书名 + 作者 + 分类 + 库存 + 价格」。计数查询应返回 Books=10、Authors=4、Genres=5</div>
+      </div>
+
+      <h2 id="steps">B4.6 操作手顺</h2>
+      <ol class="steps teal">
+        <li>
+          <span class="step-title">打开 SQL Console</span>
+          <p>Database Explorer → 选中 <code>bookshop-hana</code> 实例 → <b>SQL Console</b>（见<a href="#console">图 B4-1</a>）。</p>
+        </li>
+        <li>
+          <span class="step-title">执行 01 建 schema</span>
+          <p>粘贴 <code>CREATE SCHEMA BOOKSHOP;</code> 并运行，左侧 Catalog 出现 <code>BOOKSHOP</code>。</p>
+        </li>
+        <li>
+          <span class="step-title">执行 02 建三张表</span>
+          <p>先 GENRES / AUTHORS，再 BOOKS（含两个外键约束），全部运行成功（见<a href="#tables">B4.3</a>）。</p>
+        </li>
+        <li>
+          <span class="step-title">执行 03 灌种子数据</span>
+          <p>三段 <code>INSERT</code>（分类 / 作者 / 书）分别运行，每段都提示成功（见<a href="#insert">B4.4</a>）。</p>
+        </li>
+        <li>
+          <span class="step-title">执行 04 验证</span>
+          <p>联表查询应返回 <b>10 行</b>；计数查询返回 <b>10 / 4 / 5</b>（见<a href="#verify">B4.5</a>）。数据就绪，可以进 B5 章搭开发环境了。</p>
+        </li>
+      </ol>
+
+      <div class="note warn">
+        <span class="note-title">⚠️ 常见问题</span>
+        <ul style="margin-bottom:0">
+          <li><b>重复执行报「table already exists」</b>：02 建表段不能跑两次。重来用 <code>DROP SCHEMA BOOKSHOP CASCADE;</code> 清空后从 01 重跑。</li>
+          <li><b>报 insufficient privilege</b>：你用的是非 DBADMIN 用户。两种办法：<code>GRANT CREATE SCHEMA TO &lt;user&gt;</code>；或跳过 schema，直接用该用户默认 schema 建表（此时 SQL 去掉 <code>BOOKSHOP.</code> 前缀，Java 里的 SQL 同样去掉）。</li>
+          <li><b>外键插入失败</b>：必须先灌 <code>GENRES</code>/<code>AUTHORS</code> 再灌 <code>BOOKS</code>，否则 <code>AUTHOR_ID</code> 引用不到会报错。</li>
+          <li><b>中文乱码</b>：SQL Console 默认 UTF-8，一般不会乱码；若乱码，检查浏览器与文件编码统一为 UTF-8。</li>
+        </ul>
+      </div>
+
+      <div class="note">
+        <span class="note-title">📦 素材包</span>
+        四段 SQL（01 schema / 02 建表 / 03 数据 / 04 验证）都在素材包 <code>samples/btp-bookshop/sql/</code> 下，可直接复制粘贴执行；后面三个 Java 模式的源码也在包里。
+      </div>
+
+      <div class="pagenav">
+        <a href="step1-hana.html"><small>← 上一章</small><b>第 B3 章：手顺1 创建 HANA Cloud 实例</b></a>
+        <a class="next" href="step3-bas.html"><small>下一章 →</small><b>手顺3：BAS 入门</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · BTP 与 HANA Cloud · 第 B4 章 HANA SQL 建表与数据</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

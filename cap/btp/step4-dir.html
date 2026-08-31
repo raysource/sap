@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 B6 章：手顺4 模式一 目录式 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../../index.html">首页</a>
+      <a class="tab" href="../../rap/overview.html">RAP 培训</a>
+      <a class="tab active" href="../overview.html">CAP 培训</a>
+      <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">CAP 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="../overview.html"><span class="num">1</span>CAP 概述</a>
+      <a class="snav" href="../prep.html"><span class="num">2</span>环境准备</a>
+      <a class="snav" href="../step1-init.html"><span class="num">3</span>手顺1：项目初始化</a>
+      <a class="snav" href="../step2-model.html"><span class="num">4</span>手顺2：数据模型与服务</a>
+      <a class="snav" href="../step3-implement.html"><span class="num">5</span>手顺3：业务逻辑实现</a>
+      <a class="snav" href="../step4-test.html"><span class="num">6</span>手顺4：启动、测试与 Fiori</a>
+      <a class="snav" href="../testdata.html"><span class="num">7</span>测试数据</a>
+    </nav>
+    <div class="snav-group">CAP for Java（Java 运行时）</div>
+    <a class="snav" href="../java/overview.html"><span class="num">J1</span>Java 概述</a>
+    <a class="snav" href="../java/prep.html"><span class="num">J2</span>环境准备</a>
+    <a class="snav" href="../java/step1-project.html"><span class="num">J3</span>手顺1：建立 Java 项目</a>
+    <a class="snav" href="../java/step2-db.html"><span class="num">J4</span>手顺2：配置链接与建库建表</a>
+    <a class="snav" href="../java/step3-dto.html"><span class="num">J5</span>手顺3：DTO → 生成模型与服务</a>
+    <a class="snav" href="../java/step4-test.html"><span class="num">J6</span>手顺4：运行与测试</a>
+    <div class="snav-group">BTP 与 HANA Cloud（云环境 + BAS）</div>
+    <a class="snav" href="overview.html"><span class="num">B1</span>BTP 与 HANA Cloud 概述</a>
+    <a class="snav" href="prep.html"><span class="num">B2</span>环境准备（BTP 账号）</a>
+    <a class="snav" href="step1-hana.html"><span class="num">B3</span>手顺1：创建 HANA Cloud 实例</a>
+    <a class="snav" href="step2-sql.html"><span class="num">B4</span>手顺2：HANA SQL 建表与数据</a>
+    <a class="snav" href="step3-bas.html"><span class="num">B5</span>手顺3：BAS 入门</a>
+    <a class="snav active" href="step4-dir.html"><span class="num">B6</span>手顺4：模式一 目录式</a>
+    <a class="snav" href="step5-maven.html"><span class="num">B7</span>手顺5：模式二 Maven</a>
+    <a class="snav" href="step6-spring.html"><span class="num">B8</span>手顺6：模式三 Spring Boot</a>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+<a class="snav" href="../../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 B6 章：手顺4 模式一 目录式构建</h1>
+      <p class="page-sub">不依赖任何构建工具：两个 .java + 一个 ngdbc.jar，用 javac / java 直连 HANA Cloud 读出 10 本书</p>
+      <p class="lead">这是最简单的模式，也是理解 JDBC 本质最好的方式：不用 Maven、不用 Spring，只有<b>两个 Java 文件</b>（一个 DTO、一个主程序）和 <b>ngdbc 驱动 jar</b>。你手写 JDBC 连接、手写查询、手写格式化输出——把所有「魔法」都摊开在面前。</p>
+
+      <p>
+        <span class="badge blue">javac / java</span>
+        <span class="badge teal">JDBC</span>
+        <span class="badge teal">classpath</span>
+        <span class="badge gray">ngdbc.jar</span>
+        <span class="badge gray">UTF-8 编译</span>
+      </p>
+
+      <h2 id="layout">B6.1 目录结构</h2>
+      <p>在 BAS 终端里建目录（B5.4 已建好 <code>lib/</code>），把源码放在标准包路径下：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">bookshop-dir — 目录树</span></div>
+          <div style="padding:10px 14px;background:#fff">
+            <div class="tree">
+              <div class="row"><span class="i">▾</span><span class="folder">📁</span> <b>bookshop-dir</b> <span style="color:var(--text-faint);font-size:11px">（工作目录）</span></div>
+              <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> lib</div>
+              <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> ngdbc.jar <span style="color:var(--text-faint);font-size:11px">← B5.4 下载的驱动</span></div>
+              <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> src/com/acme/bookshop</div>
+              <div class="row"><span class="pad"></span><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> Book.java <span style="color:var(--text-faint);font-size:11px">← 书的 DTO</span></div>
+              <div class="row"><span class="pad"></span><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> BookshopApp.java <span style="color:var(--text-faint);font-size:11px">← 主程序（入口）</span></div>
+              <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> out <span style="color:var(--text-faint);font-size:11px">← javac 编译输出（自动生成）</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 B6-1</b> 目录式工程结构：源码在 <code>src/com/acme/bookshop/</code>，驱动在 <code>lib/</code>，编译结果进 <code>out/</code></div>
+      </div>
+
+      <h2 id="book">B6.2 第一个文件：Book.java（DTO）</h2>
+      <p>一个普通 POJO，字段对应 B4.5 联表查询的列。它有两个方法：<code>line()</code> 输出一行格式化文本、<code>header()</code> 输出表头：</p>
+
+<pre><code class="language-java">package com.acme.bookshop;
+
+/**
+ * 一本书的简单 DTO：字段对应 BOOKSHOP.BOOKS 联表查询结果
+ * （ID、TITLE、作者名、分类名、STOCK、PRICE、CURRENCY）
+ */
+public class Book {
+    public int id;
+    public String title;
+    public String author;
+    public String genre;
+    public int stock;
+    public double price;
+    public String currency;
+
+    public Book(int id, String title, String author, String genre,
+                int stock, double price, String currency) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.genre = genre;
+        this.stock = stock;
+        this.price = price;
+        this.currency = currency;
+    }
+
+    /** 一行格式化输出（对齐示例输出） */
+    public String line() {
+        return String.format("%-2d  %-22s  %-18s  %-16s  %4d  %8.2f  %s",
+                id, title, author, genre, stock, price, currency);
+    }
+
+    /** 表头 */
+    public static String header() {
+        return String.format("%-2s  %-22s  %-18s  %-16s  %4s  %8s  %s",
+                "ID", "TITLE", "AUTHOR", "GENRE", "STOCK", "PRICE", "CURR");
+    }
+}</code></pre>
+
+      <h2 id="app">B6.3 第二个文件：BookshopApp.java（主程序）</h2>
+      <p>JDBC 三板斧：<code>DriverManager.getConnection(URL, USER, PASSWORD)</code> → <code>prepareStatement(SQL)</code> → 遍历 <code>ResultSet</code>。把三处 <b>TODO 占位符</b>换成 B3.3 记下的真实值即可：</p>
+
+<pre><code class="language-java">package com.acme.bookshop;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 模式一 · 目录式构建（纯 javac / java）
+ * 直接 JDBC 连接 HANA Cloud 的 BOOKSHOP 库，联表读取 Books 打印。
+ */
+public class BookshopApp {
+
+    // TODO: 换成你 HANA Cloud 实例的 SQL End Point 主机（B3 章「Copy SQL End Point」）
+    static final String HOST = "xxxx.hana.trial-us10.hanacloud.ondemand.com";
+    static final String URL =
+        "jdbc:sap://" + HOST + ":443?encrypt=true&amp;validateCertificate=true";
+    static final String USER = "DBADMIN";
+    static final String PASSWORD = "你的数据库口令";   // TODO: 替换为 DBADMIN 口令
+
+    static final String SQL =
+        "SELECT b.ID, b.TITLE, a.NAME AS AUTHOR, g.NAME AS GENRE, " +
+        "       b.STOCK, b.PRICE, b.CURRENCY " +
+        "  FROM BOOKSHOP.BOOKS b " +
+        "  JOIN BOOKSHOP.AUTHORS a ON a.ID = b.AUTHOR_ID " +
+        "  JOIN BOOKSHOP.GENRES  g ON g.ID = b.GENRE_ID " +
+        " ORDER BY b.ID";
+
+    public static void main(String[] args) throws Exception {
+        Class.forName("com.sap.db.jdbc.Driver");
+        List&lt;Book&gt; books = new ArrayList&lt;&gt;();
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement ps = conn.prepareStatement(SQL);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                books.add(new Book(
+                    rs.getInt("ID"),
+                    rs.getString("TITLE"),
+                    rs.getString("AUTHOR"),
+                    rs.getString("GENRE"),
+                    rs.getInt("STOCK"),
+                    rs.getDouble("PRICE"),
+                    rs.getString("CURRENCY")));
+            }
+        }
+        System.out.println("共读取 " + books.size() + " 本书（BOOKSHOP.BOOKS）");
+        System.out.println(Book.header());
+        for (Book b : books) System.out.println(b.line());
+    }
+}</code></pre>
+
+      <div class="note">
+        <span class="note-title">💡 为什么 URL 是 <code>encrypt=true&amp;validateCertificate=true</code></span>
+        HANA Cloud 是公网数据库，<b>只允许 TLS 加密连接并校验证书</b>。这两个参数就对应「加密」与「校验证书」，请保持 <code>true</code>——这不是可选项。主机名用你实例的 SQL End Point，端口固定 <code>443</code>。
+      </div>
+
+      <h2 id="run">B6.4 编译与运行</h2>
+      <p>在 BAS 终端进入 <code>bookshop-dir</code>，用 <code>javac</code> 把两个文件编译进 <code>out/</code>（<code>-encoding UTF-8</code> 保证中文正常；<code>-cp</code> 指明驱动在 <code>lib/</code>），再用 <code>java</code> 运行（classpath 用 <code>out:lib/ngdbc.jar</code>）：</p>
+
+<pre><code class="language-bash">cd bookshop-dir
+
+# 1) 编译（classpath 只需 ngdbc.jar；Linux/macOS 分隔符是冒号 :）
+javac -encoding UTF-8 -cp lib/ngdbc.jar -d out \
+  src/com/acme/bookshop/Book.java \
+  src/com/acme/bookshop/BookshopApp.java
+
+# 2) 运行
+java -cp "out:lib/ngdbc.jar" com.acme.bookshop.BookshopApp</code></pre>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">BAS 终端 — 运行结果</span></div>
+          <div class="term">
+            <div><span class="p">$</span> <span class="path">java -cp "out:lib/ngdbc.jar" com.acme.bookshop.BookshopApp</span></div>
+            <div><span class="ok">共读取 10 本书（BOOKSHOP.BOOKS）</span></div>
+            <div>ID  TITLE                   AUTHOR             GENRE             STOCK    PRICE  CURR</div>
+            <div>1   Wuthering Heights       Emily Brontë       Fiction             12     11.11  EUR</div>
+            <div>2   Jane Eyre               Emily Brontë       Fiction             11     22.00  EUR</div>
+            <div>3   The Raven               George Orwell      Science Fiction    333      8.00  EUR</div>
+            <div>4   Eleonora                George Orwell      Science Fiction      0      7.99  EUR</div>
+            <div>…   （共 10 行）</div>
+            <div>10  Norwegian Wood          Haruki Murakami    Romance            150     35.50  EUR</div>
+          </div>
+        </div>
+        <div class="cap"><b>图 B6-2</b> 运行输出：先打印总行数 <b>共读取 10 本书</b>，再打印表头与 10 行数据——与 B4.5 在 SQL Console 里查到的完全一致</div>
+      </div>
+
+      <h2 id="steps">B6.5 操作手顺</h2>
+      <ol class="steps teal">
+        <li>
+          <span class="step-title">建目录结构</span>
+          <p>在 BAS 工作区建 <code>bookshop-dir/src/com/acme/bookshop/</code>，确认 <code>lib/ngdbc.jar</code> 已就位（B5.4）。</p>
+        </li>
+        <li>
+          <span class="step-title">写 Book.java</span>
+          <p>在 <code>src/com/acme/bookshop/</code> 新建 Book.java，粘贴 B6.2 代码。</p>
+        </li>
+        <li>
+          <span class="step-title">写 BookshopApp.java</span>
+          <p>同目录新建 BookshopApp.java，粘贴 B6.3 代码，把 <b>HOST</b> 与 <b>PASSWORD</b> 换成 B3.3 记录的真实值。</p>
+        </li>
+        <li>
+          <span class="step-title">编译</span>
+          <p>执行 B6.4 的 <code>javac</code> 命令。无输出即成功；报错时看提示（常见：路径、编码）。</p>
+        </li>
+        <li>
+          <span class="step-title">运行并核对</span>
+          <p>执行 <code>java</code> 命令，看到「共读取 10 本书」+ 10 行即成功（见<a href="#run">图 B6-2</a>）。与 B4.5 SQL 结果比对，数据应一致。</p>
+        </li>
+      </ol>
+
+      <div class="note warn">
+        <span class="note-title">⚠️ 常见问题</span>
+        <ul style="margin-bottom:0">
+          <li><b>ClassNotFoundException: com.sap.db.jdbc.Driver</b>：classpath 没包含 <code>lib/ngdbc.jar</code>（编译或运行时漏了 <code>-cp</code>）。</li>
+          <li><b>连接超时 / UnknownHost</b>：主机名拼错，或实例停了（trial 每日自动停，回 Cockpit <b>Start</b>）。</li>
+          <li><b>Authentication failed</b>：DBADMIN 口令错；口令含特殊字符时注意终端转义。</li>
+          <li><b>编码乱码</b>：编译时务必带 <code>-encoding UTF-8</code>，且源码文件存为 UTF-8。</li>
+          <li><b>找不到主类</b>：运行时的包名 <code>com.acme.bookshop.BookshopApp</code> 要和你 <code>package</code> 声明一致。</li>
+        </ul>
+      </div>
+
+      <div class="pagenav">
+        <a href="step3-bas.html"><small>← 上一章</small><b>第 B5 章：手顺3 BAS 入门</b></a>
+        <a class="next" href="step5-maven.html"><small>下一章 →</small><b>手顺5：模式二 Maven</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · BTP 与 HANA Cloud · 第 B6 章 模式一 目录式</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

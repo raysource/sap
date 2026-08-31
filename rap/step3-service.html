@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>手顺3：服务定义与绑定 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../index.html">首页</a>
+      <a class="tab active" href="overview.html">RAP 培训</a>
+      <a class="tab" href="../cap/overview.html">CAP 培训</a>
+      <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">RAP 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="overview.html"><span class="num">1</span>RAP 概述</a>
+      <a class="snav" href="prep.html"><span class="num">2</span>环境准备</a>
+      <a class="snav" href="step1-cds.html"><span class="num">3</span>手顺1：CDS 数据模型</a>
+      <a class="snav" href="step2-behavior.html"><span class="num">4</span>手顺2：行为定义与实现</a>
+      <a class="snav active" href="step3-service.html"><span class="num">5</span>手顺3：服务定义与绑定</a>
+      <a class="snav" href="step4-test.html"><span class="num">6</span>手顺4：Fiori 预览与测试</a>
+      <a class="snav" href="testdata.html"><span class="num">7</span>测试数据</a>
+    </nav>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+<a class="snav" href="../cap/overview.html"><span class="num">C</span>CAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 5 章：手顺3 — 服务定义与绑定</h1>
+      <p class="page-sub">Service Definition + Service Binding → 生成 OData V4 服务</p>
+      <p class="lead">业务对象此刻还是「系统内」的对象。本章把它发布为对外可访问的 <b>OData V4 服务</b>：先声明<b>服务定义</b>（暴露哪些实体），再建<b>服务绑定</b>（选择 OData V4 协议），拿到一个可被 Fiori 和外部系统消费的 URL。</p>
+
+      <p>
+        <span class="badge blue">Service Definition</span>
+        <span class="badge blue">Service Binding</span>
+        <span class="badge blue">OData V4</span>
+        <span class="badge gray">/sap/opu/odata4</span>
+      </p>
+
+      <h2 id="concept">5.1 服务层两个对象</h2>
+      <div class="grid cols-2">
+        <div class="card">
+          <h3>① Service Definition</h3>
+          <p>声明式定义「服务暴露哪些 CDS 实体」，用 <code>expose</code> 语句。它只做<b>暴露范围的裁剪</b>，不实现任何逻辑。</p>
+        </div>
+        <div class="card">
+          <h3>② Service Binding</h3>
+          <p>把服务定义「绑」到一个协议（OData V2 / V4 / Web API / InA）上，产生运行时 URL。一个服务定义可被多个 Binding 以不同协议暴露。</p>
+        </div>
+      </div>
+      <div class="note">
+        <span class="note-title">💡 expose 的选择</span>
+        应该暴露<b>接口视图</b>（<code>ZI_</code>）或经过授权的<b>消费视图/投影</b>，而不是直接把内部物理表暴露给外部——表结构没有语义、也绕过了 CDS 的授权与类型封装。本培训暴露 <code>ZI_TRAVEL</code> 与 <code>ZI_TRAVEL_BOOKING</code> 两个接口视图。
+      </div>
+
+      <h2 id="definition">5.2 新建服务定义 ZUI_TRAVEL_O4</h2>
+      <p>右键 <code>Core Data Services → New → Service Definition</code>，名称 <code>ZUI_TRAVEL_O4</code>，替换模板为：</p>
+      <pre><code class="language-cds">@EndUserText.label: 'Travel OData 服务定义'
+define service ZUI_TRAVEL_O4 {
+  expose ZI_TRAVEL as Travel;
+  expose ZI_TRAVEL_BOOKING as Booking;
+}</code></pre>
+
+      <figure class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">ZUI_TRAVEL_O4 — 服务定义</span></div>
+          <div class="editor">
+            <div class="ed-tabs"><span class="on">ZUI_TRAVEL_O4.ddls</span></div>
+            <div class="ed-body">
+              <pre class="ed"><code><span class="a">@EndUserText.label</span>: <span class="s">'Travel OData 服务定义'</span>
+<span class="k">define service</span> ZUI_TRAVEL_O4 {
+  <span class="k">expose</span> ZI_TRAVEL <span class="k">as</span> Travel;
+  <span class="k">expose</span> ZI_TRAVEL_BOOKING <span class="k">as</span> Booking;
+}</code></pre>
+            </div>
+          </div>
+          <div class="statusbar"><span>ZUI_TRAVEL_O4</span><span>Service Definition</span><span>已激活 ✓</span></div>
+        </div>
+        <div class="cap"><b>图 5-1</b> Service Definition 编辑器：用 <code>expose</code> 暴露两个接口视图</div>
+      </figure>
+
+      <h2 id="binding">5.3 新建服务绑定 ZUI_TRAVEL_O4</h2>
+      <p>右键该服务定义 <code>New → Service Binding</code>，名称仍用 <code>ZUI_TRAVEL_O4</code>，Binding Type 选 <b>OData V4 – UI</b>（供 Fiori 消费；若给第三方系统也可选 OData V4）。创建后激活绑定：</p>
+
+      <figure class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">ZUI_TRAVEL_O4 — 服务绑定</span></div>
+          <div style="display:flex">
+            <div class="tree" style="flex:0 0 260px; border-right:1px solid var(--border-soft)">
+              <div class="row"><span class="i">▾</span><span class="folder">📁</span> ZUI_TRAVEL_O4</div>
+              <div class="row sel"><span class="pad"></span><span class="i">▸</span><span class="folder">📁</span> Travel</div>
+              <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> Create</div>
+              <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> Read</div>
+              <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> Update</div>
+              <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> Delete</div>
+              <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> AcceptTravel (Action)</div>
+              <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> RejectTravel (Action)</div>
+              <div class="row"><span class="pad"></span><span class="i">▸</span><span class="folder">📁</span> Booking</div>
+              <div class="row"><span class="pad"></span><span class="i"></span><span class="file">📄</span> Read / Create</div>
+            </div>
+            <div style="flex:1; padding:14px 16px">
+              <div style="font-size:11px;color:var(--text-faint);margin-bottom:6px">Service URL</div>
+              <div class="term" style="border-radius:6px">
+                <div><span class="info">http://d4h:8000</span>/sap/opu/odata4/sap/zuiv4travel_o4/srvd/sap/zui_travel_o4/<span class="info">0001</span>/</div>
+              </div>
+              <div style="display:flex;gap:8px;margin-top:12px">
+                <span class="fbtn primary">Preview</span>
+                <span class="fbtn">OAuth2</span>
+                <span class="fbtn">Maintenance</span>
+              </div>
+              <div style="margin-top:12px;font-size:11.5px;color:var(--text-soft)">
+                Binding Type：<b>OData V4 – UI</b> · 服务版本：<b>0001</b> · 状态：<b>已激活</b>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 5-2</b> Service Binding 编辑器：左侧实体与操作树，右侧 Service URL（OData V4 – UI）</div>
+      </figure>
+
+      <h2 id="url">5.4 Service URL 各段含义</h2>
+      <pre><code class="language-bash">http://d4h:8000/sap/opu/odata4/sap/zuiv4travel_o4/srvd/sap/zui_travel_o4/0001/</code></pre>
+      <table class="doc">
+        <thead>
+          <tr><th>URL 段</th><th>含义</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>/sap/opu/odata4</code></td><td>OData V4 服务的基础路径（V2 是 <code>/sap/opu/odata</code>）</td></tr>
+          <tr><td><code>zuiv4travel_o4</code></td><td>系统自动生成的运行时服务名（内部名）</td></tr>
+          <tr><td><code>/srvd/</code></td><td>表示后面是 Service Definition 路径</td></tr>
+          <tr><td><code>zui_travel_o4</code></td><td>你的服务定义名称</td></tr>
+          <tr><td><code>0001</code></td><td>服务版本号（<code>version.active</code> 注解决定）</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="verify">5.5 验证：访问服务文档</h2>
+      <p>浏览器直接访问上面的 URL（需带系统登录，或用已授权用户），应返回 OData <b>服务文档（Service Document）</b> XML，列出两个 collection：</p>
+      <figure class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">SAP Fiori Launchpad — 服务文档</span></div>
+          <div style="display:flex; gap:8px; padding:8px 12px; background:var(--surface-2); border-bottom:1px solid var(--border-soft)">
+            <span class="fbtn sm ghost">🔍</span>
+            <span class="mono" style="font-size:11px;color:var(--text-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              http://d4h:8000/sap/opu/odata4/sap/zuiv4travel_o4/srvd/sap/zui_travel_o4/0001/
+            </span>
+          </div>
+          <div style="padding:12px 16px">
+            <pre class="ed" style="background:none;box-shadow:none;padding:0;margin:0"><code>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;service xmlns="http://www.w3.org/2007/app"
+         xmlns:atom="http://www.w3.org/2005/Atom"
+         xml:base="http://d4h:8000/sap/opu/odata4/sap/zuiv4travel_o4/srvd/sap/zui_travel_o4/0001/"&gt;
+  &lt;workspace&gt;
+    &lt;atom:title&gt;default&lt;/atom:title&gt;
+    &lt;collection href="Travel"&gt;
+      &lt;atom:title&gt;Travel&lt;/atom:title&gt;
+    &lt;/collection&gt;
+    &lt;collection href="Booking"&gt;
+      &lt;atom:title&gt;Booking&lt;/atom:title&gt;
+    &lt;/collection&gt;
+  &lt;/workspace&gt;
+&lt;/service&gt;</code></pre>
+          </div>
+        </div>
+        <div class="cap"><b>图 5-3</b> 浏览器访问 Service URL 返回的服务文档 XML，含 <code>Travel</code> 与 <code>Booking</code> 两个 collection</div>
+      </figure>
+
+      <h2 id="steps">5.6 操作手顺</h2>
+      <ol class="steps">
+        <li>
+          <span class="step-title">新建服务定义 ZUI_TRAVEL_O4</span>
+          <p><code>Core Data Services → New → Service Definition</code>，粘贴 <a href="#definition">5.2 节</a>代码并激活。</p>
+        </li>
+        <li>
+          <span class="step-title">新建服务绑定 ZUI_TRAVEL_O4</span>
+          <p>右键服务定义 → <code>New → Service Binding</code>，名称 <code>ZUI_TRAVEL_O4</code>，Binding Type 选 <b>OData V4 – UI</b>。</p>
+        </li>
+        <li>
+          <span class="step-title">激活绑定</span>
+          <p><b>Ctrl+F3</b> 激活。激活后右侧出现 <b>Service URL</b>，实体树的 Create/Update/Delete/Action 节点列出服务的全部能力。</p>
+        </li>
+        <li>
+          <span class="step-title">验证服务文档</span>
+          <p>浏览器打开 Service URL，确认返回含 <code>Travel</code> / <code>Booking</code> 的服务文档 XML。</p>
+        </li>
+        <li>
+          <span class="step-title">进入预览</span>
+          <p>在 Service Binding 中点 <b>Preview</b> 按钮，进入下一章的 Fiori 预览（需 Fiori 运行时 BSP 应用已激活）。</p>
+        </li>
+      </ol>
+
+      <div class="note ok">
+        <span class="note-title">✅ 验证/结果</span>
+        Service Definition 与 Binding 均激活；浏览器访问 Service URL 返回 XML 服务文档；实体树展开可见 <code>AcceptTravel</code> / <code>RejectTravel</code> 两个 Action 已自动暴露。
+      </div>
+
+      <div class="note">
+        <span class="note-title">💡 注意点</span>
+        <ul>
+          <li><b>expose 对象类型</b>：Service Definition 只能 expose <b>CDS 视图/实体</b>，不能直接 expose 普通数据库表；把表直接暴露会报错。</li>
+          <li><b>命名规范</b>：服务对象用 <code>ZUI_</code> 前缀（User Interface 服务）+ <code>_O4</code> 后缀（OData V4），一眼可辨协议。</li>
+          <li><b>OData V4 vs V2</b>：V4 是 REST 风格更强的新一代协议（支持 <code>$expand</code> 简化、<code>$count</code> 内联等）；V2 用于老 Fiori / 第三方集成。本培训全程 V4。</li>
+          <li><b>Preview 依赖</b>：Preview 会打开 Fiori Elements，需要系统已激活 <code>/sap/bc/ui5_ui5</code> 等 Fiori BSP 运行时；开发环境一般默认开启。</li>
+        </ul>
+      </div>
+
+      <div class="pagenav">
+        <a href="step2-behavior.html"><small>← 上一章</small><b>手顺2：行为定义与实现</b></a>
+        <a class="next" href="step4-test.html"><small>下一章 →</small><b>手顺4：Fiori 预览与测试</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · RAP 培训 · 第 5 章 手顺3 服务定义与绑定</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

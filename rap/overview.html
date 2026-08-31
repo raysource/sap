@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RAP 概述 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../index.html">首页</a>
+      <a class="tab active" href="overview.html">RAP 培训</a>
+      <a class="tab" href="../cap/overview.html">CAP 培训</a>
+      <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">RAP 培训</div>
+    <nav class="side-nav">
+      <a class="snav active" href="overview.html"><span class="num">1</span>RAP 概述</a>
+      <a class="snav" href="prep.html"><span class="num">2</span>环境准备</a>
+      <a class="snav" href="step1-cds.html"><span class="num">3</span>手顺1：CDS 数据模型</a>
+      <a class="snav" href="step2-behavior.html"><span class="num">4</span>手顺2：行为定义与实现</a>
+      <a class="snav" href="step3-service.html"><span class="num">5</span>手顺3：服务定义与绑定</a>
+      <a class="snav" href="step4-test.html"><span class="num">6</span>手顺4：Fiori 预览与测试</a>
+      <a class="snav" href="testdata.html"><span class="num">7</span>测试数据</a>
+    </nav>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+<a class="snav" href="../cap/overview.html"><span class="num">C</span>CAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 1 章：RAP 概述</h1>
+      <p class="page-sub">ABAP RESTful Application Programming Model · 现代 ABAP 开发的入口</p>
+      <p class="lead">RAP 是 SAP 在 S/4HANA 上构建云就绪 Fiori 应用的官方编程模型。它把「数据模型 + 业务逻辑 + 服务 + UI」组织成一个<b>业务对象</b>，用声明式方式替代传统「报表-屏幕」的瀑布式开发。</p>
+
+      <p>
+        <span class="badge blue">CDS 视图</span>
+        <span class="badge blue">Behavior</span>
+        <span class="badge blue">OData V4</span>
+        <span class="badge gray">S/4HANA 2020+</span>
+        <span class="badge gray">ADT</span>
+      </p>
+
+      <h2 id="what">1.1 RAP 是什么</h2>
+      <p>RAP（ABAP RESTful Application Programming Model）是一套<b>端到端</b>的开发范式：从数据库表、CDS 数据模型，到业务行为（增删改、Action、校验），再到 OData 服务的暴露与 Fiori UI，全程在同一套工具（ADT）与同一套概念里完成。它建立在三个支柱之上：</p>
+
+      <div class="grid cols-3">
+        <div class="card">
+          <h3>① Core Data Services</h3>
+          <p><b>数据模型层</b>。用 CDS DDL 定义视图与关联，封装数据访问逻辑，屏蔽底层物理表结构。</p>
+        </div>
+        <div class="card">
+          <h3>② Behavior</h3>
+          <p><b>业务逻辑层</b>。用 BDEF 声明行为（create/update/delete、action、validation、determination），在实现类里写 ABAP。</p>
+        </div>
+        <div class="card">
+          <h3>③ OData Services</h3>
+          <p><b>暴露层</b>。用 Service Definition + Binding 把业务对象发布为 OData 服务，供 Fiori / 外部系统消费。</p>
+        </div>
+      </div>
+
+      <h2 id="arch">1.2 整体架构分层</h2>
+      <p>从下往上看，RAP 应用由以下几层构成，每一层都在 ADT 中有一个对应的开发对象：</p>
+
+      <div style="overflow-x:auto">
+        <div style="display:flex; gap:8px; align-items:stretch; margin:18px 0; min-width:820px">
+          <div style="flex:1; background:#eef1f5; border:1px solid var(--border); border-radius:10px; padding:12px; text-align:center">
+            <div style="font-size:22px">🗄️</div><b style="font-size:13px">数据库表</b>
+            <div style="font-size:11.5px;color:var(--text-soft);margin-top:4px">ZTRAVEL<br>ZTRAVEL_BOOKING</div>
+          </div>
+          <div style="align-self:center; color:var(--blue); font-weight:700">→</div>
+          <div style="flex:1.2; background:#e8f2fb; border:1px solid #b9d6f0; border-radius:10px; padding:12px; text-align:center">
+            <div style="font-size:22px">📐</div><b style="font-size:13px;color:var(--blue)">CDS 数据模型</b>
+            <div style="font-size:11.5px;color:var(--text-soft);margin-top:4px">视图栈 + 关联<br>RAP 业务对象接口</div>
+          </div>
+          <div style="align-self:center; color:var(--blue); font-weight:700">→</div>
+          <div style="flex:1.2; background:#eef6f4; border:1px solid #bfe2da; border-radius:10px; padding:12px; text-align:center">
+            <div style="font-size:22px">⚙️</div><b style="font-size:13px;color:var(--teal)">Behavior 行为</b>
+            <div style="font-size:11.5px;color:var(--text-soft);margin-top:4px">BDEF + 实现类<br>Action / 校验 / Draft</div>
+          </div>
+          <div style="align-self:center; color:var(--blue); font-weight:700">→</div>
+          <div style="flex:1; background:#fbf1e0; border:1px solid #ecd9ac; border-radius:10px; padding:12px; text-align:center">
+            <div style="font-size:22px">🔌</div><b style="font-size:13px;color:var(--amber)">Service 服务</b>
+            <div style="font-size:11.5px;color:var(--text-soft);margin-top:4px">Service Definition<br>+ Service Binding</div>
+          </div>
+          <div style="align-self:center; color:var(--blue); font-weight:700">→</div>
+          <div style="flex:1; background:#f3e9fb; border:1px solid #ddc4f0; border-radius:10px; padding:12px; text-align:center">
+            <div style="font-size:22px">🖥️</div><b style="font-size:13px;color:#7b2fd0">OData + Fiori</b>
+            <div style="font-size:11.5px;color:var(--text-soft);margin-top:4px">Fiori Elements<br>List / Object Page</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="note">
+        <span class="note-title">💡 记忆口诀</span>
+        <b>表 → 视图 → 行为 → 服务 → UI</b>。手顺 1-4 正好对应这条链，每完成一层，SAP 都给你一个可在 Fiori 里看得见的结果。
+      </div>
+
+      <h2 id="bo">1.3 业务对象（Business Object）</h2>
+      <p>RAP 的一切围绕<b>业务对象</b>展开。一个业务对象 = 一个 CDS 数据模型（含父子实体）+ 一套行为定义。它拥有一个唯一键、生命周期（Draft → Active → 归档）、以及与前端交互的标准操作。</p>
+
+      <p>本培训使用 SAP 官方参考场景 <b>旅行社 Travel</b>：</p>
+      <table class="doc">
+        <thead>
+          <tr><th>业务对象</th><th>实体</th><th>用途</th><th>语义键</th></tr>
+        </thead>
+        <tbody>
+          <tr><td rowspan="2"><b>Travel</b><br><span class="badge blue">业务对象</span></td><td><code>ZTRAVEL</code> 根实体</td><td>旅行单 Header（客户、日期、状态、金额）</td><td><code>TravelID</code></td></tr>
+          <tr><td><code>ZTRAVEL_BOOKING</code> 子实体</td><td>旅行下的预订明细（航班、酒店、车）</td><td><code>TravelID + BookingID</code></td></tr>
+        </tbody>
+      </table>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">ADT — 业务对象导航</span></div>
+          <div style="display:flex">
+            <div class="tree" style="flex:0 0 280px; border-right:1px solid var(--border-soft)">
+              <div class="row"><span class="i">▸</span><span class="folder">📁</span> ZRAP_TRAINING (包)</div>
+              <div class="row"><span class="i">▸</span><span class="folder">📁</span> 数据库表</div>
+              <div class="row"><span class="pad"></span><span class="i"></span><span class="file">📄</span> ZTRAVEL</div>
+              <div class="row"><span class="pad"></span><span class="i"></span><span class="file">📄</span> ZTRAVEL_BOOKING</div>
+              <div class="row"><span class="i">▾</span><span class="folder">📁</span> Core Data Services</div>
+              <div class="row"><span class="pad"></span><span class="i">▸</span><span class="folder">📁</span> 数据定义</div>
+              <div class="row sel"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> ZI_TRAVEL (接口视图)</div>
+              <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> ZC_TRAVEL (消费视图)</div>
+              <div class="row"><span class="i">▾</span><span class="folder">📁</span> 行为定义</div>
+              <div class="row sel"><span class="pad"></span><span class="i"></span><span class="file">📄</span> ZI_TRAVEL (BDEF)</div>
+              <div class="row"><span class="i">▾</span><span class="folder">📁</span> 服务定义</div>
+              <div class="row"><span class="pad"></span><span class="i"></span><span class="file">📄</span> ZUI_TRAVEL_O4</div>
+              <div class="row"><span class="i">▸</span><span class="folder">📁</span> 服务绑定</div>
+              <div class="row"><span class="pad"></span><span class="i"></span><span class="file">📄</span> ZUI_TRAVEL_O4</div>
+            </div>
+            <div class="editor" style="flex:1">
+              <div class="ed-tabs"><span class="on">ZI_TRAVEL_BDEF</span><span>ZC_TRAVEL</span></div>
+              <div class="ed-body">
+                <pre class="ed"><code>managed implementation in class zbp_i_travel unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZI_Travel alias Travel
+persistent table ztravel
+lock master
+authorization master ( instance )
+etag master LastChangedAt
+
+field ( readonly : update ) TravelID, CreatedBy, CreatedAt, LastChangedBy, LastChangedAt;
+
+create;
+update;
+delete;
+
+action ( features : instance ) AcceptTravel result [1] $self;
+action ( features : instance ) RejectTravel result [1] $self;</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 1-1</b> ADT 中 RAP 业务对象视角：表 / CDS / BDEF / 服务定义 / 绑定 全在一棵树上</div>
+      </div>
+
+      <h2 id="vs">1.4 RAP vs 传统 ABAP</h2>
+      <table class="cmp-table">
+        <thead>
+          <tr><th style="width:150px">维度</th><th>传统 ABAP（屏幕报表）</th><th>RAP 业务对象</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="dim">开发对象</td><td>SE11 表 + SE38 报表 + 屏幕 <code>PBO/PAI</code></td><td>CDS 视图 + BDEF + 实现类 + Service</td></tr>
+          <tr><td class="dim">数据访问</td><td>手写 <code>SELECT</code>、Open SQL</td><td>CDS 视图声明式封装，自动 join / 过滤</td></tr>
+          <tr><td class="dim">逻辑分离</td><td>逻辑混在屏幕事件中</td><td>行为定义声明，实现类集中管理</td></tr>
+          <tr><td class="dim">服务能力</td><td>RFC / BAPI 手工暴露</td><td>OData V4 一键生成，含元数据与注释</td></tr>
+          <tr><td class="dim">UI</td><td>Dynpro（陈旧）</td><td>Fiori Elements 自动渲染 List / Object Page</td></tr>
+          <tr><td class="dim">云就绪</td><td>不适合</td><td>Steampunk / 云环境原生支持</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="draft">1.5 Draft（草稿）机制</h2>
+      <p>RAP 默认支持 <code>with draft</code>：用户在 Fiori 前端编辑时，数据先写入<b>草稿表</b>，点「保存」才写入业务表。这让编辑动作可以随时取消、不污染正式数据，也是 Fiori 交互「响应式/编辑即预览」体验的基础。</p>
+      <ul>
+        <li><b>草稿表</b>：SAP 自动生成 <code>Z..._D</code> 结构，无需手动维护。</li>
+        <li><b>Draft 对上层透明</b>：OData 请求 <code>DraftEntity</code> 与正式实体由框架自动切换。</li>
+        <li>你只需要在 BDEF 里写 <code>with draft</code> 一行，框架搞定其余。</li>
+      </ul>
+
+      <h2 id="path">1.6 本培训的学习路径</h2>
+      <ol class="path">
+        <li><a href="prep.html">环境准备</a><span class="psub">安装 ADT、创建包、配置系统</span></li>
+        <li><a href="step1-cds.html">手顺1：CDS 数据模型</a><span class="psub">数据库表 → 接口视图 → 消费视图</span></li>
+        <li><a href="step2-behavior.html">手顺2：行为定义与实现</a><span class="psub">BDEF + 实现类 + AcceptTravel Action</span></li>
+        <li><a href="step3-service.html">手顺3：服务定义与绑定</a><span class="psub">生成 OData V4 服务</span></li>
+        <li><a href="step4-test.html">手顺4：Fiori 预览与测试</a><span class="psub">List Report + 增删改 + Action</span></li>
+      </ol>
+
+      <div class="pagenav">
+        <a href="../index.html"><small>← 上一步</small><b>回到首页</b></a>
+        <a class="next" href="prep.html"><small>下一步 →</small><b>环境准备</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · RAP 培训 · 第 1 章 RAP 概述</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

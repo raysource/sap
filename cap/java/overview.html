@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CAP Java 概述 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../../index.html">首页</a>
+      <a class="tab" href="../../rap/overview.html">RAP 培训</a>
+      <a class="tab active" href="../overview.html">CAP 培训</a>
+      <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">CAP 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="../overview.html"><span class="num">1</span>CAP 概述</a>
+      <a class="snav" href="../prep.html"><span class="num">2</span>环境准备</a>
+      <a class="snav" href="../step1-init.html"><span class="num">3</span>手顺1：项目初始化</a>
+      <a class="snav" href="../step2-model.html"><span class="num">4</span>手顺2：数据模型与服务</a>
+      <a class="snav" href="../step3-implement.html"><span class="num">5</span>手顺3：业务逻辑实现</a>
+      <a class="snav" href="../step4-test.html"><span class="num">6</span>手顺4：启动、测试与 Fiori</a>
+      <a class="snav" href="../testdata.html"><span class="num">7</span>测试数据</a>
+    </nav>
+    <div class="snav-group">CAP for Java（Java 运行时）</div>
+    <a class="snav active" href="overview.html"><span class="num">J1</span>Java 概述</a>
+    <a class="snav" href="prep.html"><span class="num">J2</span>环境准备</a>
+    <a class="snav" href="step1-project.html"><span class="num">J3</span>手顺1：建立 Java 项目</a>
+    <a class="snav" href="step2-db.html"><span class="num">J4</span>手顺2：配置链接与建库建表</a>
+    <a class="snav" href="step3-dto.html"><span class="num">J5</span>手顺3：DTO → 生成模型与服务</a>
+    <a class="snav" href="step4-test.html"><span class="num">J6</span>手顺4：运行与测试</a>
+    <div class="snav-group">BTP 与 HANA Cloud（云环境 + BAS）</div>
+    <a class="snav" href="../btp/overview.html"><span class="num">B1</span>BTP 与 HANA Cloud 概述</a>
+    <a class="snav" href="../btp/prep.html"><span class="num">B2</span>环境准备（BTP 账号）</a>
+    <a class="snav" href="../btp/step1-hana.html"><span class="num">B3</span>手顺1：创建 HANA Cloud 实例</a>
+    <a class="snav" href="../btp/step2-sql.html"><span class="num">B4</span>手顺2：HANA SQL 建表与数据</a>
+    <a class="snav" href="../btp/step3-bas.html"><span class="num">B5</span>手顺3：BAS 入门</a>
+    <a class="snav" href="../btp/step4-dir.html"><span class="num">B6</span>手顺4：模式一 目录式</a>
+    <a class="snav" href="../btp/step5-maven.html"><span class="num">B7</span>手顺5：模式二 Maven</a>
+    <a class="snav" href="../btp/step6-spring.html"><span class="num">B8</span>手顺6：模式三 Spring Boot</a>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+<a class="snav" href="../../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 J1 章：CAP for Java 概述</h1>
+      <p class="page-sub">Java 运行时 · Spring Boot · 「模型到代码」的编译期生成</p>
+      <p class="lead">CAP 支持 <b>Node.js</b> 与 <b>Java</b> 两种运行时，模型（CDS）与 OData 语义完全一致。Java 版基于 <b>Spring Boot</b>，在<b>编译期</b>把 CDS 模型生成成强类型 Java 类与服务接口——适合团队已有 Java/Spring 技术栈、需要强类型与成熟企业生态的场景。</p>
+
+      <p>
+        <span class="badge teal">Java 17+</span>
+        <span class="badge teal">Spring Boot</span>
+        <span class="badge teal">Maven</span>
+        <span class="badge gray">SQLite / H2</span>
+        <span class="badge gray">HANA Cloud</span>
+      </p>
+
+      <h2 id="vs-node">J1.1 Java 版 vs Node.js 版</h2>
+      <p>两条路线<b>共用同一份 <code>schema.cds</code> 模型</b>，业务对象与 OData 行为一致，差别在运行时与开发方式：</p>
+      <table class="cmp-table">
+        <thead>
+          <tr><th style="width:130px">维度</th><th>Node.js 版</th><th class="cap-c">Java 版</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="dim">编程语言</td><td>JavaScript / TypeScript</td><td>Java 17+</td></tr>
+          <tr><td class="dim">底层运行时</td><td>自研 Node 服务器（Express 家族）</td><td>Spring Boot（CAP Java 深度集成）</td></tr>
+          <tr><td class="dim">构建工具</td><td>npm / npx</td><td>Maven（或 Gradle）</td></tr>
+          <tr><td class="dim">项目生成</td><td><code>cds init bookshop</code></td><td><code>cds init bookshop --java</code></td></tr>
+          <tr><td class="dim">模型如何生效</td><td>运行时解释 CSN</td><td><b>编译期</b>由 <code>cds-maven-plugin</code> 生成 Java 类，强类型</td></tr>
+          <tr><td class="dim">业务逻辑</td><td><code>srv/*.js</code> 事件 handler</td><td>Java 事件处理器（<code>@ServiceName / @Before / @After / @On</code>）</td></tr>
+          <tr><td class="dim">本地启动</td><td><code>cds watch</code>（自动重载，端口 4004）</td><td><code>mvn spring-boot:run</code>（端口 8080）</td></tr>
+          <tr><td class="dim">本地数据库</td><td>SQLite</td><td>SQLite / H2（测试常用）</td></tr>
+          <tr><td class="dim">适合团队</td><td>全栈 / 前端出身、求快</td><td>Java / Spring 技术栈、强类型、企业集成</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="how">J1.2 工作方式：模型驱动 + 代码生成</h2>
+      <p>核心差别一句话：<b>Node 版在运行时解释模型，Java 版在编译期把模型变成代码</b>。整条流水线：</p>
+
+      <div style="overflow-x:auto">
+        <div style="display:flex; gap:8px; align-items:stretch; margin:18px 0; min-width:820px">
+          <div style="flex:1; background:#e8f2fb; border:1px solid #b9d6f0; border-radius:10px; padding:12px; text-align:center">
+            <div style="font-size:22px">📐</div><b style="font-size:13px;color:var(--blue)">CDS 模型</b>
+            <div style="font-size:11.5px;color:var(--text-soft);margin-top:4px">db/schema.cds<br>srv/cat-service.cds</div>
+          </div>
+          <div style="align-self:center; color:var(--teal); font-weight:700">→</div>
+          <div style="flex:1; background:#e4f4f2; border:1px solid #bfe2da; border-radius:10px; padding:12px; text-align:center">
+            <div style="font-size:22px">🛠️</div><b style="font-size:13px;color:var(--teal)">cds-maven-plugin</b>
+            <div style="font-size:11.5px;color:var(--text-soft);margin-top:4px">编译期（generate-sources）<br>CDS → CSN → Java</div>
+          </div>
+          <div style="align-self:center; color:var(--teal); font-weight:700">→</div>
+          <div style="flex:1; background:#f6f3ea; border:1px solid #e0d3ab; border-radius:10px; padding:12px; text-align:center">
+            <div style="font-size:22px">☕</div><b style="font-size:13px;color:var(--amber)">生成的 Java 产物</b>
+            <div style="font-size:11.5px;color:var(--text-soft);margin-top:4px">模型类 <code>Books</code><br>服务接口 <code>CatalogService_</code></div>
+          </div>
+          <div style="align-self:center; color:var(--teal); font-weight:700">→</div>
+          <div style="flex:1; background:#fbe9e7; border:1px solid #f0c3bc; border-radius:10px; padding:12px; text-align:center">
+            <div style="font-size:22px">🚀</div><b style="font-size:13px;color:var(--red)">Spring Boot 运行时</b>
+            <div style="font-size:11.5px;color:var(--text-soft);margin-top:4px">自动 CRUD + OData V4<br>+ 你的事件处理器</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="note">
+        <span class="note-title">💡 与 Node 版共用模型</span>
+        本章节的 <code>schema.cds</code> 与前面 <a href="../step2-model.html">手顺2：数据模型与服务</a> 完全一致——同一个 Bookshop 模型，Node 版运行时解释，Java 版编译成类。两套开发方式唯一需要重新写的是<b>业务逻辑（事件处理器）</b>。
+      </div>
+
+      <h2 id="generated">J1.3 编译期生成了什么</h2>
+      <p>执行 <code>mvn clean install</code> 时，<code>cds-maven-plugin</code> 把 CDS 编译到 <code>srv/target/generated-sources/cds</code>，产出三类强类型 Java 源码：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">bookshop/srv/target/generated-sources/cds — 生成的源码</span></div>
+          <div class="tree">
+            <div class="row"><span class="i">▾</span><span class="folder">📁</span> generated-sources/cds/</div>
+            <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> sap/capire/bookshop/</div>
+            <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> <b>Genres.java</b> <span style="color:var(--text-faint);font-size:11px">— 模型类（implements CdsData）</span></div>
+            <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> <b>Authors.java</b> <span style="color:var(--text-faint);font-size:11px">— 模型类</span></div>
+            <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> <b>Books.java</b> <span style="color:var(--text-faint);font-size:11px">— 模型类（含关联字段）</span></div>
+            <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> <b>CatalogService.java</b> <span style="color:var(--text-faint);font-size:11px">— 服务接口（CdsService）</span></div>
+            <div class="row"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> <b>CatalogService_.java</b> <span style="color:var(--text-faint);font-size:11px">— 规范服务类（CDS_NAME / EVENT_* 常量）</span></div>
+          </div>
+        </div>
+        <div class="cap"><b>图 J1-1</b> 编译期生成的 Java 产物：模型类 + 服务接口，可被你的业务代码直接 import</div>
+      </div>
+
+      <ul>
+        <li><b>模型类</b>（如 <code>Books</code>）：一个 JavaBean，字段类型映射 CDS 类型（<code>Integer</code>、<code>String</code>、<code>BigDecimal</code>、<code>LocalDate</code>…），实现 <code>com.sap.cds.CdsData</code>，带 getter/setter——这就是我们手写「DTO」时想要的类，框架替你生成了。</li>
+        <li><b>服务接口</b>（<code>CatalogService</code> 与规范版 <code>CatalogService_</code>）：声明了该服务的 <code>CDS_NAME</code>（如 <code>CatalogService</code>）与可注册的事件（如 <code>EVENT_SUBMIT_ORDER</code>）。</li>
+        <li><b>事件处理器骨架</b>：CDS 里声明的 <code>action</code> 会生成对应事件常量，业务类用注解绑定。</li>
+      </ul>
+
+      <h2 id="when">J1.4 什么时候选 Java</h2>
+      <div class="grid cols-2">
+        <div class="card">
+          <h3>✅ 推荐 Java</h3>
+          <ul style="margin:0;padding-left:18px">
+            <li>团队已有 Java / Spring Boot 技术栈</li>
+            <li>需要强类型、编译期就发现模型/逻辑错误</li>
+            <li>要复用企业 Java 生态（Spring、JPA 经验、监控、安全框架）</li>
+            <li>大规模服务，依赖成熟的线程/连接池管理</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>⚡ 推荐 Node</h3>
+          <ul style="margin:0;padding-left:18px">
+            <li>团队偏前端 / 全栈，JavaScript 熟练</li>
+            <li>快速原型、<code>cds watch</code> 秒级热重载体验</li>
+            <li>轻量服务、启动快、依赖少</li>
+            <li>模型频繁改动，不希望每次编译</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2 id="path">J1.5 本路线的学习路径</h2>
+      <p>本路线从「一个普通的 Java DTO」出发，一步步走到完整的 CAP Java 项目，覆盖你要求的全部主题：</p>
+      <ol class="path cap">
+        <li><a href="prep.html">环境准备</a><span class="psub">JDK 17 / Maven / IDE</span></li>
+        <li><a href="step1-project.html">手顺1：建立 Java 项目</a><span class="psub">DTO → cds init --java → Maven</span></li>
+        <li><a href="step2-db.html">手顺2：配置链接与建库建表</a><span class="psub">datasource → 自动建表 → DDL</span></li>
+        <li><a href="step3-dto.html">手顺3：DTO → 生成模型与服务</a><span class="psub">Books 类 / CatalogService_ / handler</span></li>
+        <li><a href="step4-test.html">手顺4：运行与测试</a><span class="psub">spring-boot:run + OData</span></li>
+      </ol>
+
+      <div class="pagenav">
+        <a href="../overview.html"><small>← 上一步</small><b>CAP 概述（Node 版）</b></a>
+        <a class="next" href="prep.html"><small>下一步 →</small><b>环境准备</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · CAP for Java · 第 J1 章 Java 概述</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

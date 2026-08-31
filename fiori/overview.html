@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fiori 概述 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../index.html">首页</a>
+      <a class="tab" href="../rap/overview.html">RAP 培训</a>
+      <a class="tab" href="../cap/overview.html">CAP 培训</a>
+      <a class="tab active" href="overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">Fiori 培训</div>
+    <nav class="side-nav">
+      <a class="snav active" href="overview.html"><span class="num">F1</span>Fiori 概述</a>
+      <a class="snav" href="step1-list.html"><span class="num">F2</span>手顺1：List Report</a>
+      <a class="snav" href="step2-object.html"><span class="num">F3</span>手顺2：Object Page 与 Facets</a>
+      <a class="snav" href="step3-action.html"><span class="num">F4</span>手顺3：Action 与双线集成</a>
+      <a class="snav" href="elements.html"><span class="num">F5</span>主要元素控件讲解</a>
+      <a class="snav" href="templates.html"><span class="num">F6</span>页面模板详解</a>
+    </nav>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <a class="snav" href="../cap/overview.html"><span class="num">C</span>CAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 F1 章：Fiori 概述</h1>
+      <p class="page-sub">Fiori Elements · 注解驱动的企业级 UI，RAP 与 CAP 共同的「门面」</p>
+      <p class="lead">Fiori 是 SAP 的<b>用户体验设计体系</b>，而 <b>Fiori Elements</b> 是它的「免代码 UI 框架」：只要你的后端暴露一个 OData 服务（无论来自 RAP 还是 CAP），Fiori Elements 就能按服务元数据自动渲染出可搜索、可筛选、可编辑的企业级页面，几乎不用写一行 UI5 代码。</p>
+
+      <p>
+        <span class="badge teal">Fiori Elements</span>
+        <span class="badge teal">@UI 注解</span>
+        <span class="badge teal">List Report</span>
+        <span class="badge blue">Object Page</span>
+        <span class="badge gray">UI5</span>
+        <span class="badge gray">Launchpad</span>
+      </p>
+
+      <h2 id="what">F1.1 Fiori 是什么</h2>
+      <p>Fiori 是 SAP 面向企业应用的<b>设计语言</b>：基于角色、响应式、简单直接。Fiori 应用通常通过 <b>Fiori Launchpad</b>（企业门户）统一入口访问，但本章关注的是开发侧的核心——<b>Fiori Elements</b>：一组预制的 UI5 页面模板（List Report、Object Page 等），它们读取 OData 服务的 <code>$metadata</code> 与 <code>@UI</code> 注解，<b>自动生成完整页面</b>。</p>
+
+      <div class="grid cols-3">
+        <div class="card">
+          <h3>① 元数据驱动</h3>
+          <p>页面结构（列、表单、Facet）全部由服务注解声明，改注解即改 UI，无需改 JS 代码。</p>
+        </div>
+        <div class="card">
+          <h3>② 零代码起步</h3>
+          <p>后端 OData 就绪后，几分钟内得到标准 List Report / Object Page，开箱支持搜索、筛选、分页、CRUD。</p>
+        </div>
+        <div class="card">
+          <h3>③ 可渐进扩展</h3>
+          <p>标准功能不满足时，再写自定义列、自定义按钮（Action）或 Freestyle 扩展，而不是推翻重来。</p>
+        </div>
+      </div>
+
+      <h2 id="types">F1.2 Fiori Elements 页面类型</h2>
+      <table class="doc">
+        <thead>
+          <tr><th>模板</th><th>用途</th><th>典型页面</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>List Report</b></td><td>主列表：搜索、筛选、批量操作、跳转详情</td><td>订单列表、物料清单、Books 列表</td></tr>
+          <tr><td><b>Object Page</b></td><td>单条对象详情：Header + Facets（表单/子表/文本）</td><td>订单详情、Travel 详情</td></tr>
+          <tr><td><b>Overview Page</b></td><td>仪表盘式总览：卡片聚合多个数据源</td><td>销售总览、监控台</td></tr>
+          <tr><td><b>Analytical List Page</b></td><td>图表 + 列表联动分析</td><td>销售分析</td></tr>
+          <tr><td><b>Form Entry</b></td><td>向导式录入 / 审批流首屏</td><td>报销申请、入职流程</td></tr>
+        </tbody>
+      </table>
+      <p>本培训 F2–F4 覆盖最常用的 <b>List Report + Object Page</b> 组合，外加 Action 按钮与 RAP / CAP 双线集成。</p>
+
+      <h2 id="annots">F1.3 注解驱动的 UI</h2>
+      <p>Fiori Elements 的灵魂是 <code>@UI</code> 注解（以及 <code>@Common</code>、<code>@Semantic</code> 等辅助注解）。注解声明「页面上有什么」，框架负责「怎么渲染」。一段典型注解声明了列表标题、表格列与语义键：</p>
+
+<pre><code class="language-cds">annotate service.Books with @(
+  UI : {
+    HeaderInfo : { TypeName : 'Book', TypeNamePlural : 'Books', Title : { Value : 'title' } },
+    LineItem : [
+      { Value : 'title', Label : '书名' },
+      { Value : 'price', Label : '价格' },
+      { Value : 'stock', Label : '库存' }
+    ]
+  },
+  Common.SemanticKey : ['ID']
+);</code></pre>
+
+      <p>注解<b>写在哪里</b>取决于后端：RAP 在 CDS 视图（消费视图 / 元数据扩展）里写 <code>@UI</code> 注解；CAP 在 <code>app/*/annotate.cds</code> 里用 <code>annotate</code> 叠加。位置不同，机制相同——都是给 OData 服务的元数据「加注释」。</p>
+
+      <h2 id="bridge">F1.4 Fiori 是 RAP 与 CAP 共同的「门面」</h2>
+      <p>RAP 与 CAP 各有一套后端栈，但前端殊途同归：<b>OData V4 服务 → Fiori Elements</b>。本培训前两条路线的第 4 个手顺都已预览过 Fiori（<a href="../rap/step4-test.html">RAP 手顺4</a> 的 Service Binding Preview、<a href="../cap/step4-test.html">CAP 手顺4</a> 的 <code>app/</code> 目录），本章把这些体验系统化：</p>
+
+      <table class="cmp-table">
+        <thead>
+          <tr><th style="width:130px">维度</th><th class="rap-c">RAP 侧</th><th class="cap-c">CAP 侧</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="dim">注解位置</td><td>CDS 视图 / 元数据扩展（<code>@UI.*</code>）</td><td><code>app/*/annotate.cds</code> 的 <code>annotate</code></td></tr>
+          <tr><td class="dim">预览方式</td><td>Service Binding → Preview（系统自带）</td><td><code>cds watch</code> + <code>/app/books/index.html</code></td></tr>
+          <tr><td class="dim">生成工具</td><td>ADT 新建 Fiori 元素 / 预览模板</td><td><code>cds add fiori</code> 或 Fiori Tools</td></tr>
+          <tr><td class="dim">编辑模式</td><td>Draft（草稿）机制</td><td>直接编辑 + <code>@Common</code> 注解可配 Draft</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="env">F1.5 环境准备（复用 CAP 环境）</h2>
+      <p>本 Fiori 章节的实操全部基于 <b>CAP Bookshop 工程</b>（<a href="../downloads.html#cap-node">素材包</a> <code>samples/cap-bookshop</code>），因此环境与 CAP 路线一致：</p>
+      <ul>
+        <li><b>Node.js 18+ 与 cds-dk</b>：见 <a href="../cap/prep.html">CAP 环境准备</a>；<code>samples/cap-bookshop</code> 已含 <code>package.json</code>，<code>npm install &amp;&amp; cds watch</code> 即可。</li>
+        <li><b>VS Code</b>：改 <code>annotate.cds</code> 与 <code>manifest.json</code> 用；可选安装 <b>Fiori Tools</b>（<code>@sap/ux-ui5-tooling</code> 扩展包，用于 F2 的脚手架生成）。</li>
+        <li><b>浏览器</b>：直接访问 <code>http://localhost:4004/app/books/index.html</code> 预览。</li>
+      </ul>
+
+      <h2 id="path">F1.6 本培训的学习路径</h2>
+      <ol class="path cap">
+        <li><a href="step1-list.html">手顺1：List Report</a><span class="psub">cds add fiori 脚手架 + annotate 定制列</span></li>
+        <li><a href="step2-object.html">手顺2：Object Page 与 Facets</a><span class="psub">Header + 表单 Facet + 子表</span></li>
+        <li><a href="step3-action.html">手顺3：Action 与双线集成</a><span class="psub">submitOrder 按钮 + RAP 侧 @UI 注解 + Draft</span></li>
+      </ol>
+
+      <div class="pagenav">
+        <a href="../index.html"><small>← 上一步</small><b>回到首页</b></a>
+        <a class="next" href="step1-list.html"><small>下一步 →</small><b>手顺1：List Report</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · Fiori 培训 · 第 F1 章 Fiori 概述</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

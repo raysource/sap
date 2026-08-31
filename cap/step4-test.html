@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>手顺4：启动、测试与 Fiori | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../index.html">首页</a>
+      <a class="tab" href="../rap/overview.html">RAP 培训</a>
+      <a class="tab active" href="overview.html">CAP 培训</a>
+      <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">CAP 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="overview.html"><span class="num">1</span>CAP 概述</a>
+      <a class="snav" href="prep.html"><span class="num">2</span>环境准备</a>
+      <a class="snav" href="step1-init.html"><span class="num">3</span>手顺1：项目初始化</a>
+      <a class="snav" href="step2-model.html"><span class="num">4</span>手顺2：数据模型与服务</a>
+      <a class="snav" href="step3-implement.html"><span class="num">5</span>手顺3：业务逻辑实现</a>
+      <a class="snav active" href="step4-test.html"><span class="num">6</span>手顺4：启动、测试与 Fiori</a>
+      <a class="snav" href="testdata.html"><span class="num">7</span>测试数据</a>
+    </nav>
+    <div class="snav-group">CAP for Java（Java 运行时）</div>
+    <a class="snav" href="java/overview.html"><span class="num">J1</span>Java 概述</a>
+    <a class="snav" href="java/prep.html"><span class="num">J2</span>环境准备</a>
+    <a class="snav" href="java/step1-project.html"><span class="num">J3</span>手顺1：建立 Java 项目</a>
+    <a class="snav" href="java/step2-db.html"><span class="num">J4</span>手顺2：配置链接与建库建表</a>
+    <a class="snav" href="java/step3-dto.html"><span class="num">J5</span>手顺3：DTO → 生成模型与服务</a>
+    <a class="snav" href="java/step4-test.html"><span class="num">J6</span>手顺4：运行与测试</a>
+    <div class="snav-group">BTP 与 HANA Cloud（云环境 + BAS）</div>
+    <a class="snav" href="btp/overview.html"><span class="num">B1</span>BTP 与 HANA Cloud 概述</a>
+    <a class="snav" href="btp/prep.html"><span class="num">B2</span>环境准备（BTP 账号）</a>
+    <a class="snav" href="btp/step1-hana.html"><span class="num">B3</span>手顺1：创建 HANA Cloud 实例</a>
+    <a class="snav" href="btp/step2-sql.html"><span class="num">B4</span>手顺2：HANA SQL 建表与数据</a>
+    <a class="snav" href="btp/step3-bas.html"><span class="num">B5</span>手顺3：BAS 入门</a>
+    <a class="snav" href="btp/step4-dir.html"><span class="num">B6</span>手顺4：模式一 目录式</a>
+    <a class="snav" href="btp/step5-maven.html"><span class="num">B7</span>手顺5：模式二 Maven</a>
+    <a class="snav" href="btp/step6-spring.html"><span class="num">B8</span>手顺6：模式三 Spring Boot</a>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+<a class="snav" href="../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 6 章：手顺4 —— 启动、测试与 Fiori</h1>
+      <p class="page-sub">cds watch 启动 → OData CRUD 测试 → Fiori Elements 预览</p>
+      <p class="lead">前几章攒下的模型、服务、处理器，本章全部串起来：启动服务器，用 curl / POSTMAN 做一轮完整的 OData 增删改查与下单测试，最后用 Fiori Elements 把 Books 渲染成真实的 List Report 页面。</p>
+
+      <p>
+        <span class="badge teal">cds watch</span>
+        <span class="badge teal">OData V4</span>
+        <span class="badge teal">curl</span>
+        <span class="badge teal">Fiori Elements</span>
+        <span class="badge gray">POSTMAN</span>
+      </p>
+
+      <h2 id="start">6.1 步骤1：启动服务器</h2>
+      <p>在项目根目录执行 <code>cds watch</code>。此时模型与服务都已就绪，启动日志会列出 <code>CatalogService</code> 的路径：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">终端 — cds watch</span></div>
+          <div class="term">
+            <div><span class="p">$</span> <span class="path">cds watch</span></div>
+            <div><span class="info">[cds]</span> - serving CatalogService { path: <span class="ok">'/odata/v4/catalog'</span> }</div>
+            <div><span class="info">[cds]</span> - server listening on <span class="ok">http://localhost:4004</span></div>
+            <div><span class="info">[cds]</span> - [ terminate with ^C ]</div>
+            <div><span class="info">[cds]</span> - connect to <span class="ok">http://localhost:4004/odata/v4/catalog</span> ...</div>
+          </div>
+        </div>
+        <div class="cap"><b>图 6-1</b> <code>cds watch</code> 启动：服务路径 <code>/odata/v4/catalog</code> 已对外暴露</div>
+      </div>
+
+      <p>浏览器打开 <code>http://localhost:4004</code>，CAP 显示欢迎页并列出已启动的服务，点击链接即可看到 OData 文档：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">http://localhost:4004 — 服务索引页</span></div>
+          <div style="background:#fff;padding:16px 20px;font-size:13px">
+            <div style="font-size:17px;font-weight:700;color:var(--navy)">Your CAP Service is up &amp; running 🎉</div>
+            <div style="color:var(--text-soft);margin:6px 0 14px">下列服务已启动，点击可查看 OData 文档：</div>
+            <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;max-width:560px">
+              <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border-soft);background:var(--surface-2)">
+                <span class="badge teal">OData V4</span>
+                <b>CatalogService</b>
+                <span style="margin-left:auto;color:var(--blue)">/odata/v4/catalog →</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;padding:10px 14px">
+                <span class="badge gray">REST</span>
+                <b>Welcome</b>
+                <span style="margin-left:auto;color:var(--blue)">/ →</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 6-2</b> <code>http://localhost:4004</code> 服务索引页：列出全部服务与访问路径</div>
+      </div>
+
+      <h2 id="odata">6.2 步骤2：OData 测试</h2>
+      <p>CAP 为每个实体自动生成 OData V4 端点，支持 <code>$filter</code>、<code>$top</code>、<code>$expand</code> 等标准查询选项。先看最基础的读取——GET <code>Books</code> 集合，浏览器直接访问返回 JSON（注意第 5 章 <code>srv.after</code> 的效果：库存大于 100 的书标题带「-- 畅销」）：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">http://localhost:4004/odata/v4/catalog/Books</span></div>
+          <div style="background:#f6f8fa;padding:12px 14px;font-family:var(--mono);font-size:12px;overflow-x:auto;white-space:pre;line-height:1.55">{
+  "@odata.context": "http://localhost:4004/odata/v4/catalog/$metadata#Books",
+  "value": [
+    { "ID": 1, "title": "Wuthering Heights", "author_ID": 101, "genre_ID": 201, "stock": 12, "price": 11.11, "currency": "EUR" },
+    { "ID": 3, "title": "The Raven -- 畅销", "author_ID": 102, "genre_ID": 203, "stock": 333, "price": 8.00, "currency": "EUR" },
+    { "ID": 7, "title": "1Q84", "author_ID": 104, "genre_ID": 201, "stock": 100, "price": 33.00, "currency": "EUR" }
+  ]
+}</div>
+        </div>
+        <div class="cap"><b>图 6-3</b> GET <code>/odata/v4/catalog/Books</code> 返回 JSON 数组；库存 &gt; 100 的书被 <code>srv.after</code> 追加了「-- 畅销」</div>
+      </div>
+
+      <h3 id="curl">6.2.1 curl 命令行测试</h3>
+      <p>在终端用 curl 执行完整的 CRUD 与查询操作：</p>
+
+<pre><code class="language-bash"># ① 读取全部图书
+curl http://localhost:4004/odata/v4/catalog/Books
+
+# ② 查看服务的元数据（暴露所有实体、字段、注解）
+curl http://localhost:4004/odata/v4/catalog/$metadata
+
+# ③ 查询：价格低于 30（注意空格需 URL 编码为 %20）
+curl "http://localhost:4004/odata/v4/catalog/Books?\$filter=price%20lt%2030"
+
+# ④ 查询：只看前 3 条
+curl "http://localhost:4004/odata/v4/catalog/Books?\$top=3"
+
+# ⑤ 查询：展开关联的作者对象
+curl "http://localhost:4004/odata/v4/catalog/Books?\$expand=author"
+
+# ⑥ 创建新书（POST 新增，返回 201）
+curl -X POST http://localhost:4004/odata/v4/catalog/Books \
+  -H "Content-Type: application/json" \
+  -d '{"ID":101,"title":"CAP in Action","descr":"新书","author_ID":104,"genre_ID":201,"stock":5,"price":19.99,"currency":"EUR"}'
+
+# ⑦ 修改价格（PATCH 局部更新，返回 200）
+curl -X PATCH http://localhost:4004/odata/v4/catalog/Books(101) \
+  -H "Content-Type: application/json" \
+  -d '{"price":25.50}'
+
+# ⑧ 删除图书（DELETE 返回 204）
+curl -X DELETE http://localhost:4004/odata/v4/catalog/Books(101)
+</code></pre>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">终端 — curl 测试</span></div>
+          <div class="term">
+            <div><span class="p">$</span> <span class="path">curl http://localhost:4004/odata/v4/catalog/Books?$filter=price%20lt%2030</span></div>
+            <div>{&nbsp;"value":&nbsp;[&nbsp;{&nbsp;"ID":&nbsp;1,&nbsp;"title":&nbsp;"Wuthering&nbsp;Heights",&nbsp;"price":&nbsp;11.11&nbsp;},</div>
+            <div>&nbsp;&nbsp;{&nbsp;"ID":&nbsp;4,&nbsp;"title":&nbsp;"Eleonora",&nbsp;"price":&nbsp;7.99&nbsp;},&nbsp;...&nbsp;]&nbsp;}</div>
+            <div>&nbsp;</div>
+            <div><span class="p">$</span> <span class="path">curl -X POST http://localhost:4004/odata/v4/catalog/Books -H "Content-Type: application/json" -d '{"ID":101,"title":"CAP in Action","stock":5,"price":19.99,"currency":"EUR"}'</span></div>
+            <div><span class="ok">HTTP/1.1 201 Created</span></div>
+            <div>{&nbsp;"ID":&nbsp;101,&nbsp;"title":&nbsp;"CAP&nbsp;in&nbsp;Action",&nbsp;"stock":&nbsp;5,&nbsp;"price":&nbsp;19.99&nbsp;}</div>
+          </div>
+        </div>
+        <div class="cap"><b>图 6-4</b> 终端 curl：查询 <code>$filter=price lt 30</code> 只返回低价书；POST 创建新书返回 <code>201</code></div>
+      </div>
+
+      <h3 id="postman">6.2.2 POSTMAN 可视化测试</h3>
+      <p>喜欢图形界面的话，用 POSTMAN 或 VS Code 的 REST Client 扩展发起请求。以 GET + <code>$filter</code> 为例：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="postman">
+            <div class="pm-tab">
+              <span class="pm-method get">GET</span>
+              <span class="pm-url">http://localhost:4004/odata/v4/catalog/Books?$filter=price%20lt%2030</span>
+              <span class="pm-send">Send</span>
+            </div>
+            <div class="pm-head"><span class="on">Params</span><span>Authorization</span><span>Headers</span><span>Body</span></div>
+            <div class="pm-res">
+              <div class="pm-rhead">
+                <div style="font-weight:600">Body</div>
+                <div style="margin-top:10px;color:#1e8f4c">200 OK</div>
+                <div style="color:#888">application/json</div>
+                <div style="margin-top:10px;color:#666">耗时 23ms</div>
+              </div>
+              <div style="flex:1;min-width:0;background:#fff;padding:10px 14px;font-family:var(--mono);font-size:11.5px;overflow-x:auto;white-space:pre;line-height:1.55">{
+  "@odata.context": "http://localhost:4004/odata/v4/catalog/$metadata#Books",
+  "value": [
+    { "ID": 1, "title": "Wuthering Heights", "price": 11.11, "currency": "EUR" },
+    { "ID": 2, "title": "Jane Eyre", "price": 22.00, "currency": "EUR" },
+    { "ID": 4, "title": "Eleonora", "price": 7.99, "currency": "EUR" }
+  ]
+}</div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 6-5</b> POSTMAN：GET 完整 URL + 响应 JSON，<code>price lt 30</code> 过滤出低价书</div>
+      </div>
+
+      <h2 id="fiori">6.3 步骤3：Fiori Elements 预览</h2>
+      <p>数据接口测试通过后，用 <b>Fiori Elements List Report</b> 把 <code>Books</code> 渲染成可搜索、可筛选、可创建的业务页面。有两种搭建方式：</p>
+      <ul>
+        <li><b>手动方式（本培训采用）</b>：在 <code>app/books/</code> 下创建 <code>annotate.cds</code>（写 <code>@UI</code> 注解）+ <code>manifest.json</code>（应用配置）+ 空的 <code>index.html</code>。</li>
+        <li><b>脚手架方式</b>：用 <code>cds add fiori</code> 或 <code>@sap/cds-fiori</code> 包一键生成上述文件，再按需微调。</li>
+      </ul>
+
+      <h3>annotate.cds —— 用注解声明 UI</h3>
+      <p>在 <code>app/books/annotate.cds</code> 中用 <code>annotate</code> 给服务投影追加 <code>@UI</code> 注解（<b>不改原始模型</b>），声明 List Report 的标题、表格列：</p>
+
+<pre><code class="language-cds">// app/books/annotate.cds —— 为 CatalogService.Books 声明 UI 注解
+using CatalogService as service from '../srv/cat-service';
+
+annotate service.Books with @(
+  UI : {
+    HeaderInfo : {
+      TypeName : 'Book', TypeNamePlural : 'Books', Title : { Value : 'title' },
+      Description : { Value : 'descr' }
+    },
+    LineItem : [
+      { Value : 'title', Label : '书名' },
+      { Value : 'price', Label : '价格' },
+      { Value : 'stock', Label : '库存' },
+      { Value : 'author.name', Label : '作者' }
+    ]
+  },
+  Common.SemanticKey : ['ID']
+);
+</code></pre>
+
+      <ul>
+        <li><b><code>UI.HeaderInfo</code></b>：列表页与对象页的标题区配置（单数/复数名、主标题字段、描述字段）。</li>
+        <li><b><code>UI.LineItem</code></b>：表格列定义，<code>Value</code> 可以是嵌套关联路径（如 <code>author.name</code> 直接显示作者姓名）。</li>
+        <li><b><code>Common.SemanticKey</code></b>：声明业务语义键，用于跳转与去重。</li>
+        <li><b><code>annotate ... with</code></b>：注解只叠加在服务投影上，<code>db/schema.cds</code> 保持纯净——这是 CAP 的推荐分层。</li>
+      </ul>
+
+      <div class="note">
+        <span class="note-title">💡 注解文件的相对路径</span>
+        <code>annotate.cds</code> 放在 <code>app/books/</code> 下时，<code>using ... from</code> 指向服务的路径应为 <code>../../srv/cat-service</code>；若放在 <code>app/</code> 根目录则为 <code>../srv/cat-service</code>。上面示例按 <code>app/</code> 根目录路径书写，实际放置时按你的目录层级调整。
+      </div>
+
+      <h3>manifest.json —— 应用与数据源配置</h3>
+      <p>创建 <code>app/books/manifest.json</code>，声明应用 ID、指向 <code>CatalogService</code> 的数据源与路由：</p>
+
+<pre><code class="language-json">{
+  "sap.app": {
+    "id": "cap.bookshop.books",
+    "type": "application",
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/catalog/",
+        "type": "OData",
+        "settings": { "odataVersion": "4.0" }
+      }
+    }
+  },
+  "sap.ui5": {
+    "dependencies": {
+      "libs": { "sap.m": {} }
+    }
+  },
+  "routing": {
+    "config": { "routerClass": "sap.m.routing.Router" },
+    "routes": [
+      { "pattern": "", "name": "BooksList", "target": "BooksList" }
+    ],
+    "targets": {
+      "BooksList": {
+        "type": "Component",
+        "id": "BooksList",
+        "name": "sap.fe.templates.ListReport",
+        "options": { "settings": { "entitySet": "Books" } }
+      }
+    }
+  }
+}
+</code></pre>
+
+      <p>保存后 <code>cds watch</code> 会自动拾取 <code>app/</code> 下的应用。浏览器访问 <code>http://localhost:4004/app/books/index.html</code>（<code>index.html</code> 可以是几乎空白的引导页），即可看到渲染好的 List Report：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="fi">
+            <div class="fi-top">
+              <span class="ftitle">Books</span>
+              <span class="fsearch">🔍 搜索书名或作者...</span>
+              <span class="fbtn ghost" style="margin-left:auto">⌁ 适应筛选项</span>
+              <span class="fbtn">📊 视图设置</span>
+            </div>
+            <div class="fi-nav"><span class="on">Books</span><span>Authors</span><span>Genres</span></div>
+            <div class="fi-body">
+              <div class="fi-main">
+                <div class="fbar">
+                  <span class="field">书名<select class="fc"><option>Wuthering Heights</option><option>The Raven</option></select></span>
+                  <span class="field">作者<select class="fc dd"><option>全部</option></select></span>
+                  <span class="field">价格区间<select class="fc dd"><option>全部</option></select></span>
+                  <span class="fbtn primary">筛选</span>
+                  <span class="fbtn ghost">重置</span>
+                  <span class="fbtn teal" style="margin-left:auto">创建</span>
+                </div>
+                <table class="tbl">
+                  <thead><tr><th>书名</th><th>作者</th><th>价格</th><th>库存</th><th>状态</th></tr></thead>
+                  <tbody>
+                    <tr><td>Wuthering Heights</td><td>Emily Brontë</td><td class="num">11.11 EUR</td><td class="num">12</td><td><span class="st n">新</span></td></tr>
+                    <tr class="sel"><td>The Raven -- 畅销</td><td>George Orwell</td><td class="num">8.00 EUR</td><td class="num">333</td><td><span class="st o">处理中</span></td></tr>
+                    <tr><td>Pride and Prejudice</td><td>Jane Austen</td><td class="num">24.99 EUR</td><td class="num">10</td><td><span class="st a">已批准</span></td></tr>
+                    <tr><td>Eleonora</td><td>George Orwell</td><td class="num">7.99 EUR</td><td class="num">0</td><td><span class="st x">已拒绝</span></td></tr>
+                    <tr><td>1Q84</td><td>Haruki Murakami</td><td class="num">33.00 EUR</td><td class="num">100</td><td><span class="st a">已批准</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 6-6</b> Fiori Elements List Report：搜索、筛选栏、[创建] 按钮与表格列（书名/作者/价格/库存），数据来自第 4 章 CSV 种子数据</div>
+      </div>
+
+      <h2 id="trouble">6.4 步骤4：错误排查与调试</h2>
+      <table class="doc">
+        <thead>
+          <tr><th>症状</th><th>原因 / 排查</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>启动报 <code>EADDRINUSE</code></td><td>端口 4004 被占用。换端口：<code>cds watch --port 4005</code>，或找出占用进程 <code>lsof -i :4004</code>。</td></tr>
+          <tr><td>启动报 CDS 语法错误（红字 + 文件名:行号）</td><td><code>*.cds</code> 语法错误。检查 <code>entity</code> 块大括号是否闭合、字段类型是否合法，按报错行列修正。</td></tr>
+          <tr><td>启动报 CSV 导入错误 <code>invalid column</code></td><td>CSV 表头与实体字段不匹配（拼写/顺序/缺失 <code>_ID</code> 外键列）。对照第 7 章测试数据核对。</td></tr>
+          <tr><td>请求返回 404</td><td>实体集合不存在或路径拼错。先访问 <code>http://localhost:4004</code> 服务索引页确认真实路径。</td></tr>
+          <tr><td>请求返回 400 / 500 且终端有堆栈</td><td>handler 抛异常或 <code>req.reject</code> 被触发。看 <code>cds watch</code> 终端堆栈定位到 <code>cat-service.js</code> 的行。</td></tr>
+        </tbody>
+      </table>
+      <p>需要断点调试时，用 Node 的调试模式启动：<code>cds watch --inspect</code>（等价 <code>node --inspect</code>），然后在 VS Code 的「运行与调试」里附加 <code>localhost:9229</code> 打断点。</p>
+
+      <h2 id="steps">6.5 操作手顺</h2>
+      <ol class="steps teal">
+        <li><p><span class="step-title">启动服务器</span></p>
+          <p>执行 <code>cds watch</code>，确认日志列出 <code>CatalogService</code> 与 <code>http://localhost:4004</code>（见<a href="#start">图 6-1</a>）。</p>
+        </li>
+        <li><p><span class="step-title">OData 测试</span></p>
+          <p>用 curl / POSTMAN 依次执行读取、查询（<code>$filter</code> / <code>$top</code> / <code>$expand</code>）、创建、修改、删除与下单 Action（见<a href="#odata">6.2</a>）。</p>
+        </li>
+        <li><p><span class="step-title">Fiori Elements 预览</span></p>
+          <p>在 <code>app/books/</code> 下创建 <code>annotate.cds</code> + <code>manifest.json</code>，访问 <code>http://localhost:4004/app/books/index.html</code> 查看 List Report（见<a href="#fiori">6.3</a>）。</p>
+        </li>
+        <li><p><span class="step-title">排查与调试</span></p>
+          <p>对照错误排查表（见<a href="#trouble">6.4</a>）定位端口占用、语法错误、CSV 不匹配等问题，必要时用 <code>cds watch --inspect</code> 断点调试。</p>
+        </li>
+      </ol>
+
+      <div class="note warn">
+        <span class="note-title">⚠️ Fiori 预览与注解注意事项</span>
+        <ul>
+          <li><b>注解用 annotate 而非改原始模型</b>：UI 注解写进 <code>app/*/annotate.cds</code>，保持 <code>db/schema.cds</code> 纯净，便于复用与升级。</li>
+          <li><b>预览地址</b>：Fiori 应用通过 <code>http://localhost:4004/app/books/index.html</code> 访问；没有 Fiori 项目文件时 CAP 也能用 <code>cds serve --with-mocks</code> 提供纯 OData 预览。</li>
+          <li><b>CORS</b>：本地开发时 CAP 默认开放跨域（CORS），前端从其它端口发起请求不会报跨域错误。</li>
+          <li><b>改 manifest / annotate 后</b>：刷新浏览器即可看到新注解生效（<code>cds watch</code> 会重载 <code>app/</code> 下文件）。</li>
+        </ul>
+      </div>
+
+      <div class="pagenav">
+        <a href="step3-implement.html"><small>← 上一章</small><b>手顺3：业务逻辑实现</b></a>
+        <a class="next" href="testdata.html"><small>下一章 →</small><b>测试数据</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · CAP 培训 · 第 6 章 手顺4：启动、测试与 Fiori</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

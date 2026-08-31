@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>测试数据 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../index.html">首页</a>
+      <a class="tab active" href="overview.html">RAP 培训</a>
+      <a class="tab" href="../cap/overview.html">CAP 培训</a>
+      <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">RAP 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="overview.html"><span class="num">1</span>RAP 概述</a>
+      <a class="snav" href="prep.html"><span class="num">2</span>环境准备</a>
+      <a class="snav" href="step1-cds.html"><span class="num">3</span>手顺1：CDS 数据模型</a>
+      <a class="snav" href="step2-behavior.html"><span class="num">4</span>手顺2：行为定义与实现</a>
+      <a class="snav" href="step3-service.html"><span class="num">5</span>手顺3：服务定义与绑定</a>
+      <a class="snav" href="step4-test.html"><span class="num">6</span>手顺4：Fiori 预览与测试</a>
+      <a class="snav active" href="testdata.html"><span class="num">7</span>测试数据</a>
+    </nav>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+<a class="snav" href="../cap/overview.html"><span class="num">C</span>CAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 7 章：测试数据</h1>
+      <p class="page-sub">ZTRAVEL / ZTRAVEL_BOOKING 结构与 7+6 条可直接使用的数据</p>
+      <p class="lead">本章给出与手顺 1-4 完全配套的测试数据：表结构、示例数据、批量插入程序，以及一张<b>测试场景清单</b>。数据在 <a href="step4-test.html">手顺4</a> 的 Fiori 预览中直接可见。</p>
+
+      <p>
+        <span class="badge blue">ZTRAVEL</span>
+        <span class="badge blue">ZTRAVEL_BOOKING</span>
+        <span class="badge gray">SE16N</span>
+        <span class="badge gray">ABAP 批量插入</span>
+      </p>
+
+      <h2 id="travel-struct">7.1 主表 ZTRAVEL 结构</h2>
+      <table class="doc">
+        <thead>
+          <tr><th>字段</th><th>键</th><th>类型 / 长度</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>MANDT</code></td><td>☑</td><td>CLNT 3</td><td>客户端（系统自动维护）</td></tr>
+          <tr><td><code>TRAVELID</code></td><td>☑</td><td>INT2 5</td><td>旅行编号（主键）</td></tr>
+          <tr><td><code>AGENCYID</code></td><td></td><td>INT2 5</td><td>旅行社 ID</td></tr>
+          <tr><td><code>CUSTOMERID</code></td><td></td><td>INT2 5</td><td>客户 ID</td></tr>
+          <tr><td><code>BEGINDATE</code></td><td></td><td>DATS 8</td><td>开始日期（YYYYMMDD）</td></tr>
+          <tr><td><code>ENDDATE</code></td><td></td><td>DATS 8</td><td>结束日期</td></tr>
+          <tr><td><code>BOOKINGFEE</code></td><td></td><td>CURR 13,2</td><td>预订手续费（参考 CURRENCYCODE）</td></tr>
+          <tr><td><code>TOTALPRICE</code></td><td></td><td>CURR 13,2</td><td>总价</td></tr>
+          <tr><td><code>CURRENCYCODE</code></td><td></td><td>CUKY 5</td><td>货币码</td></tr>
+          <tr><td><code>STATUS</code></td><td></td><td>CHAR 1</td><td>状态：N / O / A / X</td></tr>
+          <tr><td><code>DESCRIPTION</code></td><td></td><td>CHAR 60</td><td>描述</td></tr>
+          <tr><td><code>CREATEDBY</code></td><td></td><td>CHAR 12</td><td>创建人</td></tr>
+          <tr><td><code>CREATEDAT</code></td><td></td><td>DEC 15</td><td>创建时间（UTC 时间戳 YYYYMMDDHHMMSS）</td></tr>
+          <tr><td><code>LASTCHANGEDBY</code></td><td></td><td>CHAR 12</td><td>最后修改人</td></tr>
+          <tr><td><code>LASTCHANGEDAT</code></td><td></td><td>DEC 15</td><td>最后修改时间</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="travel-data">7.2 主表示例数据（7 条）</h2>
+      <table class="doc">
+        <thead>
+          <tr><th>TravelID</th><th>客户</th><th>旅行社</th><th>开始日期</th><th>结束日期</th><th>手续费</th><th>总价</th><th>币种</th><th>状态</th><th>描述</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>00000001</td><td>1</td><td>1</td><td>2026-03-01</td><td>2026-03-10</td><td>100.00</td><td>2,500.00</td><td>EUR</td><td><span class="st a">A 已批准</span></td><td>巴黎商务考察</td></tr>
+          <tr><td>00000002</td><td>2</td><td>2</td><td>2026-04-05</td><td>2026-04-12</td><td>80.00</td><td>1,800.00</td><td>EUR</td><td><span class="st o">O 处理中</span></td><td>法兰克福展会</td></tr>
+          <tr><td>00000003</td><td>3</td><td>1</td><td>2026-05-10</td><td>2026-05-20</td><td>120.00</td><td>3,200.00</td><td>EUR</td><td><span class="st n">N 新</span></td><td>京都赏樱之旅</td></tr>
+          <tr><td>00000004</td><td>4</td><td>3</td><td>2026-06-01</td><td>2026-06-08</td><td>60.00</td><td>950.00</td><td>EUR</td><td><span class="st x">X 已拒绝</span></td><td>里斯本周末</td></tr>
+          <tr><td>00000005</td><td>1</td><td>2</td><td>2026-07-15</td><td>2026-07-25</td><td>150.00</td><td>4,100.00</td><td>EUR</td><td><span class="st a">A 已批准</span></td><td>伦敦商务考察</td></tr>
+          <tr><td>00000006</td><td>2</td><td>3</td><td>2026-08-01</td><td>2026-08-07</td><td>90.00</td><td>1,280.00</td><td>EUR</td><td><span class="st o">O 处理中</span></td><td>苏黎世短途</td></tr>
+          <tr><td>00000007</td><td>3</td><td>1</td><td>2026-09-15</td><td>2026-09-25</td><td>200.00</td><td>5,600.00</td><td>EUR</td><td><span class="st n">N 新</span></td><td>十一黄金周东京之旅</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="booking">7.3 子表 ZTRAVEL_BOOKING 结构与数据</h2>
+      <table class="doc">
+        <thead>
+          <tr><th>字段</th><th>键</th><th>类型 / 长度</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>MANDT</code></td><td>☑</td><td>CLNT 3</td><td>客户端</td></tr>
+          <tr><td><code>TRAVELID</code></td><td>☑</td><td>INT2 5</td><td>所属旅行（关联 ZTRAVEL）</td></tr>
+          <tr><td><code>BOOKINGID</code></td><td>☑</td><td>INT2 5</td><td>预订编号（组内递增）</td></tr>
+          <tr><td><code>BOOKINGDATE</code></td><td></td><td>DATS 8</td><td>预订日期</td></tr>
+          <tr><td><code>CUSTOMERID</code></td><td></td><td>INT2 5</td><td>客户 ID</td></tr>
+          <tr><td><code>CARRIERID</code></td><td></td><td>CHAR 3</td><td>航空公司（IATA 码）</td></tr>
+          <tr><td><code>CONNECTIONID</code></td><td></td><td>CHAR 4</td><td>航班号</td></tr>
+          <tr><td><code>FLIGHTDATE</code></td><td></td><td>DATS 8</td><td>航班日期</td></tr>
+          <tr><td><code>FLIGHTPRICE</code></td><td></td><td>CURR 13,2</td><td>票价</td></tr>
+          <tr><td><code>CURRENCYCODE</code></td><td></td><td>CUKY 5</td><td>货币码</td></tr>
+          <tr><td><code>BOOKINGSTATUS</code></td><td></td><td>CHAR 1</td><td>预订状态（N/O/A/X）</td></tr>
+        </tbody>
+      </table>
+      <table class="doc">
+        <thead>
+          <tr><th>TravelID</th><th>BookingID</th><th>预订日期</th><th>客户</th><th>航班</th><th>航班日期</th><th>票价</th><th>币种</th><th>状态</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>1</td><td>2026-03-01</td><td>1</td><td>LH 0400</td><td>2026-03-01</td><td>480.00</td><td>EUR</td><td><span class="st n">N</span></td></tr>
+          <tr><td>1</td><td>2</td><td>2026-03-01</td><td>1</td><td>LH 0401</td><td>2026-03-10</td><td>520.00</td><td>EUR</td><td><span class="st n">N</span></td></tr>
+          <tr><td>2</td><td>1</td><td>2026-04-05</td><td>2</td><td>BA 0300</td><td>2026-04-05</td><td>610.00</td><td>EUR</td><td><span class="st n">N</span></td></tr>
+          <tr><td>3</td><td>1</td><td>2026-05-10</td><td>3</td><td>AF 0200</td><td>2026-05-10</td><td>730.00</td><td>EUR</td><td><span class="st n">N</span></td></tr>
+          <tr><td>5</td><td>1</td><td>2026-07-15</td><td>1</td><td>LH 0400</td><td>2026-07-15</td><td>890.00</td><td>EUR</td><td><span class="st a">A</span></td></tr>
+          <tr><td>6</td><td>1</td><td>2026-08-01</td><td>2</td><td>EK 0100</td><td>2026-08-01</td><td>410.00</td><td>EUR</td><td><span class="st o">O</span></td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="insert">7.4 数据插入方式</h2>
+      <h3>方式一：SE16N 手工维护</h3>
+      <p>登录 SAP GUI，事务码 <code>SE16N</code>（数据浏览器/表维护）输入表名 <code>ZTRAVEL</code> 后回车，可直接增删改行数据：</p>
+      <figure class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">SE16N — 数据浏览器：ZTRAVEL</span></div>
+          <div class="menubar"><span>System</span><span>Edit</span><span>Goto</span><span>Utilities</span><span>Settings</span></div>
+          <div class="toolbar">
+            <span class="fbtn sm">🆕 新条目</span>
+            <span class="fbtn sm">📋 复制</span>
+            <span class="fbtn sm primary">💾 保存</span>
+            <span style="margin-left:auto;font-size:11px;color:var(--text-faint)">表：ZTRAVEL · 客户端 001 · 7 行</span>
+          </div>
+          <table class="tbl">
+            <thead><tr><th>MANDT</th><th>TRAVELID</th><th>AGENCYID</th><th>CUSTOMERID</th><th>STATUS</th><th>TOTALPRICE</th><th>CURRENCYCODE</th><th>DESCRIPTION</th></tr></thead>
+            <tbody>
+              <tr><td>001</td><td>1</td><td>1</td><td>1</td><td>A</td><td class="num">2,500.00</td><td>EUR</td><td>巴黎商务考察</td></tr>
+              <tr><td>001</td><td>2</td><td>2</td><td>2</td><td>O</td><td class="num">1,800.00</td><td>EUR</td><td>法兰克福展会</td></tr>
+              <tr><td>001</td><td>3</td><td>1</td><td>3</td><td>N</td><td class="num">3,200.00</td><td>EUR</td><td>京都赏樱之旅</td></tr>
+              <tr><td>001</td><td>4</td><td>3</td><td>4</td><td>X</td><td class="num">950.00</td><td>EUR</td><td>里斯本周末</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="cap"><b>图 7-1</b> SE16N 手工维护 <code>ZTRAVEL</code>（每条一行，状态列填 N/O/A/X）</div>
+      </figure>
+
+      <h3>方式二：ABAP 程序批量插入</h3>
+      <p>在 ADT 新建一个 <b>ABAP Program</b>（<code>New → Other… → ABAP Program</code>，名称 <code>ZR_INSERT_TESTDATA</code>），粘贴并运行即可一次性写入全部数据：</p>
+      <pre><code class="language-abap">REPORT zr_insert_testdata.
+
+DATA: lt_travel  TYPE TABLE OF ztravel,
+      lt_booking TYPE TABLE OF ztravel_booking.
+
+* 清空既有数据（可选，按需执行）
+DELETE FROM: ztravel, ztravel_booking.
+
+* --- 主表：7 条旅行 ---
+lt_travel = VALUE #(
+  ( travelid = 1  agencyid = 1  customerid = 1  begindate = '20260301'  enddate = '20260310'
+    bookingfee = '100.00'  totalprice = '2500.00'  currencycode = 'EUR'  status = 'A'
+    description = '巴黎商务考察'  createdby = 'DEMO'  createdat = '20260823120000'
+    lastchangedby = 'DEMO'  lastchangedat = '20260823120000' )
+  ( travelid = 2  agencyid = 2  customerid = 2  begindate = '20260405'  enddate = '20260412'
+    bookingfee = '80.00'   totalprice = '1800.00'  currencycode = 'EUR'  status = 'O'
+    description = '法兰克福展会'  createdby = 'DEMO'  createdat = '20260823120000'
+    lastchangedby = 'DEMO'  lastchangedat = '20260823120000' )
+  ( travelid = 3  agencyid = 1  customerid = 3  begindate = '20260510'  enddate = '20260520'
+    bookingfee = '120.00'  totalprice = '3200.00'  currencycode = 'EUR'  status = 'N'
+    description = '京都赏樱之旅'  createdby = 'DEMO'  createdat = '20260823120000'
+    lastchangedby = 'DEMO'  lastchangedat = '20260823120000' )
+  ( travelid = 4  agencyid = 3  customerid = 4  begindate = '20260601'  enddate = '20260608'
+    bookingfee = '60.00'   totalprice = '950.00'   currencycode = 'EUR'  status = 'X'
+    description = '里斯本周末'  createdby = 'DEMO'  createdat = '20260823120000'
+    lastchangedby = 'DEMO'  lastchangedat = '20260823120000' )
+  ( travelid = 5  agencyid = 2  customerid = 1  begindate = '20260715'  enddate = '20260725'
+    bookingfee = '150.00'  totalprice = '4100.00'  currencycode = 'EUR'  status = 'A'
+    description = '伦敦商务考察'  createdby = 'DEMO'  createdat = '20260823120000'
+    lastchangedby = 'DEMO'  lastchangedat = '20260823120000' )
+  ( travelid = 6  agencyid = 3  customerid = 2  begindate = '20260801'  enddate = '20260807'
+    bookingfee = '90.00'   totalprice = '1280.00'  currencycode = 'EUR'  status = 'O'
+    description = '苏黎世短途'  createdby = 'DEMO'  createdat = '20260823120000'
+    lastchangedby = 'DEMO'  lastchangedat = '20260823120000' )
+  ( travelid = 7  agencyid = 1  customerid = 3  begindate = '20260915'  enddate = '20260925'
+    bookingfee = '200.00'  totalprice = '5600.00'  currencycode = 'EUR'  status = 'N'
+    description = '十一黄金周东京之旅'  createdby = 'DEMO'  createdat = '20260823120000'
+    lastchangedby = 'DEMO'  lastchangedat = '20260823120000' ) ).
+
+INSERT ztravel FROM TABLE @lt_travel.
+
+* --- 子表：6 条预订 ---
+lt_booking = VALUE #(
+  ( travelid = 1  bookingid = 1  bookingdate = '20260301'  customerid = 1
+    carrierid = 'LH'  connectionid = '0400'  flightdate = '20260301'
+    flightprice = '480.00'  currencycode = 'EUR'  bookingstatus = 'N' )
+  ( travelid = 1  bookingid = 2  bookingdate = '20260301'  customerid = 1
+    carrierid = 'LH'  connectionid = '0401'  flightdate = '20260310'
+    flightprice = '520.00'  currencycode = 'EUR'  bookingstatus = 'N' )
+  ( travelid = 2  bookingid = 1  bookingdate = '20260405'  customerid = 2
+    carrierid = 'BA'  connectionid = '0300'  flightdate = '20260405'
+    flightprice = '610.00'  currencycode = 'EUR'  bookingstatus = 'N' )
+  ( travelid = 3  bookingid = 1  bookingdate = '20260510'  customerid = 3
+    carrierid = 'AF'  connectionid = '0200'  flightdate = '20260510'
+    flightprice = '730.00'  currencycode = 'EUR'  bookingstatus = 'N' )
+  ( travelid = 5  bookingid = 1  bookingdate = '20260715'  customerid = 1
+    carrierid = 'LH'  connectionid = '0400'  flightdate = '20260715'
+    flightprice = '890.00'  currencycode = 'EUR'  bookingstatus = 'A' )
+  ( travelid = 6  bookingid = 1  bookingdate = '20260801'  customerid = 2
+    carrierid = 'EK'  connectionid = '0100'  flightdate = '20260801'
+    flightprice = '410.00'  currencycode = 'EUR'  bookingstatus = 'O' ) ).
+
+INSERT ztravel_booking FROM TABLE @lt_booking.
+
+COMMIT WORK.
+WRITE: / '插入完成：', lines( lt_travel ), '条旅行，', lines( lt_booking ), '条预订。'</code></pre>
+
+      <h2 id="scenarios">7.5 测试场景清单</h2>
+      <table class="doc">
+        <thead>
+          <tr><th>#</th><th>场景</th><th>操作</th><th>预期结果</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>创建旅行</td><td>Fiori「创建」或 <code>POST /Travel</code></td><td>新行状态 <span class="st n">N 新</span>，可编辑</td></tr>
+          <tr><td>2</td><td>保存后编辑</td><td>打开对象页 → 编辑 → 保存</td><td>走 Draft，保存后写入正式表；不保存则正式数据不变</td></tr>
+          <tr><td>3</td><td>批准</td><td>选中 → <b>批准</b></td><td>状态变 <span class="st a">A 已批准</span>，批准按钮置灰</td></tr>
+          <tr><td>4</td><td>拒绝</td><td>选中 → <b>拒绝</b></td><td>状态变 <span class="st x">X 已拒绝</span>，拒绝按钮置灰</td></tr>
+          <tr><td>5</td><td>删除已批准记录</td><td>选中 <span class="st a">A</span> 记录 → 删除</td><td>报错或被拒（视行为实现；本培训未限制时允许删除）</td></tr>
+          <tr><td>6</td><td>校验无效客户</td><td>创建时填不存在的 CustomerID</td><td>保存报错（<code>validateCustomer</code> 触发）</td></tr>
+          <tr><td>7</td><td>OData 查询</td><td><code>GET /Travel?$filter=Status eq 'A'&amp;$top=5&amp;$orderby=TotalPrice desc</code></td><td>返回正确 JSON，筛选/排序/分页生效</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="status">7.6 状态域说明</h2>
+      <table class="doc">
+        <thead>
+          <tr><th>状态码</th><th>名称</th><th>含义</th><th>徽章</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>N</code></td><td>New</td><td>新</td><td><span class="st n">蓝</span></td></tr>
+          <tr><td><code>O</code></td><td>Open</td><td>处理中</td><td><span class="st o">琥珀</span></td></tr>
+          <tr><td><code>A</code></td><td>Approved</td><td>已批准</td><td><span class="st a">绿</span></td></tr>
+          <tr><td><code>X</code></td><td>Rejected</td><td>已拒绝</td><td><span class="st x">红</span></td></tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <span class="note-title">💡 使用提示</span>
+        <ul>
+          <li>批量程序用 <code>INSERT</code> 直插物理表，<b>绕过行为/校验</b>，适合造数据；若要走完整 RAP 校验，请用 Fiori 或 OData POST。</li>
+          <li><code>CREATEDAT</code> / <code>LASTCHANGEDAT</code> 为 UTC 时间戳（<code>YYYYMMDDHHMMSS</code>），插入时保持 <code>DEMO</code> 值即可。</li>
+          <li>手顺4 的 Fiori 列表页数据与此处一一对应，可直接对照验证。</li>
+        </ul>
+      </div>
+
+      <div class="pagenav">
+        <a href="step4-test.html"><small>← 上一章</small><b>手顺4：Fiori 预览与测试</b></a>
+        <a class="next" href="../cap/overview.html"><small>下一站 →</small><b>CAP 培训：概述</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · RAP 培训 · 第 7 章 测试数据</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

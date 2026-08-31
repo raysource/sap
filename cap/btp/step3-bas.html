@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 B5 章：手顺3 BAS 入门 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../../index.html">首页</a>
+      <a class="tab" href="../../rap/overview.html">RAP 培训</a>
+      <a class="tab active" href="../overview.html">CAP 培训</a>
+      <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">CAP 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="../overview.html"><span class="num">1</span>CAP 概述</a>
+      <a class="snav" href="../prep.html"><span class="num">2</span>环境准备</a>
+      <a class="snav" href="../step1-init.html"><span class="num">3</span>手顺1：项目初始化</a>
+      <a class="snav" href="../step2-model.html"><span class="num">4</span>手顺2：数据模型与服务</a>
+      <a class="snav" href="../step3-implement.html"><span class="num">5</span>手顺3：业务逻辑实现</a>
+      <a class="snav" href="../step4-test.html"><span class="num">6</span>手顺4：启动、测试与 Fiori</a>
+      <a class="snav" href="../testdata.html"><span class="num">7</span>测试数据</a>
+    </nav>
+    <div class="snav-group">CAP for Java（Java 运行时）</div>
+    <a class="snav" href="../java/overview.html"><span class="num">J1</span>Java 概述</a>
+    <a class="snav" href="../java/prep.html"><span class="num">J2</span>环境准备</a>
+    <a class="snav" href="../java/step1-project.html"><span class="num">J3</span>手顺1：建立 Java 项目</a>
+    <a class="snav" href="../java/step2-db.html"><span class="num">J4</span>手顺2：配置链接与建库建表</a>
+    <a class="snav" href="../java/step3-dto.html"><span class="num">J5</span>手顺3：DTO → 生成模型与服务</a>
+    <a class="snav" href="../java/step4-test.html"><span class="num">J6</span>手顺4：运行与测试</a>
+    <div class="snav-group">BTP 与 HANA Cloud（云环境 + BAS）</div>
+    <a class="snav" href="overview.html"><span class="num">B1</span>BTP 与 HANA Cloud 概述</a>
+    <a class="snav" href="prep.html"><span class="num">B2</span>环境准备（BTP 账号）</a>
+    <a class="snav" href="step1-hana.html"><span class="num">B3</span>手顺1：创建 HANA Cloud 实例</a>
+    <a class="snav" href="step2-sql.html"><span class="num">B4</span>手顺2：HANA SQL 建表与数据</a>
+    <a class="snav active" href="step3-bas.html"><span class="num">B5</span>手顺3：BAS 入门</a>
+    <a class="snav" href="step4-dir.html"><span class="num">B6</span>手顺4：模式一 目录式</a>
+    <a class="snav" href="step5-maven.html"><span class="num">B7</span>手顺5：模式二 Maven</a>
+    <a class="snav" href="step6-spring.html"><span class="num">B8</span>手顺6：模式三 Spring Boot</a>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+<a class="snav" href="../../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 B5 章：手顺3 BAS 入门</h1>
+      <p class="page-sub">创建 Dev Space（Full Stack Cloud Application）→ 打开工作区 → 认识终端 → 准备 ngdbc 驱动</p>
+      <p class="lead"><b>Business Application Studio（BAS）</b> 是 SAP 的云端开发环境——一个跑在浏览器里的「VS Code」：有文件树、编辑器、内置终端，还预装了 Java / Maven / Cloud Foundry CLI / Database Explorer 扩展。B6–B8 的三个 Java 程序都在这里写、这里编译、这里运行。</p>
+
+      <p>
+        <span class="badge blue">Business Application Studio</span>
+        <span class="badge teal">Dev Space</span>
+        <span class="badge teal">Full Stack Cloud Application</span>
+        <span class="badge gray">内置终端</span>
+        <span class="badge gray">ngdbc 驱动</span>
+      </p>
+
+      <h2 id="devspace">B5.1 创建 Dev Space</h2>
+      <p>BAS 的每个「开发工作区」叫 <b>Dev Space</b>，可按项目选模板。在 BTP Cockpit 里把 <b>Business Application Studio</b> 订阅/打开（子账号 → Service Marketplace → BAS → Create Subscription / Go to Application），进入 BAS 首页点 <b>Create Dev Space</b>：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">Business Application Studio — Dev Spaces</span></div>
+          <div style="display:flex;background:#f7f9fb">
+            <div style="width:200px;border-right:1px solid var(--border-soft);font-size:12px;padding:10px">
+              <div style="color:var(--text-faint);margin-bottom:6px">Dev Spaces</div>
+              <div style="padding:4px 8px;border-radius:4px;background:var(--blue-soft);color:var(--blue);font-weight:600">All Dev Spaces</div>
+            </div>
+            <div style="flex:1;min-width:0;padding:14px 18px;font-size:12.5px">
+              <div style="font-weight:600;margin-bottom:10px">Create New Dev Space</div>
+              <div style="line-height:1.9">
+                <div>Name：<input value="bookshop-dev" style="font:inherit;font-size:12px;padding:2px 6px;border:1px solid var(--border);border-radius:4px"></div>
+                <div style="margin-top:6px">Template：</div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+                  <div style="border:2px solid var(--blue);border-radius:6px;padding:8px 12px;background:#eef6ff"><b>Full Stack Cloud Application</b><div style="color:var(--text-faint);font-size:11px">含 Java Tools / Maven / Cloud Foundry CLI / HANA Database Explorer 扩展</div></div>
+                  <div style="border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text-faint)">SAP Fiori<div style="font-size:11px">Fiori 应用开发</div></div>
+                  <div style="border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text-faint)">SAP HANA Native<div style="font-size:11px">HANA 应用开发</div></div>
+                </div>
+              </div>
+              <div style="margin-top:12px"><span class="fbtn sm" style="background:var(--blue);color:#fff">Create Dev Space</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 B5-1</b> 创建 Dev Space：名 <code>bookshop-dev</code>，模板选 <b>Full Stack Cloud Application</b>（预装本课程要用的 Java / Maven / CF CLI / Database Explorer）</div>
+      </div>
+
+      <p>创建后回到 Dev Spaces 列表，状态从 <code>STOPPED</code> 变 <code>STARTING</code>，约 1–2 分钟到 <b>RUNNING</b>。点名称打开工作区：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">Dev Spaces 列表</span></div>
+          <div style="padding:12px 16px;font-size:12px">
+            <div style="border:1px solid var(--border);border-radius:6px;overflow:hidden">
+              <div style="display:flex;background:var(--surface-2);padding:6px 10px;color:var(--text-soft)"><span style="width:40%">名称</span><span style="width:30%">模板</span><span>状态</span></div>
+              <div style="display:flex;padding:8px 10px;border-top:1px solid var(--border-soft)"><span style="width:40%"><b>bookshop-dev</b></span><span style="width:30%">Full Stack Cloud Application</span><span><span class="ok">RUNNING</span> ✓ <span style="color:var(--blue)">（点名称打开）</span></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 B5-2</b> Dev Space <code>bookshop-dev</code> 进入 <b>RUNNING</b> 后，点名称即在新标签页打开工作区（浏览器里的 VS Code）</div>
+      </div>
+
+      <h2 id="workspace">B5.2 认识工作区与内置终端</h2>
+      <p>打开的 BAS 工作区界面和 VS Code 几乎一样：左侧文件树、中间编辑器、底部终端。我们主要用<b>终端</b>来编译和运行 Java（后面三种模式全在终端里敲命令）：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="vscode">
+            <div class="vs-top"><span>文件(F)</span><span>编辑(E)</span><span>选择(S)</span><span>查看(V)</span><span>运行(R)</span><span style="margin-left:auto">🟢 已连接 · bookshop-dev</span></div>
+            <div class="vs-body" style="height:auto">
+              <div class="vs-activity"><span class="on">📁</span><span>🔍</span><span>🧩</span><span>🗄️</span></div>
+              <div class="vs-explorer" style="width:220px;overflow:auto;border-right:1px solid #3c3c3c;padding:6px;font-size:12px">
+                <div style="color:#8a8a8a;padding:4px 8px">📁 <b>projects</b></div>
+                <div style="color:#8a8a8a;padding:4px 8px">　📁 bookshop-dir</div>
+                <div style="color:#8a8a8a;padding:4px 8px">　　📁 lib</div>
+                <div style="color:#8a8a8a;padding:4px 8px">　　📁 src</div>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column">
+                <div style="flex:1;display:grid;place-items:center;color:#555;font-size:12px">Welcome — 开始使用 BAS</div>
+                <div style="border-top:1px solid #3c3c3c;background:#1e1e1e;color:#ccc;font-family:var(--mono);font-size:12px;padding:8px 12px;line-height:1.7">
+                  <div><span style="color:#8a8a8a">TERMINAL</span></div>
+                  <div><span class="p" style="color:#6aa94f">$</span> <span style="color:#fff">cd projects &amp;&amp; ls</span></div>
+                  <div>bookshop-dir</div>
+                </div>
+              </div>
+            </div>
+            <div class="vs-status"><span>✓ Java Tools</span><span>✓ Maven</span><span>✓ Cloud Foundry CLI</span><span>✓ HANA Database Explorer</span></div>
+          </div>
+        </div>
+        <div class="cap"><b>图 B5-3</b> BAS 工作区：VS Code 布局；底部 <b>TERMINAL</b> 是可用的 bash 终端。底部状态栏能看到模板预装的扩展都就绪</div>
+      </div>
+
+      <h2 id="modes">B5.3 三种 Java 构建模式对比</h2>
+      <p>从 B6 开始，我们要用<b>三种方式</b>写同一个「连 HANA 读 Books」的小程序。先看清差别，选择最适合你的：</p>
+      <table class="doc">
+        <thead>
+          <tr><th>模式</th><th>构建工具</th><th>章节</th><th>适合</th><th>特点</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>模式一 · 目录式</b></td><td>无（<code>javac</code> / <code>java</code> 裸编译）</td><td><a href="step4-dir.html">B6</a></td><td>零工具依赖，看 JDBC 本质</td><td>两个 .java + 一个 jar，命令最简单</td></tr>
+          <tr><td><b>模式二 · Maven</b></td><td>Maven（archetype + exec 插件）</td><td><a href="step5-maven.html">B7</a></td><td>标准 Java 工程、依赖管理</td><td>pom.xml 声明依赖，<code>mvn compile exec:java</code></td></tr>
+          <tr><td><b>模式三 · Spring Boot</b></td><td>Maven + Spring Boot</td><td><a href="step6-spring.html">B8</a></td><td>真实 Web 服务开发</td><td>JdbcTemplate + REST，<code>curl</code> 出 JSON</td></tr>
+        </tbody>
+      </table>
+      <div class="note">
+        <span class="note-title">💡 三个模式共同点</span>
+        都连同一个 <code>jdbc:sap://&lt;主机&gt;:443?encrypt=true&amp;validateCertificate=true</code>，都用 <b>DBADMIN</b> 用户，跑的都是 <b>同一段联表 SELECT</b>（B4.5 那一段）。区别只在「怎么编译、怎么把程序组织起来」。
+      </div>
+
+      <h2 id="ngdbc">B5.4 准备 ngdbc 驱动</h2>
+      <p>Java 连 HANA 需要 SAP 的官方 JDBC 驱动 <b>ngdbc</b>（<code>com.sap.cloud.db.jdbc:ngdbc</code>，驱动类 <code>com.sap.db.jdbc.Driver</code>）。<b>模式一</b>要手动下载 jar 放到 <code>lib/</code>；<b>模式二/三</b>在 <code>pom.xml</code> 里声明依赖，Maven 自动下载。手动下载方式：</p>
+
+<pre><code class="language-bash"># 在 BAS 终端里创建 lib 目录并下载 ngdbc（版本以 Maven Central 为准）
+mkdir -p bookshop-dir/lib
+curl -L -o bookshop-dir/lib/ngdbc.jar \
+  https://repo1.maven.org/maven2/com/sap/cloud/db/jdbc/ngdbc/2.28.8/ngdbc-2.28.8.jar
+
+# 验证
+ls -la bookshop-dir/lib/
+# → -rw-r--r--  1 user  staff  2338... ngdbc.jar</code></pre>
+
+      <div class="note">
+        <span class="note-title">🔎 ngdbc 是什么</span>
+        <b>n</b>ative <b>g</b>DB <b>C</b>lient 的缩写，SAP 为 HANA 提供的 JDBC 4.x 驱动，支持 HANA Cloud 的 TLS 加密连接（也就是 <code>encrypt=true&amp;validateCertificate=true</code> 这套）。版本号请以 <a href="https://central.sonatype.com/artifact/com.sap.cloud.db.jdbc/ngdbc" rel="noreferrer">Maven Central</a> 当前版本为准——示例里的 <code>2.28.8</code> 只是写稿时的版本。
+      </div>
+
+      <h2 id="steps">B5.5 操作手顺</h2>
+      <ol class="steps teal">
+        <li>
+          <span class="step-title">订阅并打开 BAS</span>
+          <p>子账号 → Service Marketplace → <b>Business Application Studio</b> → Create Subscription / 打开应用，进入 BAS 首页。</p>
+        </li>
+        <li>
+          <span class="step-title">创建 Dev Space</span>
+          <p>点 <b>Create Dev Space</b>：名称 <code>bookshop-dev</code>，模板 <b>Full Stack Cloud Application</b>，Create（见<a href="#devspace">图 B5-1</a>）。</p>
+        </li>
+        <li>
+          <span class="step-title">等 RUNNING 并打开</span>
+          <p>列表状态到 <b>RUNNING</b> 后点名称，在新标签页打开工作区（见<a href="#workspace">图 B5-2</a>）。</p>
+        </li>
+        <li>
+          <span class="step-title">确认终端与工具</span>
+          <p>底部打开 <b>TERMINAL</b>，依次执行 <code>java -version</code>、<code>mvn -version</code> 确认 JDK 17 + Maven 就绪（见<a href="#workspace">图 B5-3</a>）。</p>
+        </li>
+        <li>
+          <span class="step-title">下载 ngdbc 驱动（模式一用）</span>
+          <p>按 B5.4 的命令下载 ngdbc.jar 到 <code>bookshop-dir/lib/</code>。做模式二/三的可以跳过这步。</p>
+        </li>
+        <li>
+          <span class="step-title">整体验证环境</span>
+          <p>终端里能正常敲命令、目录能创建文件即可。B6 章开始写第一个 Java 程序。</p>
+        </li>
+      </ol>
+
+      <div class="note warn">
+        <span class="note-title">⚠️ 常见问题</span>
+        <ul style="margin-bottom:0">
+          <li><b>Dev Space 启动失败</b>：trial 的 BAS 有资源上限，若别的 Dev Space 占满，先删掉不用的再启动。</li>
+          <li><b>找不到 Terminal</b>：顶部菜单 <b>Terminal → New Terminal</b>，或快捷键 <kbd>Ctrl/Cmd + `</kbd>。</li>
+          <li><b>下载 ngdbc 超时</b>：BAS 能访问公网；若慢，换 Maven Central 或让 Maven 在 pom 里自动拉（模式二/三）。</li>
+          <li><b>工作区被重置</b>：BAS Dev Space 会随 trial 生命周期回收，重要代码建议提交到 git（BAS 内置 Source Control 支持连 GitHub）。</li>
+        </ul>
+      </div>
+
+      <div class="pagenav">
+        <a href="step2-sql.html"><small>← 上一章</small><b>第 B4 章：手顺2 HANA SQL 建表与数据</b></a>
+        <a class="next" href="step4-dir.html"><small>下一章 →</small><b>手顺4：模式一 目录式</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · BTP 与 HANA Cloud · 第 B5 章 BAS 入门</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

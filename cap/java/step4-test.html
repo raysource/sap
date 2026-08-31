@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>手顺4：运行与测试 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../../index.html">首页</a>
+      <a class="tab" href="../../rap/overview.html">RAP 培训</a>
+      <a class="tab active" href="../overview.html">CAP 培训</a>
+      <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">CAP 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="../overview.html"><span class="num">1</span>CAP 概述</a>
+      <a class="snav" href="../prep.html"><span class="num">2</span>环境准备</a>
+      <a class="snav" href="../step1-init.html"><span class="num">3</span>手顺1：项目初始化</a>
+      <a class="snav" href="../step2-model.html"><span class="num">4</span>手顺2：数据模型与服务</a>
+      <a class="snav" href="../step3-implement.html"><span class="num">5</span>手顺3：业务逻辑实现</a>
+      <a class="snav" href="../step4-test.html"><span class="num">6</span>手顺4：启动、测试与 Fiori</a>
+      <a class="snav" href="../testdata.html"><span class="num">7</span>测试数据</a>
+    </nav>
+    <div class="snav-group">CAP for Java（Java 运行时）</div>
+    <a class="snav" href="overview.html"><span class="num">J1</span>Java 概述</a>
+    <a class="snav" href="prep.html"><span class="num">J2</span>环境准备</a>
+    <a class="snav" href="step1-project.html"><span class="num">J3</span>手顺1：建立 Java 项目</a>
+    <a class="snav" href="step2-db.html"><span class="num">J4</span>手顺2：配置链接与建库建表</a>
+    <a class="snav" href="step3-dto.html"><span class="num">J5</span>手顺3：DTO → 生成模型与服务</a>
+    <a class="snav active" href="step4-test.html"><span class="num">J6</span>手顺4：运行与测试</a>
+    <div class="snav-group">BTP 与 HANA Cloud（云环境 + BAS）</div>
+    <a class="snav" href="../btp/overview.html"><span class="num">B1</span>BTP 与 HANA Cloud 概述</a>
+    <a class="snav" href="../btp/prep.html"><span class="num">B2</span>环境准备（BTP 账号）</a>
+    <a class="snav" href="../btp/step1-hana.html"><span class="num">B3</span>手顺1：创建 HANA Cloud 实例</a>
+    <a class="snav" href="../btp/step2-sql.html"><span class="num">B4</span>手顺2：HANA SQL 建表与数据</a>
+    <a class="snav" href="../btp/step3-bas.html"><span class="num">B5</span>手顺3：BAS 入门</a>
+    <a class="snav" href="../btp/step4-dir.html"><span class="num">B6</span>手顺4：模式一 目录式</a>
+    <a class="snav" href="../btp/step5-maven.html"><span class="num">B7</span>手顺5：模式二 Maven</a>
+    <a class="snav" href="../btp/step6-spring.html"><span class="num">B8</span>手顺6：模式三 Spring Boot</a>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+<a class="snav" href="../../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 J6 章：手顺4 — 运行与测试</h1>
+      <p class="page-sub">spring-boot:run 启动 → OData 服务文档 → curl 读/建/删/调 Action → 对比 Node 版</p>
+      <p class="lead">模型、数据源、处理器都齐了，这一章把它跑起来：启动应用、打开 OData 服务文档、用 <code>curl</code>（或 Postman）完成对 <code>Books</code> 的读、建、删与调用 <code>submitOrder</code> Action，最后与 Node 版对比体验差异。</p>
+
+      <p>
+        <span class="badge teal">spring-boot:run</span>
+        <span class="badge teal">OData V4</span>
+        <span class="badge teal">curl</span>
+        <span class="badge teal">$expand / $filter</span>
+        <span class="badge gray">Postman</span>
+        <span class="badge gray">端口 8080</span>
+      </p>
+
+      <h2 id="start">J6.1 启动应用</h2>
+      <p>在 <code>srv/</code> 目录执行 <code>mvn spring-boot:run</code>（或项目根目录 <code>mvn -pl srv spring-boot:run</code>）。启动日志里能看到 CAP 连接数据库、挂载 OData 服务、最后由 Spring Boot 监听端口：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">终端 — mvn spring-boot:run 启动日志</span></div>
+          <div class="term">
+            <div><span class="p">$</span> <span class="path">cd srv</span></div>
+            <div><span class="p">$</span> <span class="path">mvn spring-boot:run</span></div>
+            <div><span class="info">[INFO]</span> Scanning for projects...</div>
+            <div><span class="info">[cds]</span> - db: connect <span class="ok">sqlite:file:/Users/me/bookshop/srv/db.sqlite</span></div>
+            <div><span class="info">[cds]</span> - oData: serving <b>CatalogService</b> at <span class="ok">/odata/v4/catalog</span></div>
+            <div><span class="info">[cds]</span> - oData: service path /odata/v4/catalog/$metadata</div>
+            <div>&nbsp;</div>
+            <div><span class="ok">Tomcat started on port(s): 8080 (http)</span></div>
+            <div><span class="ok">Started Application in 7.9 seconds</span></div>
+          </div>
+        </div>
+        <div class="cap"><b>图 J6-1</b> 启动成功的关键行：<code>db: connect</code> 连上数据库、<code>oData: serving CatalogService at /odata/v4/catalog</code> 挂载服务、<code>Tomcat started on port(s): 8080</code></div>
+      </div>
+
+      <h2 id="servicedoc">J6.2 浏览器访问服务文档</h2>
+      <p>浏览器打开 <code>http://localhost:8080/odata/v4/catalog</code>，CAP 返回 OData <b>服务文档</b>——列出该服务暴露的全部实体集合。再打开 <code>http://localhost:8080/odata/v4/catalog/$metadata</code> 可看到每个实体的字段类型定义（CSDL XML）：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">http://localhost:8080/odata/v4/catalog</span></div>
+          <div style="background:#f6f8fa;padding:14px 16px;font-family:var(--mono);font-size:12px;overflow-x:auto">
+            {<br>
+            &nbsp;&nbsp;"@odata.context":&nbsp;"http://localhost:8080/odata/v4/catalog/$metadata",<br>
+            &nbsp;&nbsp;"value":&nbsp;[<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;"name":&nbsp;"Books",&nbsp;"url":&nbsp;"Books"&nbsp;},<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;"name":&nbsp;"Authors",&nbsp;"url":&nbsp;"Authors"&nbsp;},<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;"name":&nbsp;"Genres",&nbsp;"url":&nbsp;"Genres"&nbsp;}<br>
+            &nbsp;&nbsp;]<br>
+            }
+          </div>
+        </div>
+        <div class="cap"><b>图 J6-2</b> <code>CatalogService</code> 的 OData 服务文档：<code>Books / Authors / Genres</code> 三个实体集合已可访问；<code>$metadata</code> 提供字段类型定义</div>
+      </div>
+
+      <h2 id="odata">J6.3 OData 测试：curl 读 / 建 / 删 / 调 Action</h2>
+      <p>用 curl 直接打 OData 接口。先看<b>读取</b>——注意 <code>$top / $filter / $expand</code> 前要写反斜杠转义 <code>\$</code>，否则 shell 会把它当变量：</p>
+
+<pre><code class="language-bash"># 读：Books 集合（JSON 数组）
+curl http://localhost:8080/odata/v4/catalog/Books
+
+# 读：只取前 3 条
+curl "http://localhost:8080/odata/v4/catalog/Books?\$top=3"
+
+# 读：价格 &lt; 30 的书（%20 是 URL 编码的空格，等价于 price lt 30）
+curl "http://localhost:8080/odata/v4/catalog/Books?\$filter=price%20lt%2030"
+
+# 读：同时带出作者信息（导航属性展开）
+curl "http://localhost:8080/odata/v4/catalog/Books?\$expand=author"
+</code></pre>
+
+      <p><b>写入</b>——由于 J4 章去掉了 <code>@readonly</code>，<code>Books</code> 支持增删。POST 创建返回 <b>201 Created</b>，DELETE 返回 <b>204 No Content</b>：</p>
+
+<pre><code class="language-bash"># 建：新建一本书（ID 是主键，由我们指定）→ 201
+curl -X POST "http://localhost:8080/odata/v4/catalog/Books" \
+     -H "Content-Type: application/json" \
+     -d '{"ID":101,"title":"Test Book","author_ID":101,"genre_ID":201,"stock":5,"price":9.99,"currency":"EUR"}'
+
+# 删：删除刚才那本书 → 204（-i 让 curl 显示响应状态行）
+curl -i -X DELETE "http://localhost:8080/odata/v4/catalog/Books(101)"
+</code></pre>
+
+      <p><b>调 Action</b>——<code>submitOrder</code> 声明在服务上（见 J4.2 的 <code>cat-service.cds</code>），入参 <code>book</code> / <code>quantity</code> 放请求体，处理器 J5.4 负责扣库存：</p>
+
+<pre><code class="language-bash">curl -X POST "http://localhost:8080/odata/v4/catalog/submitOrder" \
+     -H "Content-Type: application/json" \
+     -d '{"book":1,"quantity":2}'
+</code></pre>
+
+      <p>不习惯命令行的话，Postman 同样顺手——填 URL、选方法、点 Send：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="postman">
+            <div class="pm-tab"><span class="pm-method get">GET</span><span class="pm-url">http://localhost:8080/odata/v4/catalog/Books</span><span class="pm-send">Send</span></div>
+            <div class="pm-head"><span>Params</span><span>Authorization</span><span>Headers</span><span class="on">Body</span><span>Tests</span></div>
+            <div class="pm-res">
+              <div class="pm-rhead">200 OK<br><br>application/json<br>about 1 KB<br><br>Status: 200 OK<br>Time: 84 ms</div>
+              <pre style="margin:0;padding:12px 14px;background:#fff;color:#233448;font-size:12px;overflow-x:auto">{&nbsp;"@odata.context":&nbsp;"http://localhost:8080/odata/v4/catalog/$metadata#Books",&nbsp;"value":&nbsp;[&nbsp;{&nbsp;"ID":&nbsp;1,&nbsp;"title":&nbsp;"Wuthering&nbsp;Heights",&nbsp;"stock":&nbsp;12,&nbsp;...&nbsp;},&nbsp;...&nbsp;]&nbsp;}</pre>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 J6-3</b> Postman 里 GET <code>http://localhost:8080/odata/v4/catalog/Books</code>：右侧返回 <code>200 OK</code> 与 Books 集合 JSON</div>
+      </div>
+
+      <h2 id="compare">J6.4 与 Node 版对比</h2>
+      <p>同一个 Bookshop 模型，两条路线的开发体验差异集中体现在「启动与热重载」：</p>
+      <table class="doc">
+        <thead>
+          <tr><th style="width:150px">维度</th><th>Node.js 版</th><th class="cap-c">Java 版</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>启动命令</b></td><td><code>cds watch</code></td><td><code>mvn spring-boot:run</code></td></tr>
+          <tr><td><b>端口</b></td><td>4004</td><td>8080</td></tr>
+          <tr><td><b>改模型生效</b></td><td>热重载：保存 CDS 即自动重载</td><td>需重新 <code>mvn</code> 编译再重启应用</td></tr>
+          <tr><td><b>日志</b></td><td><code>[cds] - server listening on http://localhost:4004</code></td><td><code>[cds] - oData: serving ...</code> + <code>Tomcat started on port 8080</code></td></tr>
+          <tr><td><b>热重载体验</b></td><td>秒级、无需人工介入，适合快速迭代</td><td>每次重启数秒~数十秒；可配 <code>spring-boot-devtools</code> 改善 Java 代码热重载</td></tr>
+          <tr><td><b>本地数据库</b></td><td>内置 SQLite，零配置</td><td>SQLite / H2，靠 <code>application.yaml</code> 配 JDBC</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="faq">J6.5 常见问题</h2>
+      <div class="note warn">
+        <span class="note-title">⚠️ 排查清单</span>
+        <ul style="margin-bottom:0">
+          <li><b>端口 8080 被占</b>：报 <code>Port 8080 was already in use</code>。改 <code>application.yaml</code> 的 <code>server.port</code>（如 8081）后重启。</li>
+          <li><b>改 schema 后行为没变</b>：Java 版是<b>编译期</b>生成类，改了 <code>schema.cds</code> 必须先 <code>mvn clean</code>（或 <code>mvn clean install</code>）重新生成，再重启——没有 Node 版的热重载。</li>
+          <li><b>CSV 没导进来</b>：看启动日志里 <code>data imported from db/data</code> 那几行；若没有，确认 CSV 在 <code>db/data/</code>、文件名/表头与 J4.2 一致。</li>
+          <li><b>前端跨域</b>：本地开发一般放开 CORS（CAP 默认允许）；联调 Fiori 时可显式配置 <code>@CrossOrigin</code> 或网关。</li>
+          <li><b><code>cds run / cds watch</code> 不适用于 Java</b>：那是 Node 版的启动方式；Java 版统一用 <code>mvn spring-boot:run</code>。</li>
+        </ul>
+      </div>
+
+      <h2 id="fiori">J6.6 关于 Fiori Elements（一句话）</h2>
+      <p>Java 版<b>同样可以加 Fiori Elements</b>：在 CDS 里加 UI 注解（<code>annotate</code>）并用 Fiori 工具生成前端，OData 端点不变（仍是 <code>/odata/v4/catalog</code>）。本培训聚焦后端运行时，前端部分不展开。</p>
+
+      <h2 id="steps">J6.7 操作手顺</h2>
+      <ol class="steps teal">
+        <li>
+          <span class="step-title">启动应用</span>
+          <p>在 <code>srv/</code> 目录 <code>mvn spring-boot:run</code>，确认 <code>Tomcat started on port 8080</code>（见<a href="#start">图 J6-1</a>）。</p>
+        </li>
+        <li>
+          <span class="step-title">打开服务文档</span>
+          <p>浏览器访问 <code>http://localhost:8080/odata/v4/catalog</code>，确认三个实体集合；再访问 <code>$metadata</code> 看字段定义（见<a href="#servicedoc">图 J6-2</a>）。</p>
+        </li>
+        <li>
+          <span class="step-title">curl 读取</span>
+          <p>依次执行 <code>$top=3</code>、<code>$filter=price%20lt%2030</code>、<code>$expand=author</code>，观察返回差异。</p>
+        </li>
+        <li>
+          <span class="step-title">curl 建 / 删</span>
+          <p>POST 创建 ID=101 的书（期望 201），再 DELETE（期望 204），见 J6.3。</p>
+        </li>
+        <li>
+          <span class="step-title">调 Action 并核对库存</span>
+          <p>POST <code>/odata/v4/catalog/submitOrder</code>（服务级未绑定 Action，action 名直接接在服务根后），body <code>{"book":1,"quantity":2}</code>；随后 <code>sqlite3 srv/db.sqlite "SELECT stock FROM sap_capire_bookshop_Books WHERE ID=1;"</code> 应看到 12 → 10。</p>
+        </li>
+        <li>
+          <span class="step-title">验证超卖被拒</span>
+          <p>对库存为 0 的《Eleonora》（ID=4）下单 1 本，应返回 <b>400</b> 错误 JSON（见下）。</p>
+        </li>
+      </ol>
+
+      <h2 id="verify">J6.8 验证：下单扣库存 & 超卖返回 400</h2>
+      <p>下单成功后库存减少；当数量超过库存时，J5.4 的 <code>ServiceException(BAD_REQUEST, ...)</code> 被框架转成标准 OData 错误响应：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">终端 — 下单与超卖</span></div>
+          <div class="term">
+            <div><span class="p">$</span> <span class="path">curl -X POST http://localhost:8080/odata/v4/catalog/submitOrder \</span></div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="path">-H "Content-Type: application/json" -d '{"book":1,"quantity":2}'</span></div>
+            <div>{}</div>
+            <div><span class="p">$</span> <span class="path">sqlite3 srv/db.sqlite "SELECT ID, stock FROM sap_capire_bookshop_Books WHERE ID=1;"</span></div>
+            <div>1|<span class="ok">10</span></div>
+            <div>&nbsp;</div>
+            <div><span class="p">$</span> <span class="path">curl -i -X POST http://localhost:8080/odata/v4/catalog/submitOrder \</span></div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="path">-H "Content-Type: application/json" -d '{"book":4,"quantity":1}'</span></div>
+            <div><span class="err">HTTP/1.1 400</span></div>
+            <div>Content-Type: application/json;charset=UTF-8</div>
+            <div>{&nbsp;"error":&nbsp;{&nbsp;"code":&nbsp;"400",&nbsp;"message":&nbsp;"1&nbsp;exceeds&nbsp;stock&nbsp;for&nbsp;book&nbsp;#4"&nbsp;}&nbsp;}</div>
+          </div>
+        </div>
+        <div class="cap"><b>图 J6-4</b> 书 #1 库存从 12 降到 10；对库存 0 的书 #4 下单 1 本，返回 <code>400</code> + 标准 OData 错误 JSON——业务规则与异常映射都按预期工作</div>
+      </div>
+
+      <div class="note ok">
+        <span class="note-title">✅ 本路线总结</span>
+        从 J1 看差异、J2 配环境、J3 建项目、J4 配库建表、J5 写处理器，到 J6 运行测试——你已走完一条完整的 CAP Java 开发链路：<b>模型写一次，建表、DTO、OData 接口全部自动，业务逻辑集中在一个 Handler 里</b>。这趟「手写 DTO 全家桶 vs 一个 Handler」的对比，正是 CAP Java 的核心价值。
+      </div>
+
+      <div class="pagenav">
+        <a href="step3-dto.html"><small>← 上一章</small><b>手顺3：DTO → 生成模型与服务</b></a>
+        <a class="next" href="../../index.html"><small>下一章 →</small><b>回到首页</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · CAP for Java · 第 J6 章 手顺4 运行与测试</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>手顺3：Action 与双线集成 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../index.html">首页</a>
+      <a class="tab" href="../rap/overview.html">RAP 培训</a>
+      <a class="tab" href="../cap/overview.html">CAP 培训</a>
+      <a class="tab active" href="overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">Fiori 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="overview.html"><span class="num">F1</span>Fiori 概述</a>
+      <a class="snav" href="step1-list.html"><span class="num">F2</span>手顺1：List Report</a>
+      <a class="snav" href="step2-object.html"><span class="num">F3</span>手顺2：Object Page 与 Facets</a>
+      <a class="snav active" href="step3-action.html"><span class="num">F4</span>手顺3：Action 与双线集成</a>
+      <a class="snav" href="elements.html"><span class="num">F5</span>主要元素控件讲解</a>
+      <a class="snav" href="templates.html"><span class="num">F6</span>页面模板详解</a>
+    </nav>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <a class="snav" href="../cap/overview.html"><span class="num">C</span>CAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 F4 章：手顺3 —— Action 与双线集成</h1>
+      <p class="page-sub">把服务 Action 变成页面按钮 · 状态徽标 · RAP 侧 @UI 注解与 Draft</p>
+      <p class="lead">前两章都是「读」数据。本章让页面<b>做事</b>：CAP 侧把 <code>submitOrder</code> Action 变成对象页的「下单」按钮并显示状态徽标；RAP 侧回顾 <a href="../rap/step4-test.html">RAP 手顺4</a>，补齐 CDS <code>@UI</code> 注解与 Draft 机制，完成 RAP / CAP 双线在 Fiori 层的收口。</p>
+
+      <p>
+        <span class="badge teal">Action</span>
+        <span class="badge teal">Criticality</span>
+        <span class="badge blue">CDS @UI</span>
+        <span class="badge blue">Draft</span>
+        <span class="badge gray">Service Binding</span>
+      </p>
+
+      <h2 id="cap-action">F4.1 CAP 侧：把 submitOrder 变成按钮</h2>
+      <p>Bookshop 服务在 <a href="../cap/step3-implement.html">CAP 手顺3</a> 定义了 bound action <code>submitOrder</code>。Fiori Elements 会<b>自动把服务的 bound action 渲染成对象页按钮区的操作按钮</b>，无需任何注解；但可以借助 <code>@Common</code> 注解控制显隐与文案。先在服务端确认 Action 定义（素材包 <code>srv/cat-service.cds</code>）：</p>
+
+<pre><code class="language-cds">// srv/cat-service.cds —— 既有定义
+service CatalogService {
+  entity Books as projection on my.Books;
+  entity Orders as projection on my.Orders;
+  // 绑定到单条 Book 的 Action：减库存 + 记订单
+  action submitOrder(book: Integer, quantity: Integer);
+}
+</code></pre>
+
+      <p>在 <code>app/books/annotate.cds</code> 里为按钮与状态徽标补注解：</p>
+
+<pre><code class="language-cds">// app/books/annotate.cds —— Action 与状态显示
+using CatalogService as service from '../../srv/cat-service';
+
+annotate service.Books with @(
+  UI : {
+    LineItem : [
+      { Value : 'title', Label : '书名' },
+      { Value : 'stock', Label : '库存' },
+      { Value : 'stock', Label : '状态',
+        Criticality : 'criticality' }        // ← 库存映射为颜色徽标（见下）
+    ],
+    HeaderInfo : { TypeName : 'Book', TypeNamePlural : 'Books' }
+  }
+);
+
+// 状态字段：把库存映射成「充足/紧张/售罄」三档颜色
+annotate service.Books with @(
+  Criticality : { StockCriticality }         // ponytail: 示例用计算属性，生产建议在服务端 handler 计算
+);
+
+// 或者用 UI.DataPoint 把数值字段渲染成带状态的徽标：
+annotate service.Books with @(
+  UI.DataPoint #stock : {
+    Value : 'stock',
+    Criticality : 'criticality',
+    CriticalityLabels : [
+      { Criticality : 3, Text : '售罄' },
+      { Criticality : 2, Text : '紧张' },
+      { Criticality : 1, Text : '充足' }
+    ]
+  }
+);
+</code></pre>
+
+      <div class="note">
+        <span class="note-title">💡 Criticality 说明</span>
+        <code>Criticality</code> 接受 <code>0–3</code> 数值（或计算字段），Fiori Elements 据此给单元格/徽标上色：<code>3</code>=红（售罄）、<code>2</code>=橙（紧张）、<code>1</code>=绿（充足）。示例里的 <code>criticality</code> 是演示用计算字段，真实项目建议在服务端 handler 里算出返回，保证列表与详情一致。
+      </div>
+
+      <p>预览效果：库存为 <code>0</code> 的书显示红色「售罄」徽标，对象页按钮区出现「下单」操作：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">Fiori Elements — 状态徽标 + Action 按钮</span></div>
+          <div class="fi">
+            <div class="fi-body" style="flex-direction:column">
+              <div class="fi-main">
+                <table class="tbl">
+                  <thead><tr><th>书名</th><th>库存</th><th>状态</th></tr></thead>
+                  <tbody>
+                    <tr><td>Wuthering Heights</td><td class="num">12</td><td><span class="st a">充足</span></td></tr>
+                    <tr><td>The Raven -- 畅销</td><td class="num">333</td><td><span class="st a">充足</span></td></tr>
+                    <tr><td>Eleonora</td><td class="num">0</td><td><span class="st x">售罄</span></td></tr>
+                    <tr><td>Pride and Prejudice</td><td class="num">10</td><td><span class="st o">紧张</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="fi-main" style="padding-top:0">
+                <div class="dialog">
+                  <div class="dbox">
+                    <div class="dhead">下单（submitOrder）</div>
+                    <div class="dbody">
+                      <div class="dform">
+                        <div class="ffl ff">图书<b>Wuthering Heights（ID 1）</b></div>
+                        <div class="ff">数量<b>2</b></div>
+                        <div class="ff">当前库存<b>12</b></div>
+                      </div>
+                    </div>
+                    <div class="dfoot">
+                      <span class="fbtn ghost">取消</span>
+                      <span class="fbtn primary">确认下单</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 F4-1</b> 左：状态徽标（Criticality）；右：对象页「下单」按钮触发的 submitOrder 对话框</div>
+      </div>
+
+      <h2 id="rap-side">F4.2 RAP 侧：CDS @UI 注解与 Draft</h2>
+      <p>RAP 里 Fiori Elements 的注解<b>写在 CDS 视图本身</b>（消费视图 <code>ZC_TRAVEL</code> 或独立的元数据扩展），Service Binding 选 <b>OData V4 – UI</b> 后一键 Preview（详见 <a href="../rap/step4-test.html">RAP 手顺4</a>）。典型注解：</p>
+
+<pre><code class="language-abap">@UI: {
+  headerInfo: {
+    typeName: 'Travel',
+    typeNamePlural: 'Travels',
+    title: { type: #STANDARD, value: 'TravelID' },
+    description: { type: #STANDARD, value: 'CustomerID' }
+  },
+  lineItem: [
+    { value: 'TravelID', label: '旅行社', qualifier: #KEY },
+    { value: 'AgencyID', label: '机构' },
+    { value: 'CustomerID', label: '客户' },
+    { value: 'Status', label: '状态', criticality: 'Criticality' }
+  ],
+  selectionFields: ['TravelID', 'CustomerID', 'Status']
+}
+@Search.searchable: true
+define view entity ZC_TRAVEL as select from ZI_TRAVEL { ... }
+</code></pre>
+
+      <ul>
+        <li><b>语法异同</b>：RAP 用 <code>@UI.headerInfo</code>（驼峰），CAP 用 <code>UI.HeaderInfo</code>（点分）——但字段名一一对应（<code>lineItem</code> / <code>LineItem</code>、<code>selectionFields</code> / <code>SelectionFields</code>）。</li>
+        <li><b>Draft 机制</b>：RAP 的 managed behavior 默认启用 <b>Draft</b>——点「编辑」先进入草稿（<code>draft</code> 状态），保存才落库。CAP 侧可用 <code>@Common.DraftRoot</code> 注解获得同类行为，但默认不启用。</li>
+        <li><b>状态徽标</b>：RAP 中 <code>criticality</code> 由行为实现里的 <code>determination</code> 计算（把 <code>OverallStatus</code> 映射为 0–3），与 CAP 的 handler 思路一致。</li>
+      </ul>
+
+      <h2 id="compare">F4.3 RAP vs CAP 的 Fiori 实现对照</h2>
+      <table class="cmp-table">
+        <thead>
+          <tr><th style="width:140px">环节</th><th class="rap-c">RAP</th><th class="cap-c">CAP</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="dim">注解语法</td><td>CDS 视图 <code>@UI.xxx</code>（元数据扩展可分层）</td><td><code>annotate.cds</code> 的 <code>@(UI.xxx)</code></td></tr>
+          <tr><td class="dim">生成/预览</td><td>Service Binding（OData V4 – UI）→ Preview</td><td><code>cds add fiori</code> → <code>/app/books/index.html</code></td></tr>
+          <tr><td class="dim">Action 按钮</td><td>BDEF action + 实现类，自动出现在对象页</td><td>service action + handler，自动出现在对象页</td></tr>
+          <tr><td class="dim">状态徽标</td><td><code>criticality</code> determination（EML）</td><td><code>UI.DataPoint</code> / 计算字段 + handler</td></tr>
+          <tr><td class="dim">编辑模式</td><td>Draft（默认，managed）</td><td>直接编辑；Draft 需 <code>@Common.DraftRoot</code></td></tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <span class="note-title">🎯 一句话总结</span>
+        Fiori Elements 不关心数据来自 RAP 还是 CAP——只认 <b>OData 服务 + @UI 注解</b>。RAP 把注解写进 CDS 视图，CAP 把注解叠在 annotate.cds；谁的后端暴露服务，谁就提供「门面」。
+      </div>
+
+      <h2 id="steps">F4.4 操作手顺</h2>
+      <ol class="steps teal">
+        <li><p><span class="step-title">确认服务 Action</span></p>
+          <p>检查 <code>srv/cat-service.cds</code> 有 <code>submitOrder</code>（素材包已含），<code>cds watch</code> 下可用 curl 触发一次验证（见 <a href="../cap/step4-test.html">CAP 手顺4</a>）。</p>
+        </li>
+        <li><p><span class="step-title">加状态徽标注解</span></p>
+          <p>在 <code>annotate.cds</code> 按 <a href="#cap-action">F4.1</a> 添加 <code>UI.DataPoint #stock</code> 与 CriticalityLabels，刷新列表核对徽标颜色。</p>
+        </li>
+        <li><p><span class="step-title">点对象页「下单」</span></p>
+          <p>进入任意有库存的书对象页，点「下单」按钮，确认触发 <code>submitOrder</code>、库存减少、<code>Orders</code> 新增一条。</p>
+        </li>
+        <li><p><span class="step-title">RAP 侧对照（可选）</span></p>
+          <p>在 ADT 里给 <code>ZC_TRAVEL</code> 补 <code>@UI.headerInfo</code> / <code>lineItem</code> 注解，重新激活后在 Service Binding 点 Preview，对照 <a href="#compare">F4.3</a> 表格观察同与不同。</p>
+        </li>
+      </ol>
+
+      <div class="pagenav">
+        <a href="step2-object.html"><small>← 上一章</small><b>手顺2：Object Page 与 Facets</b></a>
+        <a class="next" href="../index.html"><small>完成 →</small><b>回到培训首页</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · Fiori 培训 · 第 F4 章 手顺3 Action 与双线集成</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

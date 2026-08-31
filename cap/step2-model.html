@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>手顺2：数据模型与服务 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../index.html">首页</a>
+      <a class="tab" href="../rap/overview.html">RAP 培训</a>
+      <a class="tab active" href="overview.html">CAP 培训</a>
+      <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">CAP 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="overview.html"><span class="num">1</span>CAP 概述</a>
+      <a class="snav" href="prep.html"><span class="num">2</span>环境准备</a>
+      <a class="snav" href="step1-init.html"><span class="num">3</span>手顺1：项目初始化</a>
+      <a class="snav active" href="step2-model.html"><span class="num">4</span>手顺2：数据模型与服务</a>
+      <a class="snav" href="step3-implement.html"><span class="num">5</span>手顺3：业务逻辑实现</a>
+      <a class="snav" href="step4-test.html"><span class="num">6</span>手顺4：启动、测试与 Fiori</a>
+      <a class="snav" href="testdata.html"><span class="num">7</span>测试数据</a>
+    </nav>
+    <div class="snav-group">CAP for Java（Java 运行时）</div>
+    <a class="snav" href="java/overview.html"><span class="num">J1</span>Java 概述</a>
+    <a class="snav" href="java/prep.html"><span class="num">J2</span>环境准备</a>
+    <a class="snav" href="java/step1-project.html"><span class="num">J3</span>手顺1：建立 Java 项目</a>
+    <a class="snav" href="java/step2-db.html"><span class="num">J4</span>手顺2：配置链接与建库建表</a>
+    <a class="snav" href="java/step3-dto.html"><span class="num">J5</span>手顺3：DTO → 生成模型与服务</a>
+    <a class="snav" href="java/step4-test.html"><span class="num">J6</span>手顺4：运行与测试</a>
+    <div class="snav-group">BTP 与 HANA Cloud（云环境 + BAS）</div>
+    <a class="snav" href="btp/overview.html"><span class="num">B1</span>BTP 与 HANA Cloud 概述</a>
+    <a class="snav" href="btp/prep.html"><span class="num">B2</span>环境准备（BTP 账号）</a>
+    <a class="snav" href="btp/step1-hana.html"><span class="num">B3</span>手顺1：创建 HANA Cloud 实例</a>
+    <a class="snav" href="btp/step2-sql.html"><span class="num">B4</span>手顺2：HANA SQL 建表与数据</a>
+    <a class="snav" href="btp/step3-bas.html"><span class="num">B5</span>手顺3：BAS 入门</a>
+    <a class="snav" href="btp/step4-dir.html"><span class="num">B6</span>手顺4：模式一 目录式</a>
+    <a class="snav" href="btp/step5-maven.html"><span class="num">B7</span>手顺5：模式二 Maven</a>
+    <a class="snav" href="btp/step6-spring.html"><span class="num">B8</span>手顺6：模式三 Spring Boot</a>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+<a class="snav" href="../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 4 章：手顺2 —— 数据模型与服务</h1>
+      <p class="page-sub">db/schema.cds + srv/cat-service.cds + CSV 种子数据</p>
+      <p class="lead">本章为 Bookshop 定义<b>领域模型</b>（作者、分类、图书三个实体）、一个<b>OData 服务</b>（CatalogService）以及<b>种子数据</b>。写完保存，CAP 自动在 SQLite 里建表并载入 CSV 数据——这就是「模型驱动」的核心体验。</p>
+
+      <p>
+        <span class="badge teal">CDS</span>
+        <span class="badge teal">Entity</span>
+        <span class="badge teal">Association</span>
+        <span class="badge teal">Projection</span>
+        <span class="badge gray">CSV 种子数据</span>
+      </p>
+
+      <h2 id="schema">4.1 定义领域模型 db/schema.cds</h2>
+      <p>在 <code>db/schema.cds</code> 中声明三个实体。整个文件如下，可直接复制：</p>
+
+<pre><code class="language-cds">// db/schema.cds —— 领域模型（数据层）
+namespace sap.capire.bookshop;
+
+using { cuid } from '@sap/cds/common';
+
+entity Genres {
+  key ID    : Integer;
+      name  : String(64) @title : 'Genre';
+      descr : String(512);
+}
+
+entity Authors {
+  key ID          : Integer;
+      name        : String(128) @title : 'Author';
+      dateOfBirth : Date;
+      placeOfBirth : String(128);
+      books       : Association to many Books on books.author = $self;
+}
+
+entity Books {
+  key ID     : Integer;
+      title  : String(256) @title : 'Title';
+      descr  : String(1024);
+      author : Association to Authors;
+      genre  : Association to Genres;
+      stock  : Integer @title : 'Stock';
+      price  : Decimal(9,2) @title : 'Price';
+      currency : String(3);
+}
+</code></pre>
+
+      <p>逐行解释几个关键概念：</p>
+      <ul>
+        <li><b><code>namespace sap.capire.bookshop;</code></b>：给所有实体加命名空间前缀，生成的完整实体名为 <code>sap.capire.bookshop.Books</code>。命名空间也用于 CSV 文件命名（见 4.3）。</li>
+        <li><b><code>key ID : Integer;</code></b>：<code>key</code> 声明主键。这里用自增 Integer 主键；后面第 5 章会用 <code>cuid</code> 生成 UUID 主键作为对照。</li>
+        <li><b><code>@title : 'Genre'</code></b>：CDS 注解，为字段提供 UI 友好的显示名，会在 OData <code>$metadata</code> 与 Fiori UI 中体现。</li>
+        <li><b><code>Association to Authors / to Genres</code></b>：声明「对一」关联，OData 中表现为可展开的导航属性（<code>$expand=author</code>）。</li>
+        <li><b><code>Association to many Books on books.author = $self</code></b>：在 <code>Authors</code> 上声明反向的「对多」关联，用 <code>on</code> 条件指明关联键。<code>$self</code> 指当前作者行的 <code>ID</code>。</li>
+        <li><b><code>using { cuid } from '@sap/cds/common'</code></b>：导入 CAP 公共类型库。<code>cuid</code> 是一个含 UUID 主键的抽象类型，第 5 章定义 <code>Orders</code> 时使用；本章的 <code>Genres/Authors/Books</code> 用 Integer 主键演示。</li>
+      </ul>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="vscode">
+            <div class="vs-top"><span>文件(F)</span><span>编辑(E)</span><span>选择(S)</span><span>查看(V)</span><span>运行(R)</span><span style="margin-left:auto">bookshop — db/schema.cds</span></div>
+            <div class="vs-body">
+              <div class="vs-activity"><span class="on">📁</span><span>🔍</span><span>🌿</span><span>▶️</span></div>
+              <div class="vs-explorer">
+                <div style="color:#8a8a8a;font-size:11px;padding:4px 6px">资源管理器</div>
+                <div class="tree">
+                  <div class="row"><span class="i">▾</span><span class="folder">📁</span> BOOKSHOP</div>
+                  <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> app</div>
+                  <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> db</div>
+                  <div class="row sel"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> schema.cds</div>
+                  <div class="row"><span class="pad"></span><span class="i">▾</span><span class="folder">📁</span> srv</div>
+                  <div class="row sel"><span class="pad"></span><span class="pad"></span><span class="i"></span><span class="file">📄</span> cat-service.cds</div>
+                  <div class="row"><span class="pad"></span><span class="i"></span><span class="file">📄</span> package.json</div>
+                </div>
+              </div>
+              <div class="vs-editor">
+                <pre class="ed" style="padding-top:38px"><code class="language-cds">entity Books {
+  key ID     : Integer;
+      title  : String(256) @title : 'Title';
+      descr  : String(1024);
+      author : Association to Authors;
+      genre  : Association to Genres;
+      stock  : Integer @title : 'Stock';
+      price  : Decimal(9,2) @title : 'Price';
+      currency : String(3);
+}</code></pre>
+              </div>
+            </div>
+            <div class="vs-status"><span>✓ 0 错误</span><span>✓ 0 警告</span><span>SAP CDS Language Support</span></div>
+          </div>
+        </div>
+        <div class="cap"><b>图 4-1</b> VS Code 中编辑 <code>db/schema.cds</code>：SAP CDS 扩展提供高亮与补全，保存后实时生效</div>
+      </div>
+
+      <h2 id="service">4.2 定义服务 srv/cat-service.cds</h2>
+      <p>数据模型是「底层资产」，服务是「对外窗口」。在 <code>srv/cat-service.cds</code> 中定义 <code>CatalogService</code>，把模型投影成只读 OData 服务：</p>
+
+<pre><code class="language-cds">// srv/cat-service.cds —— 服务定义（服务层）
+using { sap.capire.bookshop as my } from '../db/schema';
+
+service CatalogService {
+  @readonly entity Books   as projection on my.Books;
+  @readonly entity Authors as projection on my.Authors;
+  @readonly entity Genres  as projection on my.Genres;
+  // @readonly entity Orders as projection on my.Orders;   // 第 5 章定义 Orders 后再启用
+}
+</code></pre>
+
+      <p>要点：</p>
+      <ul>
+        <li><b><code>service CatalogService { ... }</code></b>：声明一个服务块。CAP 会自动为它生成 <code>/odata/v4/catalog</code> 路径的 OData V4 端点。</li>
+        <li><b><code>entity Books as projection on my.Books</code></b>：把底层实体<b>投影</b>为服务实体。<code>my</code> 是 <code>sap.capire.bookshop</code> 的别名。投影可以裁剪字段、改名、加注解，而原始模型保持不变。</li>
+        <li><b><code>@readonly</code></b>：只读投影，客户端不能对 <code>Books</code> 执行写操作。本章先用只读；第 5 章会放开写能力并加自定义 Action。</li>
+        <li><b>多个服务共享模型</b>：同一个 <code>my.Books</code> 可以被多个 service 各自投影，每个服务只暴露自己需要的视图——这是 CAP 里「一个模型、多个服务」的最佳实践。</li>
+        <li><b><code>Orders</code> 投影先注释</b>：<code>Orders</code> 实体在第 5 章加入 schema，届时启用该行并补充完整服务定义。</li>
+      </ul>
+
+      <h2 id="csv">4.3 种子数据 CSV</h2>
+      <p>CAP 的约定：把 CSV 文件放进 <code>db/data/</code>，文件名必须是 <code>&lt;命名空间&gt;-&lt;实体名&gt;.csv</code>（点号换成连字符），表头与实体字段一一对应。启动时自动导入。</p>
+
+      <p><b>① <code>db/data/sap.capire.bookshop-Genres.csv</code></b></p>
+<pre><code class="language-csv">ID,name,descr
+201,Fiction,虚构类文学作品
+202,Non-Fiction,非虚构类作品
+203,Science Fiction,科幻类
+204,Romance,爱情与浪漫类
+205,Essay,随笔散文
+</code></pre>
+
+      <p><b>② <code>db/data/sap.capire.bookshop-Authors.csv</code></b></p>
+<pre><code class="language-csv">ID,name,dateOfBirth,placeOfBirth
+101,Emily Brontë,1818-07-30,Thornton England
+102,George Orwell,1903-06-25,Motihari India
+103,Jane Austen,1775-12-16,Steventon England
+104,Haruki Murakami,1949-01-12,Kyoto Japan
+</code></pre>
+
+      <p><b>③ <code>db/data/sap.capire.bookshop-Books.csv</code></b></p>
+<pre><code class="language-csv">ID,title,descr,author_ID,genre_ID,stock,price,currency
+1,Wuthering Heights,哥特小说代表作,101,201,12,11.11,EUR
+2,Jane Eyre,夏洛蒂·勃朗特经典,101,201,11,22.00,EUR
+3,The Raven,爱伦坡诗作,102,203,333,8.00,EUR
+4,Eleonora,爱伦坡短篇,102,203,0,7.99,EUR
+5,Catweazle,幻想小说,103,204,5,19.99,EUR
+6,Pride and Prejudice,简·奥斯汀代表作,103,204,10,24.99,EUR
+7,1Q84,村上春树长篇,104,201,100,33.00,EUR
+8,Kafka on the Shore,村上春树长篇,104,201,42,32.99,EUR
+9,Dandelion Wine,怀旧随笔,102,202,8,27.50,EUR
+10,Norwegian Wood,村上春树爱情小说,104,204,150,35.50,EUR
+</code></pre>
+
+      <p>CSV 细节（完整数据在第 7 章）：</p>
+      <ul>
+        <li><b>表头顺序</b>：必须与实体字段顺序一致，尤其是关联字段写成 <code>author_ID</code>、<code>genre_ID</code>（实体名首字母小写 + <code>_ID</code>），CAP 据此填入外键。</li>
+        <li><b>stock 覆盖三档</b>：有 0（<code>Eleonora</code>）、小（5/10/12）、大（100/150/333），方便第 6 章验证 <code>$filter</code> 与第 5 章的下单库存校验。</li>
+        <li><b>price 覆盖两档</b>：既有 &lt; 30 的廉价书，也有 ≥ 30 的书，便于验证 <code>price lt 30</code>。</li>
+      </ul>
+
+      <h2 id="verify">4.4 验证：编译与服务文档</h2>
+      <p>模型与服务定义好后，先用 <code>cds compile</code> 检查模型语法（无输出即通过）：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">终端 — cds compile</span></div>
+          <div class="term">
+            <div><span class="p">$</span> <span class="path">cds compile db/schema.cds</span></div>
+            <div>{</div>
+            <div>&nbsp;&nbsp;"definitions": {</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;"sap.capire.bookshop.Genres":&nbsp;{&nbsp;"kind":&nbsp;"entity",&nbsp;...&nbsp;},</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;"sap.capire.bookshop.Authors":&nbsp;{&nbsp;"kind":&nbsp;"entity",&nbsp;...&nbsp;},</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;"sap.capire.bookshop.Books":&nbsp;{&nbsp;"kind":&nbsp;"entity",&nbsp;...&nbsp;}</div>
+            <div>&nbsp;&nbsp;}</div>
+            <div>}</div>
+            <div><span class="ok">✓ 编译通过，无语法错误</span></div>
+          </div>
+        </div>
+        <div class="cap"><b>图 4-2</b> <code>cds compile db/schema.cds</code> 输出编译后的 CSN 结构，无错误即模型合法</div>
+      </div>
+
+      <p>接着启动 <code>cds watch</code>，浏览器打开 <code>http://localhost:4004/odata/v4/catalog</code>，CAP 返回服务的 OData 服务文档（列出所有可访问的实体集合）：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">http://localhost:4004/odata/v4/catalog</span></div>
+          <div style="background:#f6f8fa;padding:14px 16px;font-family:var(--mono);font-size:12px;overflow-x:auto">
+            {<br>
+            &nbsp;&nbsp;"@odata.context":&nbsp;"http://localhost:4004/odata/v4/catalog/$metadata",<br>
+            &nbsp;&nbsp;"value":&nbsp;[<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;"name":&nbsp;"Books",&nbsp;"url":&nbsp;"Books"&nbsp;},<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;"name":&nbsp;"Authors",&nbsp;"url":&nbsp;"Authors"&nbsp;},<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;"name":&nbsp;"Genres",&nbsp;"url":&nbsp;"Genres"&nbsp;}<br>
+            &nbsp;&nbsp;]<br>
+            }
+          </div>
+        </div>
+        <div class="cap"><b>图 4-3</b> <code>CatalogService</code> 的 OData 服务文档：<code>Books / Authors / Genres</code> 三个实体集合已经可访问</div>
+      </div>
+
+      <h2 id="steps">4.5 操作手顺</h2>
+      <ol class="steps teal">
+        <li><p><span class="step-title">定义领域模型</span></p>
+          <p>把 4.1 的代码写入 <code>db/schema.cds</code>，保存后观察 VS Code 左下角无红色报错。</p>
+        </li>
+        <li><p><span class="step-title">定义服务</span></p>
+          <p>新建 <code>srv/cat-service.cds</code>，写入 4.2 的服务定义。</p>
+        </li>
+        <li><p><span class="step-title">放置种子数据</span></p>
+          <p>在 <code>db/data/</code> 下创建三个 CSV 文件（文件名、表头严格按 4.3）。</p>
+        </li>
+        <li><p><span class="step-title">编译验证</span></p>
+          <p>执行 <code>cds compile db/schema.cds</code>，确认输出无错误（见<a href="#verify">图 4-2</a>）。</p>
+        </li>
+        <li><p><span class="step-title">启动并查看服务文档</span></p>
+          <p>执行 <code>cds watch</code>，浏览器访问 <code>http://localhost:4004/odata/v4/catalog</code>，确认返回三个实体集合（见<a href="#verify">图 4-3</a>）。</p>
+        </li>
+      </ol>
+
+      <div class="note">
+        <span class="note-title">💡 CSV 与本地数据库注意事项</span>
+        <ul>
+          <li><b>字段顺序</b>：CSV 表头必须与实体字段声明顺序一致，否则启动时导入失败并报 <code>invalid column</code>。</li>
+          <li><b>关联列名</b>：<code>author_ID</code> / <code>genre_ID</code> 由框架约定生成，写错则外键无法解析。</li>
+          <li><b>自动建表</b>：本地 SQLite 数据库由 CAP 在首次启动时自动建表、自动导入 CSV，无需任何 DDL 手工操作。</li>
+          <li><b>CSV 编码</b>：保存为 UTF-8（无 BOM），中文描述才能正确导入。</li>
+        </ul>
+      </div>
+
+      <div class="pagenav">
+        <a href="step1-init.html"><small>← 上一章</small><b>手顺1：项目初始化</b></a>
+        <a class="next" href="step3-implement.html"><small>下一章 →</small><b>手顺3：业务逻辑实现</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · CAP 培训 · 第 4 章 手顺2：数据模型与服务</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>素材包下载 | SAP RAP × CAP 培训</title>
+<meta name="description" content="RAP / CAP 培训配套素材包下载：CAP Node.js 可运行工程、CAP Java 业务源码、RAP Travel 全套 ABAP 源码与测试数据，含使用操作手顺。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📦</text></svg>">
+<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="index.html">首页</a>
+      <a class="tab" href="rap/overview.html">RAP 培训</a>
+      <a class="tab" href="cap/overview.html">CAP 培训</a>
+      <a class="tab" href="fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">素材包</div>
+    <nav class="side-nav">
+      <a class="snav active" href="#overview"><span class="num">📦</span>素材包概览</a>
+      <a class="snav" href="#cap-node"><span class="num">1</span>CAP Node.js 工程</a>
+      <a class="snav" href="#cap-java"><span class="num">2</span>CAP Java 源码</a>
+      <a class="snav" href="#rap"><span class="num">3</span>RAP ABAP 源码</a>
+      <a class="snav" href="#btp"><span class="num">4</span>BTP 素材包</a>
+      <a class="snav" href="#fiori"><span class="num">5</span>Fiori 素材包</a>
+      <a class="snav" href="#cap-fiori"><span class="num">6</span>CAP + Fiori 整体工程</a>
+      <a class="snav" href="#note"><span class="num">⚠</span>使用注意</a>
+    </nav>
+    <div class="snav-group">培训章节</div>
+    <a class="snav" href="rap/overview.html"><span class="num">R</span>RAP：概述 → 手顺1-4</a>
+    <a class="snav" href="cap/overview.html"><span class="num">C</span>CAP：概述 → 手顺1-4</a>
+    <a class="snav" href="fiori/overview.html"><span class="num">F</span>Fiori：UI 层 → 手顺1-3</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1 id="overview">📦 素材包下载</h1>
+      <p class="page-sub">教程代码与测试数据的「可直接运行 / 可直接粘贴」版本</p>
+      <p class="lead">课程页面里的代码块适合<b>边看边敲</b>；本页把它们整理成六个素材包，统一放在 <code>samples/</code> 目录。CAP Node.js 是<b>开箱即跑</b>的完整工程，<b>CAP + Fiori 整体工程</b>更是在其后端之上直接集成 Fiori Elements 前端、一步到位；CAP Java 与 RAP 是配合脚手架 / ADT 直接粘贴的源码；BTP 素材包是 HANA SQL + 三种 Java 构建模式的源码；Fiori 素材包是复制进 Bookshop 工程即得完整页面的前端三件套。点文件名即可下载。</p>
+
+      <p>
+        <span class="badge blue">RAP 素材包</span>
+        <span class="badge teal">CAP Node.js 工程</span>
+        <span class="badge teal">CAP Java 源码</span>
+        <span class="badge blue">BTP 素材包</span>
+        <span class="badge teal">Fiori 素材包</span>
+        <span class="badge teal">CAP + Fiori 整体工程</span>
+        <span class="badge gray">操作手顺</span>
+      </p>
+
+      <h2>素材包一览</h2>
+      <table class="doc">
+        <thead>
+          <tr><th>素材包</th><th>场景</th><th>内容</th><th>运行方式</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="#cap-node">🌐 CAP Node.js</a></td>
+            <td>书店 Bookshop</td>
+            <td>完整 <code>cds</code> 工程：模型、服务、业务逻辑、CSV 种子数据</td>
+            <td>✅ <code>npm install &amp;&amp; cds watch</code>（端口 4004）</td>
+          </tr>
+          <tr>
+            <td><a href="#cap-java">☕ CAP Java</a></td>
+            <td>书店 Bookshop</td>
+            <td>业务源码：模型、服务、<code>application.yaml</code>、Java Handler、CSV</td>
+            <td>⚠️ 配合 <code>cds init --java</code> 脚手架</td>
+          </tr>
+          <tr>
+            <td><a href="#rap">🅰️ RAP（ABAP）</a></td>
+            <td>旅行社 Travel</td>
+            <td>视图 DDLS、BDEF、行为实现类、服务定义、测试数据程序</td>
+            <td>⚠️ 粘贴进 ADT 后激活（<code>ZR_INSERT_TESTDATA</code> 导数据）</td>
+          </tr>
+          <tr>
+            <td><a href="#btp">☁️ BTP（HANA Cloud + Java）</a></td>
+            <td>书店 Bookshop（云端）</td>
+            <td>HANA SQL 建表/数据 + 三种 Java 构建模式源码（目录式 / Maven / Spring Boot）</td>
+            <td>⚠️ 需在 BTP 创建 HANA Cloud 实例后填入连接信息</td>
+          </tr>
+          <tr>
+            <td><a href="#fiori">📱 Fiori（Fiori Elements）</a></td>
+            <td>书店 Bookshop（UI 层）</td>
+            <td><code>app/books/</code> 前端三件套：annotate.cds、manifest.json、index.html</td>
+            <td>✅ 复制进 CAP Bookshop 工程 → <code>cds watch</code> → 预览 List Report / Object Page</td>
+          </tr>
+          <tr>
+            <td><a href="#cap-fiori">🚀 CAP + Fiori（整体工程）</a></td>
+            <td>书店 Bookshop（后端 + UI 打通）</td>
+            <td>完整工程：后端（模型/服务/逻辑/CSV）+ <code>app/books/</code> 前端 + criticality 状态徽标</td>
+            <td>✅ <code>npm install &amp;&amp; cds watch</code>（端口 4004）→ 打开 <code>/app/books/index.html</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="cap-node">1. CAP Node.js 工程（samples/cap-bookshop）</h2>
+      <p class="path-note">对应《CAP 手顺1–4》+ 第7章测试数据</p>
+      <p>可直接运行的 Bookshop 工程。下载全部文件后放进同一目录，保持目录结构不变即可。</p>
+      <table class="doc">
+        <thead>
+          <tr><th>文件</th><th>内容</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><a download href="samples/cap-bookshop/package.json">package.json</a></td><td>依赖（<code>@sap/cds</code>）+ start/watch 脚本</td></tr>
+          <tr><td><a download href="samples/cap-bookshop/.cdsrc.json">.cdsrc.json</a></td><td>配置：本地 SQLite</td></tr>
+          <tr><td><a download href="samples/cap-bookshop/db/schema.cds">db/schema.cds</a></td><td>数据模型：Genres / Authors / Books / Orders</td></tr>
+          <tr><td><a download href="samples/cap-bookshop/srv/cat-service.cds">srv/cat-service.cds</a></td><td>服务定义：Books 可写 + <code>submitOrder</code> Action</td></tr>
+          <tr><td><a download href="samples/cap-bookshop/srv/cat-service.js">srv/cat-service.js</a></td><td>业务逻辑：库存校验、畅销标记、日志</td></tr>
+          <tr><td><a download href="samples/cap-bookshop/db/data/sap.capire.bookshop-Genres.csv">db/data/…-Genres.csv</a></td><td>种子数据：5 个分类（201–205）</td></tr>
+          <tr><td><a download href="samples/cap-bookshop/db/data/sap.capire.bookshop-Authors.csv">db/data/…-Authors.csv</a></td><td>种子数据：4 位作者（101–104）</td></tr>
+          <tr><td><a download href="samples/cap-bookshop/db/data/sap.capire.bookshop-Books.csv">db/data/…-Books.csv</a></td><td>种子数据：10 本书（库存含 0 / 100 / 333 边界值）</td></tr>
+          <tr><td><a download href="samples/cap-bookshop/db/data/sap.capire.bookshop-Orders.csv">db/data/…-Orders.csv</a></td><td>种子数据：2 条订单</td></tr>
+          <tr><td><a download href="samples/cap-bookshop/README.md">README.md</a></td><td>运行手顺 + curl 测试命令 + 与教程的两处差异</td></tr>
+        </tbody>
+      </table>
+      <h3>快速开始</h3>
+      <pre><code class="language-bash">cd cap-bookshop
+npm install
+npm start            # 或 cds watch，热重载
+# 打开 http://localhost:4004 浏览；详细 curl 测试见 README.md</code></pre>
+
+      <h2 id="cap-java">2. CAP Java 源码（samples/cap-java）</h2>
+      <p class="path-note">对应《CAP for Java 手顺1–4（J3–J6）》</p>
+      <p>Maven 多模块工程结构由 <code>cds init bookshop --java</code> 生成（见手顺1），本包提供业务源码，按路径覆盖 / 放入脚手架即可。</p>
+      <table class="doc">
+        <thead>
+          <tr><th>文件</th><th>覆盖到</th><th>内容</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><a download href="samples/cap-java/db/schema.cds">db/schema.cds</a></td><td><code>db/schema.cds</code></td><td>数据模型：Genres / Authors / Books</td></tr>
+          <tr><td><a download href="samples/cap-java/srv/cat-service.cds">srv/cat-service.cds</a></td><td><code>srv/cat-service.cds</code></td><td>服务定义：CatalogService + <code>submitOrder</code></td></tr>
+          <tr><td><a download href="samples/cap-java/srv/src/main/resources/application.yaml">application.yaml</a></td><td><code>srv/src/main/resources/</code></td><td>数据源链接：SQLite JDBC + 端口 8080</td></tr>
+          <tr><td><a download href="samples/cap-java/srv/src/main/java/com/acme/bookshop/handlers/CatalogServiceHandler.java">CatalogServiceHandler.java</a></td><td><code>srv/…/com/acme/bookshop/handlers/</code></td><td>唯一手写 Java：畅销标记 + submitOrder 业务逻辑</td></tr>
+          <tr><td><a download href="samples/cap-java/db/data/sap.capire.bookshop-Genres.csv">db/data/…-Genres.csv</a></td><td><code>db/data/</code></td><td>种子数据：5 个分类</td></tr>
+          <tr><td><a download href="samples/cap-java/db/data/sap.capire.bookshop-Authors.csv">db/data/…-Authors.csv</a></td><td><code>db/data/</code></td><td>种子数据：4 位作者</td></tr>
+          <tr><td><a download href="samples/cap-java/db/data/sap.capire.bookshop-Books.csv">db/data/…-Books.csv</a></td><td><code>db/data/</code></td><td>种子数据：10 本书</td></tr>
+          <tr><td><a download href="samples/cap-java/README.md">README.md</a></td><td>—</td><td>使用手顺 + 依赖说明 + curl 测试</td></tr>
+        </tbody>
+      </table>
+      <h3>快速开始</h3>
+      <pre><code class="language-bash">cds init bookshop --java     # 生成脚手架（手顺1）
+cd bookshop
+# 用素材包文件覆盖 / 放入（对照上面表格）
+mvn clean install            # 编译模型 → 生成 Books / CatalogService_
+cd srv
+mvn spring-boot:run          # 端口 8080，自动建表 + 导 CSV</code></pre>
+
+      <h2 id="rap">3. RAP ABAP 源码（samples/rap-travel）</h2>
+      <p class="path-note">对应《RAP 手顺1–4》+ 第7章测试数据</p>
+      <p>所有对象在 ADT（Eclipse）里用模板新建后，粘贴对应文件内容并激活。服务绑定是 GUI 操作，无源码文件。</p>
+      <table class="doc">
+        <thead>
+          <tr><th>文件</th><th>ADT 新建方式</th><th>对应章节</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><a download href="samples/rap-travel/ZI_TRAVEL.ddls">ZI_TRAVEL.ddls</a></td><td>Data Definition（模板 Define View Entity）</td><td>手顺1（3.3）</td></tr>
+          <tr><td><a download href="samples/rap-travel/ZC_TRAVEL.ddls">ZC_TRAVEL.ddls</a></td><td>Data Definition（模板 Projection View）</td><td>手顺1（3.4）</td></tr>
+          <tr><td><a download href="samples/rap-travel/ZI_TRAVEL_BOOKING.ddls">ZI_TRAVEL_BOOKING.ddls</a></td><td>Data Definition（模板 Define View Entity）</td><td>手顺1（3.5）</td></tr>
+          <tr><td><a download href="samples/rap-travel/ZI_TRAVEL.bdef">ZI_TRAVEL.bdef</a></td><td>Behavior Definition</td><td>手顺2（4.2）</td></tr>
+          <tr><td><a download href="samples/rap-travel/zbp_i_travel.clas.abap">zbp_i_travel.clas.abap</a></td><td>Behavior Implementation Class</td><td>手顺2（4.3 / 4.4）</td></tr>
+          <tr><td><a download href="samples/rap-travel/ZUI_TRAVEL_O4.ddls">ZUI_TRAVEL_O4.ddls</a></td><td>Service Definition</td><td>手顺3（5.2）</td></tr>
+          <tr><td><a download href="samples/rap-travel/ZR_INSERT_TESTDATA.abap">ZR_INSERT_TESTDATA.abap</a></td><td>ABAP Program（F8 运行）</td><td>第7章（7.4）</td></tr>
+          <tr><td><a download href="samples/rap-travel/README.md">README.md</a></td><td>—</td><td>操作手顺 + 表结构清单 + 注意</td></tr>
+        </tbody>
+      </table>
+      <h3>快速开始</h3>
+      <pre><code class="language-bash"># ADT 里按顺序（详见 rap-travel/README.md）：
+# 1) 建包 ZRAP_TRAINING → 2) 按 README 表结构建 ZTRAVEL / ZTRAVEL_BOOKING
+# 3) 粘贴 ZI_TRAVEL / ZC_TRAVEL / ZI_TRAVEL_BOOKING 的 .ddls → 激活
+# 4) 粘贴 ZI_TRAVEL.bdef；双击超链接生成类 → 粘贴 zbp_i_travel.clas.abap
+# 5) 粘贴 ZUI_TRAVEL_O4.ddls → 新建 Service Binding（OData V4 – UI）
+# 6) 新建程序粘贴 ZR_INSERT_TESTDATA.abap，F8 写入 7+6 条测试数据</code></pre>
+
+      <h2 id="btp">4. BTP 素材包（samples/btp-bookshop）</h2>
+      <p class="path-note">对应《BTP 与 HANA Cloud / BAS Java》B4–B8（HANA SQL 建库灌数 + 三种 Java 构建模式）</p>
+      <p>配合 BTP 课程手顺的源码与 SQL。⚠️ <b>本包不含任何真实连接信息</b>：HANA Cloud 实例的主机、DBADMIN 口令需要你自己注册并创建实例后（B1–B3）填入。</p>
+      <table class="doc">
+        <thead>
+          <tr><th>文件</th><th>内容</th><th>对应章节</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><a download href="samples/btp-bookshop/sql/01-create-schema.sql">sql/01-create-schema.sql</a></td><td>建 schema <code>BOOKSHOP</code></td><td>B4</td></tr>
+          <tr><td><a download href="samples/btp-bookshop/sql/02-create-tables.sql">sql/02-create-tables.sql</a></td><td>建 3 张表（GENRES / AUTHORS / BOOKS，含外键）</td><td>B4</td></tr>
+          <tr><td><a download href="samples/btp-bookshop/sql/03-insert-data.sql">sql/03-insert-data.sql</a></td><td>种子数据：5 分类 / 4 作者 / 10 本书</td><td>B4</td></tr>
+          <tr><td><a download href="samples/btp-bookshop/sql/04-verify.sql">sql/04-verify.sql</a></td><td>联表查询 + 计数核对（10 / 4 / 5）</td><td>B4</td></tr>
+          <tr><td><a download href="samples/btp-bookshop/mode1-dir/src/com/acme/bookshop/Book.java">mode1-dir/…/Book.java</a></td><td>模式一 DTO（目录式）</td><td>B6</td></tr>
+          <tr><td><a download href="samples/btp-bookshop/mode1-dir/src/com/acme/bookshop/BookshopApp.java">mode1-dir/…/BookshopApp.java</a></td><td>模式一主程序：JDBC 读 Books 打印</td><td>B6</td></tr>
+          <tr><td><a download href="samples/btp-bookshop/mode1-dir/lib/README.txt">mode1-dir/lib/README.txt</a></td><td>ngdbc.jar 下载说明（二进制不随包）</td><td>B6</td></tr>
+          <tr><td><a download href="samples/btp-bookshop/mode2-maven/pom.xml">mode2-maven/pom.xml</a></td><td>模式二 pom：ngdbc + exec 插件</td><td>B7</td></tr>
+          <tr><td><a download href="samples/btp-bookshop/mode2-maven/src/main/java/com/acme/bookshop/App.java">mode2-maven/…/App.java</a></td><td>模式二主程序</td><td>B7</td></tr>
+          <tr><td><a download href="samples/btp-bookshop/mode3-spring/src/main/java/com/acme/bookshop/Application.java">mode3-spring/…/Application.java</a></td><td>模式三 Spring Boot 入口</td><td>B8</td></tr>
+          <tr><td><a download href="samples/btp-bookshop/mode3-spring/src/main/java/com/acme/bookshop/Book.java">mode3-spring/…/Book.java</a></td><td>模式三 DTO（record，JSON 序列化）</td><td>B8</td></tr>
+          <tr><td><a download href="samples/btp-bookshop/mode3-spring/src/main/java/com/acme/bookshop/BookController.java">mode3-spring/…/BookController.java</a></td><td>模式三 <code>GET /api/books</code>（JdbcTemplate）</td><td>B8</td></tr>
+          <tr><td><a download href="samples/btp-bookshop/mode3-spring/src/main/resources/application.properties">mode3-spring/…/application.properties</a></td><td>数据源配置（占位符主机/口令）</td><td>B8</td></tr>
+          <tr><td><a download href="samples/btp-bookshop/mode3-spring/pom.xml">mode3-spring/pom.xml</a></td><td>参考 pom（含 ngdbc 依赖块）</td><td>B8</td></tr>
+          <tr><td><a download href="samples/btp-bookshop/README.md">README.md</a></td><td>总说明：目录表、占位符速查、使用顺序</td><td>B4–B8</td></tr>
+        </tbody>
+      </table>
+      <h3>快速开始</h3>
+      <pre><code class="language-bash"># 0) 先按 B1–B3 注册 BTP、创建 HANA Cloud，记录 SQL End Point 与 DBADMIN 口令
+# 1) 建库：Database Explorer → SQL Console，依次执行 sql/01 → 02 → 03 → 04
+# 2) 模式一（目录式）：javac -encoding UTF-8 -cp lib/ngdbc.jar -d out \
+#       src/com/acme/bookshop/Book.java src/com/acme/bookshop/BookshopApp.java
+#    java -cp "out:lib/ngdbc.jar" com.acme.bookshop.BookshopApp
+# 3) 模式二（Maven）：mvn compile exec:java
+# 4) 模式三（Spring Boot）：mvn spring-boot:run  →  curl http://localhost:8080/api/books</code></pre>
+
+      <h2 id="fiori">5. Fiori 素材包（samples/fiori-bookshop）</h2>
+      <p class="path-note">对应《Fiori 培训》F2–F4（List Report / Object Page / Action）</p>
+      <p>Fiori Elements 前端素材：把 <code>app/</code> 目录复制进 CAP Bookshop 工程即可得到完整页面（UI5 运行时走 <code>ui5.sap.com</code> CDN，首次预览需联网）。</p>
+      <table class="doc">
+        <thead>
+          <tr><th>文件</th><th>复制到</th><th>内容</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><a download href="samples/fiori-bookshop/app/books/annotate.cds">app/books/annotate.cds</a></td><td><code>app/books/</code></td><td><code>@UI</code> 注解：HeaderInfo / SelectionFields / LineItem / Facets / FieldGroup（F2+F3 最终版）</td></tr>
+          <tr><td><a download href="samples/fiori-bookshop/app/books/manifest.json">app/books/manifest.json</a></td><td><code>app/books/</code></td><td>数据源 <code>/odata/v4/catalog/</code> + 路由到 <code>sap.fe.templates.ListReport</code></td></tr>
+          <tr><td><a download href="samples/fiori-bookshop/app/books/index.html">app/books/index.html</a></td><td><code>app/books/</code></td><td>UI5 引导页（sap.m Shell + ComponentContainer）</td></tr>
+          <tr><td><a download href="samples/fiori-bookshop/README.md">README.md</a></td><td>—</td><td>使用手顺 + F4 状态徽标（criticality）的服务端补充示例</td></tr>
+        </tbody>
+      </table>
+      <h3>快速开始</h3>
+      <pre><code class="language-bash">cp -r samples/fiori-bookshop/app &lt;bookshop工程&gt;/app   # 把 app/ 复制进 CAP Bookshop 工程
+cd &lt;bookshop工程&gt; &amp;&amp; cds watch
+# 打开 http://localhost:4004/app/books/index.html
+# 列表：筛选栏（书名/作者/价格）+ 5 列表格；点行进 Object Page（基本信息 / 订单 / 补充信息）</code></pre>
+
+      <h2 id="cap-fiori">6. CAP + Fiori 整体工程（samples/cap-fiori-bookshop）</h2>
+      <p class="path-note">对应《CAP 培训》手顺1–4 + 《Fiori 培训》F2–F4，前后端已打通</p>
+      <p>开箱即跑的整体项目：CAP（Node.js）后端 + Fiori Elements 前端一步到位，且 <b>F4 的库存状态徽标已在服务端实现</b>（cap-bookshop / fiori-bookshop 两个拆分包做不到这一点）。</p>
+      <table class="doc">
+        <thead>
+          <tr><th>文件</th><th>内容</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><a download href="samples/cap-fiori-bookshop/package.json">package.json</a></td><td>依赖（<code>@sap/cds</code>）+ start/watch 脚本</td></tr>
+          <tr><td><a download href="samples/cap-fiori-bookshop/.cdsrc.json">.cdsrc.json</a></td><td>配置：本地 SQLite</td></tr>
+          <tr><td><a download href="samples/cap-fiori-bookshop/db/schema.cds">db/schema.cds</a></td><td>数据模型：Genres / Authors / Books / Orders</td></tr>
+          <tr><td><a download href="samples/cap-fiori-bookshop/db/data/sap.capire.bookshop-Books.csv">db/data/…-Books.csv</a> 等</td><td>种子数据：5 分类 / 4 作者 / 10 本书 / 2 订单</td></tr>
+          <tr><td><a download href="samples/cap-fiori-bookshop/srv/cat-service.cds">srv/cat-service.cds</a></td><td>服务定义：Books 投影 + <code>criticality</code> 计算字段 + <code>submitOrder</code></td></tr>
+          <tr><td><a download href="samples/cap-fiori-bookshop/srv/cat-service.js">srv/cat-service.js</a></td><td>业务逻辑：畅销标记 + criticality 计算（F4 徽标）+ 下单校验</td></tr>
+          <tr><td><a download href="samples/cap-fiori-bookshop/app/books/annotate.cds">app/books/annotate.cds</a></td><td><code>@UI</code> 注解：列 / 筛选 / Facets / DataPoint 状态徽标（F2–F4 完整版）</td></tr>
+          <tr><td><a download href="samples/cap-fiori-bookshop/app/books/manifest.json">app/books/manifest.json</a></td><td>数据源 <code>/odata/v4/catalog/</code> + ListReport 路由</td></tr>
+          <tr><td><a download href="samples/cap-fiori-bookshop/app/books/index.html">app/books/index.html</a></td><td>UI5 引导页（ui5.sap.com CDN）</td></tr>
+          <tr><td><a download href="samples/cap-fiori-bookshop/README.md">README.md</a></td><td>运行手顺 + 页面看点 + curl 测试命令</td></tr>
+        </tbody>
+      </table>
+      <h3>快速开始</h3>
+      <pre><code class="language-bash">cd cap-fiori-bookshop
+npm install
+cds watch
+# 打开 http://localhost:4004/app/books/index.html
+# 列表：筛选栏 + 5 列表格（库存列带状态颜色）；点行进 Object Page（基本信息/订单/补充信息）
+# 对象页点「下单」→ submitOrder 扣库存；curl 验证见包内 README</code></pre>
+
+      <h2 id="note">⚠️ 使用注意</h2>
+      <div class="note">
+        <span class="note-title">📌 与教程页面的差异 / 使用注意</span>
+        <ul style="margin:8px 0 0;padding-left:20px">
+          <li><b>CAP Node</b>：教程页面展示的 <code>cat-service.cds</code> 把 Books 标为 <code>@readonly</code>，但第7章测试场景要对 Books 做 POST/PATCH/DELETE。素材包让 Books <b>可写</b>，并在 README 中说明。</li>
+          <li><b>CAP Node</b>：<code>submitOrder</code> 的参数用 <code>book: Integer</code> 而非 <code>book: Books</code>，以匹配文档化 curl 请求体 <code>{"book":1,"quantity":2}</code>。</li>
+          <li><b>RAP</b>：<code>rejecttravel</code> 教程只声明未给实现；素材包按 <code>accepttravel</code> 的 EML 模式补全（状态改 X）。另外 <code>validateCustomer</code> 依赖 <code>ZCUSTOMER</code> 演示表，请先建表并录入客户 1–4。</li>
+          <li><b>BTP</b>：源码与 SQL 里的主机 / 口令 / ngdbc 版本号均为<b>占位符</b>（详见包内 README 速查表），连接前务必替换；HANA Cloud 的 JDBC URL 请保持 <code>encrypt=true&amp;validateCertificate=true</code>。</li>
+          <li><b>Fiori</b>：前端素材需配合 CAP Bookshop 工程（<code>samples/cap-bookshop</code>）使用；对象页「订单」子表依赖服务暴露 Orders（素材包已含）；F4 状态徽标需按包内 README 在服务端补 criticality 字段，直接启用会有运行时错误。</li>
+          <li><b>CAP + Fiori 整体工程</b>：criticality 已在服务端实现，徽标开箱即用；与拆分包的差异是它把后端投影加了 <code>criticality</code> 计算字段（见 <code>srv/cat-service.cds</code>），其余逻辑与 cap-bookshop 一致。</li>
+        </ul>
+      </div>
+      <div class="note">
+        <span class="note-title">💡 界面示意图</span>
+        本站所有「截图」均为教学用途的高仿真 HTML/CSS Mockup，非真实系统截图；素材包中的代码与手顺才是实际可操作的部分。
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · 内部培训材料 · 素材包在 <code>samples/</code> 目录，可直接拷贝</div>
+      <div style="margin-top:4px">RAP 场景基于 S/4HANA Travel 参考模型 · CAP 场景基于 Bookshop 参考模型</div>
+    </footer>
+  </main>
+</div>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

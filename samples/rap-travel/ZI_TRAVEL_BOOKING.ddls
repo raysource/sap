@@ -1,0 +1,21 @@
+@EndUserText.label: 'Travel Booking - 接口视图'
+@AccessControl.authorizationCheck: #CHECK
+@Metadata.ignorePropagatedAnnotations: true
+@ObjectModel.usageType:{
+  serviceQuality: #X,
+  sizeCategory: #S,
+  dataClass: #MIXED
+}
+define root view entity ZI_TRAVEL_BOOKING as select from ztravel_booking
+{
+  key travelid       as TravelID,
+  key bookingid      as BookingID,
+      bookingdate    as BookingDate,
+      customerid     as CustomerID,
+      carrierid      as CarrierID,
+      connectionid   as ConnectionID,
+      flightdate     as FlightDate,
+      flightprice    as FlightPrice,
+      currencycode   as CurrencyCode,
+      bookingstatus  as BookingStatus
+}

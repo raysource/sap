@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>手顺1：CDS 数据模型 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../index.html">首页</a>
+      <a class="tab active" href="overview.html">RAP 培训</a>
+      <a class="tab" href="../cap/overview.html">CAP 培训</a>
+      <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">RAP 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="overview.html"><span class="num">1</span>RAP 概述</a>
+      <a class="snav" href="prep.html"><span class="num">2</span>环境准备</a>
+      <a class="snav active" href="step1-cds.html"><span class="num">3</span>手顺1：CDS 数据模型</a>
+      <a class="snav" href="step2-behavior.html"><span class="num">4</span>手顺2：行为定义与实现</a>
+      <a class="snav" href="step3-service.html"><span class="num">5</span>手顺3：服务定义与绑定</a>
+      <a class="snav" href="step4-test.html"><span class="num">6</span>手顺4：Fiori 预览与测试</a>
+      <a class="snav" href="testdata.html"><span class="num">7</span>测试数据</a>
+    </nav>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+<a class="snav" href="../cap/overview.html"><span class="num">C</span>CAP 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 3 章：手顺1 — CDS 数据模型</h1>
+      <p class="page-sub">数据库表 → 接口视图 ZI_TRAVEL → 消费视图 ZC_TRAVEL</p>
+      <p class="lead">RAP 的一切从<b>数据模型</b>开始。本章创建业务对象 Travel 的底层物理表 <code>ZTRAVEL</code> / <code>ZTRAVEL_BOOKING</code>，再用 CDS 视图搭出「接口视图 + 消费视图」的<b>视图栈</b>。</p>
+
+      <p>
+        <span class="badge blue">Database Table</span>
+        <span class="badge blue">DDL Source</span>
+        <span class="badge blue">Projection View</span>
+        <span class="badge gray">SQL Preview</span>
+      </p>
+
+      <h2 id="stack">3.1 视图栈：接口视图 vs 消费视图</h2>
+      <p>RAP 推荐用<b>两层视图</b>承载数据模型，职责分离：</p>
+      <table class="cmp-table">
+        <thead>
+          <tr><th style="width:130px">维度</th><th>接口视图（Interface View）</th><th>消费视图（Consumer / Projection View）</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="dim">命名</td><td><code>ZI_</code> 开头（Interface）</td><td><code>ZC_</code> 开头（Consumption）</td></tr>
+          <tr><td class="dim">职责</td><td>数据源头：语义完整、暴露给上层消费</td><td>按场景裁剪 / 重命名 / 加 UI 注解</td></tr>
+          <tr><td class="dim">能否被 Behavior 引用</td><td>✅ 是（BDEF 定义在接口视图上）</td><td>❌ 通常不直接承载行为</td></tr>
+          <tr><td class="dim">能否被 Service 暴露</td><td>✅ 是（推荐）</td><td>✅ 是（经授权投影）</td></tr>
+        </tbody>
+      </table>
+      <div class="note">
+        <span class="note-title">💡 为什么分两层？</span>
+        接口视图是「模型的真相」——业务对象定义在它上面；消费视图是「场景的窗口」——不同 UI / 服务按需投影。改接口视图影响所有消费者，改消费视图只影响自己的场景。
+      </div>
+
+      <h2 id="table">3.2 新建数据库表 ZTRAVEL</h2>
+      <p>在包 <code>ZRAP_TRAINING</code> 上右键 <code>New → Other… → Database Table</code>，名称 <code>ZTRAVEL</code>。字段如下（<code>MANDT</code> 由 ADT 在设置 Client Handling 时自动添加）：</p>
+      <table class="doc">
+        <thead>
+          <tr><th>字段</th><th>键</th><th>数据类型</th><th>长度</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>MANDT</code></td><td>☑</td><td>CLNT</td><td>3</td><td>客户端（自动添加）</td></tr>
+          <tr><td><code>TRAVELID</code></td><td>☑</td><td>INT2</td><td>5</td><td>旅行编号（主键）</td></tr>
+          <tr><td><code>AGENCYID</code></td><td></td><td>INT2</td><td>5</td><td>旅行社 ID</td></tr>
+          <tr><td><code>CUSTOMERID</code></td><td></td><td>INT2</td><td>5</td><td>客户 ID</td></tr>
+          <tr><td><code>BEGINDATE</code></td><td></td><td>DATS</td><td>8</td><td>开始日期</td></tr>
+          <tr><td><code>ENDDATE</code></td><td></td><td>DATS</td><td>8</td><td>结束日期</td></tr>
+          <tr><td><code>BOOKINGFEE</code></td><td></td><td>CURR</td><td>13,2</td><td>预订手续费</td></tr>
+          <tr><td><code>TOTALPRICE</code></td><td></td><td>CURR</td><td>13,2</td><td>总价</td></tr>
+          <tr><td><code>CURRENCYCODE</code></td><td></td><td>CUKY</td><td>5</td><td>货币码（CURR 的参考字段）</td></tr>
+          <tr><td><code>STATUS</code></td><td></td><td>CHAR</td><td>1</td><td>状态（N/O/A/X）</td></tr>
+          <tr><td><code>DESCRIPTION</code></td><td></td><td>CHAR</td><td>60</td><td>描述</td></tr>
+          <tr><td><code>CREATEDBY</code></td><td></td><td>CHAR</td><td>12</td><td>创建人</td></tr>
+          <tr><td><code>CREATEDAT</code></td><td></td><td>DEC</td><td>15</td><td>创建时间（UTC 时间戳）</td></tr>
+          <tr><td><code>LASTCHANGEDBY</code></td><td></td><td>CHAR</td><td>12</td><td>最后修改人</td></tr>
+          <tr><td><code>LASTCHANGEDAT</code></td><td></td><td>DEC</td><td>15</td><td>最后修改时间（UTC 时间戳）</td></tr>
+        </tbody>
+      </table>
+
+      <figure class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">ZTRAVEL — 数据库表编辑器</span></div>
+          <div class="toolbar">
+            <span class="fbtn sm primary">激活 (Ctrl+F3)</span>
+            <span class="fbtn sm">🔎 打开 SQL Console</span>
+            <span class="fbtn sm">字段追加</span>
+            <span style="margin-left:auto;font-size:11px;color:var(--text-faint)">已激活 ✓</span>
+          </div>
+          <div style="padding:4px 14px;font-size:11px;color:var(--text-faint)">ZTRAVEL · 数据库表 · 客户端相关</div>
+          <table class="tbl">
+            <thead><tr><th>字段</th><th>键</th><th>数据类型</th><th>长度</th><th>描述</th></tr></thead>
+            <tbody>
+              <tr><td>MANDT</td><td>☑</td><td>CLNT</td><td>3</td><td>客户端</td></tr>
+              <tr class="sel"><td>TRAVELID</td><td>☑</td><td>INT2</td><td>5</td><td>旅行编号</td></tr>
+              <tr><td>AGENCYID</td><td></td><td>INT2</td><td>5</td><td>旅行社 ID</td></tr>
+              <tr><td>CUSTOMERID</td><td></td><td>INT2</td><td>5</td><td>客户 ID</td></tr>
+              <tr><td>BEGINDATE</td><td></td><td>DATS</td><td>8</td><td>开始日期</td></tr>
+              <tr><td>ENDDATE</td><td></td><td>DATS</td><td>8</td><td>结束日期</td></tr>
+              <tr><td>BOOKINGFEE</td><td></td><td>CURR</td><td>13,2</td><td>预订手续费</td></tr>
+              <tr><td>TOTALPRICE</td><td></td><td>CURR</td><td>13,2</td><td>总价</td></tr>
+              <tr><td>CURRENCYCODE</td><td></td><td>CUKY</td><td>5</td><td>货币码</td></tr>
+              <tr><td>STATUS</td><td></td><td>CHAR</td><td>1</td><td>状态</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="cap"><b>图 3-1</b> 数据库表 <code>ZTRAVEL</code> 编辑器：主键 <code>TRAVELID</code> + 字段列表 + 激活按钮</div>
+      </figure>
+
+      <p>编辑完成后按 <b>Ctrl+F3</b>（或工具栏 ▶ 激活）激活表。接着用同样方式创建<b>子表</b> <code>ZTRAVEL_BOOKING</code>（预订明细）：</p>
+      <table class="doc">
+        <thead>
+          <tr><th>字段</th><th>键</th><th>数据类型</th><th>长度</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>MANDT</code></td><td>☑</td><td>CLNT</td><td>3</td><td>客户端（自动添加）</td></tr>
+          <tr><td><code>TRAVELID</code></td><td>☑</td><td>INT2</td><td>5</td><td>所属旅行（外键到 ZTRAVEL）</td></tr>
+          <tr><td><code>BOOKINGID</code></td><td>☑</td><td>INT2</td><td>5</td><td>预订编号（组内递增）</td></tr>
+          <tr><td><code>BOOKINGDATE</code></td><td></td><td>DATS</td><td>8</td><td>预订日期</td></tr>
+          <tr><td><code>CUSTOMERID</code></td><td></td><td>INT2</td><td>5</td><td>客户 ID</td></tr>
+          <tr><td><code>CARRIERID</code></td><td></td><td>CHAR</td><td>3</td><td>航空公司（如 LH/BA）</td></tr>
+          <tr><td><code>CONNECTIONID</code></td><td></td><td>CHAR</td><td>4</td><td>航班号</td></tr>
+          <tr><td><code>FLIGHTDATE</code></td><td></td><td>DATS</td><td>8</td><td>航班日期</td></tr>
+          <tr><td><code>FLIGHTPRICE</code></td><td></td><td>CURR</td><td>13,2</td><td>票价</td></tr>
+          <tr><td><code>CURRENCYCODE</code></td><td></td><td>CUKY</td><td>5</td><td>货币码</td></tr>
+          <tr><td><code>BOOKINGSTATUS</code></td><td></td><td>CHAR</td><td>1</td><td>预订状态</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="interface">3.3 新建 CDS 接口视图 ZI_TRAVEL</h2>
+      <p>右键 <code>Core Data Services → New → Data Definition</code>，勾选 <b>Add a type or entity</b>，模板选 <b>Define View Entity</b>（CDS view entity），名称 <code>ZI_TRAVEL</code>。把生成的模板替换为下面内容并激活（Ctrl+F3）：</p>
+      <pre><code class="language-cds">@EndUserText.label: 'Travel - 接口视图'
+@AccessControl.authorizationCheck: #CHECK
+@Metadata.ignorePropagatedAnnotations: true
+@ObjectModel.usageType:{
+  serviceQuality: #X,
+  sizeCategory: #S,
+  dataClass: #MIXED
+}
+define root view entity ZI_TRAVEL as select from ztravel
+{
+  key travelid            as TravelID,
+      agencyid            as AgencyID,
+      customerid          as CustomerID,
+      begindate           as BeginDate,
+      enddate             as EndDate,
+      bookingfee          as BookingFee,
+      totalprice          as TotalPrice,
+      currencycode        as CurrencyCode,
+      status              as Status,
+      description         as Description,
+      createdby           as CreatedBy,
+      createdat           as CreatedAt,
+      lastchangedby       as LastChangedBy,
+      lastchangedat       as LastChangedAt
+}</code></pre>
+
+      <figure class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">ZI_TRAVEL — CDS 数据定义</span></div>
+          <div class="editor">
+            <div class="ed-tabs"><span class="on">ZI_TRAVEL.ddls</span><span>ZC_TRAVEL.ddls</span></div>
+            <div class="ed-body">
+              <pre class="ed"><code><span class="a">@EndUserText.label</span>: <span class="s">'Travel - 接口视图'</span>
+<span class="a">@AccessControl.authorizationCheck</span>: <span class="s">#CHECK</span>
+<span class="a">@ObjectModel.usageType</span>:{
+  serviceQuality: <span class="s">#X</span>,
+  sizeCategory: <span class="s">#S</span>,
+  dataClass: <span class="s">#MIXED</span>
+}
+<span class="k">define root view entity</span> ZI_TRAVEL <span class="k">as select from</span> ztravel
+{
+  <span class="k">key</span> travelid   <span class="k">as</span> TravelID,
+      customerid <span class="k">as</span> CustomerID,
+      status     <span class="k">as</span> Status,
+      totalprice <span class="k">as</span> TotalPrice
+}</code></pre>
+            </div>
+          </div>
+          <div class="statusbar"><span>ZI_TRAVEL</span><span>DDL Source</span><span>已激活 ✓</span></div>
+        </div>
+        <div class="cap"><b>图 3-2</b> CDS 接口视图 <code>ZI_TRAVEL</code> 编辑器（示意，完整字段见上方代码）</div>
+      </figure>
+
+      <h2 id="consumption">3.4 新建消费视图 ZC_TRAVEL</h2>
+      <p>同样在 <code>Core Data Services → New → Data Definition</code>，模板这次选 <b>Projection View</b>，名称 <code>ZC_TRAVEL</code>。投影视图不重新定义数据，只从接口视图选择字段：</p>
+      <pre><code class="language-cds">@EndUserText.label: 'Travel - 消费视图'
+@AccessControl.authorizationCheck: #CHECK
+@Metadata.ignorePropagatedAnnotations: true
+projection on ZI_TRAVEL
+{
+  key TravelID,
+      AgencyID,
+      CustomerID,
+      BeginDate,
+      EndDate,
+      BookingFee,
+      TotalPrice,
+      CurrencyCode,
+      Status,
+      Description,
+      CreatedBy,
+      CreatedAt,
+      LastChangedBy,
+      LastChangedAt
+}</code></pre>
+      <p>激活后，右键 <code>ZC_TRAVEL</code> 可在 <code>Open With → Data Preview</code> 中直接看到数据（此时表还是空的）。</p>
+
+      <h2 id="booking-view">3.5 预订子实体接口视图 ZI_TRAVEL_BOOKING</h2>
+      <p>第 5 章的服务定义要同时暴露 Travel 与其预订明细，因此再补一个预订的接口视图（模板同 3.3，选 <b>Define View Entity</b>）：</p>
+      <pre><code class="language-cds">@EndUserText.label: 'Travel Booking - 接口视图'
+@AccessControl.authorizationCheck: #CHECK
+@Metadata.ignorePropagatedAnnotations: true
+@ObjectModel.usageType:{
+  serviceQuality: #X,
+  sizeCategory: #S,
+  dataClass: #MIXED
+}
+define root view entity ZI_TRAVEL_BOOKING as select from ztravel_booking
+{
+  key travelid       as TravelID,
+  key bookingid      as BookingID,
+      bookingdate    as BookingDate,
+      customerid     as CustomerID,
+      carrierid      as CarrierID,
+      connectionid   as ConnectionID,
+      flightdate     as FlightDate,
+      flightprice    as FlightPrice,
+      currencycode   as CurrencyCode,
+      bookingstatus  as BookingStatus
+}</code></pre>
+
+      <h2 id="sql-preview">3.6 用 SQL Preview 验证</h2>
+      <p>激活无错误后，右键 <code>ZI_TRAVEL → Open With → SQL Preview</code>，ADT 会展示该视图实际生成的 <b>SELECT</b> 语句——这是验证视图定义是否正确的最快方式。</p>
+      <figure class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">SQL Preview — ZI_TRAVEL</span></div>
+          <div class="editor">
+            <div class="ed-tabs"><span class="on">SQL Preview</span></div>
+            <div class="ed-body">
+              <pre class="ed"><code><span class="k">SELECT</span> &quot;travelid&quot;, &quot;agencyid&quot;, &quot;customerid&quot;, &quot;begindate&quot;,
+       &quot;enddate&quot;, &quot;bookingfee&quot;, &quot;totalprice&quot;,
+       &quot;currencycode&quot;, &quot;status&quot;, &quot;description&quot;,
+       &quot;createdby&quot;, &quot;createdat&quot;, &quot;lastchangedby&quot;,
+       &quot;lastchangedat&quot;
+  <span class="k">FROM</span> &quot;ZTRAVEL&quot;
+  <span class="k">WHERE</span> &quot;MANDT&quot; = session_context('CLIENT')</code></pre>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 3-3</b> SQL Preview：CDS 视图翻译为原生 SELECT（客户端自动过滤）</div>
+      </figure>
+
+      <h2 id="steps">3.7 操作手顺</h2>
+      <ol class="steps">
+        <li>
+          <span class="step-title">创建数据库表 ZTRAVEL</span>
+          <p>右键包 <code>ZRAP_TRAINING</code> → <code>New → Other… → Database Table</code>，名称 <code>ZTRAVEL</code>，按 <a href="#table">3.2 节</a>字段清单建列，<b>Ctrl+F3</b> 激活。CURR 字段需在其 <b>Reference Table/Field</b> 指定 <code>CURRENCYCODE</code>。</p>
+        </li>
+        <li>
+          <span class="step-title">创建子表 ZTRAVEL_BOOKING</span>
+          <p>同样方式建 <code>ZTRAVEL_BOOKING</code>，联合主键 <code>TRAVELID + BOOKINGID</code>，激活。</p>
+        </li>
+        <li>
+          <span class="step-title">创建接口视图 ZI_TRAVEL</span>
+          <p><code>Core Data Services → New → Data Definition</code>，模板 <b>Define View Entity</b>，粘贴 <a href="#interface">3.3 节</a>DDL 并激活。</p>
+        </li>
+        <li>
+          <span class="step-title">创建消费视图 ZC_TRAVEL</span>
+          <p>模板换 <b>Projection View</b>，粘贴 <a href="#consumption">3.4 节</a>代码并激活。</p>
+        </li>
+        <li>
+          <span class="step-title">创建预订接口视图 ZI_TRAVEL_BOOKING</span>
+          <p>复制 <a href="#booking-view">3.5 节</a>代码，激活。</p>
+        </li>
+        <li>
+          <span class="step-title">验证 SQL Preview</span>
+          <p>右键 <code>ZI_TRAVEL → Open With → SQL Preview</code>，确认生成 SELECT 无错误；<code>ZC_TRAVEL → Open With → Data Preview</code> 可打开空表。</p>
+        </li>
+      </ol>
+
+      <div class="note ok">
+        <span class="note-title">✅ 验证/结果</span>
+        三个视图（<code>ZI_TRAVEL</code>、<code>ZC_TRAVEL</code>、<code>ZI_TRAVEL_BOOKING</code>）均激活、状态为绿色；SQL Preview 能生成 SELECT；Data Preview 打开不报错。
+      </div>
+
+      <div class="note">
+        <span class="note-title">💡 注意点</span>
+        <ul>
+          <li><b>命名规范</b>：用户对象一律 <code>Z</code> 开头；接口视图 <code>ZI_</code>、消费视图 <code>ZC_</code>、表直接 <code>ZT</code> 开头，避免与 SAP 对象冲突。</li>
+          <li><b>激活顺序</b>：先激活表，再激活依赖它的视图；视图激活失败多半是上游表未激活。</li>
+          <li><b>授权对象</b>：<code>@AccessControl.authorizationCheck: #CHECK</code> 表示受权限检查；如需无权限限制可改 <code>#NOT_REQUIRED</code>（生产不建议）。</li>
+          <li><b>#MIXED</b>：<code>dataClass: #MIXED</code> 表示数据量中等、读多写少混合访问，用于 HANA 表分区/存储优化提示；<code>serviceQuality: #X</code> 表示关键业务数据。</li>
+          <li><b>主键类型</b>：本培训用 <code>INT2</code> 便于手输数据；真实项目常用 UUID（<code>SYSAPOID</code> / <code>RAW16</code>）做主键。</li>
+          <li><b>CURR / CUKY 配对</b>：每个 CURR 字段必须有对应的 CUKY 参考字段，否则金额无法按币种小数位换算。</li>
+        </ul>
+      </div>
+
+      <div class="pagenav">
+        <a href="prep.html"><small>← 上一章</small><b>第 2 章：环境准备</b></a>
+        <a class="next" href="step2-behavior.html"><small>下一章 →</small><b>手顺2：行为定义与实现</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · RAP 培训 · 第 3 章 手顺1 CDS 数据模型</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

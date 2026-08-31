@@ -1,0 +1,20 @@
+@EndUserText.label: 'Travel - 消费视图'
+@AccessControl.authorizationCheck: #CHECK
+@Metadata.ignorePropagatedAnnotations: true
+projection on ZI_TRAVEL
+{
+  key TravelID,
+      AgencyID,
+      CustomerID,
+      BeginDate,
+      EndDate,
+      BookingFee,
+      TotalPrice,
+      CurrencyCode,
+      Status,
+      Description,
+      CreatedBy,
+      CreatedAt,
+      LastChangedBy,
+      LastChangedAt
+}

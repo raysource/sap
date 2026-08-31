@@ -1,0 +1,5 @@
+@EndUserText.label: 'Travel OData 服务定义'
+define service ZUI_TRAVEL_O4 {
+  expose ZI_TRAVEL as Travel;
+  expose ZI_TRAVEL_BOOKING as Booking;
+}
