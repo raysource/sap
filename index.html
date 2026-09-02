@@ -18,6 +18,7 @@
       <a class="tab" href="rap/overview.html">RAP 培训</a>
       <a class="tab" href="cap/overview.html">CAP 培训</a>
       <a class="tab" href="fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -27,7 +28,7 @@
     <div class="side-head">开始学习</div>
     <nav class="side-nav">
       <a class="snav" href="#overview">课程总览</a>
-      <a class="snav" href="#tracks">两条技术路线</a>
+      <a class="snav" href="#tracks">四条技术路线</a>
       <a class="snav" href="#compare">RAP vs CAP 对比</a>
       <a class="snav" href="#paths">学习路径</a>
       <a class="snav" href="#testdata">测试数据速查</a>
@@ -37,6 +38,7 @@
     <a class="snav" href="cap/btp/overview.html"><span class="num">B</span>BTP：云环境 + BAS</a>
     <a class="snav" href="cap/overview.html"><span class="num">C</span>CAP：概述 → 手顺1-4</a>
     <a class="snav" href="fiori/overview.html"><span class="num">F</span>Fiori：UI 层 → 手顺1-3</a>
+    <a class="snav" href="cpi/overview.html"><span class="num">I</span>Integration Suite：概述 → 手顺1-3</a>
     <div class="snav-group">素材包</div>
     <a class="snav" href="downloads.html"><span class="num">📦</span>素材下载</a>
   </aside>
@@ -57,18 +59,19 @@
             <span class="badge">HANA Cloud</span>
             <span class="badge">BAS</span>
             <span class="badge">Fiori Elements</span>
+            <span class="badge">Integration Suite / iFlow</span>
           </div>
         </div>
 
         <div class="note">
           <span class="note-title">📌 适用读者</span>
-          有基本 ABAP 语法基础、想转型现代 ABAP（RAP）开发的开发者；或想从零掌握 CAP（Node.js / Java）全栈开发的开发者。CAP 除 Node.js 路线外，还提供一条<b>完整的 CAP for Java 路线</b>（JDK 17 + Maven + Spring Boot），从手写 DTO 一路到生成模型、配置数据库与 OData 服务；另有<b> BTP 云上手顺</b>（B1–B8：注册 → HANA Cloud 建库 → BAS 三种 Java 模式连库）。零基础也可从「环境准备」章节开始跟做。
+          有基本 ABAP 语法基础、想转型现代 ABAP（RAP）开发的开发者；或想从零掌握 CAP（Node.js / Java）全栈开发的开发者。CAP 除 Node.js 路线外，还提供一条<b>完整的 CAP for Java 路线</b>（JDK 17 + Maven + Spring Boot），从手写 DTO 一路到生成模型、配置数据库与 OData 服务；另有<b> BTP 云上手顺</b>（B1–B8：注册 → HANA Cloud 建库 → BAS 三种 Java 模式连库）。零基础也可从「环境准备」章节开始跟做。想学<b>系统集成</b>的开发者，可跟<b>Integration Suite 路线</b>（I1–I6：浏览器里画 iFlow 做消息转换与路由）。
         </div>
       </section>
 
       <section id="tracks">
-        <h2>两条技术路线</h2>
-        <p class="lead">同一套业务场景（旅行社 / 书店），分别用 RAP 与 CAP 各实现一遍，对比两种模型的最佳实践。</p>
+        <h2>四条技术路线</h2>
+        <p class="lead">同一套业务场景（旅行社 / 书店），用 RAP 与 CAP 各实现一遍，对比两种模型的最佳实践；UI 层与系统集成另有专线。</p>
         <div class="grid cols-2">
           <a class="track-card rap" href="rap/overview.html">
             <div class="tc-icon">🅰️</div>
@@ -87,6 +90,12 @@
             <h3>Fiori — Fiori Elements UI 层</h3>
             <p>RAP 与 CAP 共同的<b>门面</b>：不写 UI5 代码，用 <code>@UI</code> 注解驱动生成企业级页面。3 个手顺：List Report → Object Page → Action 与双线集成；另附控件讲解（Smart Controls / sap.m 速查）与页面模板详解（Worklist / Overview / ALP / Form Entry / Custom Page）。场景：复用书店 <b>Bookshop</b> 的 OData 服务。</p>
             <span class="go">进入 Fiori 培训 →</span>
+          </a>
+          <a class="track-card is" href="cpi/overview.html">
+            <div class="tc-icon">🔗</div>
+            <h3>Integration Suite — 系统集成（iFlow）</h3>
+            <p>把前几条路线的成果<b>连起来</b>：在 BTP 的 Cloud Integration（CPI）里用浏览器画 <b>iFlow</b>，做跨系统消息传递、转换与路由。3 个手顺：第一个 iFlow → 消息转换（Content Modifier / Groovy / Mapping）→ 内容路由（CBR）；在回显服务的镜子里验证每一步。场景：书店订单的同步、换算与加急分流。</p>
+            <span class="go">进入 Integration Suite 培训 →</span>
           </a>
         </div>
       </section>
@@ -168,6 +177,15 @@
           <li><a href="fiori/step2-object.html">手顺2：Object Page 与 Facets</a><span class="psub">Header + 表单/子表</span></li>
           <li><a href="fiori/step3-action.html">手顺3：Action 与双线集成</a><span class="psub">按钮 + RAP CDS @UI</span></li>
         </ol>
+        <h3>🔗 Integration Suite 路径 <span class="badge amber">系统集成 · BTP Cloud Integration</span></h3>
+        <p class="lead">前几条路线造系统，这条路线<b>连系统</b>：在浏览器里画 iFlow，把消息从一个系统送到另一个系统——转换、路由、监控一次走通。无需本地安装，用回显服务当「镜子」验证每一步。</p>
+        <ol class="path">
+          <li><a href="cpi/overview.html">Integration Suite 概述</a><span class="psub">iFlow 解剖 + 与 RAP/CAP 分工</span></li>
+          <li><a href="cpi/prep.html">环境准备</a><span class="psub">BTP 开通 + 角色</span></li>
+          <li><a href="cpi/step1-hello.html">手顺1：第一个 iFlow</a><span class="psub">HTTP → 改写 → HTTP</span></li>
+          <li><a href="cpi/step2-transform.html">手顺2：消息转换</a><span class="psub">Content Modifier / Groovy / Mapping</span></li>
+          <li><a href="cpi/step3-router.html">手顺3：内容路由</a><span class="psub">属性 + CBR 分流</span></li>
+        </ol>
       </section>
 
       <section id="downloads">
@@ -203,6 +221,12 @@
             <h3>CAP + Fiori 整体工程</h3>
             <p>开箱即跑：CAP 后端 + Fiori Elements 前端一步到位，F4 状态徽标已在服务端实现。<code>npm install &amp;&amp; cds watch</code> 即得带筛选/详情/下单的完整应用。</p>
             <span class="go">查看整体工程 →</span>
+          </a>
+          <a class="track-card is" href="downloads.html#cpi">
+            <div class="tc-icon">🔗</div>
+            <h3>CPI 素材包（iFlow 集成流）</h3>
+            <p>三个 iFlow 的测试载荷（JSON / XML）与 Groovy 脚本（金额换算、属性片段），配合 Integration Suite 培训 I3–I5 在 Cloud Integration Web UI 里使用。</p>
+            <span class="go">查看 CPI 素材包 →</span>
           </a>
         </div>
       </section>
@@ -259,6 +283,12 @@
             <tr><td><a href="fiori/step3-action.html">Fiori 手顺3</a></td><td>Action 按钮 + RAP/CAP 双线收口</td><td>submitOrder、Criticality、Draft、CDS @UI</td></tr>
             <tr><td><a href="fiori/elements.html">Fiori 控件讲解</a></td><td>主要元素控件：Smart Controls 与 sap.m 速查</td><td>Smart Filter Bar、Smart Table、Smart Form、注解→控件对照</td></tr>
             <tr><td><a href="fiori/templates.html">Fiori 模板详解</a></td><td>全套页面模板逐个讲透</td><td>List Report、Worklist、Object Page、Overview Page、ALP、Form Entry、Custom Page</td></tr>
+            <tr><td><a href="cpi/overview.html">Integration Suite 概述</a></td><td>理解集成平台与 iFlow 解剖</td><td>Cloud Integration（CPI）、Sender/Receiver、消息三件套、MPL</td></tr>
+            <tr><td><a href="cpi/prep.html">Integration Suite 环境准备</a></td><td>开通订阅 + 角色就绪</td><td>BTP Service Marketplace、Subscription、Integration 角色集合</td></tr>
+            <tr><td><a href="cpi/step1-hello.html">CPI 手顺1</a></td><td>第一个 iFlow：HTTP → 改写 → HTTP 并部署验证</td><td>集成包、HTTPS/HTTP 适配器、Content Modifier、Deploy、端点 URL、MPL</td></tr>
+            <tr><td><a href="cpi/step2-transform.html">CPI 手顺2</a></td><td>消息转换三手段</td><td>Content Modifier（XPath/属性）、Groovy Script、Message Mapping</td></tr>
+            <tr><td><a href="cpi/step3-router.html">CPI 手顺3</a></td><td>按订单类型分流</td><td>Exchange Property、XPath、Content-Based Router、XML 命名空间</td></tr>
+            <tr><td><a href="cpi/testdata.html">CPI 测试数据</a></td><td>样例载荷 / 脚本 / curl / MPL 排错速查</td><td>JSON/XML 载荷、Groovy、postman-echo 回显验证</td></tr>
           </tbody>
         </table>
       </section>

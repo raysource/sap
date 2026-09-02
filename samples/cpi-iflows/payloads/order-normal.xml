@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 普通订单：iFlow order-dispatch 应命中 Default 分支 -->
+<order>
+  <no>ORD-1001</no>
+  <type>book</type>
+  <customer>ACME</customer>
+</order>

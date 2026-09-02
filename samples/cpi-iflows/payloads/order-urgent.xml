@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 加急订单：iFlow order-dispatch 应命中 Route 1（orderType == 'urgent'） -->
+<order>
+  <no>ORD-2002</no>
+  <type>urgent</type>
+  <customer>ACME</customer>
+</order>

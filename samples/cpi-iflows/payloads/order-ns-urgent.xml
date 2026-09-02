@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 带默认命名空间的版本：练习 XPath 前缀（Content Modifier 里声明 ns1 → 值写 /ns1:order/ns1:type） -->
+<order xmlns="http://acme.com/order">
+  <no>ORD-3003</no>
+  <type>urgent</type>
+</order>
