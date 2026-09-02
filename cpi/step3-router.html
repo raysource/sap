@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>手顺3：内容路由 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../index.html">首页</a>
+      <a class="tab" href="../rap/overview.html">RAP 培训</a>
+      <a class="tab" href="../cap/overview.html">CAP 培训</a>
+      <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+      <a class="tab active" href="overview.html">Integration Suite 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">Integration Suite 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="overview.html"><span class="num">I1</span>Integration Suite 概述</a>
+      <a class="snav" href="prep.html"><span class="num">I2</span>环境准备</a>
+      <a class="snav" href="step1-hello.html"><span class="num">I3</span>手顺1：第一个 iFlow</a>
+      <a class="snav" href="step2-transform.html"><span class="num">I4</span>手顺2：消息转换</a>
+      <a class="snav active" href="step3-router.html"><span class="num">I5</span>手顺3：内容路由</a>
+      <a class="snav" href="testdata.html"><span class="num">I6</span>测试数据与素材</a>
+    </nav>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <a class="snav" href="../cap/overview.html"><span class="num">C</span>CAP 培训</a>
+    <a class="snav" href="../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 I5 章：手顺3 —— 内容路由</h1>
+      <p class="page-sub">Exchange Property + XPath → Content-Based Router：按订单类型把消息送进不同的处理分支</p>
+      <p class="lead">集成里的第二大类需求是<b>分流</b>：同一入口进来的消息，按内容不同走不同处理——普通订单走标准通道，<b>加急订单</b>要打上优先级标记；邮件、订单、发票也许来自同一个文件目录但要发去三个系统。本章做一个「订单分流」iFlow：读取 XML 订单里的 <code>&lt;type&gt;</code>，用 <b>Content-Based Router（CBR）</b> 把 <code>urgent</code> 的订单与其它订单分开，各自打上不同的请求头再转发——通过回显的 header 验证消息确实走了对应分支。</p>
+
+      <p>
+        <span class="badge amber">Exchange Property</span>
+        <span class="badge amber">XPath</span>
+        <span class="badge amber">Content-Based Router</span>
+        <span class="badge teal">多分支</span>
+        <span class="badge blue">XML</span>
+      </p>
+
+      <h2 id="whyprop">I5.1 为什么先要「属性」</h2>
+      <p>路由器判断的对象不是 body 本身，而是<b>条件</b>——条件基于消息的 <b>header</b> 或 <b>exchange property</b>（I4.1 的三件套）。所以标准套路是两步：</p>
+      <ol>
+        <li>用一个步骤把「要据以分流的业务值」<b>抽出来存进 property</b>（通常用 Content Modifier 的 XPath，或 Groovy）；</li>
+        <li>路由器按 property 值判断走哪个分支。</li>
+      </ol>
+      <p>为什么存 property 而不是直接在路由里写 XPath？因为 property 是「名字化」的中间结果——名字清晰、可复用（下游任何步骤都能读 <code>${property.orderType}</code>）、路由配置也更简单。这与编程里「先算个局部变量再 if」是同一个道理。</p>
+
+      <div class="note">
+        <span class="note-title">💡 判定用 header 还是 property？</span>
+        入站请求头（如调用者传的 <code>X-Priority</code>）→ 直接按 header 判；body 里解析出来的业务值 → 先存 property 再判。别把内部计算结果塞进 header 传给外部系统，除非对方确实需要。
+      </div>
+
+      <h2 id="cbr">I5.2 Content-Based Router 怎么配</h2>
+      <p>CBR 是一个「多出口」步骤：每条<b>路由（Route）</b>配一个条件（属性/头 + 运算符 + 值），从上往下匹配，命中即走该分支；都不命中走 <b>Default</b> 分支。相邻概念顺带分清：<b>Router</b> 是单条件二选一，<b>CBR</b> 是多条件多分支，<b>Multicast</b> 则不分流而是<b>广播</b>（每个分支都执行）。</p>
+      <table class="doc">
+        <thead>
+          <tr><th>步骤</th><th>行为</th><th>适用</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>Router</b></td><td>一个条件：满足 → 分支 A；否则 → Default</td><td>简单二选一（如是否空值）</td></tr>
+          <tr><td><b>Content-Based Router</b></td><td>多个条件依次匹配，命中一条走一条</td><td>订单按类型/区域/渠道分多路（本章）</td></tr>
+          <tr><td><b>Multicast</b></td><td>不分流，同一条消息发往所有分支</td><td>一个事件要同步通知多个系统</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="design">I5.3 场景设计：加急订单分流</h2>
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">order-dispatch — iFlow 画布（CBR 两分支）</span></div>
+          <div class="cpi">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px">
+              <div class="cflow" style="padding:14px 10px">
+                <div class="cnode send">
+                  <div class="ch">⬇️ Sender</div>
+                  <div class="cs"><b>HTTPS</b> · /dispatch</div>
+                </div>
+                <div class="cline"></div>
+                <div class="cnode step">
+                  <div class="ch"><span class="si">✎</span>Content Modifier</div>
+                  <div class="cs"><b>Property</b> orderType = XPath <code>/order/type</code></div>
+                </div>
+                <div class="cline"></div>
+                <div class="cnode step" style="border-color:var(--amber)">
+                  <div class="ch"><span class="si">⚖</span>Content-Based Router</div>
+                  <div class="cs"><b>Route 1</b> orderType = 'urgent'<br><b>Default</b> 其它</div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;padding:14px 10px">
+                <div style="font-size:11px;color:var(--text-faint)">Route 1：urgent →</div>
+                <div class="cflow" style="padding:8px;border:1px dashed var(--amber);border-radius:8px;background:#fffdf7">
+                  <div class="cnode step">
+                    <div class="ch"><span class="si">✎</span>Content Modifier</div>
+                    <div class="cs"><b>Header</b> X-Route = urgent</div>
+                  </div>
+                  <div class="cline"></div>
+                  <div class="cnode recv">
+                    <div class="ch">⬆️ Receiver (Urgent)</div>
+                    <div class="cs"><b>HTTP</b> · echo /post</div>
+                  </div>
+                </div>
+                <div style="font-size:11px;color:var(--text-faint)">Default：其它 →</div>
+                <div class="cflow" style="padding:8px;border:1px dashed var(--teal);border-radius:8px;background:#f7fdfb">
+                  <div class="cnode step">
+                    <div class="ch"><span class="si">✎</span>Content Modifier</div>
+                    <div class="cs"><b>Header</b> X-Route = normal</div>
+                  </div>
+                  <div class="cline"></div>
+                  <div class="cnode recv">
+                    <div class="ch">⬆️ Receiver (Normal)</div>
+                    <div class="cs"><b>HTTP</b> · echo /post</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 I5-1</b> order-dispatch：先把 <code>&lt;type&gt;</code> 抽成 property <code>orderType</code>，CBR 按它分流；两个分支各自打标后发往（演示用的）不同 Receiver</div>
+      </div>
+
+      <p>两张测试订单（<a href="testdata.html">I6</a> 有完整文件）：</p>
+<pre><code class="language-xml">&lt;!-- order-normal.xml：普通订单（走 Default 分支）--&gt;
+&lt;order&gt;
+  &lt;no&gt;ORD-1001&lt;/no&gt;
+  &lt;type&gt;book&lt;/type&gt;
+  &lt;customer&gt;ACME&lt;/customer&gt;
+&lt;/order&gt;
+
+&lt;!-- order-urgent.xml：加急订单（走 Route 1 分支）--&gt;
+&lt;order&gt;
+  &lt;no&gt;ORD-2002&lt;/no&gt;
+  &lt;type&gt;urgent&lt;/type&gt;
+  &lt;customer&gt;ACME&lt;/customer&gt;
+&lt;/order&gt;</code></pre>
+
+      <h2 id="do">I5.4 操作手顺</h2>
+      <ol class="steps">
+        <li><p><span class="step-title">新建 iFlow：order-dispatch</span></p>
+          <p>包 <code>iflow_course</code> → Add → Integration Flow，命名 <code>order-dispatch</code>。</p>
+        </li>
+        <li><p><span class="step-title">Sender</span></p>
+          <p>HTTPS，Address <code>/dispatch</code>。</p>
+        </li>
+        <li><p><span class="step-title">Content Modifier：抽 orderType 属性</span></p>
+          <p>添加 Content Modifier（命名 <code>ExtractType</code>）→ <b>Exchange Property</b> 区加一行：Name <code>orderType</code>、Type <code>XPath</code>、Value <code>/order/type</code>。作用：入站 XML 的 <code>&lt;order&gt;&lt;type&gt;…</code> 被抽成流内属性。</p>
+        </li>
+        <li><p><span class="step-title">Content-Based Router：两分支</span></p>
+          <p>添加 <b>Content-Based Router</b>（命名 <code>RouteByType</code>），配两条路由：</p>
+          <ul>
+            <li><b>Route 1</b>：条件「Property <code>orderType</code> <b>=</b> <code>urgent</code>」（条件面板里选属性、填运算符与值，无需写代码）；</li>
+            <li><b>Default</b>：其它全部。</li>
+          </ul>
+        </li>
+        <li><p><span class="step-title">分支内打标 + 各自 Receiver</span></p>
+          <p>Route 1 分支：Content Modifier（<code>MarkUrgent</code>）→ Header <code>X-Route</code> = <code>urgent</code> → Receiver（HTTP echo，名 <code>ReceiverUrgent</code>）。Default 分支同样结构：Header <code>X-Route</code> = <code>normal</code> → <code>ReceiverNormal</code>。两个 Receiver 的地址都用 <code>https://postman-echo.com/post</code>（名字不同即可）。</p>
+        </li>
+        <li><p><span class="step-title">部署 + 分别测两条路</span></p>
+<pre><code class="language-bash"># ① 普通订单（预期走 Default，回显 headers.x-route == normal）
+curl -s -X POST "&lt;ENDPOINT&gt;" -H 'Content-Type: text/xml' \
+  --data-binary @order-normal.xml | python3 -m json.tool
+
+# ② 加急订单（预期走 Route 1，回显 headers.x-route == urgent）
+curl -s -X POST "&lt;ENDPOINT&gt;" -H 'Content-Type: text/xml' \
+  --data-binary @order-urgent.xml | python3 -m json.tool</code></pre>
+        </li>
+      </ol>
+
+      <h2 id="verify">I5.5 验证：看回显 header 与 MPL 分支</h2>
+      <ul>
+        <li><b>回显验证</b>：两次调用响应里的 <code>headers.x-route</code> 分别为 <code>normal</code> / <code>urgent</code>——证明消息走了不同分支、打了不同的标。</li>
+        <li><b>MPL 验证</b>：Monitor → Message Processing Log → 点开加急订单那次，流程轨迹里能看到 Router 节点后接的是 <code>MarkUrgent</code>（而不是另一侧步骤）；普通订单那次则相反。</li>
+      </ul>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">MPL — 加急订单（ORD-2002）流程轨迹</span></div>
+          <div class="cpi">
+            <div class="cpi-body">
+              <div class="tree" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:8px">
+                <div class="row"><span class="i">✓</span> Sender（HTTPS /dispatch）— 接收 order-urgent.xml</div>
+                <div class="row"><span class="i">✓</span> ExtractType — property orderType = urgent</div>
+                <div class="row sel"><span class="i">✓</span> RouteByType — 命中 Route 1（orderType == 'urgent'）</div>
+                <div class="row" style="padding-left:22px"><span class="i">✓</span> MarkUrgent — Header X-Route = urgent</div>
+                <div class="row" style="padding-left:22px"><span class="i">✓</span> Receiver (Urgent) — HTTP 200</div>
+              </div>
+              <div style="font-size:11.5px;color:var(--text-faint);margin-top:8px">对比：传 order-normal.xml 时，Router 行显示「命中 Default」，后续轨迹是 MarkNormal → Receiver (Normal)</div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 I5-2</b> MPL 轨迹能直接看出消息命中了哪条路由、走了哪个分支——路由类问题都在这里对答案</div>
+      </div>
+
+      <h2 id="note">I5.6 注意</h2>
+      <ul>
+        <li><b>XML 命名空间</b>：本章样例为了聚焦路由逻辑用了<b>无命名空间</b>的 XML。真实 XML 几乎都带默认命名空间（如 <code>&lt;order xmlns="http://acme.com/order"&gt;</code>），此时 XPath 必须带前缀：在 Content Modifier 的 XPath 面板里给命名空间起前缀（如 <code>ns1</code>），值写 <code>/ns1:order/ns1:type</code>。路由条件同理。</li>
+        <li><b>条件区分大小写</b>：<code>'urgent'</code> 不会匹配 <code>'Urgent'</code>。数据源不可控时，先在 Groovy/Content Modifier 里统一小写再存属性。</li>
+        <li><b>空值陷阱</b>：入站 XML 缺 <code>&lt;type&gt;</code> 时 XPath 得到空串，会走 Default——通常这正是想要的兜底。</li>
+        <li><b>Receiver 重名</b>：同一 iFlow 内 Receiver 名称不能重复，所以上面用了 <code>ReceiverUrgent / ReceiverNormal</code>。</li>
+      </ul>
+
+      <div class="note ok">
+        <span class="note-title">✅ 本章验收标准</span>
+        你能：① 说出为什么先抽 property 再路由；② 用两张测试 XML 各调一次，回显 header 分别正确；③ 在 MPL 轨迹里看到命中的分支；④ 解释带命名空间 XML 时 XPath 怎么改。
+      </div>
+
+      <div class="pagenav">
+        <a href="step2-transform.html"><small>← 上一章</small><b>I4 手顺2：消息转换</b></a>
+        <a class="next" href="testdata.html"><small>下一步 →</small><b>I6 测试数据与素材</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · Integration Suite 培训 · 第 I5 章 手顺3 内容路由</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

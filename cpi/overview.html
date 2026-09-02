@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 I1 章：Integration Suite 概述 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../index.html">首页</a>
+      <a class="tab" href="../rap/overview.html">RAP 培训</a>
+      <a class="tab" href="../cap/overview.html">CAP 培训</a>
+      <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+      <a class="tab active" href="overview.html">Integration Suite 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">Integration Suite 培训</div>
+    <nav class="side-nav">
+      <a class="snav active" href="overview.html"><span class="num">I1</span>Integration Suite 概述</a>
+      <a class="snav" href="prep.html"><span class="num">I2</span>环境准备</a>
+      <a class="snav" href="step1-hello.html"><span class="num">I3</span>手顺1：第一个 iFlow</a>
+      <a class="snav" href="step2-transform.html"><span class="num">I4</span>手顺2：消息转换</a>
+      <a class="snav" href="step3-router.html"><span class="num">I5</span>手顺3：内容路由</a>
+      <a class="snav" href="testdata.html"><span class="num">I6</span>测试数据与素材</a>
+    </nav>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <a class="snav" href="../cap/overview.html"><span class="num">C</span>CAP 培训</a>
+    <a class="snav" href="../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 I1 章：Integration Suite 概述</h1>
+      <p class="page-sub">SAP Integration Suite（前身 CPI / HCI）· Cloud Integration 与 iFlow——本课程第一条「集成中间件」路线</p>
+      <p class="lead">前面三条路线在做同一件事：<b>造一个能增删改查的业务应用</b>（RAP 在 S/4HANA 里、CAP 在云端，Fiori 是它们共同的界面）。本路线换一个视角——<b>把已有系统连起来</b>：在 <b>SAP Integration Suite</b> 的 <b>Cloud Integration</b>（社区俗称 CPI，前身 SAP Cloud Platform Integration / HCI）里用浏览器画一个 <b>iFlow（Integration Flow，集成流）</b>，让消息从一个系统流向另一个系统，中途还能被改写、转换、分流。</p>
+
+      <p>
+        <span class="badge amber">SAP Integration Suite</span>
+        <span class="badge amber">Cloud Integration / CPI</span>
+        <span class="badge amber">iFlow</span>
+        <span class="badge teal">适配器</span>
+        <span class="badge blue">Message Processing Log</span>
+        <span class="badge gray">BTP</span>
+      </p>
+
+      <h2 id="suite">I1.1 Integration Suite 是什么</h2>
+      <p><b>SAP Integration Suite</b> 是 SAP BTP 上的<b>集成平台（iPaaS）</b>，把 SAP 多年来散落各处的集成产品收进一个套件。它不止一个产品，而是按「连接方式」分了几大能力：</p>
+      <div class="grid cols-3">
+        <div class="card">
+          <h3>🔄 Cloud Integration</h3>
+          <p>消息级集成（本课程主线）。画 iFlow 做系统间<b>消息传递、转换、路由</b>；支持 HTTP(S)、OData、SOAP、Mail、SFTP、Kafka 等适配器。</p>
+        </div>
+        <div class="card">
+          <h3>🗝️ API Management</h3>
+          <p>API 级集成。把后端服务发布成受管的 API：代理、限流、鉴权、策略、开发者门户。</p>
+        </div>
+        <div class="card">
+          <h3>🧩 Open Connectors</h3>
+          <p>面向非 SAP 云服务的现成连接器（Salesforce、Slack、Workday…），免写适配器。</p>
+        </div>
+        <div class="card">
+          <h3>📨 Event Mesh</h3>
+          <p>事件驱动集成：系统间解耦的事件总线（Pub/Sub）。</p>
+        </div>
+        <div class="card">
+          <h3>🤝 Trading Partner Management</h3>
+          <p>B2B / EDI（如 X12、EDIFACT）与贸易伙伴管理。</p>
+        </div>
+        <div class="card">
+          <h3>🧠 Integration Advisor</h3>
+          <p>AI 辅助的映射与接口库：从历史集成中推荐字段映射、生成接口模型。</p>
+        </div>
+      </div>
+      <p>本培训只做第一块 <b>Cloud Integration</b>——它是 Integration Suite 的根基，也是「iflow」这个词的出处。其余能力属于进阶主题，不在本课程范围。</p>
+
+      <h2 id="why">I1.2 为什么需要集成中间件（与 RAP / CAP 的分工）</h2>
+      <p>RAP / CAP 解决的是「应用内」问题：数据模型、业务逻辑、服务暴露。但真实企业里系统是一堆<b>孤岛</b>：S/4HANA、第三方 SaaS、自己的 CAP 应用、遗留系统，它们各自的协议与数据格式都不一致。集成中间件站在孤岛之间做<b>翻译与调度</b>：</p>
+      <table class="cmp-table">
+        <thead>
+          <tr>
+            <th style="width:150px">维度</th>
+            <th class="rap-c">RAP</th>
+            <th class="cap-c">CAP</th>
+            <th style="background:#b57b0a">Integration Suite（Cloud Integration）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="dim">回答的问题</td><td>在 S/4HANA 内如何建模与暴露业务对象</td><td>在云上如何快速开发业务服务</td><td><b>系统之间如何传消息、转格式、定路由</b></td></tr>
+          <tr><td class="dim">产物</td><td>CDS + Behavior + OData 服务</td><td>CDS 模型 + srv handler + OData</td><td><b>iFlow（集成流）</b>，部署在 Cloud Integration 租户</td></tr>
+          <tr><td class="dim">运行位置</td><td>S/4HANA 内部</td><td>本地 / BTP Cloud Foundry</td><td>Integration Suite 租户（BTP 上独立的运行时）</td></tr>
+          <tr><td class="dim">面向谁</td><td>ABAP 开发者</td><td>全栈 / 云开发者</td><td>集成开发者（Integration Developer）</td></tr>
+        </tbody>
+      </table>
+      <p>三者不是三选一，而是<b>分层配合</b>。一条典型的真实链路：S/4HANA 用 RAP 把采购订单暴露成 OData → CPI 的 iFlow 定时拉取并转换成 JSON → 推给 SAP 之外的第三方系统，或反过来接收外部订单写入 CAP 应用。Integration Suite 是你前几条路线成果的「外联管道」。</p>
+
+      <div class="note">
+        <span class="note-title">📌 术语提醒</span>
+        这家的改名史：HCI（Hana Cloud Integration）→ <b>SAP Cloud Platform Integration（CPI）</b> → 归入 <b>SAP Integration Suite</b> 的 Cloud Integration 能力。社区至今口语叫 CPI，本课程「CPI」与「Cloud Integration」混用，指同一个东西。
+      </div>
+
+      <h2 id="iflow">I1.3 iFlow 是什么——先看最小集成流</h2>
+      <p>一个 iFlow 是装在 <b>Integration Package（集成包）</b>里的可视化消息流：<b>消息从 Sender（发送方适配器）进来</b>，经过一串<b>处理步骤</b>，<b>从 Receiver（接收方适配器）出去</b>。最简单的「Hello World」长这样：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">iFlow 编辑画布 — hello-echo（Cloud Integration）</span></div>
+          <div class="cpi">
+            <div class="cpi-nav"><span>📦 集成包</span><span class="on">✏️ hello-echo</span><span>👁 部署状态</span></div>
+            <div class="cflow">
+              <div class="cnode send">
+                <div class="ch">⬇️ Sender</div>
+                <div class="cs"><b>适配器</b> HTTPS <b>·</b> <b>地址</b> /hello</div>
+              </div>
+              <div class="cline"></div>
+              <div class="cnode step">
+                <div class="ch"><span class="si">✎</span>Content Modifier</div>
+                <div class="cs"><b>作用</b> 改写消息体 / 加请求头</div>
+              </div>
+              <div class="cline"></div>
+              <div class="cnode recv">
+                <div class="ch">⬆️ Receiver</div>
+                <div class="cs"><b>适配器</b> HTTP <b>·</b> <b>目标</b> https://postman-echo.com/post</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 I1-1</b> 最小 iFlow：HTTP 调用者 → HTTPS Sender 接收 → Content Modifier 改写消息 → HTTP Receiver 转发出去；箭头即消息流</div>
+      </div>
+
+      <p>围绕这张图，需要先建立四个概念：</p>
+      <table class="doc">
+        <thead>
+          <tr><th>概念</th><th>说明</th><th>本课程出现章节</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>Integration Package</b></td><td>iFlow 的「收纳盒」，带命名空间（Technical Name）；同主题的流、脚本、映射放在一个包里</td><td>I3</td></tr>
+          <tr><td><b>Sender / Receiver 适配器</b></td><td>流的入口与出口，决定协议：HTTPS/HTTP、SOAP、OData、Mail、SFTP…</td><td>I3</td></tr>
+          <tr><td><b>处理步骤</b></td><td>消息流中间的可视化加工：Content Modifier（改写）、Script（Groovy）、Message Mapping（字段映射）、Router / Content-Based Router（分流）…</td><td>I3–I5</td></tr>
+          <tr><td><b>消息三件套</b></td><td>每条消息 = <b>Body</b>（正文）+ <b>Headers</b>（随协议传输的请求头）+ <b>Properties</b>（只在流内部传递的交换属性）</td><td>I3 / I4</td></tr>
+          <tr><td><b>MPL</b></td><td>Message Processing Log：每次运行留下的日志，可逐步骤查看成功/失败——CPI 里最重要的排错入口</td><td>I3 / I6</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="webui">I1.4 在哪里开发：Cloud Integration Web UI</h2>
+      <p>iFlow 的开发、部署、监控全在<b>浏览器</b>里的 Cloud Integration Web UI（租户地址形如 <code>https://&lt;租户ID&gt;-tmn.&lt;区域&gt;.hana.ondemand.com</code>），不需要装任何本地工具。主界面分四大区：</p>
+      <div class="grid cols-2">
+        <div class="card">
+          <h3>🔍 Discover</h3>
+          <p>浏览 SAP 官方集成包与模板（Integration Package 市场），可整包「复制到工作区」再改造——入门最快的方式。</p>
+        </div>
+        <div class="card">
+          <h3>✏️ Design</h3>
+          <p>开发区：建集成包、画 iFlow、写脚本与映射。本课程 I3–I5 主要在这里。</p>
+        </div>
+        <div class="card">
+          <h3>👁 Monitor</h3>
+          <p>监控区：Manage Integration Content（已部署 iFlow 与端点）、Message Processing Log（运行日志）、消息队列等。</p>
+        </div>
+        <div class="card">
+          <h3>🔑 安全材料</h3>
+          <p>Security Material：凭据（Basic / OAuth2）、证书、密钥库——接收方要鉴权时在这里存密码。</p>
+        </div>
+      </div>
+
+      <h2 id="prereq">I1.5 前置与环境</h2>
+      <ul>
+        <li><b>唯一硬性要求</b>：一个能开通 Integration Suite 的 <b>SAP BTP 账号</b>（Trial 或企业 Free Tier 均可），见 <a href="prep.html">I2 环境准备</a>；如果已经跟过 <a href="../cap/btp/prep.html">BTP 路线</a>，同一个子账号直接复用。</li>
+        <li><b>不需要本地安装</b>：所有操作在浏览器完成；测试用 Postman 或 <code>curl</code>（终端即可）。</li>
+        <li><b>知识衔接</b>：理解 <a href="../cap/overview.html">CAP</a> 的 OData 概念即可（I5 会涉及 XML/XPath 基础）。</li>
+      </ul>
+
+      <h2 id="path">I1.6 本路线学习路径</h2>
+      <ol class="path">
+        <li><a href="prep.html">环境准备</a><span class="psub">BTP 开通 Integration Suite + 角色</span></li>
+        <li><a href="step1-hello.html">手顺1：第一个 iFlow</a><span class="psub">HTTPS → Content Modifier → HTTP，部署 + Postman 验证</span></li>
+        <li><a href="step2-transform.html">手顺2：消息转换</a><span class="psub">Content Modifier 深挖 / Groovy Script / Message Mapping</span></li>
+        <li><a href="step3-router.html">手顺3：内容路由</a><span class="psub">属性 + Content-Based Router 按订单类型分流</span></li>
+        <li><a href="testdata.html">测试数据与素材</a><span class="psub">样例载荷 / 脚本 / curl 速查</span></li>
+      </ol>
+
+      <div class="pagenav">
+        <a href="../index.html"><small>← 上一步</small><b>回到首页</b></a>
+        <a class="next" href="prep.html"><small>下一步 →</small><b>I2 环境准备</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · Integration Suite 培训 · 第 I1 章 Integration Suite 概述</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

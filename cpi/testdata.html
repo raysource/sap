@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>测试数据与素材 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../index.html">首页</a>
+      <a class="tab" href="../rap/overview.html">RAP 培训</a>
+      <a class="tab" href="../cap/overview.html">CAP 培训</a>
+      <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+      <a class="tab active" href="overview.html">Integration Suite 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">Integration Suite 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="overview.html"><span class="num">I1</span>Integration Suite 概述</a>
+      <a class="snav" href="prep.html"><span class="num">I2</span>环境准备</a>
+      <a class="snav" href="step1-hello.html"><span class="num">I3</span>手顺1：第一个 iFlow</a>
+      <a class="snav" href="step2-transform.html"><span class="num">I4</span>手顺2：消息转换</a>
+      <a class="snav" href="step3-router.html"><span class="num">I5</span>手顺3：内容路由</a>
+      <a class="snav active" href="testdata.html"><span class="num">I6</span>测试数据与素材</a>
+    </nav>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <a class="snav" href="../cap/overview.html"><span class="num">C</span>CAP 培训</a>
+    <a class="snav" href="../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 I6 章：测试数据与素材</h1>
+      <p class="page-sub">三个 iFlow 的入站载荷 · Groovy 脚本 · curl 速查 · MPL 排错对照表</p>
+      <p class="lead">本章汇集 I3–I5 用到的全部「可复制内容」：测试载荷、脚本、curl 命令，按 iFlow 分好类。文件版统一放在 <a href="../downloads.html#cpi">素材包 <code>samples/cpi-iflows</code></a>（<code>payloads/</code>、<code>scripts/</code> 两个子目录），页面与素材包内容一致，任取其一。</p>
+
+      <p>
+        <span class="badge amber">JSON</span>
+        <span class="badge amber">XML</span>
+        <span class="badge teal">Groovy</span>
+        <span class="badge blue">curl</span>
+        <span class="badge gray">MPL 排错</span>
+      </p>
+
+      <h2 id="iflow1">I6.1 iFlow 清单与测试要点</h2>
+      <table class="doc">
+        <thead>
+          <tr><th>iFlow（章节）</th><th>Sender 地址</th><th>做什么</th><th>用什么载荷测</th><th>看哪里验证</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>hello-echo</code>（I3）</td>
+            <td><code>/hello</code></td>
+            <td>Content Modifier 替换 body + 加 header，转发回显</td>
+            <td>任意 JSON（会被整个换掉）</td>
+            <td>回显 <code>data</code> / <code>headers.x-course</code></td>
+          </tr>
+          <tr>
+            <td><code>order-transform</code>（I4）</td>
+            <td><code>/order</code></td>
+            <td>Groovy 算金额并重组 JSON</td>
+            <td><code>order-book.json</code></td>
+            <td>回显 <code>data.amount</code> / <code>headers.x-amount</code></td>
+          </tr>
+          <tr>
+            <td><code>order-dispatch</code>（I5）</td>
+            <td><code>/dispatch</code></td>
+            <td>按 <code>&lt;type&gt;</code> 分流加急 / 普通</td>
+            <td><code>order-urgent.xml</code> / <code>order-normal.xml</code></td>
+            <td>回显 <code>headers.x-route</code> + MPL 分支轨迹</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note">
+        <span class="note-title">📌 端点 URL 公式</span>
+        三个 iFlow 部署后各自的端点为 <code>https://&lt;你的租户域名&gt;/cxf/&lt;上面的地址&gt;</code>，例如 <code>https://xxxxx-tmn.eu10.hana.ondemand.com/cxf/order</code>。租户域名见浏览器地址栏；也可在 Monitor → Manage Integration Content 点开 iFlow 复制。
+      </div>
+
+      <h2 id="payloads">I6.2 入站载荷</h2>
+      <h3>① order-book.json（I4，下单 JSON，沿用 Bookshop 的《Wuthering Heights》）</h3>
+<pre><code class="language-json">{"book":1,"title":"Wuthering Heights","qty":2,"price":11.11}</code></pre>
+      <p>预期出站（回显 <code>data</code>，由脚本计算生成）：</p>
+<pre><code class="language-json">{"book":1,"title":"Wuthering Heights","qty":2,"amount":22.22,"status":"OK"}</code></pre>
+
+      <h3>② order-urgent.xml / order-normal.xml（I5，分流测试，无命名空间便于教学）</h3>
+<pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;order&gt;
+  &lt;no&gt;ORD-2002&lt;/no&gt;
+  &lt;type&gt;urgent&lt;/type&gt;
+  &lt;customer&gt;ACME&lt;/customer&gt;
+&lt;/order&gt;</code></pre>
+<pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;order&gt;
+  &lt;no&gt;ORD-1001&lt;/no&gt;
+  &lt;type&gt;book&lt;/type&gt;
+  &lt;customer&gt;ACME&lt;/customer&gt;
+&lt;/order&gt;</code></pre>
+      <p>带命名空间的真实版本只需给 XPath 加前缀（I5.6）：</p>
+<pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;order xmlns="http://acme.com/order"&gt;
+  &lt;no&gt;ORD-3003&lt;/no&gt;
+  &lt;type&gt;urgent&lt;/type&gt;
+&lt;/order&gt;</code></pre>
+      <p>对应 Content Modifier 的 XPath 面板里声明前缀 <code>ns1</code> → 值写 <code>/ns1:order/ns1:type</code>。</p>
+
+      <h2 id="scripts">I6.3 Groovy 脚本</h2>
+      <h3>① order-transform.groovy（I4 完整版）</h3>
+<pre><code class="language-groovy">import com.sap.gateway.ip.core.customdev.util.Message
+import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
+import java.math.RoundingMode
+
+def Message processData(Message message) {
+    def body = message.getBody(java.lang.String) as String
+    def order = new JsonSlurper().parseText(body)
+
+    def amount = (order.price as BigDecimal)
+        .multiply(new BigDecimal(order.qty as Integer))
+        .setScale(2, RoundingMode.HALF_UP)
+
+    def out = [
+        book: order.book as Integer,
+        title: order.title as String,
+        qty: order.qty as Integer,
+        amount: amount,
+        status: 'OK'
+    ]
+    message.setBody(JsonOutput.toJson(out))
+    message.setProperty('computedAmount', amount.toString())
+    message.setHeader('X-Amount', amount.toString())
+    return message
+}</code></pre>
+
+      <h3>② 常用小片段</h3>
+<pre><code class="language-groovy">// 读 / 写 header 与 property（与 Content Modifier / 路由配套）
+def hd = message.getHeaders()
+def props = message.getProperties()
+def trace = hd.get('X-TraceId')
+message.setProperty('sourceSystem', 'shop')
+message.setHeader('X-Route', 'urgent')
+
+// 把 XML 按 XPath 取文本（无命名空间）
+def xml = new XmlSlurper().parseText(message.getBody(java.lang.String) as String)
+message.setProperty('orderType', xml.type.text())
+
+// 读回自己前面步骤存的 property
+def amount = props.get('computedAmount')
+if (amount == null) { throw new RuntimeException('缺少 computedAmount，检查前序步骤') }</code></pre>
+
+      <h2 id="curl">I6.4 curl 速查</h2>
+<pre><code class="language-bash"># 通用：把下面的 &lt;URL&gt; 换成各自端点，文件换成 payloads/ 里的载荷
+curl -s -X POST "&lt;URL&gt;" -H 'Content-Type: application/json' \
+  --data-binary @payloads/order-book.json | python3 -m json.tool
+
+curl -s -X POST "&lt;URL&gt;" -H 'Content-Type: text/xml' \
+  --data-binary @payloads/order-urgent.xml | python3 -m json.tool
+
+# 不带文件直接内联（I3 hello-echo）
+curl -s -X POST "&lt;URL&gt;" -H 'Content-Type: application/json' \
+  -d '{"ping":"pong"}' | python3 -m json.tool</code></pre>
+      <p>没有 Python 就删掉末尾的 <code>| python3 -m json.tool</code>，直接看原始 JSON；Windows 可用 Postman（方法、URL、Headers、Body 与 curl 一一对应）。</p>
+
+      <h2 id="mpl">I6.5 MPL 状态与常见错误速查</h2>
+      <table class="doc">
+        <thead>
+          <tr><th>MPL / 部署状态</th><th>含义</th><th>常见原因与处理</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="st.a">Completed</span></td><td>消息全程处理成功</td><td>—</td></tr>
+          <tr><td><span class="st.x">Failed</span></td><td>处理中断，MPL 轨迹里有红色组件</td><td>点开轨迹看具体步骤与异常栈（见下）</td></tr>
+          <tr><td><span class="st.o">Retrying</span></td><td>接收方瞬时失败，正在按重试策略重试</td><td>多数等一会儿自动变 Completed / Failed</td></tr>
+          <tr><td><span class="st.x">Error</span>（部署状态）</td><td>iFlow 部署失败</td><td>多为配置缺漏：Receiver 没填地址、脚本编译不过、两个节点重名</td></tr>
+          <tr><td>脚本步骤 Failed</td><td><code>MissingMethodException</code> / <code>ClassCastException</code> / <code>JsonParseException</code></td><td>方法名写错 / 类型转换错 / 入站 JSON 不是预期结构。改脚本 → Save → 重新 Deploy → 再调</td></tr>
+          <tr><td>Receiver 步骤 Failed</td><td>连接 / TLS / 鉴权错误</td><td>回显服务偶发不可达：重试或换 <code>https://httpbin.org/post</code>；真实系统则查地址、网络策略与凭据（Security Material）</td></tr>
+          <tr><td>调用直接 401</td><td>Sender 安全设置拦了匿名请求</td><td>教学把 Sender Security 的 Authentication 设为 None（仅限教学，I3.7）</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="pack">I6.6 素材包对照</h2>
+      <p>所有上面内容都整理在 <a href="../downloads.html#cpi">素材包 <code>samples/cpi-iflows</code></a>：</p>
+      <table class="doc">
+        <thead>
+          <tr><th>文件</th><th>内容</th><th>对应</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>payloads/order-book.json</code></td><td>I4 下单 JSON（含预期输出注释）</td><td>I6.2</td></tr>
+          <tr><td><code>payloads/order-urgent.xml</code></td><td>加急订单（无命名空间）</td><td>I6.2 / I5</td></tr>
+          <tr><td><code>payloads/order-normal.xml</code></td><td>普通订单（无命名空间）</td><td>I6.2 / I5</td></tr>
+          <tr><td><code>payloads/order-ns-urgent.xml</code></td><td>带命名空间版本（XPath 练习用）</td><td>I5.6</td></tr>
+          <tr><td><code>scripts/order-transform.groovy</code></td><td>I4 脚本完整版</td><td>I4.3</td></tr>
+          <tr><td><code>scripts/groovy-snippets.groovy</code></td><td>header/property/XML 读取片段</td><td>I6.3</td></tr>
+          <tr><td><code>README.md</code></td><td>素材包使用说明（含三张 curl 命令与 iFlow 对照）</td><td>—</td></tr>
+        </tbody>
+      </table>
+
+      <div class="pagenav">
+        <a href="step3-router.html"><small>← 上一章</small><b>I5 手顺3：内容路由</b></a>
+        <a class="next" href="../index.html"><small>下一步 →</small><b>回到课程首页</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · Integration Suite 培训 · 第 I6 章 测试数据与素材</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

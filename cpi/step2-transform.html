@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>手顺2：消息转换 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../index.html">首页</a>
+      <a class="tab" href="../rap/overview.html">RAP 培训</a>
+      <a class="tab" href="../cap/overview.html">CAP 培训</a>
+      <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+      <a class="tab active" href="overview.html">Integration Suite 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">Integration Suite 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="overview.html"><span class="num">I1</span>Integration Suite 概述</a>
+      <a class="snav" href="prep.html"><span class="num">I2</span>环境准备</a>
+      <a class="snav" href="step1-hello.html"><span class="num">I3</span>手顺1：第一个 iFlow</a>
+      <a class="snav active" href="step2-transform.html"><span class="num">I4</span>手顺2：消息转换</a>
+      <a class="snav" href="step3-router.html"><span class="num">I5</span>手顺3：内容路由</a>
+      <a class="snav" href="testdata.html"><span class="num">I6</span>测试数据与素材</a>
+    </nav>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+      <a class="snav" href="../cap/overview.html"><span class="num">C</span>CAP 培训</a>
+      <a class="snav" href="../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 I4 章：手顺2 —— 消息转换</h1>
+      <p class="page-sub">Content Modifier 深挖 · Groovy Script 步骤 · Message Mapping——把消息从「甲方格式」变成「乙方格式」</p>
+      <p class="lead">集成的大部分工作量是<b>格式转换</b>：甲方发的字段名、类型、结构与乙方要的对不上（A 系统叫 <code>item</code>，B 系统叫 <code>product</code>；A 给 JSON，B 只收 XML；金额单位还不一样）。本章把 Cloud Integration 的三件转换工具都过一遍，并用手顺做一个「订单金额换算」的真实转换：入站 <code>{"qty":2,"price":11.11}</code>，出站带上算好的 <code>amount</code>。继续用 <a href="../downloads.html#cpi">素材包</a> 里的样例载荷与脚本，无需自造数据。</p>
+
+      <p>
+        <span class="badge amber">Content Modifier</span>
+        <span class="badge amber">Groovy Script</span>
+        <span class="badge amber">Message Mapping</span>
+        <span class="badge teal">body / header / property</span>
+        <span class="badge gray">XPath</span>
+      </p>
+
+      <h2 id="message">I4.1 再认识消息三件套</h2>
+      <p>转换发生在「消息」上。每条穿过 iFlow 的消息都由三部分组成，先分清它们，后面所有步骤（含 I5 路由）才说得通：</p>
+      <table class="cmp-table">
+        <thead>
+          <tr>
+            <th style="width:120px"></th>
+            <th style="background:#b57b0a">Body（消息体）</th>
+            <th class="rap-c">Header（请求头）</th>
+            <th class="cap-c">Exchange Property（交换属性）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="dim">是什么</td><td>消息正文：JSON / XML / 文本 / 文件内容</td><td>随协议传输的元数据（HTTP 头、SOAP 头）</td><td>只在 iFlow <b>内部</b>传递的临时变量</td></tr>
+          <tr><td class="dim">谁看得见</td><td>发送方与接收方</td><td>接收方系统可见（作为 HTTP 头）</td><td><b>只有流内后续步骤可见</b>，不出租户</td></tr>
+          <tr><td class="dim">读取写法</td><td>脚本里 <code>getBody()</code></td><td>脚本里 <code>getHeaders()</code>；配置里 <code>${header.xxx}</code></td><td>脚本里 <code>getProperties()</code>；配置里 <code>${property.xxx}</code></td></tr>
+          <tr><td class="dim">典型用途</td><td>业务数据本身</td><td>鉴权信息、跟踪号、自定义标记</td><td>暂存抽取结果供后续路由/组装（I5 主角）</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="cm">I4.2 手段一：Content Modifier（轻量改写）</h2>
+      <p>I3 只用了它的「替换 body + 加一个 header」。它的完整能力是<b>三个编辑区</b>：消息头（Header）、交换属性（Exchange Property）、消息体（Body），每个区的值来源都可以是<b>常量（Constant）</b>、<b>XPath（从入站 XML 抽节点）</b>或<b>表达式（引用其它字段）</b>：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">Content Modifier 配置面板（三区）</span></div>
+          <div class="cpi" style="padding:12px">
+            <div style="display:flex;gap:6px;margin-bottom:10px">
+              <span class="seg"><span class="on">消息头</span><span>交换属性</span><span>消息体</span></span>
+            </div>
+            <div class="cfg">
+              <div class="crow"><label>名称</label><div class="v">X-TraceId</div></div>
+              <div class="crow"><label>类型</label><div class="v sel">Constant（常量）</div></div>
+              <div class="crow"><label>值</label><div class="v">req-2025-001</div></div>
+            </div>
+            <div style="font-size:11px;color:var(--text-faint);padding:8px 2px">
+              三个区可同时使用：Header 加请求头 · Exchange Property 存中间值（<code>${property.xxx}</code> 供下游读）· Body 换正文。<br>
+              Type 换成 <b>XPath</b> 时可从入站 XML 抽节点（例：<code>/order/type</code>）；Type 换成 <b>Expression</b> 可引用 <code>${header.xxx}</code> / <code>${property.xxx}</code>。
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 I4-1</b> Content Modifier 三区：Header / Exchange Property / Body；「加静态头、抽个字段、改个正文」这类小活它最合适</div>
+      </div>
+
+      <div class="note">
+        <span class="note-title">💡 该用哪种「值来源」</span>
+        <b>Constant</b> 写死值（版本号、渠道标记）；<b>XPath</b> 从入站 <b>XML</b> 消息取节点（带命名空间的 XML 需在面板里声明 ns 前缀，见 I5 注意）；<b>Expression</b> 引用本流内已有的 header / property。JSON 消息没有原生 XPath 支持——要解析 JSON 就用 I4.3 的 Groovy。
+      </div>
+
+      <h2 id="groovy">I4.3 手段二：Groovy Script（编程式转换）</h2>
+      <p>Content Modifier 只能做「声明式」改动；需要<b>解析 JSON、循环、计算、拼接</b>时用 <b>Script</b> 步骤（Groovy 语言，Java 生态，内置 <code>groovy.json</code> 等库）。每个脚本实现一个固定签名：</p>
+<pre><code class="language-groovy">import com.sap.gateway.ip.core.customdev.util.Message
+import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
+import java.math.RoundingMode
+
+def Message processData(Message message) {
+    // ① 读入站消息体（按 String 读，再解析成 JSON）
+    def body = message.getBody(java.lang.String) as String
+    def order = new JsonSlurper().parseText(body)
+
+    // ② 业务计算：金额 = 单价 × 数量（BigDecimal 避免浮点误差）
+    def amount = (order.price as BigDecimal)
+        .multiply(new BigDecimal(order.qty as Integer))
+        .setScale(2, RoundingMode.HALF_UP)
+
+    // ③ 组装出站 body（JSON）
+    def out = [
+        book: order.book as Integer,
+        title: order.title as String,
+        qty: order.qty as Integer,
+        amount: amount,
+        status: 'OK'
+    ]
+    message.setBody(JsonOutput.toJson(out))
+
+    // ④ 顺手存一个 exchange property / header，供后续步骤或接收方使用
+    message.setProperty('computedAmount', amount.toString())
+    message.setHeader('X-Amount', amount.toString())
+    return message
+}</code></pre>
+      <ul>
+        <li><b>API 就记五个方法</b>：<code>getBody / setBody</code>、<code>getHeaders / setHeader</code>、<code>getProperties / setProperty</code>——与三件套一一对应。</li>
+        <li><b>返回</b>：必须 <code>return message</code>，否则消息不往下走。</li>
+        <li><b>读 body</b>：<code>message.getBody(java.lang.String) as String</code> 是最常用写法；直接 <code>getBody()</code> 返回的类型不定，优先显式指定。</li>
+      </ul>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">Script 步骤配置 — 粘贴 / 引用脚本</span></div>
+          <div class="cpi" style="padding:12px">
+            <div class="cfg">
+              <div class="crow"><label>步骤名称</label><div class="v">ComputeAmount</div></div>
+              <div class="crow"><label>脚本来源</label><div class="v sel">直接内嵌（Source Code）</div></div>
+              <div class="crow"><label>语言</label><div class="v">Groovy</div></div>
+            </div>
+            <div class="editor" style="border:1px solid var(--border);border-radius:8px;margin-top:10px;overflow:hidden">
+              <div class="ed-tabs"><span class="on">processData.groovy</span></div>
+              <div class="ed-body">
+<pre class="ed"><code class="language-groovy">import com.sap.gateway.ip.core.customdev.util.Message
+...
+message.setProperty('computedAmount', amount.toString())
+message.setHeader('X-Amount', amount.toString())
+return message</code></pre>
+              </div>
+            </div>
+            <div style="font-size:11px;color:var(--text-faint);padding:8px 2px">同一段脚本也能先存成包内 <b>Script artifact</b>（可被多个 iFlow 复用），配置里选「引用已有脚本」即可</div>
+          </div>
+        </div>
+        <div class="cap"><b>图 I4-2</b> Script 步骤：教学直接内嵌代码；正式项目建议把脚本提为包级 artifact 复用（见 I6 素材包目录）</div>
+      </div>
+
+      <h2 id="mapping">I4.4 手段三：Message Mapping（图形化字段映射）</h2>
+      <p>当转换是「<b>结构化的字段级搬运</b>」（XML → XML、CSV/IDoc → 结构体，字段改名、拼串、日期格式化），Cloud Integration 提供<b>图形映射器</b>：左边源结构、右边目标结构，用鼠标拖线完成字段对应，比写脚本直观、可维护、还能走映射函数库（拼接、拆分、取子串、日期转换…）。</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">Message Mapping — Source（订单）→ Target（客户订单）</span></div>
+          <div class="cpi">
+            <div style="display:grid;grid-template-columns:1fr 40px 1fr;padding:14px;gap:8px">
+              <div class="cfg">
+                <div style="padding:6px 12px;font-weight:700;border-bottom:1px solid var(--border-soft);font-size:11.5px">📄 Source 结构（入站 XML）</div>
+                <div class="crow"><label>order/orderNo</label><div class="v">ORD-1001</div></div>
+                <div class="crow"><label>order/customer</label><div class="v">ACME</div></div>
+                <div class="crow"><label>order/type</label><div class="v">book</div></div>
+              </div>
+              <div style="display:grid;place-items:center;color:var(--text-faint);font-size:20px">→</div>
+              <div class="cfg">
+                <div style="padding:6px 12px;font-weight:700;border-bottom:1px solid var(--border-soft);font-size:11.5px">🎯 Target 结构（出站）</div>
+                <div class="crow"><label>out/orderId</label><div class="v sel">= orderNo</div></div>
+                <div class="crow"><label>out/customerName</label><div class="v sel">= customer</div></div>
+                <div class="crow"><label>out/kind</label><div class="v sel">= type</div></div>
+              </div>
+            </div>
+            <div style="padding:0 14px 12px;font-size:11.5px;color:var(--text-faint)">映射函数示例：把 <code>orderNo</code> 前 3 位截出当渠道码、金额乘税率——都不用手写代码</div>
+          </div>
+        </div>
+        <div class="cap"><b>图 I4-3</b> Message Mapping 概念示意：源/目标结构来自「消息类型」（XSD / CSV 声明等）；本课程以 Content Modifier + Groovy 为主，映射器点到为止（重命名/重组多字段的 XML 转换时再上它）</div>
+      </div>
+
+      <h2 id="pick">I4.5 三种手段怎么选</h2>
+      <table class="doc">
+        <thead>
+          <tr><th>需求</th><th>推荐手段</th><th>理由</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>加/改几个固定值、加个请求头</td><td><b>Content Modifier</b></td><td>零代码，配置即得</td></tr>
+          <tr><td>从 XML 里抽一个节点当属性</td><td><b>Content Modifier（XPath）</b></td><td>一个表达式搞定</td></tr>
+          <tr><td>解析 / 组装 <b>JSON</b>、算金额、循环、条件分支</td><td><b>Groovy Script</b></td><td>JSON 无 XPath；编程最灵活</td></tr>
+          <tr><td>XML 结构间大量字段改名 / 重组 / 拼接</td><td><b>Message Mapping</b></td><td>可视化、可评审、可复用映射</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="do">I4.6 操作手顺：订单金额换算 iFlow（order-transform）</h2>
+      <p>场景接 <a href="../fiori/step3-action.html">Fiori 手顺3 的 submitOrder</a> 数据（书店 Bookshop）：入站 JSON 订单 → 脚本算出金额 → 回显验证。</p>
+      <ol class="steps">
+        <li><p><span class="step-title">新建 iFlow</span></p>
+          <p>包 <code>iflow_course</code> → Add → Integration Flow，命名 <code>order-transform</code>，打开画布。</p>
+        </li>
+        <li><p><span class="step-title">配置 Sender</span></p>
+          <p>HTTPS，Address 填 <code>/order</code>。</p>
+        </li>
+        <li><p><span class="step-title">添加 Script 步骤并粘贴脚本</span></p>
+          <p>右侧步骤面板拖入 <b>Script</b>，选中后在配置区粘贴 <a href="#groovy">I4.3 的脚本</a>（素材包 <code>scripts/order-transform.groovy</code> 同款）。</p>
+        </li>
+        <li><p><span class="step-title">配置 Receiver</span></p>
+          <p>HTTP，Address <code>https://postman-echo.com/post</code>，Authentication None。</p>
+        </li>
+        <li><p><span class="step-title">部署并测试</span></p>
+          <p>Save → Deploy → 等 <span class="st.a">Started</span> → 复制端点（应为 <code>…/cxf/order</code>）→ 用 Bookshop 的一本书下单：</p>
+<pre><code class="language-bash">curl -s -X POST "&lt;ENDPOINT&gt;" \
+  -H 'Content-Type: application/json' \
+  -d '{"book":1,"title":"Wuthering Heights","qty":2,"price":11.11}' \
+  | python3 -m json.tool</code></pre>
+        </li>
+        <li><p><span class="step-title">验证</span></p>
+          <p>回显的 <code>data</code> 应为 <code>{"book":1,"title":"Wuthering Heights","qty":2,"amount":22.22,"status":"OK"}</code>——脚本算出的 <code>amount</code> 就是 iFlow 的「增值」；同时 <code>headers.x-amount</code> 里能看到 <code>22.22</code>（脚本设的 header）。再进 MPL 确认 <span class="st.a">Completed</span>。</p>
+        </li>
+      </ol>
+
+      <div class="note warn">
+        <span class="note-title">⚠️ 脚本报错怎么看</span>
+        脚本有语法/运行时错误时，调用会 <span class="st.x">Failed</span>，MPL 里展开到 Script 步骤能看到异常栈（<code>groovy.lang.MissingMethodException</code>、<code>JsonParseException</code> 等）。八成是三类：JSON 字段名拼错、类型转换失败、忘了 <code>return message</code>。改完脚本 → Save → 重新 Deploy → 再调一次。
+      </div>
+
+      <div class="pagenav">
+        <a href="step1-hello.html"><small>← 上一章</small><b>I3 手顺1：第一个 iFlow</b></a>
+        <a class="next" href="step3-router.html"><small>下一步 →</small><b>手顺3：内容路由</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · Integration Suite 培训 · 第 I4 章 手顺2 消息转换</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>手顺1：第一个 iFlow | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../index.html">首页</a>
+      <a class="tab" href="../rap/overview.html">RAP 培训</a>
+      <a class="tab" href="../cap/overview.html">CAP 培训</a>
+      <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+      <a class="tab active" href="overview.html">Integration Suite 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">Integration Suite 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="overview.html"><span class="num">I1</span>Integration Suite 概述</a>
+      <a class="snav" href="prep.html"><span class="num">I2</span>环境准备</a>
+      <a class="snav active" href="step1-hello.html"><span class="num">I3</span>手顺1：第一个 iFlow</a>
+      <a class="snav" href="step2-transform.html"><span class="num">I4</span>手顺2：消息转换</a>
+      <a class="snav" href="step3-router.html"><span class="num">I5</span>手顺3：内容路由</a>
+      <a class="snav" href="testdata.html"><span class="num">I6</span>测试数据与素材</a>
+    </nav>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <a class="snav" href="../cap/overview.html"><span class="num">C</span>CAP 培训</a>
+    <a class="snav" href="../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 I3 章：手顺1 —— 第一个 iFlow（Hello Echo）</h1>
+      <p class="page-sub">集成包 → iFlow：HTTPS Sender → Content Modifier → HTTP Receiver → 部署 → 用 curl / Postman 验证</p>
+      <p class="lead">这一章走通第一个端到端 iFlow：外部调用者向你的 iFlow 发一个 HTTP 请求 → iFlow 用 <b>Content Modifier</b> 把消息改写成一段固定 JSON 并加一个请求头 → 通过 <b>HTTP Receiver</b> 转发给一个公网<b>回显服务</b>（<code>postman-echo.com</code>，它会把收到的内容原样返回）。你对比「发出去的」和「收到的」，就能亲眼看到 iFlow 在中间动了什么手脚——这就是集成中间件的基本功。前置：<a href="prep.html">I2 环境就绪</a>。</p>
+
+      <p>
+        <span class="badge amber">Integration Package</span>
+        <span class="badge amber">HTTPS Sender</span>
+        <span class="badge amber">Content Modifier</span>
+        <span class="badge teal">HTTP Receiver</span>
+        <span class="badge blue">Deploy</span>
+        <span class="badge blue">MPL</span>
+      </p>
+
+      <h2 id="scenario">I3.1 本次场景与「回显服务」说明</h2>
+      <p>真实集成里，Receiver 指向的是某个业务系统（S/4HANA、你的 CAP 服务、第三方 API）。教学里我们不想依赖任何业务系统，于是用 <b>回显服务</b>代替：<code>https://postman-echo.com/post</code> 会把收到的 POST 请求内容（body、headers）包成 JSON 返回给你。它唯一的价值是「照镜子」——iFlow 送出什么，你从响应里就能看到什么。把下面的场景跑通后，把 Receiver 地址换成任何真实系统地址，iFlow 依然成立：</p>
+      <ul>
+        <li><b>调用者</b>：你的终端（curl）或 Postman，POST <code>{"ping":"pong"}</code> 到 iFlow 端点。</li>
+        <li><b>iFlow</b>：Content Modifier 把 body 换成固定 JSON <code>{"msg":"Hello from CPI","course":"Integration Suite"}</code>，并加请求头 <code>X-Course</code>。</li>
+        <li><b>回显</b>：响应 JSON 里 <code>data</code> 字段 == iFlow 改写后的 body，<code>headers</code> 里能看到 <code>X-Course</code>。</li>
+      </ul>
+
+      <h2 id="pkg">I3.2 步骤1：建集成包与 iFlow 骨架</h2>
+      <ol class="steps">
+        <li><p><span class="step-title">Design → 新建集成包</span></p>
+          <p>进入 <b>Design → Integration Packages</b>，点 <b>Create</b>。名称填「iFlow 训练包」，技术名称（ID）填 <code>iflow_course</code>（ID 是包的命名空间，之后所有 artifact 挂在它下面）。</p>
+        </li>
+        <li><p><span class="step-title">打开包 → 添加 iFlow</span></p>
+          <p>点开包 → <b>Artifacts</b> 标签页 → <b>Add → Integration Flow</b>，名称 <code>hello-echo</code>，保存后在列表点它进入<b>编辑画布</b>。</p>
+        </li>
+      </ol>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">Design — 集成包 iflow_course（Artifacts）</span></div>
+          <div class="cpi">
+            <div class="cpi-nav"><span class="on">✏️ Design</span><span>👁 Monitor</span></div>
+            <div class="cpi-body">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+                <span style="font-size:14px;font-weight:700">📦 iflow_course — iFlow 训练包</span>
+                <span class="badge gray">Artifacts: 1</span>
+                <span class="fbtn primary" style="margin-left:auto">＋ Add</span>
+              </div>
+              <table class="tbl">
+                <thead><tr><th>名称</th><th>类型</th><th>状态</th><th>上次修改</th></tr></thead>
+                <tbody>
+                  <tr><td>hello-echo</td><td>Integration Flow</td><td><span class="st.n">草稿 Draft</span></td><td class="date">刚刚</td></tr>
+                </tbody>
+              </table>
+              <div style="font-size:11.5px;color:var(--text-faint);margin-top:8px">📌 集成包是「收纳盒」：一个包可含多个 iFlow、脚本（Script）、消息映射（Message Mapping）等 artifact</div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 I3-1</b> 集成包 Artifacts 列表：iFlow 以 artifact 形式存在包内；「＋ Add」可继续加脚本、映射等</div>
+      </div>
+
+      <h2 id="draw">I3.3 步骤2：画 iFlow（Sender → Content Modifier → Receiver）</h2>
+      <ol class="steps">
+        <li><p><span class="step-title">配置 Sender（入口适配器）</span></p>
+          <p>画布起点处有 <b>Sender</b> 占位。点开配置：<b>General</b> 名称 <code>Sender</code>；<b>Adapter</b> 类型 <code>HTTPS</code>；<b>Connection</b> → Address 填 <code>/hello</code>。Security 页保持默认（教学租户通常允许匿名调用，见<a href="#trouble">I3.7</a>）。</p>
+        </li>
+        <li><p><span class="step-title">加 Content Modifier 处理步骤</span></p>
+          <p>从右侧<b>步骤面板</b>把 <code>Content Modifier</code> 拖到 Sender 与结束点之间的流程列上（新版本 UI 也可在流程箭头处点 <b>＋</b> 添加）。选中它，底部出现配置区，做两件事：</p>
+          <ul>
+            <li><b>Message Body 页</b>：Body Type 选 <code>Text</code>，Body 填：<code>{"msg":"Hello from CPI","course":"Integration Suite"}</code> —— 把收到的任意内容<b>替换</b>成这段固定 JSON。</li>
+            <li><b>Message Header 页</b>：添加一行——Name <code>X-Course</code>、Type <code>Constant</code>、Value <code>integration-suite-training</code> —— 给消息加一个自定义请求头。</li>
+          </ul>
+        </li>
+        <li><p><span class="step-title">配置 Receiver（出口适配器）</span></p>
+          <p>画布终点处有 <b>Receiver</b> 占位。点开配置：<b>General</b> 名称 <code>Receiver</code>；<b>Adapter</b> 类型 <code>HTTP</code>；<b>Connection</b> → Address 填 <code>https://postman-echo.com/post</code>，Authentication 选 <code>None</code>。方法默认 <code>POST</code>（有 body 时发送方是 POST）。</p>
+        </li>
+        <li><p><span class="step-title">保存</span></p>
+          <p>点画布右上角 <b>Save</b>（或 ⌘/Ctrl+S）。保存的只是草稿版本，还没生效。</p>
+        </li>
+      </ol>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">Cloud Integration — hello-echo（编辑画布）</span></div>
+          <div class="cpi">
+            <div style="display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--surface);border-bottom:1px solid var(--border)">
+              <b style="font-size:13px">hello-echo</b>
+              <span class="badge gray">版本: 草稿</span>
+              <span style="margin-left:auto"></span>
+              <span class="fbtn">保存</span>
+              <span class="fbtn primary">部署</span>
+            </div>
+            <div class="cflow" style="padding:16px 14px">
+              <div class="cnode send">
+                <div class="ch">⬇️ Sender</div>
+                <div class="cs"><b>HTTPS</b> · /hello</div>
+              </div>
+              <div class="cline"></div>
+              <div class="cnode step">
+                <div class="ch"><span class="si">✎</span>Content Modifier</div>
+                <div class="cs"><b>Body</b> 替换为固定 JSON · <b>Header</b> X-Course</div>
+              </div>
+              <div class="cline"></div>
+              <div class="cnode recv">
+                <div class="ch">⬆️ Receiver</div>
+                <div class="cs"><b>HTTP</b> · postman-echo.com/post</div>
+              </div>
+            </div>
+            <div class="cfg" style="margin:0 14px 14px">
+              <div class="crow"><label>选中的步骤</label><div class="v sel">Content Modifier</div></div>
+              <div class="crow"><label>名称</label><div class="v">Content Modifier_1</div></div>
+              <div class="crow"><label>消息头</label><div class="v">X-Course = integration-suite-training</div></div>
+              <div class="crow"><label>消息体</label><div class="v">{"msg":"Hello from CPI","course":"Integration Suite"}</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 I3-2</b> iFlow 编辑画布：三个节点一条线；选中任一节点，底部配置区显示其参数（此处为 Content Modifier：消息头 + 消息体改写）</div>
+      </div>
+
+      <h2 id="deploy">I3.4 步骤3：部署</h2>
+      <ol class="steps">
+        <li><p><span class="step-title">点「部署」</span></p>
+          <p>画布右上角 <b>Deploy</b> → 确认对话框（可写版本注释 <code>first deploy</code>）→ 部署。状态依次是 <code>Deploying</code> → <code>Starting</code> → <code>Started</code>，通常几十秒。</p>
+        </li>
+        <li><p><span class="step-title">拿端点 URL</span></p>
+          <p>切到 <b>Monitor → Manage Integration Content</b>，找到 <code>hello-echo</code>（状态 <span class="st.a">Started</span>）。点它打开详情，复制 <b>Endpoint URL</b>——形如 <code>https://&lt;你的租户域名&gt;/cxf/hello</code>。规则：<b>租户域名 + <code>/cxf</code> + 你在 Sender 里填的 Address</b>。个别 UI 版本端点藏在行内「⋯」菜单里，找不到就按这个规则手拼（租户域名在浏览器地址栏）。</p>
+        </li>
+      </ol>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">Monitor — Manage Integration Content</span></div>
+          <div class="cpi">
+            <div class="cpi-nav"><span>✏️ Design</span><span class="on">👁 Monitor</span></div>
+            <div class="cpi-body">
+              <table class="tbl">
+                <thead><tr><th>名称</th><th>包</th><th>状态</th><th>版本</th><th>端点</th></tr></thead>
+                <tbody>
+                  <tr class="sel">
+                    <td>hello-echo</td>
+                    <td>iflow_course</td>
+                    <td><span class="st.a">Started</span></td>
+                    <td>1.0.0</td>
+                    <td style="font-family:var(--mono);font-size:11px">https://xxxxx-tmn.eu10.hana.ondemand.com/cxf/hello</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div style="font-size:11.5px;color:var(--text-faint);margin-top:8px">状态灯含义：<span class="st.a">Started</span> 正常运行 · <span class="st.o">Deploying/Starting</span> 部署中 · <span class="st.x">Error</span> 部署或运行出错（回 I3.7）</div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 I3-3</b> 部署成功后 iFlow 处于 Started；端点 = 租户域名 + <code>/cxf</code> + Sender 地址</div>
+      </div>
+
+      <h2 id="test">I3.5 步骤4：用 curl / Postman 调用并验证</h2>
+      <p>把 <code>&lt;ENDPOINT&gt;</code> 换成上面复制的端点，在终端执行（发送什么内容都行，反正会被 Content Modifier 换掉）：</p>
+<pre><code class="language-bash">curl -s -X POST "&lt;ENDPOINT&gt;" \
+  -H 'Content-Type: application/json' \
+  -d '{"ping":"pong"}' | python3 -m json.tool</code></pre>
+      <p>预期响应（来自回显服务）里能看到两处「iFlow 的手脚」：</p>
+      <ul>
+        <li><b><code>data</code></b> = <code>{"msg":"Hello from CPI","course":"Integration Suite"}</code> —— 你发的 <code>{"ping":"pong"}</code> 被 Content Modifier 换掉了；</li>
+        <li><b><code>headers.x-course</code></b> = <code>integration-suite-training</code> —— 自定义请求头也成功加上了。</li>
+      </ul>
+      <p>也就是说：<b>接收方（这里是回显服务）收到的消息，已经不是调用者发出的消息</b>——中间件对消息做了改写。真实验证脚本见 <a href="testdata.html">I6 测试数据</a> 与 <a href="../downloads.html#cpi">素材包</a>。</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">Postman — POST https://xxxxx-tmn.eu10.hana.ondemand.com/cxf/hello</span></div>
+          <div class="postman">
+            <div class="pm-tab"><span class="pm-method post">POST</span><span class="pm-url">https://xxxxx-tmn.eu10.hana.ondemand.com/cxf/hello</span><span class="pm-send">Send</span></div>
+            <div class="pm-res">
+              <div class="pm-rhead">
+                <div>Status: <b>200 OK</b></div>
+                <div style="margin-top:6px">body: {"ping":"pong"}<br>headers: Content-Type: application/json</div>
+              </div>
+<pre><code class="language-json">{
+  "data": {
+    "msg": "Hello from CPI",
+    "course": "Integration Suite"
+  },
+  "headers": {
+    "content-type": "application/json",
+    "x-course": "integration-suite-training"
+  }
+}</code></pre>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 I3-4</b> 调用 iFlow 端点：响应里 <code>data</code> 与 <code>headers.x-course</code> 证明 Content Modifier 的改写已生效</div>
+      </div>
+
+      <h2 id="mpl">I3.6 步骤5：看 MPL 运行日志</h2>
+      <p>每次调用都会产生一条 <b>Message Processing Log</b>。进 <b>Monitor → Message Processing Log</b>，最新一条就是你刚才的调用，状态 <span class="st.a">Completed</span>。点开它可以看到整条消息走过的每个组件：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">Monitor — Message Processing Log（MPL）</span></div>
+          <div class="cpi">
+            <div class="cpi-body">
+              <table class="tbl">
+                <thead><tr><th>时间</th><th>状态</th><th>集成流</th><th>消息 ID</th></tr></thead>
+                <tbody>
+                  <tr class="sel"><td class="date">14:32:08</td><td><span class="st.a">Completed</span></td><td>hello-echo</td><td style="font-family:var(--mono);font-size:11px">ad9f…e21</td></tr>
+                  <tr><td class="date">14:31:55</td><td><span class="st.x">Failed</span></td><td>hello-echo</td><td style="font-family:var(--mono);font-size:11px">77c2…a04</td></tr>
+                </tbody>
+              </table>
+              <div style="margin-top:10px;border:1px solid var(--border);border-radius:8px;background:#fff">
+                <div style="padding:8px 12px;font-weight:700;border-bottom:1px solid var(--border-soft)">流程轨迹（第 2 条失败消息）</div>
+                <div class="tree" style="border:none;padding:6px 8px">
+                  <div class="row"><span class="i">✓</span> Sender（HTTPS）— 接收请求</div>
+                  <div class="row"><span class="i">✓</span> Content Modifier — 改写完成</div>
+                  <div class="row sel"><span class="i" style="color:var(--red)">✗</span> Receiver（HTTP）— 连接失败：公网回显服务不可达</div>
+                </div>
+                <div style="padding:0 12px 10px;font-size:12px;color:var(--text-soft)">💡 那一条 <span class="st.x">Failed</span> 是演示用的「反例」：Receiver 连不上时错误会精确落在出问题的组件上，排查直接看这里</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 I3-5</b> MPL：每次调用的完整轨迹；失败消息能定位到具体组件（回显服务偶尔不可用或你的租户被限制出网时会出现 Failed）</div>
+      </div>
+
+      <h2 id="trouble">I3.7 常见问题与注意</h2>
+      <table class="doc">
+        <thead>
+          <tr><th>现象</th><th>原因 / 处理</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>调用返回 401</td><td>Sender 的 HTTPS 安全默认在部分租户要求客户端证书。教学环境可直接到 Sender → Security 页把 Authentication 设为 <code>None</code>（仅限教学；生产必须配证书/OAuth 等，属进阶话题）。</td></tr>
+          <tr><td>MPL 显示 Receiver 连接失败</td><td><code>postman-echo.com</code> 是公网第三方，偶发不可达；稍后重试或换个回显服务（<code>https://httpbin.org/post</code>）即可。它只是「镜子」，与 iFlow 本身无关。</td></tr>
+          <tr><td>改了画布但行为没变</td><td>修改只是新草稿版本，必须重新 <b>Deploy</b> 才生效；Monitor 里能看到的版本号在递增（1.0.0 → 1.0.1…）。</td></tr>
+          <tr><td>找不到端点</td><td>Monitor → Manage Integration Content → 点开 iFlow 详情；或按 <code>https://&lt;租户域名&gt;/cxf/&lt;Address&gt;</code> 手拼。</td></tr>
+          <tr><td>Content Modifier 的 XPath 用不了</td><td>Body 类型选 <code>Text</code> 是「整段替换」；想从入站消息里抽字段需要 XPath/脚本，见 <a href="step2-transform.html">I4 手顺2</a>。</td></tr>
+        </tbody>
+      </table>
+
+      <div class="note ok">
+        <span class="note-title">✅ 本章验收标准</span>
+        你能：① 说出 Sender / 步骤 / Receiver 在消息流里的角色；② 部署后从 Monitor 复制端点并成功调用；③ 在回显响应里同时看到改写后的 body 与新增的 header；④ 在 MPL 里找到这次调用的 Completed 记录。
+      </div>
+
+      <div class="pagenav">
+        <a href="prep.html"><small>← 上一章</small><b>I2 环境准备</b></a>
+        <a class="next" href="step2-transform.html"><small>下一步 →</small><b>手顺2：消息转换</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · Integration Suite 培训 · 第 I3 章 手顺1 第一个 iFlow</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

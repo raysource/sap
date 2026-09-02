@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 I2 章：环境准备 | SAP RAP × CAP 培训</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html"><span class="logo">📘</span>SAP RAP × CAP 培训</a>
+    <nav class="tabs">
+      <a class="tab" href="../index.html">首页</a>
+      <a class="tab" href="../rap/overview.html">RAP 培训</a>
+      <a class="tab" href="../cap/overview.html">CAP 培训</a>
+      <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+      <a class="tab active" href="overview.html">Integration Suite 培训</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head">Integration Suite 培训</div>
+    <nav class="side-nav">
+      <a class="snav" href="overview.html"><span class="num">I1</span>Integration Suite 概述</a>
+      <a class="snav active" href="prep.html"><span class="num">I2</span>环境准备</a>
+      <a class="snav" href="step1-hello.html"><span class="num">I3</span>手顺1：第一个 iFlow</a>
+      <a class="snav" href="step2-transform.html"><span class="num">I4</span>手顺2：消息转换</a>
+      <a class="snav" href="step3-router.html"><span class="num">I5</span>手顺3：内容路由</a>
+      <a class="snav" href="testdata.html"><span class="num">I6</span>测试数据与素材</a>
+    </nav>
+    <div class="snav-group">另一条路线</div>
+    <a class="snav" href="../rap/overview.html"><span class="num">R</span>RAP 培训</a>
+    <a class="snav" href="../cap/overview.html"><span class="num">C</span>CAP 培训</a>
+    <a class="snav" href="../fiori/overview.html"><span class="num">F</span>Fiori 培训</a>
+    <div class="snav-group">素材包</div>
+    <a class="snav" href="../downloads.html"><span class="num">📦</span>素材下载</a>
+  </aside>
+
+  <main class="content">
+    <div class="page">
+
+      <h1>第 I2 章：环境准备</h1>
+      <p class="page-sub">BTP 账号 → 订阅 Integration Suite → 分配角色 → 打开 Cloud Integration Web UI</p>
+      <p class="lead">本路线唯一的环境就是浏览器里的 BTP。Cloud Integration（CPI）在 BTP 上以「订阅」方式提供，开通后你会得到一个独立租户的 Web UI，之后所有章节都在里面操作。全程<b>无需安装任何本地软件</b>。如果你跟过 <a href="../cap/btp/prep.html">BTP 路线（B2 章）</a>，账号与子账号已就绪，可直接从 <a href="#subscribe">I2.2</a> 开始。</p>
+
+      <p>
+        <span class="badge amber">SAP BTP Cockpit</span>
+        <span class="badge amber">Subscription</span>
+        <span class="badge amber">角色集合</span>
+        <span class="badge teal">Cloud Integration 租户</span>
+        <span class="badge gray">Trial / Free Tier</span>
+      </p>
+
+      <h2 id="account">I2.1 准备一个 BTP 账号（没有的话）</h2>
+      <p>两种常见渠道，任选其一；本质都是「在某个 Global Account 下有一个能开通服务的子账号」：</p>
+      <table class="doc">
+        <thead>
+          <tr><th>渠道</th><th>适合谁</th><th>要点</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>BTP Trial</b>（试用账号）</td><td>个人自学</td><td>注册即得 Global Account + 子账号 + Cloud Foundry；每晚休眠、无生产 SLA，适合照本课程跟做。</td></tr>
+          <tr><td><b>企业账号 + Free Tier</b></td><td>有企业 BTP 许可的开发组</td><td>在子账号里启用 Free Tier 计划即可开 Integration Suite 免费层（额度受限，教学够用）。</td></tr>
+        </tbody>
+      </table>
+      <p>开通账号后，进入你的<b>子账号（Subaccount）</b>（Trial 默认已建好一个）。如果你对「Global Account / 子账号 / Cloud Foundry org/space」还没感觉，先看 <a href="../cap/btp/prep.html">B2 环境准备（BTP 账号）</a> 的前半段。</p>
+
+      <h2 id="subscribe">I2.2 订阅 Integration Suite</h2>
+      <p>在子账号里：</p>
+      <ol class="steps">
+        <li><p><span class="step-title">打开 Service Marketplace</span></p>
+          <p>左侧导航 → <b>Services → Service Marketplace</b>，搜索 <code>Integration Suite</code>（也可能叫 <code>SAP Integration Suite</code>）。</p>
+        </li>
+        <li><p><span class="step-title">订阅</span></p>
+          <p>点开该服务 → <b>Create / Subscribe</b>。计划（Plan）选择你账号可用的那个——Trial 常见 <code>Integration Suite, trial</code>，企业 Free Tier 常见 <code>free</code>。计划名因账号类型而异，没有确切名字时选唯一可用项即可。</p>
+        </li>
+      </ol>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="btp">
+            <div class="btp-head"><span class="crumb">SAP BTP Cockpit</span><span>/</span><span class="crumb">Global Account</span><span>/</span><span class="crumb"><b>Trial</b></span><span>/</span><span class="crumb">Service Marketplace</span></div>
+            <div class="btp-sub"><div class="stabs"><span>Overview</span><span class="on">Service Marketplace</span><span>Instances &amp; Subscriptions</span><span>Security</span></div></div>
+            <div style="padding:12px 16px;background:#fff">
+              <div class="btp-card" style="margin-bottom:10px">
+                <div class="t">🧩 SAP Integration Suite</div>
+                <div class="s">集成平台：Cloud Integration、API Management、Open Connectors、Event Mesh 等能力；本课程用它订阅 Cloud Integration 租户</div>
+                <div class="b">→ 点开卡片 → Create（订阅）</div>
+              </div>
+              <div class="btp-card" style="background:var(--blue-soft);border-color:#b8d4f0">
+                <div class="t">✓ 订阅中…（约几分钟）</div>
+                <div class="s">状态 SUCCEEDED 后出现 <b>Go to Application</b> 按钮——那就是你的 Cloud Integration 入口</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 I2-1</b> Service Marketplace 里找到 Integration Suite 并订阅；订阅成功后在 Instances &amp; Subscriptions 里能看到 Application 链接</div>
+      </div>
+
+      <div class="note warn">
+        <span class="note-title">⚠️ 列表里没有 Integration Suite？</span>
+        ① Trial 账号确认已进入 <b>trial 子账号</b>（而非 Global Account 层）；② 换区域试试——Trial 默认在 <code>eu10</code>，个别区域不含该服务；③ 企业账号需先在账号层级开通 Free Tier / 服务 entitlement。仍不行的话，去 BTP Cockpit 的 <b>Boosters</b> 找「Integration Suite」相关的引导程序，按向导走一遍（它替你处理订阅与角色）。
+      </div>
+
+      <h2 id="roles">I2.3 分配角色（首次必做）</h2>
+      <p>订阅完成后点 <b>Go to Application</b>，浏览器会跳到你的 Cloud Integration 租户（地址形如 <code>https://&lt;租户ID&gt;-tmn.&lt;区域&gt;.hana.ondemand.com</code>）。第一次打开往往报「无权限」，因为你的 BTP 用户还没有被授权进租户——需要把角色集合分配给自己的用户：</p>
+      <ol class="steps">
+        <li><p><span class="step-title">回到 BTP Cockpit</span></p>
+          <p>子账号 → <b>Security → Users</b> → 点击自己的用户（通常来自你的登录邮箱 / IDP）。</p>
+        </li>
+        <li><p><span class="step-title">加角色集合</span></p>
+          <p>订阅 Integration Suite 时系统会预生成一组角色集合（列表里名字含 <code>Integration</code> 的那些）。把 <b>管理员 / 开发 / 监控</b>三件套都勾给自己的用户，常见组合：</p>
+          <table class="doc">
+            <thead>
+              <tr><th>角色（AuthGroup 前缀）</th><th>干什么用</th><th>本课程需要</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>Integration_Provisioner</code></td><td>租户级管理员，首次配置、用户管理</td><td>✅（I2 之后其实不用）</td></tr>
+              <tr><td><code>AuthGroup_IntegrationAdministrator</code></td><td>部署、取消部署、管理集成内容</td><td>✅</td></tr>
+              <tr><td><code>AuthGroup_IntegrationDeveloper</code></td><td>在 Design 里建包、画 iFlow、写脚本</td><td>✅ 核心</td></tr>
+              <tr><td><code>AuthGroup_IntegrationOperator</code></td><td>只读监控（MPL、消息队列）</td><td>✅</td></tr>
+              <tr><td><code>AuthGroup_IntegrationBusinessExpert</code></td><td>查看/编辑业务场景配置</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </li>
+        <li><p><span class="step-title">重新登录租户</span></p>
+          <p>回到 Cloud Integration 页面刷新（必要时退出重登一次，让角色生效）。</p>
+        </li>
+      </ol>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">BTP Cockpit — Role Collections（子账号）</span></div>
+          <div class="btp">
+            <div class="btp-head"><span class="crumb">… / Trial / <b>Security</b> / Role Collections</span></div>
+            <div style="padding:10px 16px;background:#fff">
+              <table class="tbl">
+                <thead><tr><th>角色集合</th><th>描述</th><th>当前用户</th></tr></thead>
+                <tbody>
+                  <tr class="sel"><td>Integration_Provisioner</td><td>租户管理员</td><td>you@company.com</td></tr>
+                  <tr><td>IntegrationDeveloper</td><td>设计/开发集成流</td><td>—（点右侧 ✎ 添加）</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 I2-2</b> 把含 <code>Integration</code> 的角色集合分配给自己；集合名在订阅时自动生成，不同账号命名略有差异，认准「Administrator / Developer / Operator」语义即可</div>
+      </div>
+
+      <h2 id="ui">I2.4 认识 Cloud Integration Web UI</h2>
+      <p>登录成功后，你会进入 Cloud Integration 主界面。记住四个入口的位置，之后每个手顺都在里面切换：</p>
+
+      <div class="mockup">
+        <div class="win">
+          <div class="win-chrome"><span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span><span class="wtitle">Cloud Integration — Web UI 主界面</span></div>
+          <div class="cpi">
+            <div class="cpi-nav">
+              <span>🏠 Home</span>
+              <span>🔍 Discover</span>
+              <span class="on">✏️ Design</span>
+              <span>👁 Monitor</span>
+              <span>🔑 Security Material</span>
+            </div>
+            <div class="cpi-body">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+                <b style="font-size:14px">Integration Packages</b>
+                <span class="fbtn primary" style="margin-left:auto">＋ Create</span>
+              </div>
+              <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:22px;text-align:center;color:var(--text-faint)">
+                暂无集成包<br>
+                <span style="font-size:11.5px">Design 区暂时是空的——下一章就从这里新建你的第一个包与 iFlow</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><b>图 I2-3</b> Cloud Integration Web UI：Discover（找官方模板）/ Design（开发）/ Monitor（监控）/ Security Material（凭据与证书）</div>
+      </div>
+
+      <h2 id="check">I2.5 验证与注意</h2>
+      <ul>
+        <li><b>验证</b>：Design 区能正常打开 Integration Packages 列表即为环境就绪（空列表没关系）。</li>
+        <li><b>租户地址</b>：记住你的租户域名（<code>…-tmn.&lt;区域&gt;.hana.ondemand.com</code>），I3 拼测试端点要用。</li>
+        <li><b>Trial 休眠</b>：Trial 子账号夜间休眠，若页面打不开先回 Cockpit 重启；长期不用的 Trial 可能被回收，重要内容记得导出（iFlow 可整包 Download）。</li>
+        <li><b>配额</b>：试用/免费层对并发消息数、存储、运行时长短都有限制，仅供教学；本课程每个手顺只有一两次调用，不会触顶。</li>
+      </ul>
+
+      <div class="pagenav">
+        <a href="overview.html"><small>← 上一章</small><b>I1 Integration Suite 概述</b></a>
+        <a class="next" href="step1-hello.html"><small>下一步 →</small><b>手顺1：第一个 iFlow</b></a>
+      </div>
+
+    </div>
+
+    <footer class="sitefoot">
+      <div><span class="brand2">SAP RAP × CAP 培训中心</span> · Integration Suite 培训 · 第 I2 章 环境准备</div>
+    </footer>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>
