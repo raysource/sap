@@ -17,6 +17,7 @@
       <a class="tab" href="../../rap/overview.html">RAP 培训</a>
       <a class="tab active" href="../overview.html">CAP 培训</a>
       <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -249,6 +250,122 @@ curl -i -X DELETE "http://localhost:8080/odata/v4/catalog/Books(101)"
         <span class="note-title">✅ 本路线总结</span>
         从 J1 看差异、J2 配环境、J3 建项目、J4 配库建表、J5 写处理器，到 J6 运行测试——你已走完一条完整的 CAP Java 开发链路：<b>模型写一次，建表、DTO、OData 接口全部自动，业务逻辑集中在一个 Handler 里</b>。这趟「手写 DTO 全家桶 vs 一个 Handler」的对比，正是 CAP Java 的核心价值。
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">启动 CAP Java 应用的命令是？</p>
+            <div class="opts">
+              <div><b>A.</b> mvn spring-boot:run（在 srv 模块）</div>
+              <div><b>B.</b> npm start</div>
+              <div><b>C.</b> cds watch</div>
+              <div><b>D.</b> java -cp . Main</div>
+            </div>
+          </li>
+          <li><p class="q">启动后浏览器/curl 访问 OData 服务文档的地址是？</p>
+            <div class="opts">
+              <div><b>A.</b> http://localhost:8080/odata/v4/catalog/$metadata（或根路径）</div>
+              <div><b>B.</b> http://localhost:4004</div>
+              <div><b>C.</b> https://sap.com</div>
+              <div><b>D.</b> http://localhost:8080/db</div>
+            </div>
+          </li>
+          <li><p class="q">curl 读取 Books 集合的写法是？</p>
+            <div class="opts">
+              <div><b>A.</b> curl http://localhost:8080/odata/v4/catalog/Books</div>
+              <div><b>B.</b> curl http://localhost:8080/Books</div>
+              <div><b>C.</b> curl localhost:4004/books</div>
+              <div><b>D.</b> curl /odata/Books</div>
+            </div>
+          </li>
+          <li><p class="q">POST 创建一本书（ID 由你指定）成功返回？</p>
+            <div class="opts">
+              <div><b>A.</b> 201 Created</div>
+              <div><b>B.</b> 204</div>
+              <div><b>C.</b> 301</div>
+              <div><b>D.</b> 500</div>
+            </div>
+          </li>
+          <li><p class="q">删除一本书用哪个 HTTP 方法？</p>
+            <div class="opts">
+              <div><b>A.</b> DELETE</div>
+              <div><b>B.</b> PATCH</div>
+              <div><b>C.</b> GET</div>
+              <div><b>D.</b> HEAD</div>
+            </div>
+          </li>
+          <li><p class="q">调用 submitOrder（服务级）的典型请求是？</p>
+            <div class="opts">
+              <div><b>A.</b> POST …/catalog/submitOrder，请求体含 book 与 quantity（JSON）</div>
+              <div><b>B.</b> GET 一次</div>
+              <div><b>C.</b> DELETE 图书</div>
+              <div><b>D.</b> PUT 全量</div>
+            </div>
+          </li>
+          <li><p class="q">与 Node 版对比，Java 版在「模型、接口路径、结果数据」上？</p>
+            <div class="opts">
+              <div><b>A.</b> 一致（同模型同 OData 语义），差异在运行时与端口等</div>
+              <div><b>B.</b> 完全不同</div>
+              <div><b>C.</b> Java 少支持 OData</div>
+              <div><b>D.</b> 结果格式不同</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">srv 模块内执行 spring-boot:run；构建产物也可 java -jar 运行。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">Java 版端口 8080；$metadata 验证服务契约就绪。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">路径与 Node 版一致（换端口 8080）。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">OData POST 默认 201 + 创建后的实体。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">DELETE /odata/v4/catalog/Books(ID)。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">Action 用 POST 调用、参数在 JSON 请求体（形态与 Node 版一致）。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">双路线对比的结论：模型与协议一致，工程形态（Maven/端口/启动方式）不同。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">spring-boot:run 与 mvn package 后 java -jar 运行，差异是？</p>
+            <div class="opts">
+              <div><b>A.</b> 前者开发调试方便（直接跑），后者产出可分发 jar</div>
+              <div><b>B.</b> 后者不能跑</div>
+              <div><b>C.</b> 前者不能联网</div>
+              <div><b>D.</b> 没有差异</div>
+            </div>
+          </li>
+          <li><p class="q">下单时库存不足，客户端应收到？</p>
+            <div class="opts">
+              <div><b>A.</b> 带业务错误的 4xx 响应（本课示例为 400）</div>
+              <div><b>B.</b> 200 空结果</div>
+              <div><b>C.</b> 5xx 服务器崩溃</div>
+              <div><b>D.</b> 无限等待</div>
+            </div>
+          </li>
+          <li><p class="q">启动日志里若看到 10 本书被导入、端口 8080 已监听，说明？</p>
+            <div class="opts">
+              <div><b>A.</b> 建表-灌数-服务启动三步全部成功，可进入 curl 验收</div>
+              <div><b>B.</b> 只是热身</div>
+              <div><b>C.</b> 有警告需忽略</div>
+              <div><b>D.</b> 数据丢了</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">开发用 spring-boot:run；交付/部署用 package 产物（jar/war）。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">业务校验失败映射为客户端错误（400 等），是 J6 的验收点之一。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">三个信号对齐全链路就绪：模型建库、种子导入、HTTP 服务上线。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="step3-dto.html"><small>← 上一章</small><b>手顺3：DTO → 生成模型与服务</b></a>

@@ -17,6 +17,7 @@
       <a class="tab" href="../../rap/overview.html">RAP 培训</a>
       <a class="tab active" href="../overview.html">CAP 培训</a>
       <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -260,6 +261,122 @@ java -cp "out:lib/ngdbc.jar" com.acme.bookshop.BookshopApp</code></pre>
           <li><b>找不到主类</b>：运行时的包名 <code>com.acme.bookshop.BookshopApp</code> 要和你 <code>package</code> 声明一致。</li>
         </ul>
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">模式一（目录式）「刻意不用」的东西是？</p>
+            <div class="opts">
+              <div><b>A.</b> Maven / Spring 等构建框架（只有 javac + java）</div>
+              <div><b>B.</b> JDBC</div>
+              <div><b>C.</b> Java 语言</div>
+              <div><b>D.</b> ngdbc</div>
+            </div>
+          </li>
+          <li><p class="q">模式一的两个 Java 文件是？</p>
+            <div class="opts">
+              <div><b>A.</b> Book.java（DTO）+ BookshopApp.java（主程序）</div>
+              <div><b>B.</b> Main + Config</div>
+              <div><b>C.</b> Controller + Service</div>
+              <div><b>D.</b> schema + data</div>
+            </div>
+          </li>
+          <li><p class="q">编译模式一的命令形如？</p>
+            <div class="opts">
+              <div><b>A.</b> javac -encoding UTF-8 -cp lib/ngdbc.jar -d out src/com/acme/bookshop/*.java</div>
+              <div><b>B.</b> java 直接跑 .java</div>
+              <div><b>C.</b> mvn compile</div>
+              <div><b>D.</b> npm build</div>
+            </div>
+          </li>
+          <li><p class="q">运行命令里 classpath 写法 <code>out:lib/ngdbc.jar</code> 表示？</p>
+            <div class="opts">
+              <div><b>A.</b> 类路径含编译产物与驱动 jar（冒号分隔，Windows 用分号）</div>
+              <div><b>B.</b> 两个进程</div>
+              <div><b>C.</b> 两个端口</div>
+              <div><b>D.</b> 输出重定向</div>
+            </div>
+          </li>
+          <li><p class="q">JDBC 建立连接的代码用哪个类/方法？</p>
+            <div class="opts">
+              <div><b>A.</b> DriverManager.getConnection(url, user, password)</div>
+              <div><b>B.</b> Socket.connect</div>
+              <div><b>C.</b> HttpClient</div>
+              <div><b>D.</b> JdbcTemplate 直连</div>
+            </div>
+          </li>
+          <li><p class="q">运行成功应看到什么？</p>
+            <div class="opts">
+              <div><b>A.</b> 打印出 HANA Cloud BOOKSHOP 里的 10 本书</div>
+              <div><b>B.</b> 报错信息</div>
+              <div><b>C.</b> 空列表也可以</div>
+              <div><b>D.</b> 图形界面</div>
+            </div>
+          </li>
+          <li><p class="q">URL <code>jdbc:sap://主机:端口?encrypt=true…</code> 里的 sap 协议由谁识别？</p>
+            <div class="opts">
+              <div><b>A.</b> ngdbc 驱动（jdbc:sap 是 HANA JDBC 协议前缀）</div>
+              <div><b>B.</b> 浏览器</div>
+              <div><b>C.</b> 操作系统</div>
+              <div><b>D.</b> IDE</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">纯 javac/java + classpath 连库，把 JDBC 机制完全摊开。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">DTO 承载一行数据，主程序负责连接、查询与输出。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">-cp 指向驱动 jar，-d 指定输出目录；编码参数避免中文注释乱码。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">JVM 按 classpath 找类：自己的 class 在 out，驱动在 jar。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">裸 JDBC 的标准入口：DriverManager 依据 jdbc:sap:// URL 加载驱动并连接。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">输出与 SQL 侧一致的 10 本书即模式一验收成功。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">驱动按 URL 前缀匹配：jdbc:sap → HANA ngdbc。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">classpath 顺序（out 在前、jar 在后）一般怎么理解？</p>
+            <div class="opts">
+              <div><b>A.</b> JVM 依次查找，自己的类先命中，避免与驱动内同名类冲突</div>
+              <div><b>B.</b> 顺序无所谓</div>
+              <div><b>C.</b> 必须逆序</div>
+              <div><b>D.</b> 只有 jar 需要</div>
+            </div>
+          </li>
+          <li><p class="q">把密码直接写进 BookshopApp.java 属于？</p>
+            <div class="opts">
+              <div><b>A.</b> 教学简化，真实项目应收环境变量/密钥</div>
+              <div><b>B.</b> 最佳实践</div>
+              <div><b>C.</b> 没有风险</div>
+              <div><b>D.</b> 必须这样</div>
+            </div>
+          </li>
+          <li><p class="q">模式一里 SELECT 中文结果打印乱码，优先检查？</p>
+            <div class="opts">
+              <div><b>A.</b> 终端/文件编码（UTF-8）与 javac 的 -encoding 参数</div>
+              <div><b>B.</b> 数据库版本</div>
+              <div><b>C.</b> 网络带宽</div>
+              <div><b>D.</b> 端口号</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">先找业务类再找依赖，是 classpath 的常规排法。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">代码里的明文口令会进版本库：教程可接受，工程必须外置。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">中文乱码多为编码不一致：源码编译与输出流统一 UTF-8。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="step3-bas.html"><small>← 上一章</small><b>第 B5 章：手顺3 BAS 入门</b></a>

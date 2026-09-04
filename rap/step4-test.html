@@ -17,6 +17,7 @@
       <a class="tab active" href="overview.html">RAP 培训</a>
       <a class="tab" href="../cap/overview.html">CAP 培训</a>
       <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -335,6 +336,140 @@ DELETE http://d4h:8000/sap/opu/odata4/sap/zuiv4travel_o4/srvd/sap/zui_travel_o4/
           <li><b>UI 注解</b>：本培训未加 <code>@UI</code> 注解，Fiori 用默认布局渲染；真实项目通过消费视图的 <code>@UI</code> 注解定制列、筛选与 facets。</li>
         </ul>
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 12 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–8 题）+ <b>🔶 能力提高</b>（第 9–12 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–8）</h3>
+        <ol class="qz">
+          <li><p class="q">在 ADT 里预览 Fiori 应用的入口是？</p>
+            <div class="opts">
+              <div><b>A.</b> SE80 菜单</div>
+              <div><b>B.</b> Service Binding 列表上打开预览（Open Preview / Preview）</div>
+              <div><b>C.</b> 传输请求界面</div>
+              <div><b>D.</b> 调试器</div>
+            </div>
+          </li>
+          <li><p class="q">Fiori Elements 列表页能「自动」出现筛选栏、表格列，靠的是什么？</p>
+            <div class="opts">
+              <div><b>A.</b> 前端手写硬编码</div>
+              <div><b>B.</b> 服务元数据（$metadata）里的 @UI 注解</div>
+              <div><b>C.</b> 本地配置文件</div>
+              <div><b>D.</b> 浏览器插件</div>
+            </div>
+          </li>
+          <li><p class="q">在 Fiori 里新建一条 Travel，点保存后数据先进入哪里（draft 开启时）？</p>
+            <div class="opts">
+              <div><b>A.</b> 直接进正式表 ZTRAVEL</div>
+              <div><b>B.</b> 草稿（Draft）记录，激活后才成为正式数据</div>
+              <div><b>C.</b> 浏览器缓存</div>
+              <div><b>D.</b> 日志文件</div>
+            </div>
+          </li>
+          <li><p class="q">对一条「已批准」的旅行记录再执行「批准」，预期行为是？</p>
+            <div class="opts">
+              <div><b>A.</b> 再次批准成功</div>
+              <div><b>B.</b> 按钮被禁用（get_features 控制），防止重复 / 非法流转</div>
+              <div><b>C.</b> 系统崩溃</div>
+              <div><b>D.</b> 自动创建副本</div>
+            </div>
+          </li>
+          <li><p class="q">Postman 里 GET <code>/Travel?$top=5</code> 表示？</p>
+            <div class="opts">
+              <div><b>A.</b> 取前 5 条</div>
+              <div><b>B.</b> 取后 5 条</div>
+              <div><b>C.</b> 取第 5 页</div>
+              <div><b>D.</b> 删除前 5 条</div>
+            </div>
+          </li>
+          <li><p class="q">Postman POST 新建成功后的典型响应状态码是？</p>
+            <div class="opts">
+              <div><b>A.</b> 200 / 201 Created（带 Location）</div>
+              <div><b>B.</b> 204 No Content</div>
+              <div><b>C.</b> 500</div>
+              <div><b>D.</b> 404</div>
+            </div>
+          </li>
+          <li><p class="q">OData 中 PATCH 与 PUT 的区别是？</p>
+            <div class="opts">
+              <div><b>A.</b> 无区别</div>
+              <div><b>B.</b> PATCH 只更新请求体里出现的字段，PUT 全量替换</div>
+              <div><b>C.</b> PUT 只能读</div>
+              <div><b>D.</b> PATCH 只能删</div>
+            </div>
+          </li>
+          <li><p class="q">用 Postman 直接测 RAP OData 服务，相比 Fiori 预览的额外价值是？</p>
+            <div class="opts">
+              <div><b>A.</b> 看 UI 更好看</div>
+              <div><b>B.</b> 绕过 UI 直连服务，验证 API 语义（$filter / Action / 返回码）与后端一致性</div>
+              <div><b>C.</b> 速度更快而已</div>
+              <div><b>D.</b> 能连数据库</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–8））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">B</td><td class="expl">绑定对象上直接启动 Fiori Elements 预览，浏览器即可见 List Report。</td></tr>
+              <tr><td>2</td><td class="an">B</td><td class="expl">页面结构由注解驱动：改注解即改 UI，这是 RAP × Fiori 的主线思想。</td></tr>
+              <tr><td>3</td><td class="an">B</td><td class="expl">草稿模式下新增先建 Draft 记录，激活（保存并提交）后才可见于正式查询。</td></tr>
+              <tr><td>4</td><td class="an">B</td><td class="expl">已到终态的实例不允许再流转，UI 层通过 features 禁用对应按钮。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">$top 是 OData 的限量查询选项，此处取前 5 条验证列表读取。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">创建成功通常返回 201 Created 并带 Location 头指向新实体。</td></tr>
+              <tr><td>7</td><td class="an">B</td><td class="expl">PATCH = 部分更新，PUT = 整体替换；对 RAP 实体日常用 PATCH 更安全。</td></tr>
+              <tr><td>8</td><td class="an">B</td><td class="expl">Postman 面向 API 契约本身：适合验证 draft 通道、Action、过滤与错误返回，可留作接口回归。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（9–12）</h3>
+        <ol class="qz" start="9">
+          <li><p class="q">Draft 开启时，用 PATCH 直接改正式实体往往不生效或报错，原因是？</p>
+            <div class="opts">
+              <div><b>A.</b> 权限不足</div>
+              <div><b>B.</b> 编辑必须走 Draft 通道（草稿实体），正式实体由激活流程维护</div>
+              <div><b>C.</b> PATCH 不支持</div>
+              <div><b>D.</b> 数据库锁死</div>
+            </div>
+          </li>
+          <li><p class="q">状态机约束（新 → 处理中 → 已批准/已拒绝）在 RAP 里由谁落实？</p>
+            <div class="opts">
+              <div><b>A.</b> 数据库触发器</div>
+              <div><b>B.</b> get_features + Action 实现内的状态判断</div>
+              <div><b>C.</b> 前端 CSS</div>
+              <div><b>D.</b> 传输请求</div>
+            </div>
+          </li>
+          <li><p class="q">为什么推荐先在 Fiori 预览走一遍、再用 Postman 直连验证？</p>
+            <div class="opts">
+              <div><b>A.</b> 多此一举</div>
+              <div><b>B.</b> Fiori 验证注解与 Draft 交互体验，Postman 验证 API 契约，两者互补</div>
+              <div><b>C.</b> Postman 更权威</div>
+              <div><b>D.</b> Fiori 不能测</div>
+            </div>
+          </li>
+          <li><p class="q">查询「状态为新的记录」在 OData 中的写法是？</p>
+            <div class="opts">
+              <div><b>A.</b> ?$filter=status eq 'N'</div>
+              <div><b>B.</b> ?$where=status=N</div>
+              <div><b>C.</b> ?status=new</div>
+              <div><b>D.</b> ?$select=N</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（9–12））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>9</td><td class="an">B</td><td class="expl">草稿代理了编辑：UI 的保存先写草稿，激活才合并；绕过草稿直改正式数据违背该机制。</td></tr>
+              <tr><td>10</td><td class="an">B</td><td class="expl">features 控制按钮，Action 实现再校验一次状态，双层防非法流转。</td></tr>
+              <tr><td>11</td><td class="an">B</td><td class="expl">一个验 UI 语义（注解渲染、草稿、按钮状态），一个验协议语义（CRUD、Action、过滤），缺一不可。</td></tr>
+              <tr><td>12</td><td class="an">A</td><td class="expl">$filter 是 OData 的过滤语法：字段 eq 值。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="step3-service.html"><small>← 上一章</small><b>手顺3：服务定义与绑定</b></a>

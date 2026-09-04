@@ -17,6 +17,7 @@
       <a class="tab" href="../rap/overview.html">RAP 培训</a>
       <a class="tab active" href="overview.html">CAP 培训</a>
       <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -360,6 +361,122 @@ curl "http://localhost:4004/odata/v4/catalog/Orders"
           <li><b>SELECT 的写法</b>：示例中 <code>SELECT.one.from(cds.entities.Books)</code> 与 <code>const { Books } = cds.entities</code> 后 <code>SELECT.one.from(Books)</code> 等价，二选一即可。</li>
         </ul>
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">与 cat-service.cds 同名的 cat-service.js 放在 srv/ 下会自动怎样？</p>
+            <div class="opts">
+              <div><b>A.</b> 其导出函数作为事件处理器自动注册到该服务</div>
+              <div><b>B.</b> 必须手动 require</div>
+              <div><b>C.</b> 被当成静态文件</div>
+              <div><b>D.</b> 只在测试时加载</div>
+            </div>
+          </li>
+          <li><p class="q"><code>srv.on('READ','Books', …)</code> 之类的写法是？</p>
+            <div class="opts">
+              <div><b>A.</b> 事件处理器：在服务事件上挂逻辑</div>
+              <div><b>B.</b> SQL 语句</div>
+              <div><b>C.</b> CSS 选择器</div>
+              <div><b>D.</b> 日志过滤规则</div>
+            </div>
+          </li>
+          <li><p class="q">before 事件处理器适合做什么？</p>
+            <div class="opts">
+              <div><b>A.</b> 在 READ/CREATE/UPDATE 前校验与预处理（改入参、抛错）</div>
+              <div><b>B.</b> 删除数据库</div>
+              <div><b>C.</b> 渲染页面</div>
+              <div><b>D.</b> 发送通知</div>
+            </div>
+          </li>
+          <li><p class="q">自定义 Action submitOrder 需要哪两步？</p>
+            <div class="opts">
+              <div><b>A.</b> 在 service.cds 声明（action）+ 在 js 里实现（srv.on('submitOrder')）</div>
+              <div><b>B.</b> 只在 js 写函数</div>
+              <div><b>C.</b> 只在 cds 写声明</div>
+              <div><b>D.</b> 建一张新表</div>
+            </div>
+          </li>
+          <li><p class="q">下单时校验「数量为正且库存充足」失败，handler 里应？</p>
+            <div class="opts">
+              <div><b>A.</b> 抛错（请求失败并回滚）</div>
+              <div><b>B.</b> 静默返回空</div>
+              <div><b>C.</b> 把库存改成 0</div>
+              <div><b>D.</b> 忽略继续</div>
+            </div>
+          </li>
+          <li><p class="q">CAP 中默认的事务行为是？</p>
+            <div class="opts">
+              <div><b>A.</b> 每个请求一个事务，失败自动回滚</div>
+              <div><b>B.</b> 永不提交</div>
+              <div><b>C.</b> 每条 SQL 单独提交</div>
+              <div><b>D.</b> 需要手写 COMMIT 才能生效</div>
+            </div>
+          </li>
+          <li><p class="q">实现里读数据（如查库存）的标准写法是？</p>
+            <div class="opts">
+              <div><b>A.</b> SELECT FROM my.Books WHERE …（经 cds.run / tx 执行）</div>
+              <div><b>B.</b> 直接拼 SQL 字符串</div>
+              <div><b>C.</b> 读取 JSON 文件</div>
+              <div><b>D.</b> 调用 RAP 函数</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">CAP 约定：srv/&lt;service&gt;.js 自动成为该服务的 handler 模块。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">CAP 的事件模型：READ/CREATE/UPDATE/DELETE 与自定义 Action 都能被 before/after 或 on 挂载。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">before 拦截请求前：校验参数、填充默认值、检查库存。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">CAP 自定义操作 = CDS 声明契约 + handler 实现逻辑，声明与实现分离。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">校验失败用抛错终止请求，事务回滚，客户端收到错误而不是脏数据。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">CAP 把请求包在事务里：handler 正常结束即提交，异常即回滚。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">用 CQL（CDS 查询语言）经当前事务执行，自动享受模型/权限上下文。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">为什么库存扣减放在事务内并且用条件更新（UPDATE … WHERE stock &gt;= 数量）更安全？</p>
+            <div class="opts">
+              <div><b>A.</b> 条件更新能防并发超卖：不满足条件则更新 0 行，可据此报错</div>
+              <div><b>B.</b> 条件更新更快</div>
+              <div><b>C.</b> 只是写法习惯</div>
+              <div><b>D.</b> WHERE 没作用</div>
+            </div>
+          </li>
+          <li><p class="q">Action 与 Function 在 CAP 里的区别是？</p>
+            <div class="opts">
+              <div><b>A.</b> Action 可有副作用（可改数据），Function 只读</div>
+              <div><b>B.</b> Function 能写数据</div>
+              <div><b>C.</b> Action 不能传参</div>
+              <div><b>D.</b> 没有区别</div>
+            </div>
+          </li>
+          <li><p class="q">handler 里要读请求参数与访问当前用户，通常通过？</p>
+            <div class="opts">
+              <div><b>A.</b> req（请求对象）：req.data 取参数、req.user 取用户</div>
+              <div><b>B.</b> 全局变量</div>
+              <div><b>C.</b> URL 参数解析函数</div>
+              <div><b>D.</b> 数据库</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">高并发下先查后改可能超卖；条件更新把「库存足够」并入一条原子语句，失败 0 行即冲突。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">语义约束：Function 是只读计算（如 stockOf），Action 可修改（如 submitOrder）。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">事件处理器回调携带 req：业务参数在 req.data，身份/租户在 req.user 等上下文里。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="step2-model.html"><small>← 上一章</small><b>手顺2：数据模型与服务</b></a>

@@ -135,6 +135,7 @@
       var aPath = a.pathname;
       if (aPath.indexOf("/rap/") > -1 && path.indexOf("/rap/") > -1) a.classList.add("active");
       else if (aPath.indexOf("/cap/") > -1 && path.indexOf("/cap/") > -1) a.classList.add("active");
+      else if (aPath.indexOf("/cpi/") > -1 && path.indexOf("/cpi/") > -1) a.classList.add("active");
       else if (isHome(aPath) && isHome(path)) a.classList.add("active");
     });
   }

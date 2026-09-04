@@ -192,6 +192,122 @@
         <li><a href="testdata.html">测试数据与素材</a><span class="psub">样例载荷 / 脚本 / curl 速查</span></li>
       </ol>
 
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">「iFlow」这个词出自 Integration Suite 的哪项能力？</p>
+            <div class="opts">
+              <div><b>A.</b> Cloud Integration（云集成，画集成流）</div>
+              <div><b>B.</b> API Management</div>
+              <div><b>C.</b> Event Mesh</div>
+              <div><b>D.</b> Open Connectors</div>
+            </div>
+          </li>
+          <li><p class="q">Cloud Integration 属于哪一类集成？</p>
+            <div class="opts">
+              <div><b>A.</b> 消息级集成（跨系统传消息、转换、路由）</div>
+              <div><b>B.</b> API 生命周期管理</div>
+              <div><b>C.</b> 事件总线</div>
+              <div><b>D.</b> 贸易伙伴管理</div>
+            </div>
+          </li>
+          <li><p class="q">一个 iFlow 的最小结构是？</p>
+            <div class="opts">
+              <div><b>A.</b> Sender（入口适配器）→ 处理步骤 → Receiver（出口适配器）</div>
+              <div><b>B.</b> 数据库表</div>
+              <div><b>C.</b> 前端页面</div>
+              <div><b>D.</b> 定时器</div>
+            </div>
+          </li>
+          <li><p class="q">Sender/Receiver 适配器的职责是？</p>
+            <div class="opts">
+              <div><b>A.</b> 定义消息进出的协议与目标（HTTPS/SOAP/Mail/SFTP…）</div>
+              <div><b>B.</b> 存数据</div>
+              <div><b>C.</b> 写日志</div>
+              <div><b>D.</b> 做报表</div>
+            </div>
+          </li>
+          <li><p class="q">消息三件套是指？</p>
+            <div class="opts">
+              <div><b>A.</b> Body（正文）+ Headers（协议头）+ Properties（流内交换属性）</div>
+              <div><b>B.</b> 时间/地点/人物</div>
+              <div><b>C.</b> GET/POST/PUT</div>
+              <div><b>D.</b> 表/视图/索引</div>
+            </div>
+          </li>
+          <li><p class="q">MPL（Message Processing Log）的主要用途是？</p>
+            <div class="opts">
+              <div><b>A.</b> 记录每次消息处理的轨迹与状态，排错看这里</div>
+              <div><b>B.</b> 写业务数据</div>
+              <div><b>C.</b> 画流程图</div>
+              <div><b>D.</b> 管用户权限</div>
+            </div>
+          </li>
+          <li><p class="q">iFlow 的开发部署监控在哪个界面完成？</p>
+            <div class="opts">
+              <div><b>A.</b> Cloud Integration Web UI（浏览器，含 Design/Monitor 等区）</div>
+              <div><b>B.</b> 本地 Eclipse</div>
+              <div><b>C.</b> 手机 App</div>
+              <div><b>D.</b> 命令行脚本</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">iFlow = Integration Flow（集成流），是 Cloud Integration 的核心产物，也是本路线的主题。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">它做消息搬运与加工；API 级归 API Management，事件级归 Event Mesh。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">消息从 Sender 进、中间加工、从 Receiver 出，其余是锦上添花。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">适配器决定「从哪收、往哪发、用什么协议」，是 iFlow 与外部世界的边界。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">Body 是业务内容，Headers 随协议传，Properties 只在流内传递供步骤间通信。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">MPL 是 CPI 的运行时日志：Completed/Failed、组件级轨迹、异常信息都在其中。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">CPI 全浏览器操作：Design 画流、Monitor 看运行，无需本地安装。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">RAP/CAP 与 Integration Suite 的分工最准确的是？</p>
+            <div class="opts">
+              <div><b>A.</b> 前两者做应用内的建模与服务，Integration Suite 做应用与系统之间的消息集成</div>
+              <div><b>B.</b> 互相替代</div>
+              <div><b>C.</b> 必须三选一</div>
+              <div><b>D.</b> 没有关系</div>
+            </div>
+          </li>
+          <li><p class="q">「HCI → CPI → Cloud Integration」这段改名史说明？</p>
+            <div class="opts">
+              <div><b>A.</b> 同一产品随 BTP 演进多次改名（Hana Cloud Integration → Cloud Platform Integration → Integration Suite 的 Cloud Integration 能力）</div>
+              <div><b>B.</b> 三个不同产品</div>
+              <div><b>C.</b> 名字随意</div>
+              <div><b>D.</b> 只有 CPI 存在</div>
+            </div>
+          </li>
+          <li><p class="q">Exchange Property 与 Header 最关键的区别是？</p>
+            <div class="opts">
+              <div><b>A.</b> Property 只在 iFlow 内部可见，Header 会随协议发给外部系统</div>
+              <div><b>B.</b> 没区别</div>
+              <div><b>C.</b> Header 更快</div>
+              <div><b>D.</b> Property 会外发</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">集成中间件站在孤岛之间：RAP/CAP 造应用，CPI 把应用与其它系统连起来。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">术语历史常让人困惑：HCI/CPI/Cloud Integration 指同一集成运行时。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">内部中间值用 Property（不出租户），需要对方看到的元数据才放 Header。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
+
       <div class="pagenav">
         <a href="../index.html"><small>← 上一步</small><b>回到首页</b></a>
         <a class="next" href="prep.html"><small>下一步 →</small><b>I2 环境准备</b></a>

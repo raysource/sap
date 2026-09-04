@@ -17,6 +17,7 @@
       <a class="tab" href="../rap/overview.html">RAP 培训</a>
       <a class="tab active" href="overview.html">CAP 培训</a>
       <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -261,6 +262,122 @@ curl -X DELETE http://localhost:4004/odata/v4/catalog/Books(99999)
           <li><b>重置数据</b>：反复测试把库存改乱后，删除本地 <code>bookshop.db</code>（SQLite 文件）再 <code>cds watch</code>，数据会重新从 CSV 导入。</li>
         </ul>
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">Bookshop 种子数据的规模是？</p>
+            <div class="opts">
+              <div><b>A.</b> 5 个分类 / 4 位作者 / 10 本书 / 2 条订单</div>
+              <div><b>B.</b> 1 个分类 / 1 位作者 / 1 本书</div>
+              <div><b>C.</b> 100 本书 / 50 作者</div>
+              <div><b>D.</b> 只有分类</div>
+            </div>
+          </li>
+          <li><p class="q">种子文件放入后，cds watch 启动时数据会？</p>
+            <div class="opts">
+              <div><b>A.</b> 自动建表并导入</div>
+              <div><b>B.</b> 需要手动执行导入命令</div>
+              <div><b>C.</b> 被忽略</div>
+              <div><b>D.</b> 只导入前 3 行</div>
+            </div>
+          </li>
+          <li><p class="q">Books.csv 中与作者/分类关联的列名是？</p>
+            <div class="opts">
+              <div><b>A.</b> author_ID 与 genre_ID（指向 Authors/Genres 的键）</div>
+              <div><b>B.</b> owner 与 group</div>
+              <div><b>C.</b> writer 与 type</div>
+              <div><b>D.</b> 无关联</div>
+            </div>
+          </li>
+          <li><p class="q">测试数据特意包含 stock 为 0 / 100 / 333 的书，目的是？</p>
+            <div class="opts">
+              <div><b>A.</b> 覆盖「缺货 / 正常 / 畅销（超 100 本）」等边界与业务分支</div>
+              <div><b>B.</b> 凑数好看</div>
+              <div><b>C.</b> 测试数据库容量</div>
+              <div><b>D.</b> 排序方便</div>
+            </div>
+          </li>
+          <li><p class="q">价格字段配了 currency 列（如 EUR），说明什么？</p>
+            <div class="opts">
+              <div><b>A.</b> 金额带币种，避免纯数字的货币歧义</div>
+              <div><b>B.</b> 只是冗余</div>
+              <div><b>C.</b> currency 会被忽略</div>
+              <div><b>D.</b> 必须用美元</div>
+            </div>
+          </li>
+          <li><p class="q">想重置为初始数据，最直接的做法是？</p>
+            <div class="opts">
+              <div><b>A.</b> 停掉 cds watch、删除本地 sqlite 文件后重启（自动重建并重灌）</div>
+              <div><b>B.</b> 改 CSV 再 git 回滚</div>
+              <div><b>C.</b> 重启电脑</div>
+              <div><b>D.</b> 刷新浏览器</div>
+            </div>
+          </li>
+          <li><p class="q">测试场景清单覆盖哪些内容？</p>
+            <div class="opts">
+              <div><b>A.</b> OData 查询、增删改、submitOrder 下单、缺货报错等</div>
+              <div><b>B.</b> 只有查询</div>
+              <div><b>C.</b> 只有删除</div>
+              <div><b>D.</b> 只有 UI 截图</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">db/data 下四份 CSV 与第 4–5 章模型配套：分类 5、作者 4、图书 10、订单 2。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">启动即按模型建表并载入 CSV，列表接口立刻能查到 10 本书。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">外键列名 = 关联名 + _ID，与 CDS Association 生成规则一致。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">边界库存用于验证畅销标记、库存不足报错等逻辑（与手顺3/Fiori 徽标呼应）。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">业务金额应带币种字段；显示时还可拼成「11.11 EUR」这类格式。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">本地库文件可删除重建；数据库由模型与 CSV 全自动生成是开发期重置的王道。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">清单按业务流给出一组可直接粘贴执行的验证用例。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">为什么金额不用纯数字而要用 decimal + currency 组合？</p>
+            <div class="opts">
+              <div><b>A.</b> 避免浮点误差且币种自解释，便于国际化</div>
+              <div><b>B.</b> 数字更省空间</div>
+              <div><b>C.</b> CSV 不支持小数</div>
+              <div><b>D.</b> 框架要求</div>
+            </div>
+          </li>
+          <li><p class="q">对 stock=0 的那本书执行 submitOrder，预期结果应是什么？</p>
+            <div class="opts">
+              <div><b>A.</b> 校验失败并返回错误（订单不生成、库存不动）</div>
+              <div><b>B.</b> 成功下单库存变负</div>
+              <div><b>C.</b> 返回空成功</div>
+              <div><b>D.</b> 创建两条订单</div>
+            </div>
+          </li>
+          <li><p class="q">用 Excel 编辑 CSV 再放回 db/data/ 前，最需要检查？</p>
+            <div class="opts">
+              <div><b>A.</b> 编码（UTF-8）与列顺序/表头未被篡改</div>
+              <div><b>B.</b> 文件扩展名大小写</div>
+              <div><b>C.</b> 行数必须是偶数</div>
+              <div><b>D.</b> 必须压缩</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">decimal 精确、currency 表达币种；浮点存钱是典型反模式。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">这是校验与事务回滚的验收用例：缺货必须报错且无副作用。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">Excel 常改编码或插入隐形列，导入前用纯文本编辑器核对一遍最稳妥。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="step4-test.html"><small>← 上一章</small><b>手顺4：启动、测试与 Fiori</b></a>

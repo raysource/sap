@@ -18,6 +18,7 @@
       <a class="tab" href="rap/overview.html">RAP 培训</a>
       <a class="tab" href="cap/overview.html">CAP 培训</a>
       <a class="tab" href="fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -33,12 +34,14 @@
       <a class="snav" href="#btp"><span class="num">4</span>BTP 素材包</a>
       <a class="snav" href="#fiori"><span class="num">5</span>Fiori 素材包</a>
       <a class="snav" href="#cap-fiori"><span class="num">6</span>CAP + Fiori 整体工程</a>
+      <a class="snav" href="#cpi"><span class="num">7</span>CPI iFlow 素材包</a>
       <a class="snav" href="#note"><span class="num">⚠</span>使用注意</a>
     </nav>
     <div class="snav-group">培训章节</div>
     <a class="snav" href="rap/overview.html"><span class="num">R</span>RAP：概述 → 手顺1-4</a>
     <a class="snav" href="cap/overview.html"><span class="num">C</span>CAP：概述 → 手顺1-4</a>
     <a class="snav" href="fiori/overview.html"><span class="num">F</span>Fiori：UI 层 → 手顺1-3</a>
+    <a class="snav" href="cpi/overview.html"><span class="num">I</span>Integration Suite：概述 → 手顺1-3</a>
   </aside>
 
   <main class="content">
@@ -46,7 +49,7 @@
 
       <h1 id="overview">📦 素材包下载</h1>
       <p class="page-sub">教程代码与测试数据的「可直接运行 / 可直接粘贴」版本</p>
-      <p class="lead">课程页面里的代码块适合<b>边看边敲</b>；本页把它们整理成六个素材包，统一放在 <code>samples/</code> 目录。CAP Node.js 是<b>开箱即跑</b>的完整工程，<b>CAP + Fiori 整体工程</b>更是在其后端之上直接集成 Fiori Elements 前端、一步到位；CAP Java 与 RAP 是配合脚手架 / ADT 直接粘贴的源码；BTP 素材包是 HANA SQL + 三种 Java 构建模式的源码；Fiori 素材包是复制进 Bookshop 工程即得完整页面的前端三件套。点文件名即可下载。</p>
+      <p class="lead">课程页面里的代码块适合<b>边看边敲</b>；本页把它们整理成七个素材包，统一放在 <code>samples/</code> 目录。CAP Node.js 是<b>开箱即跑</b>的完整工程，<b>CAP + Fiori 整体工程</b>更是在其后端之上直接集成 Fiori Elements 前端、一步到位；CAP Java 与 RAP 是配合脚手架 / ADT 直接粘贴的源码；BTP 素材包是 HANA SQL + 三种 Java 构建模式的源码；Fiori 素材包是复制进 Bookshop 工程即得完整页面的前端三件套；CPI 素材包是集成流的测试载荷与 Groovy 脚本。点文件名即可下载。</p>
 
       <p>
         <span class="badge blue">RAP 素材包</span>
@@ -55,6 +58,7 @@
         <span class="badge blue">BTP 素材包</span>
         <span class="badge teal">Fiori 素材包</span>
         <span class="badge teal">CAP + Fiori 整体工程</span>
+        <span class="badge amber">CPI iFlow 素材包</span>
         <span class="badge gray">操作手顺</span>
       </p>
 
@@ -99,6 +103,12 @@
             <td>书店 Bookshop（后端 + UI 打通）</td>
             <td>完整工程：后端（模型/服务/逻辑/CSV）+ <code>app/books/</code> 前端 + criticality 状态徽标</td>
             <td>✅ <code>npm install &amp;&amp; cds watch</code>（端口 4004）→ 打开 <code>/app/books/index.html</code></td>
+          </tr>
+          <tr>
+            <td><a href="#cpi">🔗 CPI（iFlow 集成流）</a></td>
+            <td>集成中间件（Cloud Integration）</td>
+            <td>iFlow 测试载荷（JSON/XML）+ Groovy 脚本，配合教程在 Cloud Integration Web UI 里绘制集成流</td>
+            <td>⚠️ 需在 BTP 开通 Integration Suite；载荷/脚本按 iFlow 粘贴使用</td>
           </tr>
         </tbody>
       </table>
@@ -263,6 +273,32 @@ cds watch
 # 列表：筛选栏 + 5 列表格（库存列带状态颜色）；点行进 Object Page（基本信息/订单/补充信息）
 # 对象页点「下单」→ submitOrder 扣库存；curl 验证见包内 README</code></pre>
 
+      <h2 id="cpi">7. CPI iFlow 素材包（samples/cpi-iflows）</h2>
+      <p class="path-note">对应《Integration Suite 培训》I3–I6（hello-echo / order-transform / order-dispatch）</p>
+      <p>iFlow 本体在 Cloud Integration Web UI 里用鼠标绘制（可视化操作），无法用文本文件代替；本包提供画布上需要的一切<b>可复制内容</b>：三个 iFlow 的入站测试载荷（JSON/XML）与 Groovy 脚本（金额换算、header/property 片段）。</p>
+      <table class="doc">
+        <thead>
+          <tr><th>文件</th><th>内容</th><th>对应章节</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><a download href="samples/cpi-iflows/payloads/order-book.json">payloads/order-book.json</a></td><td>I4 下单 JSON（《Wuthering Heights》qty=2，price=11.11，预期 amount=22.22）</td><td>I4 / I6</td></tr>
+          <tr><td><a download href="samples/cpi-iflows/payloads/order-urgent.xml">payloads/order-urgent.xml</a></td><td>加急订单（type=urgent，命中 CBR Route 1）</td><td>I5 / I6</td></tr>
+          <tr><td><a download href="samples/cpi-iflows/payloads/order-normal.xml">payloads/order-normal.xml</a></td><td>普通订单（type=book，走 Default 分支）</td><td>I5 / I6</td></tr>
+          <tr><td><a download href="samples/cpi-iflows/payloads/order-ns-urgent.xml">payloads/order-ns-urgent.xml</a></td><td>带默认命名空间的加急订单（XPath 前缀练习）</td><td>I5.6</td></tr>
+          <tr><td><a download href="samples/cpi-iflows/scripts/order-transform.groovy">scripts/order-transform.groovy</a></td><td>Groovy：算金额 + 重组 JSON + 设 header/property（粘贴进 Script 步骤）</td><td>I4.3</td></tr>
+          <tr><td><a download href="samples/cpi-iflows/scripts/groovy-snippets.groovy">scripts/groovy-snippets.groovy</a></td><td>header / property / XML 读取常用片段</td><td>I6.3</td></tr>
+          <tr><td><a download href="samples/cpi-iflows/README.md">README.md</a></td><td>使用说明：三个 iFlow 对照表 + curl 测试命令 + 注意</td><td>I3–I6</td></tr>
+        </tbody>
+      </table>
+      <h3>快速开始</h3>
+      <pre><code class="language-bash"># 0) 先按教程 I2 在 BTP 开通 Integration Suite，再按 I3–I5 在 Web UI 画出三个 iFlow（包名 iflow_course）
+# 1) 部署后复制端点：https://&lt;租户域名&gt;/cxf/order（order-transform）
+# 2) 测试（README.md 有三条完整命令）
+curl -s -X POST "https://&lt;租户域名&gt;/cxf/order" \
+  -H 'Content-Type: application/json' \
+  --data-binary @samples/cpi-iflows/payloads/order-book.json | python3 -m json.tool
+# 3) 在 Monitor → Message Processing Log 确认 Completed 并查看轨迹</code></pre>
+
       <h2 id="note">⚠️ 使用注意</h2>
       <div class="note">
         <span class="note-title">📌 与教程页面的差异 / 使用注意</span>
@@ -273,6 +309,7 @@ cds watch
           <li><b>BTP</b>：源码与 SQL 里的主机 / 口令 / ngdbc 版本号均为<b>占位符</b>（详见包内 README 速查表），连接前务必替换；HANA Cloud 的 JDBC URL 请保持 <code>encrypt=true&amp;validateCertificate=true</code>。</li>
           <li><b>Fiori</b>：前端素材需配合 CAP Bookshop 工程（<code>samples/cap-bookshop</code>）使用；对象页「订单」子表依赖服务暴露 Orders（素材包已含）；F4 状态徽标需按包内 README 在服务端补 criticality 字段，直接启用会有运行时错误。</li>
           <li><b>CAP + Fiori 整体工程</b>：criticality 已在服务端实现，徽标开箱即用；与拆分包的差异是它把后端投影加了 <code>criticality</code> 计算字段（见 <code>srv/cat-service.cds</code>），其余逻辑与 cap-bookshop 一致。</li>
+          <li><b>CPI</b>：素材包<b>不含 iFlow 本体</b>（画布是可视化操作）与真实端点——端点 URL 含你自己的租户域名，替换后使用；回显服务 <code>postman-echo.com</code> 为公网第三方，不可达时重试或换 <code>https://httpbin.org/post</code>；Sender 若返回 401，教学环境可把 Authentication 设为 None（见 I3.7，生产不可取）。</li>
         </ul>
       </div>
       <div class="note">

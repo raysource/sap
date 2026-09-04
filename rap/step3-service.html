@@ -17,6 +17,7 @@
       <a class="tab active" href="overview.html">RAP 培训</a>
       <a class="tab" href="../cap/overview.html">CAP 培训</a>
       <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -218,6 +219,140 @@ define service ZUI_TRAVEL_O4 {
           <li><b>Preview 依赖</b>：Preview 会打开 Fiori Elements，需要系统已激活 <code>/sap/bc/ui5_ui5</code> 等 Fiori BSP 运行时；开发环境一般默认开启。</li>
         </ul>
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 12 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–8 题）+ <b>🔶 能力提高</b>（第 9–12 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–8）</h3>
+        <ol class="qz">
+          <li><p class="q">RAP 服务层的两个对象是？</p>
+            <div class="opts">
+              <div><b>A.</b> Service Definition 与 Service Binding</div>
+              <div><b>B.</b> Data Definition 与 Behavior Definition</div>
+              <div><b>C.</b> ABAP Class 与 Interface</div>
+              <div><b>D.</b> 传输请求与包</div>
+            </div>
+          </li>
+          <li><p class="q">Service Definition 的作用是？</p>
+            <div class="opts">
+              <div><b>A.</b> 选择数据库</div>
+              <div><b>B.</b> 声明把哪些实体（消费视图）及操作暴露给外部</div>
+              <div><b>C.</b> 生成 Fiori 页面</div>
+              <div><b>D.</b> 配置权限用户</div>
+            </div>
+          </li>
+          <li><p class="q">Service Binding 中绑定类型选「OData V4 – UI」主要是为了？</p>
+            <div class="opts">
+              <div><b>A.</b> 跑批任务</div>
+              <div><b>B.</b> Fiori 预览与注解化 UI</div>
+              <div><b>C.</b> 仅供 Postman</div>
+              <div><b>D.</b> 写 Groovy</div>
+            </div>
+          </li>
+          <li><p class="q">服务 URL 中 <code>/0001/</code> 这一段表示？</p>
+            <div class="opts">
+              <div><b>A.</b> 端口号</div>
+              <div><b>B.</b> 服务版本号（默认从 0001 起）</div>
+              <div><b>C.</b> 客户端号</div>
+              <div><b>D.</b> 语言代码</div>
+            </div>
+          </li>
+          <li><p class="q">URL 末尾的 <code>…/Travel</code> 表示？</p>
+            <div class="opts">
+              <div><b>A.</b> 一个实体集（Entity Set），可对其 GET / POST 等</div>
+              <div><b>B.</b> 一个报表</div>
+              <div><b>C.</b> 一个函数库</div>
+              <div><b>D.</b> 数据库表名</div>
+            </div>
+          </li>
+          <li><p class="q">浏览器直接访问服务根 URL 并追加哪个片段可验证服务可用？</p>
+            <div class="opts">
+              <div><b>A.</b> ?$metadata</div>
+              <div><b>B.</b> ?$format=html</div>
+              <div><b>C.</b> ?$orderby=x</div>
+              <div><b>D.</b> &status=OK</div>
+            </div>
+          </li>
+          <li><p class="q">BDEF 里定义的 Action（如 accepttravel）要暴露给 OData 客户端，前提是？</p>
+            <div class="opts">
+              <div><b>A.</b> 单独发布 Action 服务</div>
+              <div><b>B.</b> 服务定义暴露承载它的实体即可，绑定后动作随实体自动出现</div>
+              <div><b>C.</b> 必须手写 RFC</div>
+              <div><b>D.</b> 需要 BAdI 实现</div>
+            </div>
+          </li>
+          <li><p class="q">服务定义与绑定可以是一对多吗？</p>
+            <div class="opts">
+              <div><b>A.</b> 可以：同一份定义可建多个绑定（不同协议 / 用途）</div>
+              <div><b>B.</b> 不可以，必须一一对应</div>
+              <div><b>C.</b> 最多两个绑定</div>
+              <div><b>D.</b> 绑定只能建一次</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–8））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">服务定义声明暴露内容，服务绑定选择协议并发布 URL。</td></tr>
+              <tr><td>2</td><td class="an">B</td><td class="expl">服务定义划定对外边界：<code>define service … { expose … }</code>。</td></tr>
+              <tr><td>3</td><td class="an">B</td><td class="expl">UI 类型的绑定生成面向 Fiori Elements 的注解服务并支持预览；Web API 类型则面向系统集成。</td></tr>
+              <tr><td>4</td><td class="an">B</td><td class="expl">版本段随服务定义发布而存在；通常从 0001 开始，发布新版本会得到新的版本段。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">路径最后一段是实体集名，OData 客户端对它做 CRUD 与筛选。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">$metadata 返回服务模型 XML，是最快的连通性验证。</td></tr>
+              <tr><td>7</td><td class="an">B</td><td class="expl">Action 属于实体行为：服务定义暴露实体 → 绑定发布 → OData 客户端即可调用该实例动作。</td></tr>
+              <tr><td>8</td><td class="an">A</td><td class="expl">定义是契约，绑定是发布方式；同一契约可按需多协议发布。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（9–12）</h3>
+        <ol class="qz" start="9">
+          <li><p class="q">URL 片段 <code>/sap/opu/odata4/</code> 表明这是？</p>
+            <div class="opts">
+              <div><b>A.</b> OData V2 服务</div>
+              <div><b>B.</b> OData V4 协议通道</div>
+              <div><b>C.</b> 内部 RFC 通道</div>
+              <div><b>D.</b> 静态文件目录</div>
+            </div>
+          </li>
+          <li><p class="q">「OData V4 – UI」绑定与「Web API」绑定的主要区别是？</p>
+            <div class="opts">
+              <div><b>A.</b> UI 版带 Fiori 注解且支持 Draft 预览；Web API 版干净面向系统间集成</div>
+              <div><b>B.</b> Web API 不支持 GET</div>
+              <div><b>C.</b> UI 版不能增删改</div>
+              <div><b>D.</b> 二者完全一样</div>
+            </div>
+          </li>
+          <li><p class="q">想给已发布的服务换协议（如 V4 → V2），正确的做法是？</p>
+            <div class="opts">
+              <div><b>A.</b> 改绑定类型保存即可</div>
+              <div><b>B.</b> 新建一个绑定选择新协议（定义不动）</div>
+              <div><b>C.</b> 删掉服务定义重建</div>
+              <div><b>D.</b> 升级数据库</div>
+            </div>
+          </li>
+          <li><p class="q">关于服务 URL 的版本段说法正确的是？</p>
+            <div class="opts">
+              <div><b>A.</b> 固定为 0000</div>
+              <div><b>B.</b> 默认从 0001 起，随定义发布新版本而存在多版本 URL</div>
+              <div><b>C.</b> 随机生成</div>
+              <div><b>D.</b> 等于系统号</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（9–12））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>9</td><td class="an">B</td><td class="expl">odata4 是 V4 的网关路径（odata2 对应 V2）；配合 /srvd/…/0001 可整体理解服务定位。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">同一服务契约按消费方选择发布形态：给人（Fiori）用 UI 型，给系统用 Web API 型。</td></tr>
+              <tr><td>11</td><td class="an">B</td><td class="expl">协议绑定在绑定对象上；定义可复用，新增 / 更换绑定即可发布别的协议。</td></tr>
+              <tr><td>12</td><td class="an">B</td><td class="expl">版本段从 0001 开始按发布递增，多版本可并存，旧客户端不因新版本发布而失效。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="step2-behavior.html"><small>← 上一章</small><b>手顺2：行为定义与实现</b></a>

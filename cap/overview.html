@@ -17,6 +17,7 @@
       <a class="tab" href="../rap/overview.html">RAP 培训</a>
       <a class="tab active" href="overview.html">CAP 培训</a>
       <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -176,6 +177,122 @@
         <span class="note-title">☕ 想用 Java 实现 CAP？</span>
         以上是 <b>Node.js 运行时</b>路线。CAP 还支持 <b>Java 运行时</b>（JDK 17 + Maven + Spring Boot），模型与数据完全一致，业务逻辑改用 Java 注解处理器。独立路线见左侧 <b>CAP for Java</b> 栏，从 <a href="java/overview.html">Java 概述</a> 开始。
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">CAP（Cloud Application Programming Model）最核心的定位是？</p>
+            <div class="opts">
+              <div><b>A.</b> 只做数据库迁移的工具</div>
+              <div><b>B.</b> 开源的全栈云应用框架：一份 CDS 领域模型同时驱动数据、服务与 UI</div>
+              <div><b>C.</b> SAP GUI 的替代品</div>
+              <div><b>D.</b> 报表生成器</div>
+            </div>
+          </li>
+          <li><p class="q">CAP「单一领域模型」的主要价值是？</p>
+            <div class="opts">
+              <div><b>A.</b> 减少代码量且模型到处复用</div>
+              <div><b>B.</b> 不需要数据库</div>
+              <div><b>C.</b> 不需要写前端</div>
+              <div><b>D.</b> 只能定义一张表</div>
+            </div>
+          </li>
+          <li><p class="q">CAP 业务逻辑的默认运行时语言是？</p>
+            <div class="opts">
+              <div><b>A.</b> JavaScript / Node.js（也支持 Java）</div>
+              <div><b>B.</b> COBOL</div>
+              <div><b>C.</b> ABAP</div>
+              <div><b>D.</b> C#</div>
+            </div>
+          </li>
+          <li><p class="q">cds init 生成的项目中，db/ srv/ app/ 三个目录分别放？</p>
+            <div class="opts">
+              <div><b>A.</b> 领域模型与种子数据 / 服务定义与业务逻辑 / 前端应用</div>
+              <div><b>B.</b> 前端 / 数据库 / 文档</div>
+              <div><b>C.</b> 配置 / 日志 / 缓存</div>
+              <div><b>D.</b> 测试 / 构建 / 部署</div>
+            </div>
+          </li>
+          <li><p class="q">本课 Bookshop 场景的四个实体是？</p>
+            <div class="opts">
+              <div><b>A.</b> Books / Authors / Genres / Orders</div>
+              <div><b>B.</b> Travel / Booking / Flight / Hotel</div>
+              <div><b>C.</b> Users / Roles / Menus / Logs</div>
+              <div><b>D.</b> Products / Prices / Shops / Carts</div>
+            </div>
+          </li>
+          <li><p class="q">CAP 相比传统全栈开发（前后端手写胶水代码）最大的收益是？</p>
+            <div class="opts">
+              <div><b>A.</b> 完全不需要编程</div>
+              <div><b>B.</b> 框架按模型自动生成 OData 服务与数据库，开发者只写模型 + 关键逻辑</div>
+              <div><b>C.</b> 必须用 TypeScript</div>
+              <div><b>D.</b> 只能跑在 SAP 云上</div>
+            </div>
+          </li>
+          <li><p class="q">CAP 应用开发阶段可本地运行，正式部署通常到哪里？</p>
+            <div class="opts">
+              <div><b>A.</b> SAP BTP（Cloud Foundry）</div>
+              <div><b>B.</b> 浏览器</div>
+              <div><b>C.</b> U 盘</div>
+              <div><b>D.</b> SAP GUI 服务器</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">B</td><td class="expl">CAP 用 CDS 模型驱动数据层、服务层与 UI 元数据，业务逻辑用 Node.js（或 Java）编写。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">一份模型同时产出数据库结构、OData 服务与 Fiori 注解元数据，避免多处重复定义。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">CAP 默认 Node.js 运行时，另提供完整的 Java 运行时路线（见 CAP Java 章节）。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">db/=数据模型+CSV；srv/=服务（cds 定义+js 逻辑）；app/=Fiori 等 UI（第 6 章后出现）。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">书店模型：图书、作者、分类为业务主数据，Orders 由第 5 章追加用于下单练习。</td></tr>
+              <tr><td>6</td><td class="an">B</td><td class="expl">模型驱动 + 框架生成省掉大量样板：声明模型与业务规则，服务与 UI 自动就位。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">本地用 SQLite 开发，部署到 BTP Cloud Foundry（或 Kyma）；Java 路线部署方式见对应章节。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">CAP 与 RAP 都基于 CDS 和 OData，最主要的差异是？</p>
+            <div class="opts">
+              <div><b>A.</b> RAP 用 ABAP 跑在 S/4HANA 内部，CAP 用 Node.js/Java 跑在云上（或本地）</div>
+              <div><b>B.</b> RAP 不支持 OData</div>
+              <div><b>C.</b> CAP 不支持数据库</div>
+              <div><b>D.</b> 二者完全相同</div>
+            </div>
+          </li>
+          <li><p class="q">CAP 的「声明式服务」指的是？</p>
+            <div class="opts">
+              <div><b>A.</b> 用 CDS 的 service 块声明实体暴露方式，OData 由框架自动生成，而不是手写路由</div>
+              <div><b>B.</b> 手写 Express 路由</div>
+              <div><b>C.</b> 用配置文件声明</div>
+              <div><b>D.</b> 只能生成 SOAP</div>
+            </div>
+          </li>
+          <li><p class="q">「可插拔后端」在 CAP 中的体现是？</p>
+            <div class="opts">
+              <div><b>A.</b> 开发用 SQLite、生产切 HANA/Postgres，模型不变，由框架适配</div>
+              <div><b>B.</b> 数据库只能选一家</div>
+              <div><b>C.</b> 不能连外部数据库</div>
+              <div><b>D.</b> 后端必须写两遍</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">同源的模型理念、不同的运行栈：RAP 服务系统内对象，CAP 构建独立云应用——这也是本培训两条主线的设计。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">service 块（含投影与 Action/Function 声明）即服务契约，运行时自动映射为 OData 端点。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">CAP 抽象了数据库方言：本地 SQLite 起步，部署时切 HANA 等，业务代码不受影响。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="../index.html"><small>← 上一步</small><b>回到首页</b></a>

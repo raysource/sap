@@ -17,6 +17,7 @@
       <a class="tab" href="../../rap/overview.html">RAP 培训</a>
       <a class="tab active" href="../overview.html">CAP 培训</a>
       <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -297,6 +298,122 @@ public class Application {
           <li><b>不要用 <code>cds watch</code></b>：它是 Node 版的启动方式；Java 版用 <code>mvn spring-boot:run</code>。</li>
         </ul>
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">J3.1 手写一个简单 Book DTO 是为了说明什么？</p>
+            <div class="opts">
+              <div><b>A.</b> 手写 DTO 还要配套 Controller/DAO/DDL/转换等大量样板，凸显 CAP 自动化的价值</div>
+              <div><b>B.</b> Java 不能建项目</div>
+              <div><b>C.</b> DTO 是唯一写法</div>
+              <div><b>D.</b> 必须手写数据库</div>
+            </div>
+          </li>
+          <li><p class="q">生成 CAP Java 项目骨架的命令是？</p>
+            <div class="opts">
+              <div><b>A.</b> cds init bookshop --java</div>
+              <div><b>B.</b> cds create java bookshop</div>
+              <div><b>C.</b> npm init java</div>
+              <div><b>D.</b> mvn archetype:generate cds</div>
+            </div>
+          </li>
+          <li><p class="q">生成的 Java 工程是 Maven 多模块结构，典型子模块有？</p>
+            <div class="opts">
+              <div><b>A.</b> 根（父 pom）+ srv（服务模块）等</div>
+              <div><b>B.</b> 只有一层目录</div>
+              <div><b>C.</b> 前端模块为主</div>
+              <div><b>D.</b> 没有 pom</div>
+            </div>
+          </li>
+          <li><p class="q">模板生成的启动类 Application.java 位于？</p>
+            <div class="opts">
+              <div><b>A.</b> com.acme.bookshop（对应 groupId/包配置）</div>
+              <div><b>B.</b> 任意位置</div>
+              <div><b>C.</b> db 目录</div>
+              <div><b>D.</b> node_modules</div>
+            </div>
+          </li>
+          <li><p class="q">pom.xml 里接入「编译期代码生成」靠的是？</p>
+            <div class="opts">
+              <div><b>A.</b> cds-maven-plugin（绑定在构建生命周期中执行）</div>
+              <div><b>B.</b> 手写代码生成器</div>
+              <div><b>C.</b> 文本替换</div>
+              <div><b>D.</b> IDE 插件</div>
+            </div>
+          </li>
+          <li><p class="q">首次构建并生成代码的命令是？</p>
+            <div class="opts">
+              <div><b>A.</b> mvn clean install（或 mvn compile）</div>
+              <div><b>B.</b> npm run build</div>
+              <div><b>C.</b> java -jar app</div>
+              <div><b>D.</b> cds watch</div>
+            </div>
+          </li>
+          <li><p class="q">Java 工程里的 db/schema.cds 与 Node 版相比？</p>
+            <div class="opts">
+              <div><b>A.</b> 内容一致可复用</div>
+              <div><b>B.</b> 语法完全不同</div>
+              <div><b>C.</b> Java 不需要模型</div>
+              <div><b>D.</b> 只能有一张表</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">对照实验：手写 DTO 全家桶 vs CAP「模型一次、类自动生成」。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">--java 让脚手架生成 Maven 多模块的 Spring Boot 工程。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">父 pom 聚合，业务代码在 srv 模块下（srv/src/main/java…）。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">包名由工程配置（如 com.acme.bookshop）决定，Spring Boot 入口类在其中。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">cds-maven-plugin 解析 CDS 模型并生成 Java 源，是 Java 版的核心引擎。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">Maven 构建会触发模型编译与代码生成；产物含生成的模型类。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">模型文件跨运行时复用，这是 CAP 的核心设计。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">「模型一次、类自动生成」里，唯一的『事实源』是？</p>
+            <div class="opts">
+              <div><b>A.</b> CDS 模型（schema.cds + service.cds）</div>
+              <div><b>B.</b> Java 类</div>
+              <div><b>C.</b> 数据库表</div>
+              <div><b>D.</b> 文档</div>
+            </div>
+          </li>
+          <li><p class="q">Java 源码包名（如 com.acme.bookshop）由什么决定？</p>
+            <div class="opts">
+              <div><b>A.</b> 工程的 groupId/包基础配置（pom 与生成参数）</div>
+              <div><b>B.</b> 文件名</div>
+              <div><b>C.</b> 数据库名</div>
+              <div><b>D.</b> 随机</div>
+            </div>
+          </li>
+          <li><p class="q">生成的 Books 类相比 J3.1 手写 DTO 强在哪？</p>
+            <div class="opts">
+              <div><b>A.</b> 字段/类型/键与模型严格对应且带注解，随模型自动更新</div>
+              <div><b>B.</b> 更快一点</div>
+              <div><b>C.</b> 更短</div>
+              <div><b>D.</b> 颜色更好看</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">改模型 → 重新生成 → 表与类同步，避免手写多处漂移。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">脚手架按 groupId 等生成包结构；想改包名需同步调整 pom 与 import。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">生成类与模型零漂移：改模型重编译即得新类，手写 DTO 则容易遗漏。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="prep.html"><small>← 上一章</small><b>环境准备</b></a>

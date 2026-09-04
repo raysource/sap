@@ -17,6 +17,7 @@
       <a class="tab" href="../rap/overview.html">RAP 培训</a>
       <a class="tab" href="../cap/overview.html">CAP 培训</a>
       <a class="tab active" href="overview.html">Fiori 培训</a>
+      <a class="tab" href="../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -313,6 +314,122 @@
         <span class="note-title">🎯 本培训怎么用</span>
         把 F2/F3 的 Bookshop 工程复制一份，分别用 <code>cds add fiori</code> 选 <b>Overview Page</b>、<b>Form Entry Object</b> 各生成一次，对照本章 mockup 观察默认页面——用「生成 → 看 → 注解微调」循环熟悉每个模板，比背模板列表有效得多。
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">Fiori Elements 模板解决什么？</p>
+            <div class="opts">
+              <div><b>A.</b> 每类典型业务场景（列表/详情/看板/分析/录入…）给出预制页面</div>
+              <div><b>B.</b> 一种页面打天下</div>
+              <div><b>C.</b> 只做登录页</div>
+              <div><b>D.</b> 替代后端</div>
+            </div>
+          </li>
+          <li><p class="q">Worklist 模板的典型场景是？</p>
+            <div class="opts">
+              <div><b>A.</b> 待办/任务列表（强调进入处理）</div>
+              <div><b>B.</b> 复杂报表</div>
+              <div><b>C.</b> 向导录入</div>
+              <div><b>D.</b> 仪表盘</div>
+            </div>
+          </li>
+          <li><p class="q">Overview Page 长什么样？</p>
+            <div class="opts">
+              <div><b>A.</b> 卡片式总览，可聚合多个数据源/链接</div>
+              <div><b>B.</b> 纯表格</div>
+              <div><b>C.</b> 代码编辑器</div>
+              <div><b>D.</b> 聊天窗</div>
+            </div>
+          </li>
+          <li><p class="q">Analytical List Page（ALP）的定位是？</p>
+            <div class="opts">
+              <div><b>A.</b> 图表 + 列表联动的分析场景</div>
+              <div><b>B.</b> 纯列表 CRUD</div>
+              <div><b>C.</b> 表单录入</div>
+              <div><b>D.</b> 自由画布</div>
+            </div>
+          </li>
+          <li><p class="q">Form Entry 适合什么？</p>
+            <div class="opts">
+              <div><b>A.</b> 向导式分步录入/审批流首屏</div>
+              <div><b>B.</b> 只读详情</div>
+              <div><b>C.</b> 看板</div>
+              <div><b>D.</b> 批量作业</div>
+            </div>
+          </li>
+          <li><p class="q">Custom Page 什么时候用？</p>
+            <div class="opts">
+              <div><b>A.</b> 标准模板无法满足、需要自由布局时（可混合 UI5 与注解数据）</div>
+              <div><b>B.</b> 所有场景都用</div>
+              <div><b>C.</b> 不许手写</div>
+              <div><b>D.</b> 只能放图表</div>
+            </div>
+          </li>
+          <li><p class="q">选择模板的决策起点是？</p>
+            <div class="opts">
+              <div><b>A.</b> 业务数据形态与用户任务（列表？详情？看板？分析？录入？）</div>
+              <div><b>B.</b> 公司规模</div>
+              <div><b>C.</b> 浏览器版本</div>
+              <div><b>D.</b> 喜欢的颜色</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">模板库按场景分类，选对模板 = 页面骨架与交互已就位。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">Worklist 面向「排队待处理」的任务清单，行即处理入口。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">Overview 用卡片做信息聚合与导航，适合门户式首页。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">ALP 让用户先看可视化再下钻明细列表，分析型业务常用。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">Form Entry 面向分步数据采集类流程（报销、入职申请等）。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">Custom 是兜底：自由 XML 视图布局 + 可选 OData 绑定。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">先问「用户在做什么任务」，再映射模板，避免过度设计。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">List Report 与 Worklist 都像「列表」，怎么区分？</p>
+            <div class="opts">
+              <div><b>A.</b> Worklist 面向待办处理流（强调状态与动作），List Report 面向全量主数据管理</div>
+              <div><b>B.</b> 完全一样</div>
+              <div><b>C.</b> Worklist 不能筛选</div>
+              <div><b>D.</b> List Report 不能点行</div>
+            </div>
+          </li>
+          <li><p class="q">ALP 与 Overview Page 都有图表，差别在？</p>
+            <div class="opts">
+              <div><b>A.</b> ALP 图表与列表联动钻取，Overview 卡片偏导航聚合</div>
+              <div><b>B.</b> 无差别</div>
+              <div><b>C.</b> Overview 才有图表</div>
+              <div><b>D.</b> ALP 只有图表</div>
+            </div>
+          </li>
+          <li><p class="q">Form Entry 与 Object Page 编辑的区别？</p>
+            <div class="opts">
+              <div><b>A.</b> Form Entry 是分步向导流程，Object Page 是单对象就地编辑</div>
+              <div><b>B.</b> 完全相同</div>
+              <div><b>C.</b> Form Entry 不能提交</div>
+              <div><b>D.</b> Object Page 无表单</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">一个管主数据查询维护，一个管任务队列流转，按钮与状态设计不同。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">ALP 是分析工作台（图→表联动），Overview 是信息门户（卡→页导航）。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">向导 vs 就地编辑：流程分步用 Form Entry，对象维护用 OP。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="elements.html"><small>← 上一章</small><b>F5 主要元素控件讲解</b></a>

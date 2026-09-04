@@ -17,6 +17,7 @@
       <a class="tab" href="../rap/overview.html">RAP 培训</a>
       <a class="tab active" href="overview.html">CAP 培训</a>
       <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -370,6 +371,122 @@ annotate service.Books with @(
           <li><b>改 manifest / annotate 后</b>：刷新浏览器即可看到新注解生效（<code>cds watch</code> 会重载 <code>app/</code> 下文件）。</li>
         </ul>
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">cds watch 启动后，默认服务地址与端口是？</p>
+            <div class="opts">
+              <div><b>A.</b> http://localhost:4004</div>
+              <div><b>B.</b> http://localhost:3000</div>
+              <div><b>C.</b> http://localhost:8080</div>
+              <div><b>D.</b> http://localhost:9000</div>
+            </div>
+          </li>
+          <li><p class="q">用 curl 读取全部图书的正确写法是？</p>
+            <div class="opts">
+              <div><b>A.</b> curl http://localhost:4004/odata/v4/catalog/Books</div>
+              <div><b>B.</b> curl http://localhost:4004/Books</div>
+              <div><b>C.</b> curl http://localhost:4004/db/schema</div>
+              <div><b>D.</b> curl http://localhost:4004/odata/v2/Books</div>
+            </div>
+          </li>
+          <li><p class="q">读取单本图书（ID=1）的写法是？</p>
+            <div class="opts">
+              <div><b>A.</b> …/catalog/Books(1)</div>
+              <div><b>B.</b> …/catalog/Books?single=1</div>
+              <div><b>C.</b> …/catalog/Books/select/1</div>
+              <div><b>D.</b> …/catalog/Books?id=1</div>
+            </div>
+          </li>
+          <li><p class="q">POST 创建一本新书，成功后典型返回？</p>
+            <div class="opts">
+              <div><b>A.</b> 201 Created（含新记录）</div>
+              <div><b>B.</b> 204</div>
+              <div><b>C.</b> 302 跳转</div>
+              <div><b>D.</b> 500</div>
+            </div>
+          </li>
+          <li><p class="q">PATCH 与 DELETE 对应 OData 的哪种操作？</p>
+            <div class="opts">
+              <div><b>A.</b> PATCH 部分更新 / DELETE 删除</div>
+              <div><b>B.</b> PATCH 删除 / DELETE 更新</div>
+              <div><b>C.</b> 都是查询</div>
+              <div><b>D.</b> PATCH 只读</div>
+            </div>
+          </li>
+          <li><p class="q">调用 submitOrder Action 的典型请求是？</p>
+            <div class="opts">
+              <div><b>A.</b> POST /odata/v4/catalog/Books(1)/submitOrder 带 JSON 参数（或服务级 submitOrder 带 book/quantity）</div>
+              <div><b>B.</b> GET 一下就行</div>
+              <div><b>C.</b> DELETE 图书</div>
+              <div><b>D.</b> PUT 整条替换</div>
+            </div>
+          </li>
+          <li><p class="q">Fiori Elements 预览所需的「UI 三件套」在 cap 手顺4 指？</p>
+            <div class="opts">
+              <div><b>A.</b> annotate.cds（@UI 注解）+ manifest.json（数据源/路由）+ index.html（引导页）</div>
+              <div><b>B.</b> css/js/html</div>
+              <div><b>C.</b> cds 三个服务</div>
+              <div><b>D.</b> 三个 CSV</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">CAP 默认端口 4004；服务根下有 /odata/v4/catalog 等端点。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">OData V4 路径 = 基础路径 + /odata/v4/&lt;service&gt;/&lt;Entity&gt;。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">OData 用括号取键：/Books(1)。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">OData POST 默认 201 + 新建实体（键由服务端生成）。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">PATCH 传部分字段做更新，DELETE 删除指定键资源。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">Action 通过 POST 调用（绑定在实体或服务上），参数放请求体（参数形态见素材包说明）。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">app/books/ 下这三个文件共同完成 Fiori Elements 页面的声明与引导。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">为什么 Fiori 页面的列/筛选来自 annotate.cds 而不是手写？</p>
+            <div class="opts">
+              <div><b>A.</b> @UI 注解进入 OData 元数据，Fiori Elements 按元数据自动渲染</div>
+              <div><b>B.</b> annotate 只是注释没作用</div>
+              <div><b>C.</b> 手写会被禁止</div>
+              <div><b>D.</b> 只有 Java 支持</div>
+            </div>
+          </li>
+          <li><p class="q">curl 里 POST JSON 要写对的两点是？</p>
+            <div class="opts">
+              <div><b>A.</b> -X POST + -H 'Content-Type: application/json' + --data '…'</div>
+              <div><b>B.</b> 只需要 URL</div>
+              <div><b>C.</b> -G 参数</div>
+              <div><b>D.</b> 把 JSON 放查询串</div>
+            </div>
+          </li>
+          <li><p class="q">服务排错的第一步通常看哪两个地方？</p>
+            <div class="opts">
+              <div><b>A.</b> cds watch 终端日志 + 浏览器访问 /odata/v4/catalog/$metadata 看模型是否就绪</div>
+              <div><b>B.</b> 数据库密码</div>
+              <div><b>C.</b> npm 缓存</div>
+              <div><b>D.</b> 系统事件日志</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">UI 声明与 CAP 模型同源：注解随服务下发，前端框架自动消费。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">POST/请求头/请求体三要素缺一不可，否则服务端按空体或表单处理。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">日志报编译/运行错误，$metadata 验证服务契约是否发布——模型改了没重启常在此暴露。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="step3-implement.html"><small>← 上一章</small><b>手顺3：业务逻辑实现</b></a>

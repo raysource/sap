@@ -221,6 +221,140 @@ curl -s -X POST "&lt;ENDPOINT&gt;" -H 'Content-Type: text/xml' \
         你能：① 说出为什么先抽 property 再路由；② 用两张测试 XML 各调一次，回显 header 分别正确；③ 在 MPL 轨迹里看到命中的分支；④ 解释带命名空间 XML 时 XPath 怎么改。
       </div>
 
+      <section id="quiz">
+      <h2>🧪 章节测评（共 12 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–8 题）+ <b>🔶 能力提高</b>（第 9–12 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–8）</h3>
+        <ol class="qz">
+          <li><p class="q">Content-Based Router（CBR）的判断依据是？</p>
+            <div class="opts">
+              <div><b>A.</b> 消息的 Header / Exchange Property 条件</div>
+              <div><b>B.</b> body 的字节长度</div>
+              <div><b>C.</b> 接收方 IP</div>
+              <div><b>D.</b> 发送时间</div>
+            </div>
+          </li>
+          <li><p class="q">路由前先「抽属性」的标准套路是？</p>
+            <div class="opts">
+              <div><b>A.</b> 用 Content Modifier（XPath）把业务值存进 Exchange Property，再让 CBR 判断</div>
+              <div><b>B.</b> 跳过，直接在路由里写死</div>
+              <div><b>C.</b> 先发再判</div>
+              <div><b>D.</b> 用 Header 存全部</div>
+            </div>
+          </li>
+          <li><p class="q">从 XML <code>&lt;order&gt;&lt;type&gt;urgent&lt;/type&gt;…</code> 抽 type，XPath 写？</p>
+            <div class="opts">
+              <div><b>A.</b> /order/type</div>
+              <div><b>B.</b> order.type</div>
+              <div><b>C.</b> //type[1]/text() 之外都错</div>
+              <div><b>D.</b> @type</div>
+            </div>
+          </li>
+          <li><p class="q">Router / CBR / Multicast 三者区别是？</p>
+            <div class="opts">
+              <div><b>A.</b> Router 单条件二选一，CBR 多条件多分支，Multicast 广播给所有分支</div>
+              <div><b>B.</b> 都一样</div>
+              <div><b>C.</b> Multicast 只发一条</div>
+              <div><b>D.</b> CBR 只能两条</div>
+            </div>
+          </li>
+          <li><p class="q">分支里给消息打标（如 Header X-Route=urgent）的作用是？</p>
+            <div class="opts">
+              <div><b>A.</b> 让接收方/日志能区分走了哪条路，也便于回显验证</div>
+              <div><b>B.</b> 纯装饰</div>
+              <div><b>C.</b> 加快速度</div>
+              <div><b>D.</b> 必须打标否则报错</div>
+            </div>
+          </li>
+          <li><p class="q">带默认命名空间的 XML（xmlns=…）做 XPath 时要？</p>
+            <div class="opts">
+              <div><b>A.</b> 声明前缀（如 ns1）并写 /ns1:order/ns1:type</div>
+              <div><b>B.</b> 直接写无前缀路径即可</div>
+              <div><b>C.</b> 先删掉命名空间</div>
+              <div><b>D.</b> 无法处理</div>
+            </div>
+          </li>
+          <li><p class="q">怎么在日志里确认消息走了哪条分支？</p>
+            <div class="opts">
+              <div><b>A.</b> MPL 轨迹里看 Router 节点后接了哪个分支步骤</div>
+              <div><b>B.</b> 猜</div>
+              <div><b>C.</b> 问接收方</div>
+              <div><b>D.</b> 看颜色</div>
+            </div>
+          </li>
+          <li><p class="q">CBR 没有任何条件命中时会？</p>
+            <div class="opts">
+              <div><b>A.</b> 走 Default（默认）分支</div>
+              <div><b>B.</b> 直接丢弃</div>
+              <div><b>C.</b> 报错停止</div>
+              <div><b>D.</b> 重发</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–8））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">CBR 配条件（属性/头 + 运算符 + 值），命中即走对应分支。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">先把 body 里的值名字化（property），路由配置简单且可复用。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">子元素用路径 /order/type（本课示例为无命名空间 XML）。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">分流 vs 广播语义不同：广播场景用 Multicast（如通知多个系统）。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">打标是验证路由的抓手：回显响应里看 headers.x-route 即知分支。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">命名空间必须用前缀映射，这是 I5 的实战注意点。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">MPL 逐组件轨迹如实反映分支选择，是路由验证的权威证据。</td></tr>
+              <tr><td>8</td><td class="an">A</td><td class="expl">Default 分支兜底：教学上应覆盖「其余全部」的订单。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（9–12）</h3>
+        <ol class="qz" start="9">
+          <li><p class="q">条件值大小写敏感意味着？</p>
+            <div class="opts">
+              <div><b>A.</b> 'urgent' 不匹配 'Urgent'，数据不可控时应先统一小写再存属性</div>
+              <div><b>B.</b> 无影响</div>
+              <div><b>C.</b> 必须全大写</div>
+              <div><b>D.</b> 自动忽略</div>
+            </div>
+          </li>
+          <li><p class="q">为什么抽成 property 而不是在路由里直接写 XPath？</p>
+            <div class="opts">
+              <div><b>A.</b> property 名字清晰、可在多处复用、路由配置更简单</div>
+              <div><b>B.</b> XPath 会报错</div>
+              <div><b>C.</b> property 更快</div>
+              <div><b>D.</b> 没有区别</div>
+            </div>
+          </li>
+          <li><p class="q">同一 iFlow 里两个 Receiver 命名要求是？</p>
+            <div class="opts">
+              <div><b>A.</b> 名称不能重复（用 ReceiverUrgent/ReceiverNormal 区分）</div>
+              <div><b>B.</b> 可以重名</div>
+              <div><b>C.</b> 必须一样</div>
+              <div><b>D.</b> 名称随意</div>
+            </div>
+          </li>
+          <li><p class="q">「内部路由结果别塞 Header 发给外部」的边界建议是？</p>
+            <div class="opts">
+              <div><b>A.</b> 纯内部判别信息用 Property，只有对方确实需要才放 Header</div>
+              <div><b>B.</b> 必须都放 Header</div>
+              <div><b>C.</b> 都放 Property</div>
+              <div><b>D.</b> Header 更安全</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（9–12））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>9</td><td class="an">A</td><td class="expl">字符串相等默认大小写敏感：预处理（lower）是工程习惯。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">与编程「先算局部变量再 if」同理：名字化提升可读性与复用性。</td></tr>
+              <tr><td>11</td><td class="an">A</td><td class="expl">重名会导致部署/引用歧义，起语义化名称也便于看 MPL。</td></tr>
+              <tr><td>12</td><td class="an">A</td><td class="expl">协议头是给外部看的契约：把内部实现细节外泄是接口设计坏味道。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
+
       <div class="pagenav">
         <a href="step2-transform.html"><small>← 上一章</small><b>I4 手顺2：消息转换</b></a>
         <a class="next" href="testdata.html"><small>下一步 →</small><b>I6 测试数据与素材</b></a>

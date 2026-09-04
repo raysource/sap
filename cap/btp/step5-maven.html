@@ -17,6 +17,7 @@
       <a class="tab" href="../../rap/overview.html">RAP 培训</a>
       <a class="tab active" href="../overview.html">CAP 培训</a>
       <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -264,6 +265,122 @@ public class App {
           <li><b>exec:java 报 NoClassDefFound</b>：多为依赖未解析，先 <code>mvn -q dependency:resolve</code> 再运行。</li>
         </ul>
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">模式二相比模式一，最大改进是？</p>
+            <div class="opts">
+              <div><b>A.</b> 依赖（ngdbc）由 Maven 按 pom.xml 自动下载管理，命令标准统一</div>
+              <div><b>B.</b> 代码更短</div>
+              <div><b>C.</b> 不用写 SQL</div>
+              <div><b>D.</b> 运行更快</div>
+            </div>
+          </li>
+          <li><p class="q">生成 Maven 骨架常用？</p>
+            <div class="opts">
+              <div><b>A.</b> mvn archetype:generate（指定 groupId/artifactId 等）</div>
+              <div><b>B.</b> npm init</div>
+              <div><b>C.</b> java -jar init</div>
+              <div><b>D.</b> cds init</div>
+            </div>
+          </li>
+          <li><p class="q">ngdbc 依赖声明在 pom.xml 的哪个区？</p>
+            <div class="opts">
+              <div><b>A.</b> &lt;dependencies&gt;（groupId: com.sap.cloud.db / jdbc 等坐标）</div>
+              <div><b>B.</b> &lt;plugins&gt;</div>
+              <div><b>C.</b> &lt;properties&gt;</div>
+              <div><b>D.</b> &lt;modules&gt;</div>
+            </div>
+          </li>
+          <li><p class="q">「exec-maven-plugin」的作用是？</p>
+            <div class="opts">
+              <div><b>A.</b> 让 mvn 直接运行 Java 主类（mvn exec:java）</div>
+              <div><b>B.</b> 打包 war</div>
+              <div><b>C.</b> 下载源码</div>
+              <div><b>D.</b> 清理缓存</div>
+            </div>
+          </li>
+          <li><p class="q">运行命令是？</p>
+            <div class="opts">
+              <div><b>A.</b> mvn compile exec:java</div>
+              <div><b>B.</b> java App</div>
+              <div><b>C.</b> npm start</div>
+              <div><b>D.</b> javac 手动</div>
+            </div>
+          </li>
+          <li><p class="q">主程序源码应放在哪个目录？</p>
+            <div class="opts">
+              <div><b>A.</b> src/main/java/com/acme/bookshop/App.java</div>
+              <div><b>B.</b> 根目录随便放</div>
+              <div><b>C.</b> lib/</div>
+              <div><b>D.</b> out/</div>
+            </div>
+          </li>
+          <li><p class="q">pom.xml 里 &lt;artifactId&gt; 主要决定？</p>
+            <div class="opts">
+              <div><b>A.</b> 工程的构件名（目录/坐标名）</div>
+              <div><b>B.</b> 数据库表名</div>
+              <div><b>C.</b> 类名</div>
+              <div><b>D.</b> 端口</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">Maven 接管依赖与构建：不用再手工放 jar 和拼 classpath。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">archetype 模板生成标准目录 src/main/java 与 pom.xml。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">依赖坐标写入 dependencies，Maven 从仓库解析；插件（如 exec）在 plugins。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">模式二一条命令编译并运行：mvn compile exec:java。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">compile 保证产物最新，exec:java 启动主类。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">Maven 约定优于配置：源码固定 src/main/java。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">artifactId 是工程坐标之一，也常作目录名。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">「依赖自动下载」依赖的仓库默认是？</p>
+            <div class="opts">
+              <div><b>A.</b> Maven Central（远程中央仓库，可按需配镜像）</div>
+              <div><b>B.</b> 本地磁盘</div>
+              <div><b>C.</b> GitHub Actions</div>
+              <div><b>D.</b> BTP 内部</div>
+            </div>
+          </li>
+          <li><p class="q">改完 Java 代码后运行 mvn exec:java 前，为什么习惯先 compile？</p>
+            <div class="opts">
+              <div><b>A.</b> 确保最新代码已被编译（增量构建避免跑旧 class）</div>
+              <div><b>B.</b> compile 会删库</div>
+              <div><b>C.</b> 不 compile 必报错</div>
+              <div><b>D.</b> 无关</div>
+            </div>
+          </li>
+          <li><p class="q">pom 里把 ngdbc 标成 &lt;scope&gt;provided&lt;/scope&gt; 的意图可能是？</p>
+            <div class="opts">
+              <div><b>A.</b> 运行时由容器/平台提供驱动，打包时不重复打入</div>
+              <div><b>B.</b> 依赖更小就更快</div>
+              <div><b>C.</b> 禁止联网</div>
+              <div><b>D.</b> 必须这样</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">Maven 从 Central 解析坐标；内网常配镜像（如阿里云/华为云）。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">exec 不总是触发重编译，先 compile 稳妥；工程化用 mvn package 一步到位。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">provided 依赖参与编译但不进产物，适用于平台自带驱动的场景（了解即可）。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="step4-dir.html"><small>← 上一章</small><b>第 B6 章：手顺4 模式一 目录式</b></a>

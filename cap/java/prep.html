@@ -17,6 +17,7 @@
       <a class="tab" href="../../rap/overview.html">RAP 培训</a>
       <a class="tab active" href="../overview.html">CAP 培训</a>
       <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -247,6 +248,122 @@ export PATH="$JAVA_HOME/bin:$PATH"
           <li><b>Eclipse 太旧</b>：STS4 需 <b>4.19+</b> 才支持 Java 17 与 CAP 插件；老版本直接装不上或导入报错，建议用 IntelliJ Community 或升级 STS4。</li>
         </ul>
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">CAP Java 开发环境的「四件套」是？</p>
+            <div class="opts">
+              <div><b>A.</b> JDK 17 + Maven 3.8+ + @sap/cds-dk + IDE</div>
+              <div><b>B.</b> Node + npm + cds-dk + VS Code</div>
+              <div><b>C.</b> Eclipse + ADT + S/4</div>
+              <div><b>D.</b> Python + pip + Jupyter</div>
+            </div>
+          </li>
+          <li><p class="q">Maven 3.8+ 有个特殊要求是？</p>
+            <div class="opts">
+              <div><b>A.</b> 必须运行在 JDK 17 上</div>
+              <div><b>B.</b> 必须联网</div>
+              <div><b>C.</b> 只能装 C 盘</div>
+              <div><b>D.</b> 不需要配置</div>
+            </div>
+          </li>
+          <li><p class="q">安装 cds-dk 的命令是？</p>
+            <div class="opts">
+              <div><b>A.</b> npm install -g @sap/cds-dk</div>
+              <div><b>B.</b> brew install cds</div>
+              <div><b>C.</b> apt install cds-dk</div>
+              <div><b>D.</b> mvn cds:install</div>
+            </div>
+          </li>
+          <li><p class="q">验证 JDK 与 Maven 装好常用的两条命令是？</p>
+            <div class="opts">
+              <div><b>A.</b> java -version 与 mvn -v</div>
+              <div><b>B.</b> node -v 与 npm -v</div>
+              <div><b>C.</b> java -jar 与 mvn run</div>
+              <div><b>D.</b> javac -version 与 npm list</div>
+            </div>
+          </li>
+          <li><p class="q">JAVA_HOME 环境变量的作用是？</p>
+            <div class="opts">
+              <div><b>A.</b> 告诉系统/构建工具 JDK 安装位置</div>
+              <div><b>B.</b> 设置浏览器首页</div>
+              <div><b>C.</b> 配置数据库密码</div>
+              <div><b>D.</b> 指定项目名</div>
+            </div>
+          </li>
+          <li><p class="q">用 JDK 17 而非最新版本，主要原因是？</p>
+            <div class="opts">
+              <div><b>A.</b> CAP Java 明确以 17 为基线（LTS），生态兼容稳</div>
+              <div><b>B.</b> 17 更省内存</div>
+              <div><b>C.</b> 新版不能联网</div>
+              <div><b>D.</b> 教程只写了 17 的名字</div>
+            </div>
+          </li>
+          <li><p class="q">为什么装了 cds-dk 还得装 JDK？</p>
+            <div class="opts">
+              <div><b>A.</b> cds-dk 只是脚手架（生成项目用），运行 Java 项目靠 JDK</div>
+              <div><b>B.</b> cds-dk 不含命令</div>
+              <div><b>C.</b> JDK 提供 cds 命令</div>
+              <div><b>D.</b> 两者互相替代</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">JDK 编译运行、Maven 构建、cds-dk 提供脚手架（cds init --java）、IDE 写代码。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">Maven 的 Java 版本要与工程一致（跑在 JDK 17），否则构建行为异常。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">cds-dk 通过 npm 分发，所以机器上仍需 Node.js 来执行 npm。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">java -version 看 JDK，mvn -v 看 Maven 及其 JDK 版本信息。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">Maven 等工具靠 JAVA_HOME 找到 JDK；配置错误会报找不到 Java。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">框架按 LTS 基线验证，跟教程用 17 最省心；升级版本属工程决策。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">cds init --java 只负责生成工程；编译与运行由 Maven+JDK 完成。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">Maven 跑在 JDK 8 上构建 JDK 17 项目，典型的报错形态是？</p>
+            <div class="opts">
+              <div><b>A.</b> Unsupported class file / 编译目标版本错误等</div>
+              <div><b>B.</b> 无限循环</div>
+              <div><b>C.</b> 无法打开 IDE</div>
+              <div><b>D.</b> 数据库连不上</div>
+            </div>
+          </li>
+          <li><p class="q">四个组件里唯一「可选更换」的是？</p>
+            <div class="opts">
+              <div><b>A.</b> IDE（IntelliJ/Eclipse/VS Code 任选）</div>
+              <div><b>B.</b> JDK</div>
+              <div><b>C.</b> Maven</div>
+              <div><b>D.</b> cds-dk</div>
+            </div>
+          </li>
+          <li><p class="q">一个干净 CI 机器上构建 Java 工程，最少需要哪两样？</p>
+            <div class="opts">
+              <div><b>A.</b> JDK + Maven（cds-dk 也可由 Maven 插件替代场景而定）</div>
+              <div><b>B.</b> 浏览器 + 鼠标</div>
+              <div><b>C.</b> Node + 数据库</div>
+              <div><b>D.</b> git + docker</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">编译目标与运行 JDK 不匹配会出现 class version / release 类错误，先查 mvn -v 的 Java。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">JDK/Maven/cds-dk 是工具链，IDE 偏好不影响构建，选顺手即可。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">编译运行只需 JDK 与 Maven；脚手架只在初始化时需要（或用 npm 临时 npx）。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="overview.html"><small>← 上一章</small><b>第 J1 章：Java 概述</b></a>

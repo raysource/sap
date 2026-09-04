@@ -17,6 +17,7 @@
       <a class="tab" href="../rap/overview.html">RAP 培训</a>
       <a class="tab" href="../cap/overview.html">CAP 培训</a>
       <a class="tab active" href="overview.html">Fiori 培训</a>
+      <a class="tab" href="../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -187,6 +188,140 @@ annotate service.Books with @(
           <p>刷新 <code>http://localhost:4004/app/books/index.html</code>，确认筛选栏 3 个筛选项、5 列表格与<a href="#preview">图 F2-3</a>一致。</p>
         </li>
       </ol>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 12 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–8 题）+ <b>🔶 能力提高</b>（第 9–12 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–8）</h3>
+        <ol class="qz">
+          <li><p class="q">在 CAP 工程里生成 Fiori 脚手架的交互命令是？</p>
+            <div class="opts">
+              <div><b>A.</b> cds add fiori（依次选服务/实体/模板）</div>
+              <div><b>B.</b> npm create fiori</div>
+              <div><b>C.</b> cds gen ui</div>
+              <div><b>D.</b> fiori init</div>
+            </div>
+          </li>
+          <li><p class="q">「List Report Object Page」模板意味着生成？</p>
+            <div class="opts">
+              <div><b>A.</b> 列表 + 详情两段式应用</div>
+              <div><b>B.</b> 只有详情页</div>
+              <div><b>C.</b> 分析图表</div>
+              <div><b>D.</b> 移动壳</div>
+            </div>
+          </li>
+          <li><p class="q">脚手架生成到工程哪个位置？</p>
+            <div class="opts">
+              <div><b>A.</b> app/books/（annotate.cds + manifest.json + index.html 三件套）</div>
+              <div><b>B.</b> srv/ 下</div>
+              <div><b>C.</b> db/ 下</div>
+              <div><b>D.</b> 根目录散放</div>
+            </div>
+          </li>
+          <li><p class="q">控制筛选栏出现哪些筛选项的注解是？</p>
+            <div class="opts">
+              <div><b>A.</b> UI.SelectionFields（如 ['title','author.name','price']）</div>
+              <div><b>B.</b> UI.LineItem</div>
+              <div><b>C.</b> Common.SemanticKey</div>
+              <div><b>D.</b> @readonly</div>
+            </div>
+          </li>
+          <li><p class="q">控制表格显示哪些列的是？</p>
+            <div class="opts">
+              <div><b>A.</b> UI.LineItem（Value 支持关联路径如 genre.name）</div>
+              <div><b>B.</b> UI.SelectionFields</div>
+              <div><b>C.</b> @Core.Computed</div>
+              <div><b>D.</b> @title</div>
+            </div>
+          </li>
+          <li><p class="q">列表页标题/创建按钮文案来自？</p>
+            <div class="opts">
+              <div><b>A.</b> UI.HeaderInfo（TypeName / TypeNamePlural）</div>
+              <div><b>B.</b> 页面 URL</div>
+              <div><b>C.</b> 文件名</div>
+              <div><b>D.</b> 浏览器语言</div>
+            </div>
+          </li>
+          <li><p class="q">manifest.json 在 Fiori 应用里主要配置？</p>
+            <div class="opts">
+              <div><b>A.</b> 数据源（OData 服务地址）与路由到模板</div>
+              <div><b>B.</b> CSS 颜色</div>
+              <div><b>C.</b> 数据库表</div>
+              <div><b>D.</b> 后端代码</div>
+            </div>
+          </li>
+          <li><p class="q">cds watch 后预览这个页面的地址是？</p>
+            <div class="opts">
+              <div><b>A.</b> http://localhost:4004/app/books/index.html</div>
+              <div><b>B.</b> http://localhost:8080/index</div>
+              <div><b>C.</b> http://localhost:4004/odata/v4</div>
+              <div><b>D.</b> http://localhost:3000/books</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–8））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">cds add fiori 交互式生成 app/ 下的 Fiori Elements 应用骨架。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">该模板 = List Report 主页 + 可跳转的 Object Page 详情，最常用组合。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">前端应用按 app/&lt;应用名&gt;/ 组织，与后端目录解耦。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">SelectionFields 声明筛选栏字段；不声明就没有筛选栏。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">LineItem 列表决定表格列；用关联路径可以把外键渲染成可读名称。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">HeaderInfo 提供单复数名，框架用它生成标题与创建按钮等文案。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">manifest 声明 sap.app 数据源与 sap.ui5 路由，指向 List Report 模板。</td></tr>
+              <tr><td>8</td><td class="an">A</td><td class="expl">app/ 下应用由开发服务器托管，路径为 /app/&lt;name&gt;/index.html。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（9–12）</h3>
+        <ol class="qz" start="9">
+          <li><p class="q">LineItem 里写 <code>author.name</code>（关联路径）与直接显示 author_ID 的区别是？</p>
+            <div class="opts">
+              <div><b>A.</b> 显示可读的作者名而非外键数字，且框架自动解析导航</div>
+              <div><b>B.</b> 没有区别</div>
+              <div><b>C.</b> 关联路径更快</div>
+              <div><b>D.</b> 外键不可用</div>
+            </div>
+          </li>
+          <li><p class="q">cds add fiori 生成的文件与手写方式的关系是？</p>
+            <div class="opts">
+              <div><b>A.</b> 产物等价（都是三件套），脚手架只是代劳初始文件</div>
+              <div><b>B.</b> 脚手架文件不可用</div>
+              <div><b>C.</b> 手写才能定制</div>
+              <div><b>D.</b> 生成后无法再改</div>
+            </div>
+          </li>
+          <li><p class="q">VS Code 的 Fiori Tools（Application Generator）与本课脚手架的关系？</p>
+            <div class="opts">
+              <div><b>A.</b> 都是向导式生成 Fiori 应用，原理一致、入口不同</div>
+              <div><b>B.</b> 互不相关</div>
+              <div><b>C.</b> Fiori Tools 只能部署</div>
+              <div><b>D.</b> 必须同时用</div>
+            </div>
+          </li>
+          <li><p class="q">在 LineItem 里给列加 Criticality（状态色）预留是为了？</p>
+            <div class="opts">
+              <div><b>A.</b> 在 F4 用服务端 criticality 字段把库存渲染成彩色徽标</div>
+              <div><b>B.</b> 给列加粗</div>
+              <div><b>C.</b> 排序加速</div>
+              <div><b>D.</b> 权限控制</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（9–12））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>9</td><td class="an">A</td><td class="expl">关联路径经 $expand 语义渲染成可读列，是表格美化的常用手法。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">两种方式产出的结构与效果一致：脚手架适合起步，手写适合已有工程改造。</td></tr>
+              <tr><td>11</td><td class="an">A</td><td class="expl">Fiori Tools 是企业常用向导，底层生成同样的 Elements 工程。</td></tr>
+              <tr><td>12</td><td class="an">A</td><td class="expl">注解预留 + 服务端计算字段，是「状态徽标」功能的装配方式（F4 实战）。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="overview.html"><small>← 上一章</small><b>F1 Fiori 概述</b></a>

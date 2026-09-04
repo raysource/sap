@@ -188,6 +188,122 @@
         <li><b>配额</b>：试用/免费层对并发消息数、存储、运行时长短都有限制，仅供教学；本课程每个手顺只有一两次调用，不会触顶。</li>
       </ul>
 
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">Cloud Integration（CPI）租户以什么方式获得？</p>
+            <div class="opts">
+              <div><b>A.</b> 在 BTP 子账号订阅 Integration Suite（Service Marketplace → Subscribe）</div>
+              <div><b>B.</b> 下载安装包</div>
+              <div><b>C.</b> 注册即可自动有</div>
+              <div><b>D.</b> 打电话开通</div>
+            </div>
+          </li>
+          <li><p class="q">订阅计划名（trial / free 等）取决于？</p>
+            <div class="opts">
+              <div><b>A.</b> 你的账号类型与可用 entitlement</div>
+              <div><b>B.</b> 所在城市</div>
+              <div><b>C.</b> 浏览器</div>
+              <div><b>D.</b> 任意选都行</div>
+            </div>
+          </li>
+          <li><p class="q">订阅成功后进入 Cloud Integration 的入口是？</p>
+            <div class="opts">
+              <div><b>A.</b> BTP 里订阅的 Application 链接（Go to Application）→ 独立租户 URL</div>
+              <div><b>B.</b> 本地书签</div>
+              <div><b>C.</b> 命令行</div>
+              <div><b>D.</b> 手机 App</div>
+            </div>
+          </li>
+          <li><p class="q">第一次打开报「无权限」通常是因为？</p>
+            <div class="opts">
+              <div><b>A.</b> 自己的 BTP 用户还没被授予租户角色集合</div>
+              <div><b>B.</b> 系统坏了</div>
+              <div><b>C.</b> 需要续费</div>
+              <div><b>D.</b> 浏览器旧</div>
+            </div>
+          </li>
+          <li><p class="q">负责「画 iFlow 开发」的角色是？</p>
+            <div class="opts">
+              <div><b>A.</b> AuthGroup_IntegrationDeveloper</div>
+              <div><b>B.</b> Integration_Provisioner</div>
+              <div><b>C.</b> 仅 Operator 就能开发</div>
+              <div><b>D.</b> BusinessExpert 只读</div>
+            </div>
+          </li>
+          <li><p class="q">Cloud Integration Web UI 的四大区是？</p>
+            <div class="opts">
+              <div><b>A.</b> Discover（找模板）/ Design（开发）/ Monitor（监控）/ Security Material（凭据）</div>
+              <div><b>B.</b> 文件/编辑/视图/帮助</div>
+              <div><b>C.</b> 首页/购物车/订单/我的</div>
+              <div><b>D.</b> A/B/C/D 四个标签</div>
+            </div>
+          </li>
+          <li><p class="q">租户地址里 <code>-tmn</code> 与区域段说明？</p>
+            <div class="opts">
+              <div><b>A.</b> -tmn 标记集成租户，区域如 eu10 决定机房</div>
+              <div><b>B.</b> -tmn 表示测试环境</div>
+              <div><b>C.</b> 区域随便写</div>
+              <div><b>D.</b> 没有规律</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">集成套件是 BTP 订阅服务：订阅完成后出现 Go to Application 入口。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">Trial 账号常见 trial 计划，企业 Free Tier 常见 free；无确切名字时选唯一可用项。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">Go to Application 跳到租户 Web UI（域名形如 &lt;tmn&gt;-tmn.&lt;region&gt;.hana.ondemand.com）。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">要在 BTP Security → Users 里给自己分配 Integration 相关角色集合后重登。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">Developer 有 Design 权限；Provisioner/Administrator 管租户与部署，Operator 只读监控。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">四区覆盖「借鉴 → 开发 → 运行监控 → 安全管理」完整闭环。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">理解 URL 结构有助于拼接端点与排查（I3 端点 = 租户域名 + /cxf + 地址）。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">为什么订阅后还要「分配角色」这步？</p>
+            <div class="opts">
+              <div><b>A.</b> BTP 用户与租户内部授权分离：订阅自动建角色集合，需把用户映射进去</div>
+              <div><b>B.</b> 订阅没生效</div>
+              <div><b>C.</b> 多此一举</div>
+              <div><b>D.</b> 为了收费</div>
+            </div>
+          </li>
+          <li><p class="q">Trial 租户的典型现实约束是？</p>
+            <div class="opts">
+              <div><b>A.</b> 配额低、环境会休眠/可能回收，仅教学</div>
+              <div><b>B.</b> 无限流量</div>
+              <div><b>C.</b> 可用作生产</div>
+              <div><b>D.</b> 无约束</div>
+            </div>
+          </li>
+          <li><p class="q">Service Marketplace 里找不到 Integration Suite，排除顺序合理的是？</p>
+            <div class="opts">
+              <div><b>A.</b> 确认在子账号层 → 换区域（如 eu10）→ 检查 entitlement/试 Boosters</div>
+              <div><b>B.</b> 重装浏览器</div>
+              <div><b>C.</b> 换电脑</div>
+              <div><b>D.</b> 重启 BTP</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">平台身份与租户权限是两层：授权映射完成后才真正「进得去、动得了」。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">试用定位验证：学习完成后留意额度与生命周期，重要 iFlow 可整包导出。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">多为层级/区域/entitlement 问题：逐项排查比反复刷新有效。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
+
       <div class="pagenav">
         <a href="overview.html"><small>← 上一章</small><b>I1 Integration Suite 概述</b></a>
         <a class="next" href="step1-hello.html"><small>下一步 →</small><b>手顺1：第一个 iFlow</b></a>

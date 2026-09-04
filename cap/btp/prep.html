@@ -17,6 +17,7 @@
       <a class="tab" href="../../rap/overview.html">RAP 培训</a>
       <a class="tab active" href="../overview.html">CAP 培训</a>
       <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -197,6 +198,122 @@
           <li><b>子账号里没有 Cloud Foundry</b>：Enterprise 账号默认不自动建 CF，需在子账号 → Overview → Cloud Foundry 手动 <b>Create</b>，并绑定一个 quota。</li>
         </ul>
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">个人自学 BTP，通常用哪种账号？</p>
+            <div class="opts">
+              <div><b>A.</b> SAP Trial（免费试用）</div>
+              <div><b>B.</b> Enterprise 收费账号必须</div>
+              <div><b>C.</b> 学校邮箱随便注册</div>
+              <div><b>D.</b> 不需要账号</div>
+            </div>
+          </li>
+          <li><p class="q">BTP Cockpit 是什么？</p>
+            <div class="opts">
+              <div><b>A.</b> 浏览器的 BTP 管理台（Global Account / 子账号等都在这里管）</div>
+              <div><b>B.</b> 代码编辑器</div>
+              <div><b>C.</b> 数据库</div>
+              <div><b>D.</b> 命令行工具</div>
+            </div>
+          </li>
+          <li><p class="q">「子账号（Subaccount）」在 BTP 层级里的位置是？</p>
+            <div class="opts">
+              <div><b>A.</b> Global Account 之下、用于隔离资源与授权的容器</div>
+              <div><b>B.</b> 全球只有一个</div>
+              <div><b>C.</b> 在每个数据库里</div>
+              <div><b>D.</b> 浏览器里建</div>
+            </div>
+          </li>
+          <li><p class="q">Cloud Foundry 的「两级空间」是？</p>
+            <div class="opts">
+              <div><b>A.</b> Org（组织）与 Space（空间）</div>
+              <div><b>B.</b> Region 与 Zone</div>
+              <div><b>C.</b> Dev 与 Prod</div>
+              <div><b>D.</b> Database 与 Table</div>
+            </div>
+          </li>
+          <li><p class="q">本轨后续创建 HANA Cloud 等服务时，它们挂在哪一级？</p>
+            <div class="opts">
+              <div><b>A.</b> 子账号（服务实例/订阅挂在子账号层，再绑定到 space 等）</div>
+              <div><b>B.</b> Global Account 外部</div>
+              <div><b>C.</b> 只能挂本地</div>
+              <div><b>D.</b> 没有层级</div>
+            </div>
+          </li>
+          <li><p class="q">cf CLI 的作用是？</p>
+            <div class="opts">
+              <div><b>A.</b> 命令行登录与管理 Cloud Foundry（org/space/应用）</div>
+              <div><b>B.</b> 浏览网页</div>
+              <div><b>C.</b> 写 Java</div>
+              <div><b>D.</b> 查数据库</div>
+            </div>
+          </li>
+          <li><p class="q">Trial 账号注册后通常自动建好什么？</p>
+            <div class="opts">
+              <div><b>A.</b> Global Account + 一个 trial 子账号（含 CF 组织）</div>
+              <div><b>B.</b> 什么都没建</div>
+              <div><b>C.</b> 数据库实例</div>
+              <div><b>D.</b> BAS 工作区</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">Trial 免费、几步注册即可；企业开发才需要 Enterprise 账号。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">Cockpit 是云端控制台：管理账号层级、服务、成员等。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">Global Account 是顶层合同单位，子账号是其下的资源/环境单元。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">每个子账号下可建 org，org 下建 space；配额与应用都挂在 space。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">BTP 服务以实例/订阅形式挂在子账号，运行时空间引用之。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">cf 是 CF 官方 CLI：登录、部署、查看应用状态（本轨可选安装）。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">Trial 开箱即给子账号与 CF 环境，可直接进入后续手顺。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">企业账号与 Trial 最大的实际差别是？</p>
+            <div class="opts">
+              <div><b>A.</b> 企业账号可开正式额度与生产资源，Trial 额度低且会休眠/回收</div>
+              <div><b>B.</b> 企业账号不能建子账号</div>
+              <div><b>C.</b> Trial 功能更多</div>
+              <div><b>D.</b> 无差别</div>
+            </div>
+          </li>
+          <li><p class="q">登录 CF 时 org/space 选错，常见后果是？</p>
+            <div class="opts">
+              <div><b>A.</b> 部署到错误的资源池/看不到正确的应用与配额</div>
+              <div><b>B.</b> 账号被锁</div>
+              <div><b>C.</b> 数据丢失</div>
+              <div><b>D.</b> 无法注册</div>
+            </div>
+          </li>
+          <li><p class="q">为何建议选就近区域（Region）？</p>
+            <div class="opts">
+              <div><b>A.</b> 减少网络延迟、数据驻留合规也更可控</div>
+              <div><b>B.</b> 区域决定字体</div>
+              <div><b>C.</b> 必须选美国</div>
+              <div><b>D.</b> 区域无所谓</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">Trial 定位验证学习；企业（含 Free Tier）才谈得上生产级资源与 SLA。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">cf target 到正确 org/space 是关键上下文，错了会操作在错误的地盘上。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">就近降低延迟并满足数据驻留要求；换区域需新建子账号。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="overview.html"><small>← 上一章</small><b>第 B1 章：BTP 与 HANA Cloud 概述</b></a>

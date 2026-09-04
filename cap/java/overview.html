@@ -17,6 +17,7 @@
       <a class="tab" href="../../rap/overview.html">RAP 培训</a>
       <a class="tab active" href="../overview.html">CAP 培训</a>
       <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -178,6 +179,122 @@
         <li><a href="step3-dto.html">手顺3：DTO → 生成模型与服务</a><span class="psub">Books 类 / CatalogService_ / handler</span></li>
         <li><a href="step4-test.html">手顺4：运行与测试</a><span class="psub">spring-boot:run + OData</span></li>
       </ol>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">CAP Java 版基于哪个框架？</p>
+            <div class="opts">
+              <div><b>A.</b> Spring Boot</div>
+              <div><b>B.</b> Jakarta EE</div>
+              <div><b>C.</b> Quarkus</div>
+              <div><b>D.</b> Vert.x</div>
+            </div>
+          </li>
+          <li><p class="q">Java 版把 CDS 模型变成强类型 Java 类，发生在什么时候？</p>
+            <div class="opts">
+              <div><b>A.</b> 编译期（构建时由 cds-maven-plugin 生成）</div>
+              <div><b>B.</b> 运行期首次访问</div>
+              <div><b>C.</b> 下载时</div>
+              <div><b>D.</b> 人工拷贝</div>
+            </div>
+          </li>
+          <li><p class="q">entity Books 对应的生成类是？</p>
+            <div class="opts">
+              <div><b>A.</b> sap.capire.bookshop.Books（字段与实体一致）</div>
+              <div><b>B.</b> BooksController</div>
+              <div><b>C.</b> BookDTO</div>
+              <div><b>D.</b> BookDAO</div>
+            </div>
+          </li>
+          <li><p class="q">Java 版「唯一需要手写的业务代码」是什么？</p>
+            <div class="opts">
+              <div><b>A.</b> 事件处理器（Handler）</div>
+              <div><b>B.</b> Controller 全部逻辑</div>
+              <div><b>C.</b> DAO 层</div>
+              <div><b>D.</b> DDL 建表脚本</div>
+            </div>
+          </li>
+          <li><p class="q">适合选 Java 路线的情形是？</p>
+            <div class="opts">
+              <div><b>A.</b> 团队已有 Java/Spring 技术栈、需要强类型与企业生态</div>
+              <div><b>B.</b> 想一行代码都不写</div>
+              <div><b>C.</b> 必须用 ABAP</div>
+              <div><b>D.</b> 前端为主</div>
+            </div>
+          </li>
+          <li><p class="q">Java 版与 Node 版在「模型、服务定义、种子 CSV」上？</p>
+            <div class="opts">
+              <div><b>A.</b> 完全一致可复用（db/schema.cds 等）</div>
+              <div><b>B.</b> 完全不同</div>
+              <div><b>C.</b> Java 不能用 CSV</div>
+              <div><b>D.</b> Node 不需要模型</div>
+            </div>
+          </li>
+          <li><p class="q">CAP Java 的 OData 服务默认端口是？</p>
+            <div class="opts">
+              <div><b>A.</b> 8080</div>
+              <div><b>B.</b> 4004</div>
+              <div><b>C.</b> 3000</div>
+              <div><b>D.</b> 9000</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">CAP Java = Spring Boot + cds-maven-plugin，模型与 OData 语义和 Node 版一致。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">模型→Java 代码在编译期完成：生成 Books、CatalogService_ 等类，IDE 里立刻可引用。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">按命名空间生成同名强类型类，字段/类型/键与 CDS 实体对应。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">标准 CRUD、表结构、序列化由框架完成，业务规则写在事件处理器里。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">Java 的优势在强类型、IDE 支持与 Spring 生态；Node 则胜在轻快灵活。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">两条路线共用 Bookshop 模型与数据——这也是本培训设计成对照的原因。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">Spring Boot 默认 8080（Node 版为 4004）；URL 路径同为 /odata/v4/…。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">Java 版能拿到「编译期强类型」的关键机制是？</p>
+            <div class="opts">
+              <div><b>A.</b> cds-maven-plugin 在构建时解析 CDS 并生成 Java 源</div>
+              <div><b>B.</b> 运行时反射猜测</div>
+              <div><b>C.</b> 手写代码生成器</div>
+              <div><b>D.</b> AI 补全</div>
+            </div>
+          </li>
+          <li><p class="q">「事件处理器」在 CAP Java 里对应的事件有？</p>
+            <div class="opts">
+              <div><b>A.</b> Before/On/After（读、写、Action 前后）</div>
+              <div><b>B.</b> 只有数据库触发器</div>
+              <div><b>C.</b> 只有定时器</div>
+              <div><b>D.</b> HTTP 过滤器</div>
+            </div>
+          </li>
+          <li><p class="q">CAP Java 相比纯手写 Spring Boot + JPA 工程，最省掉的是？</p>
+            <div class="opts">
+              <div><b>A.</b> DTO/Repository/DDL 转换等样板，模型驱动自动生成</div>
+              <div><b>B.</b> 业务算法</div>
+              <div><b>C.</b> 用户登录</div>
+              <div><b>D.</b> 日志框架</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">构建插件把模型编译成类型安全的 Java 类与事件常量，早于任何请求发生。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">与 Node 版事件模型同构：方法在 CUD/READ/Action 事件触发时执行。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">框架代劳「模型↔代码↔数据库↔OData」映射，开发者聚焦事件处理器里的规则。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="../overview.html"><small>← 上一步</small><b>CAP 概述（Node 版）</b></a>

@@ -17,6 +17,7 @@
       <a class="tab" href="../rap/overview.html">RAP 培训</a>
       <a class="tab" href="../cap/overview.html">CAP 培训</a>
       <a class="tab active" href="overview.html">Fiori 培训</a>
+      <a class="tab" href="../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -210,6 +211,140 @@ annotate service.Orders with @(
           <p>刷新 <code>http://localhost:4004/app/books/index.html</code>，点击任意一行进入对象页，核对三个 Facet 区块与<a href="#preview">图 F3-1</a>一致。</p>
         </li>
       </ol>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 12 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–8 题）+ <b>🔶 能力提高</b>（第 9–12 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–8）</h3>
+        <ol class="qz">
+          <li><p class="q">在 List Report 里点一行会发生什么？</p>
+            <div class="opts">
+              <div><b>A.</b> 自动导航到该条数据的 Object Page 详情</div>
+              <div><b>B.</b> 弹窗警告</div>
+              <div><b>C.</b> 刷新列表</div>
+              <div><b>D.</b> 无反应</div>
+            </div>
+          </li>
+          <li><p class="q">Object Page 详情页的区块结构由什么决定？</p>
+            <div class="opts">
+              <div><b>A.</b> @UI.Facet 注解（声明有哪些区块与顺序）</div>
+              <div><b>B.</b> 页面代码</div>
+              <div><b>C.</b> 后端存储过程</div>
+              <div><b>D.</b> 用户设置</div>
+            </div>
+          </li>
+          <li><p class="q">「基本信息」这类表单区块对应哪种 Facet 内容？</p>
+            <div class="opts">
+              <div><b>A.</b> FieldGroup（一组字段）</div>
+              <div><b>B.</b> LineItem（表格）</div>
+              <div><b>C.</b> Chart</div>
+              <div><b>D.</b> Filter</div>
+            </div>
+          </li>
+          <li><p class="q">详情页里内嵌「订单」子表（关联数据）用哪种方式？</p>
+            <div class="opts">
+              <div><b>A.</b> Facet 内嵌 LineItem/子表并指向关联（如 orders）</div>
+              <div><b>B.</b> 再开一个页面手写</div>
+              <div><b>C.</b> 弹出广告</div>
+              <div><b>D.</b> 复制数据</div>
+            </div>
+          </li>
+          <li><p class="q">对象页顶部的 Header（标题+关键字段）一般由？</p>
+            <div class="opts">
+              <div><b>A.</b> @UI.HeaderInfo + header 级注解驱动</div>
+              <div><b>B.</b> 手动排版 HTML</div>
+              <div><b>C.</b> CSS 动画</div>
+              <div><b>D.</b> 固定写死</div>
+            </div>
+          </li>
+          <li><p class="q">新增详情页布局应在哪个文件追加？</p>
+            <div class="opts">
+              <div><b>A.</b> app/books/annotate.cds（继续叠加 annotate 块）</div>
+              <div><b>B.</b> 重写整个工程</div>
+              <div><b>C.</b> 改数据库</div>
+              <div><b>D.</b> 新建 CSS</div>
+            </div>
+          </li>
+          <li><p class="q">多个 Facet 的显示顺序取决于？</p>
+            <div class="opts">
+              <div><b>A.</b> 注解里的排列顺序</div>
+              <div><b>B.</b> 随机</div>
+              <div><b>C.</b> 字母序</div>
+              <div><b>D.</b> 数据库行序</div>
+            </div>
+          </li>
+          <li><p class="q">Object Page 通常与哪个模板配对使用？</p>
+            <div class="opts">
+              <div><b>A.</b> List Report（主列表进入详情）</div>
+              <div><b>B.</b> Custom Page</div>
+              <div><b>C.</b> ALP</div>
+              <div><b>D.</b> Worklist</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–8））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">List Report + Object Page 天生联动：行点击进详情是模板内置行为。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">Facet 列表即区块清单：改注解增删区块，无需动页面代码。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">表单类区块用 FieldGroup 装字段；字段排列亦由 elements 注解控制。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">关联子表直接作为区块嵌在详情页，导航由元数据驱动。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">Header 区显示标题字段与关键属性，也是注解驱动。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">F2/F3 在同一 annotate.cds 上叠加：一个文件管理页面元数据。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">框架按声明的顺序渲染区块，顺序即用户体验设计的一部分。</td></tr>
+              <tr><td>8</td><td class="an">A</td><td class="expl">主从配队：列表筛 → 点行 → 详情操作，是 F2/F3 的完整形态。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（9–12）</h3>
+        <ol class="qz" start="9">
+          <li><p class="q">为什么「订单」子表能直接显示而不用单独写页面？</p>
+            <div class="opts">
+              <div><b>A.</b> 关联已在模型声明，Elements 按导航/注解自动渲染子表</div>
+              <div><b>B.</b> 后端生成了第二套 UI</div>
+              <div><b>C.</b> 浏览器缓存</div>
+              <div><b>D.</b> CSS 伪元素</div>
+            </div>
+          </li>
+          <li><p class="q">Header Facet 与内容区 Facet 的差异？</p>
+            <div class="opts">
+              <div><b>A.</b> Header Facet 展示在页头（标题/关键信息），内容区 Facet 是主体区块</div>
+              <div><b>B.</b> 没差别</div>
+              <div><b>C.</b> Header 不能有 Facet</div>
+              <div><b>D.</b> 内容区不能有表单</div>
+            </div>
+          </li>
+          <li><p class="q">改一个字段的标签（Label）需要动哪里？</p>
+            <div class="opts">
+              <div><b>A.</b> annotate.cds 里对应注解的 Label（或后端模型 label）</div>
+              <div><b>B.</b> 重装应用</div>
+              <div><b>C.</b> 改数据库列名</div>
+              <div><b>D.</b> 清缓存</div>
+            </div>
+          </li>
+          <li><p class="q">详情页表单字段按 Facet 分组的好处是？</p>
+            <div class="opts">
+              <div><b>A.</b> 信息按业务块组织、可读性与维护性高</div>
+              <div><b>B.</b> 减少字段</div>
+              <div><b>C.</b> 数据库更快</div>
+              <div><b>D.</b> 必须分组否则报错</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（9–12））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>9</td><td class="an">A</td><td class="expl">模型里的 association + 元数据注解即可在 Facet 内嵌子表，这是元数据驱动 UI 的威力。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">Object Page 头部与主体都可装配 Facet，Header 强调概要信息。</td></tr>
+              <tr><td>11</td><td class="an">A</td><td class="expl">标签来自注解/模型元数据：改标签不动页面代码，刷新即生效。</td></tr>
+              <tr><td>12</td><td class="an">A</td><td class="expl">分组把十几个字段组织成业务语义块，是详情页设计的核心动作。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="step1-list.html"><small>← 上一章</small><b>手顺1：List Report</b></a>

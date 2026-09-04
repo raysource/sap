@@ -17,6 +17,7 @@
       <a class="tab" href="../../rap/overview.html">RAP 培训</a>
       <a class="tab active" href="../overview.html">CAP 培训</a>
       <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -341,6 +342,122 @@ ALTER TABLE sap_capire_bookshop_Books
           <li><b>生产勿用 SQLite</b>：SQLite 单机单写、并发弱，只用于本地开发；生产用 HANA Cloud（见 J4.7）。</li>
         </ul>
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">CAP Java 里建表（DDL）由谁完成？</p>
+            <div class="opts">
+              <div><b>A.</b> 应用启动时框架按模型自动执行 DDL</div>
+              <div><b>B.</b> 必须手写 CREATE TABLE</div>
+              <div><b>C.</b> DBA 手工建</div>
+              <div><b>D.</b> npm install 完成</div>
+            </div>
+          </li>
+          <li><p class="q">开发期连 SQLite，数据源配置写在哪个文件？</p>
+            <div class="opts">
+              <div><b>A.</b> srv/src/main/resources/application.yaml（cds 数据源配置）</div>
+              <div><b>B.</b> web.xml</div>
+              <div><b>C.</b> pom.xml 的注释里</div>
+              <div><b>D.</b> 代码里写死</div>
+            </div>
+          </li>
+          <li><p class="q">连 SQLite 还需要在依赖里加什么？</p>
+            <div class="opts">
+              <div><b>A.</b> SQLite JDBC 驱动依赖（如 org.xerial:sqlite-jdbc）</div>
+              <div><b>B.</b> 不需要任何依赖</div>
+              <div><b>C.</b> CDS 插件</div>
+              <div><b>D.</b> 数据库可视化工具</div>
+            </div>
+          </li>
+          <li><p class="q">种子数据 CSV 放对位置后，何时导入？</p>
+            <div class="opts">
+              <div><b>A.</b> 应用启动自动导入</div>
+              <div><b>B.</b> 需要手工执行导入 SQL</div>
+              <div><b>C.</b> 只在部署时导入</div>
+              <div><b>D.</b> 永远不导入</div>
+            </div>
+          </li>
+          <li><p class="q">要看框架实际生成的 DDL 或表结构，可用？</p>
+            <div class="opts">
+              <div><b>A.</b> 启动日志/生成的 DDL 文件，或 sqlite3 直接查看数据库表</div>
+              <div><b>B.</b> 看浏览器</div>
+              <div><b>C.</b> 看 Java 注释</div>
+              <div><b>D.</b> 看 CSV</div>
+            </div>
+          </li>
+          <li><p class="q">生产/云端把 SQLite 换成 HANA Cloud 需要做什么？</p>
+            <div class="opts">
+              <div><b>A.</b> 更换 JDBC 数据源配置与驱动（如 ngdbc），模型不变</div>
+              <div><b>B.</b> 重写模型</div>
+              <div><b>C.</b> 换语言</div>
+              <div><b>D.</b> 重装系统</div>
+            </div>
+          </li>
+          <li><p class="q">表结构对应实体，某实体的字段变化后重启应用会？</p>
+            <div class="opts">
+              <div><b>A.</b> 按新模型重建/调整（开发库）</div>
+              <div><b>B.</b> 报错拒绝启动</div>
+              <div><b>C.</b> 悄悄丢弃数据</div>
+              <div><b>D.</b> 无变化</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">模型驱动：schema.cds 是表结构唯一来源，启动自动建表。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">Spring Boot 用 application.yaml 配置数据源（含 jdbc:sqlite 地址与账号等）。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">JDBC 驱动随 pom 引入，Spring Boot 据此创建数据源。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">启动时框架按模型建表并导入 db/data 下的种子 CSV。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">开发期用 sqlite3 等工具查生成的表，验证模型→表的映射。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">可插拔后端：只换连接与驱动，模型/代码不动。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">开发模式框架会按模型对齐表结构；生产请走正式迁移流程（超出本课）。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">为什么 CAP Java 不用手写 CREATE TABLE？</p>
+            <div class="opts">
+              <div><b>A.</b> 表结构是模型的投影：模型驱动 DDL，避免手写与模型漂移</div>
+              <div><b>B.</b> 手写更快</div>
+              <div><b>C.</b> 数据库不支持</div>
+              <div><b>D.</b> 必须手写</div>
+            </div>
+          </li>
+          <li><p class="q">导入 CSV 时若图书引用了作者，导入顺序上要注意？</p>
+            <div class="opts">
+              <div><b>A.</b> 先导入父数据（作者/分类）再导入图书，避免外键找不到（框架通常会按模型排序）</div>
+              <div><b>B.</b> 顺序无所谓</div>
+              <div><b>C.</b> 必须先导入图书</div>
+              <div><b>D.</b> CSV 不能有外键</div>
+            </div>
+          </li>
+          <li><p class="q">应用启动日志里看到「schema 初始化/导入 10 本书」这类输出，说明？</p>
+            <div class="opts">
+              <div><b>A.</b> 自动建表与种子导入成功，是 J4 验收点</div>
+              <div><b>B.</b> 系统出错了</div>
+              <div><b>C.</b> 缓存命中</div>
+              <div><b>D.</b> 网络故障</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">DDL 由模型生成 = 单一事实源；这也让换数据库几乎零成本。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">外键完整性要求被引用行先存在；框架一般按模型依赖自动排，手动调库时需自己保证。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">启动日志是模型驱动 DB 流程的验收证据：建表、灌数一气呵成。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="step1-project.html"><small>← 上一章</small><b>手顺1：建立 Java 项目</b></a>

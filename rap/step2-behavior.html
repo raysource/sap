@@ -17,6 +17,7 @@
       <a class="tab active" href="overview.html">RAP 培训</a>
       <a class="tab" href="../cap/overview.html">CAP 培训</a>
       <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -319,6 +320,140 @@ ENDMETHOD.</code></pre>
           <li><b>消息文本</b>：<code>new_message_with_text</code> 适用于简单文本；生产环境建议用消息类（<code>new_message</code> + Message Number）便于 i18n。</li>
         </ul>
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 12 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–8 题）+ <b>🔶 能力提高</b>（第 9–12 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–8）</h3>
+        <ol class="qz">
+          <li><p class="q">给数据模型加「行为」（增删改、Action、校验）所用的对象是？</p>
+            <div class="opts">
+              <div><b>A.</b> Behavior Definition（BDEF）</div>
+              <div><b>B.</b> Service Binding</div>
+              <div><b>C.</b> 元数据扩展</div>
+              <div><b>D.</b> Data Definition</div>
+            </div>
+          </li>
+          <li><p class="q">本课 BDEF 使用的实现模式是（实现类 zbp_i_travel）？</p>
+            <div class="opts">
+              <div><b>A.</b> unmanaged</div>
+              <div><b>B.</b> managed（框架管理标准 CRUD 与保存）</div>
+              <div><b>C.</b> manual</div>
+              <div><b>D.</b> hybrid</div>
+            </div>
+          </li>
+          <li><p class="q">要让客户端能对实体创建 / 更新记录，BDEF 里需要？</p>
+            <div class="opts">
+              <div><b>A.</b> 什么都不用做</div>
+              <div><b>B.</b> 显式声明对应操作（如 create / update / delete）</div>
+              <div><b>C.</b> 改数据库表</div>
+              <div><b>D.</b> 重启服务</div>
+            </div>
+          </li>
+          <li><p class="q">自定义 Action（如 AcceptTravel 批准）与普通字段更新的本质区别是？</p>
+            <div class="opts">
+              <div><b>A.</b> 没有区别</div>
+              <div><b>B.</b> Action 是带业务语义的操作，可加参数、做校验并触发状态流转，而非逐字段赋值</div>
+              <div><b>C.</b> Action 更快</div>
+              <div><b>D.</b> Action 只能读</div>
+            </div>
+          </li>
+          <li><p class="q">AcceptTravel / RejectTravel 这类针对单条记录的动作，声明在 BDEF 的哪里？</p>
+            <div class="opts">
+              <div><b>A.</b> 只在全局层</div>
+              <div><b>B.</b> 实体节点的 instance 动作区</div>
+              <div><b>C.</b> 服务定义里</div>
+              <div><b>D.</b> 数据字典里</div>
+            </div>
+          </li>
+          <li><p class="q">实现方法 <code>get_features</code> 的用途是？</p>
+            <div class="opts">
+              <div><b>A.</b> 查询数据库</div>
+              <div><b>B.</b> 按实例状态控制按钮（动作）可用性，如已拒绝后不能再批准</div>
+              <div><b>C.</b> 生成界面</div>
+              <div><b>D.</b> 发送通知</div>
+            </div>
+          </li>
+          <li><p class="q">validateCustomer 这类方法属于？</p>
+            <div class="opts">
+              <div><b>A.</b> 读视图优化</div>
+              <div><b>B.</b> 保存时校验（validate on save）</div>
+              <div><b>C.</b> 报表输出</div>
+              <div><b>D.</b> 导入处理</div>
+            </div>
+          </li>
+          <li><p class="q">行为实现类（zbp_i_travel 等）继承自哪个基类？</p>
+            <div class="opts">
+              <div><b>A.</b> cl_abap_behv_handler</div>
+              <div><b>B.</b> cl_abap_classdescr</div>
+              <div><b>C.</b> cl_gui_dialogbox_container</div>
+              <div><b>D.</b> cl_abap_typedescr</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–8））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">BDEF 声明实体支持哪些操作、哪些动作、哪些校验，是行为层的蓝图。</td></tr>
+              <tr><td>2</td><td class="an">B</td><td class="expl">managed 模式下标准创建 / 更新 / 删除与保存逻辑由框架生成，只需实现自定义动作与校验。</td></tr>
+              <tr><td>3</td><td class="an">B</td><td class="expl">未声明的操作默认不开放；声明后才暴露给服务层。</td></tr>
+              <tr><td>4</td><td class="an">B</td><td class="expl">Action 表达业务事件（批准 / 拒绝），实现里可含 EML 读写与规则；普通更新只是字段赋值。</td></tr>
+              <tr><td>5</td><td class="an">B</td><td class="expl">针对实例的动作（%action …）声明在实体节点的行为定义里。</td></tr>
+              <tr><td>6</td><td class="an">B</td><td class="expl">get_features 动态返回每个实例可用 / 禁用的动作，UI 据此禁用按钮，防止非法状态流转。</td></tr>
+              <tr><td>7</td><td class="an">B</td><td class="expl">在 BDEF 里声明 validation on save，实现类中写校验逻辑，提交保存前执行。</td></tr>
+              <tr><td>8</td><td class="an">A</td><td class="expl">RAP 行为实现类（局部类 lhc_* 等）都继承自 cl_abap_behv_handler，框架据此回调。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（9–12）</h3>
+        <ol class="qz" start="9">
+          <li><p class="q">为什么输入校验放在服务端 Behavior 而不是只靠前端？</p>
+            <div class="opts">
+              <div><b>A.</b> 前端做不了</div>
+              <div><b>B.</b> 校验必须覆盖所有调用通道（Fiori、Postman、外部系统），服务端兜底才能保证一致</div>
+              <div><b>C.</b> 后端更快而已</div>
+              <div><b>D.</b> 前端不能写规则</div>
+            </div>
+          </li>
+          <li><p class="q">managed 与 unmanaged BDEF 的核心差异是？</p>
+            <div class="opts">
+              <div><b>A.</b> managed 的标准 CRUD / 保存由框架生成，unmanaged 需自己实现这些逻辑</div>
+              <div><b>B.</b> unmanaged 更快</div>
+              <div><b>C.</b> managed 不支持 Draft</div>
+              <div><b>D.</b> 二者无差异</div>
+            </div>
+          </li>
+          <li><p class="q">要让 Fiori 编辑体验走「草稿（Draft）」机制，需要在哪里启用？</p>
+            <div class="opts">
+              <div><b>A.</b> 只在 manifest.json 里</div>
+              <div><b>B.</b> 在 RAP 层：实体的行为定义声明 draft 相关动作 + 服务绑定启用</div>
+              <div><b>C.</b> 改操作系统时区</div>
+              <div><b>D.</b> 建数据库索引</div>
+            </div>
+          </li>
+          <li><p class="q">BDEF 中 Action 要携带输入参数时，通常用什么声明？</p>
+            <div class="opts">
+              <div><b>A.</b> 方法入参随意写</div>
+              <div><b>B.</b> %param（定义参数结构）与返回结果结构</div>
+              <div><b>C.</b> 直接写死常量</div>
+              <div><b>D.</b> 用全局变量</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（9–12））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>9</td><td class="an">B</td><td class="expl">任何客户端都可能绕过 UI；保存校验放行为层让规则对全部入口生效，这是 RAP 的默认安全设计。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">managed 模式 = 框架代管标准操作与保存；unmanaged 适合复杂存量逻辑，但要手写大量样板。</td></tr>
+              <tr><td>11</td><td class="an">B</td><td class="expl">Draft 由 RAP 层控制（BDEF 中的 draft 动作 + 服务绑定启用），前端只是触发 UI。</td></tr>
+              <tr><td>12</td><td class="an">B</td><td class="expl">%param 声明动作入参，返回结构声明出参——参数类型化且进入 OData 元数据。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="step1-cds.html"><small>← 上一章</small><b>手顺1：CDS 数据模型</b></a>

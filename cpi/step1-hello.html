@@ -279,6 +279,140 @@
         你能：① 说出 Sender / 步骤 / Receiver 在消息流里的角色；② 部署后从 Monitor 复制端点并成功调用；③ 在回显响应里同时看到改写后的 body 与新增的 header；④ 在 MPL 里找到这次调用的 Completed 记录。
       </div>
 
+      <section id="quiz">
+      <h2>🧪 章节测评（共 12 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–8 题）+ <b>🔶 能力提高</b>（第 9–12 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–8）</h3>
+        <ol class="qz">
+          <li><p class="q">创建 iFlow 之前先要有什么？</p>
+            <div class="opts">
+              <div><b>A.</b> Integration Package（集成包，带技术名称作为命名空间）</div>
+              <div><b>B.</b> 数据库</div>
+              <div><b>C.</b> 证书</div>
+              <div><b>D.</b> Fiori 工程</div>
+            </div>
+          </li>
+          <li><p class="q">iFlow 画布上必配的三样是？</p>
+            <div class="opts">
+              <div><b>A.</b> Sender 适配器、处理步骤（如 Content Modifier）、Receiver 适配器</div>
+              <div><b>B.</b> HTML/CSS/JS</div>
+              <div><b>C.</b> 表/索引/视图</div>
+              <div><b>D.</b> 发现/设计/监控</div>
+            </div>
+          </li>
+          <li><p class="q">HTTPS Sender 的 Connection 里 Address 填 /hello，部署后端点 URL 是？</p>
+            <div class="opts">
+              <div><b>A.</b> https://&lt;租户域名&gt;/cxf/hello</div>
+              <div><b>B.</b> https://&lt;租户域名&gt;/hello</div>
+              <div><b>C.</b> http://localhost:4004/hello</div>
+              <div><b>D.</b> https://sap.com/cxf/hello</div>
+            </div>
+          </li>
+          <li><p class="q">Content Modifier 的 Message Body 选 Type=Text 的效果是？</p>
+            <div class="opts">
+              <div><b>A.</b> 把入站正文整段替换成你填的文本</div>
+              <div><b>B.</b> 在正文末尾追加</div>
+              <div><b>C.</b> 拼接两个文件</div>
+              <div><b>D.</b> 只删注释</div>
+            </div>
+          </li>
+          <li><p class="q">本手顺给消息加自定义请求头 X-Course 用的是哪个区？</p>
+            <div class="opts">
+              <div><b>A.</b> Message Header（名字+常值）</div>
+              <div><b>B.</b> Message Body</div>
+              <div><b>C.</b> Exchange Property</div>
+              <div><b>D.</b> Error Configuration</div>
+            </div>
+          </li>
+          <li><p class="q">Receiver 用的 HTTP 回显服务（postman-echo）在本课充当什么？</p>
+            <div class="opts">
+              <div><b>A.</b> 「镜子」：把收到的内容原样返回，用于验证 iFlow 的改写</div>
+              <div><b>B.</b> 真实业务系统</div>
+              <div><b>C.</b> 防火墙</div>
+              <div><b>D.</b> 缓存</div>
+            </div>
+          </li>
+          <li><p class="q">部署后 iFlow 的状态灯 <span class='st a'>Started</span> 表示？</p>
+            <div class="opts">
+              <div><b>A.</b> 已成功部署并正在运行，可被调用</div>
+              <div><b>B.</b> 草稿已保存</div>
+              <div><b>C.</b> 部署失败</div>
+              <div><b>D.</b> 已删除</div>
+            </div>
+          </li>
+          <li><p class="q">每次调用产生的运行记录在哪里看？</p>
+            <div class="opts">
+              <div><b>A.</b> Monitor → Message Processing Log（MPL）</div>
+              <div><b>B.</b> 浏览器控制台</div>
+              <div><b>C.</b> 本地日志文件</div>
+              <div><b>D.</b> 数据库表</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–8））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">iFlow 是包内 artifact：先建包（如 iflow_course）再 Add → Integration Flow。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">三步一线即最小可用流；本手顺中间步骤是 Content Modifier。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">端点 = 租户域名 + /cxf + 你在 Address 填的路径；也可在 Monitor 里复制。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">Text 是「整段替换」；想抽字段要 XPath 或脚本（I4）。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">请求头在 Header 区加；回显响应的 headers 里能验证到。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">它是教学替身：响应里看到的就是「接收方收到的消息」，方便对照前后差异。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">Started = 可服务；在 Monitor → Manage Integration Content 查看并复制端点。</td></tr>
+              <tr><td>8</td><td class="an">A</td><td class="expl">MPL 一条记录 = 一次消息旅程，含各组件执行状态。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（9–12）</h3>
+        <ol class="qz" start="9">
+          <li><p class="q">curl 发送 <code>{"ping":"pong"}</code> 但回显 data 变成固定 JSON，说明？</p>
+            <div class="opts">
+              <div><b>A.</b> Content Modifier 的改写真实生效了（中间件动手的证据）</div>
+              <div><b>B.</b> 回显服务故障</div>
+              <div><b>C.</b> 网络丢包</div>
+              <div><b>D.</b> curl 写错</div>
+            </div>
+          </li>
+          <li><p class="q">MPL 里一条记录 Failed 且红叉落在 Receiver 组件上，最可能是？</p>
+            <div class="opts">
+              <div><b>A.</b> 出站目标连不上（如公网回显服务不可达）</div>
+              <div><b>B.</b> Sender 语法错</div>
+              <div><b>C.</b> Content Modifier 没配</div>
+              <div><b>D.</b> 端点复制错一定</div>
+            </div>
+          </li>
+          <li><p class="q">直接调用端点返回 401，教学环境的常见处理是？</p>
+            <div class="opts">
+              <div><b>A.</b> 把 Sender Security 的 Authentication 设为 None（仅教学；生产应配证书/OAuth）</div>
+              <div><b>B.</b> 放弃练习</div>
+              <div><b>C.</b> 改回显服务</div>
+              <div><b>D.</b> 删掉 iFlow</div>
+            </div>
+          </li>
+          <li><p class="q">改了画布配置但行为没变化，最可能的疏漏是？</p>
+            <div class="opts">
+              <div><b>A.</b> 没有重新 Deploy（修改只进新草稿版本，需部署生效）</div>
+              <div><b>B.</b> 浏览器缓存</div>
+              <div><b>C.</b> 电脑没电</div>
+              <div><b>D.</b> 回显服务旧</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（9–12））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>9</td><td class="an">A</td><td class="expl">「发出的 ≠ 收到的」正是集成中间件的价值：验证时对比两个 body。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">错误精确落组件：Receiver 红叉 = 出站问题，检查外网/地址/凭据。</td></tr>
+              <tr><td>11</td><td class="an">A</td><td class="expl">部分租户默认要求客户端证书；教学放开鉴权即可，生产绝不可用 None。</td></tr>
+              <tr><td>12</td><td class="an">A</td><td class="expl">CPI 版本化：改 → Save → Deploy 才生效，Monitor 里版本号会递增。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
+
       <div class="pagenav">
         <a href="prep.html"><small>← 上一章</small><b>I2 环境准备</b></a>
         <a class="next" href="step2-transform.html"><small>下一步 →</small><b>手顺2：消息转换</b></a>

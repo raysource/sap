@@ -17,6 +17,7 @@
       <a class="tab" href="../../rap/overview.html">RAP 培训</a>
       <a class="tab active" href="../overview.html">CAP 培训</a>
       <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -247,6 +248,122 @@ public class BookController {
           <li><b>curl 返回 500</b>：看服务端日志堆栈——通常是连接参数或 SQL 前缀（非默认 schema 用户要去掉 <code>BOOKSHOP.</code>）。</li>
         </ul>
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">模式三把 Java 程序变成了什么？</p>
+            <div class="opts">
+              <div><b>A.</b> 一个真正提供 HTTP 接口的 Web 服务（GET /api/books）</div>
+              <div><b>B.</b> 命令行脚本</div>
+              <div><b>C.</b> 定时任务</div>
+              <div><b>D.</b> 桌面程序</div>
+            </div>
+          </li>
+          <li><p class="q">Spring Boot 工程骨架通常从哪里生成？</p>
+            <div class="opts">
+              <div><b>A.</b> start.spring.io（在线向导，选 Spring Web）</div>
+              <div><b>B.</b> 手写所有配置</div>
+              <div><b>C.</b> npm init</div>
+              <div><b>D.</b> cds init</div>
+            </div>
+          </li>
+          <li><p class="q">模式三里读库不再手写 JDBC 样板，交给？</p>
+            <div class="opts">
+              <div><b>A.</b> JdbcTemplate（Spring 封装的查询模板）</div>
+              <div><b>B.</b> 原生 Socket</div>
+              <div><b>C.</b> 浏览器</div>
+              <div><b>D.</b> shell 脚本</div>
+            </div>
+          </li>
+          <li><p class="q">数据库连接配置写在？</p>
+            <div class="opts">
+              <div><b>A.</b> src/main/resources/application.properties（spring.datasource.*）</div>
+              <div><b>B.</b> 代码 if 里</div>
+              <div><b>C.</b> pom.xml</div>
+              <div><b>D.</b> web.xml</div>
+            </div>
+          </li>
+          <li><p class="q">暴露 GET /api/books 的 REST 接口类注解是？</p>
+            <div class="opts">
+              <div><b>A.</b> @RestController</div>
+              <div><b>B.</b> @Entity</div>
+              <div><b>C.</b> @Component</div>
+              <div><b>D.</b> @Service 只有这个</div>
+            </div>
+          </li>
+          <li><p class="q">运行模式三的命令是？</p>
+            <div class="opts">
+              <div><b>A.</b> mvn spring-boot:run</div>
+              <div><b>B.</b> mvn exec:java</div>
+              <div><b>C.</b> java -jar 所有情况</div>
+              <div><b>D.</b> npm start</div>
+            </div>
+          </li>
+          <li><p class="q">用 curl 验证模式三的地址是？</p>
+            <div class="opts">
+              <div><b>A.</b> http://localhost:8080/api/books</div>
+              <div><b>B.</b> http://localhost:4004/api/books</div>
+              <div><b>C.</b> https://sap.com/books</div>
+              <div><b>D.</b> http://localhost:8080/db</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">Spring Boot 起内嵌服务器，curl 即可访问 REST 接口。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">start.spring.io 是 Spring 官方初始化器；本课选 Web 起步依赖。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">JdbcTemplate 简化连接/结果集映射；仍用 ngdbc 驱动连 HANA。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">Spring Boot 约定：application.properties/yml 配数据源 URL、账号、口令。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">@RestController 让方法返回值直接序列化为 HTTP 响应。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">spring-boot:run 启动内嵌服务器（也可先 package 再 java -jar）。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">Spring Boot 默认 8080；返回 HANA 里那 10 本书的 JSON。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">JdbcTemplate 相对裸 JDBC 主要省掉了什么？</p>
+            <div class="opts">
+              <div><b>A.</b> 连接获取/语句准备/结果集遍历映射等样板</div>
+              <div><b>B.</b> SQL 语言本身</div>
+              <div><b>C.</b> 数据库</div>
+              <div><b>D.</b> 事务概念</div>
+            </div>
+          </li>
+          <li><p class="q">「这也是 CAP Java 的运行底座」指？</p>
+            <div class="opts">
+              <div><b>A.</b> CAP Java 服务本质上就是 Spring Boot 应用</div>
+              <div><b>B.</b> CAP 不用 Spring</div>
+              <div><b>C.</b> 二者无关</div>
+              <div><b>D.</b> Java 版不能上云</div>
+            </div>
+          </li>
+          <li><p class="q">controller 里返回 List&lt;Map&gt; 之类对象时，Spring 如何变成 JSON？</p>
+            <div class="opts">
+              <div><b>A.</b> Jackson 序列化（自动处理，配置可调）</div>
+              <div><b>B.</b> 手写拼接字符串</div>
+              <div><b>C.</b> 必须装插件</div>
+              <div><b>D.</b> 浏览器转换</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">模板方法封装样板，你只写 SQL 与行映射（RowMapper/lambda）。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">理解了模式三，就理解了 CAP Java 的底座：模型之上仍是 Spring Boot 应用。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">Spring Boot 默认集成 Jackson：返回对象自动转 JSON。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="step5-maven.html"><small>← 上一章</small><b>第 B7 章：手顺5 模式二 Maven</b></a>

@@ -17,6 +17,7 @@
       <a class="tab active" href="overview.html">RAP 培训</a>
       <a class="tab" href="../cap/overview.html">CAP 培训</a>
       <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -203,6 +204,122 @@ action ( features : instance ) RejectTravel result [1] $self;</code></pre>
         <li><a href="step3-service.html">手顺3：服务定义与绑定</a><span class="psub">生成 OData V4 服务</span></li>
         <li><a href="step4-test.html">手顺4：Fiori 预览与测试</a><span class="psub">List Report + 增删改 + Action</span></li>
       </ol>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">RAP（ABAP RESTful 应用编程模型）的<b>三大支柱</b>不包括哪一项？</p>
+            <div class="opts">
+              <div><b>A.</b> Core Data Services（CDS）</div>
+              <div><b>B.</b> Behavior（行为）</div>
+              <div><b>C.</b> OData Services</div>
+              <div><b>D.</b> SAPUI5 Freestyle 控件库</div>
+            </div>
+          </li>
+          <li><p class="q">RAP 把传统「报表 + 屏幕」的瀑布式开发，转变成了什么方式？</p>
+            <div class="opts">
+              <div><b>A.</b> 纯过程式报表编程</div>
+              <div><b>B.</b> 声明式地组织「业务对象」</div>
+              <div><b>C.</b> 无框架的任意编码</div>
+              <div><b>D.</b> 前端拖拽生成 ABAP</div>
+            </div>
+          </li>
+          <li><p class="q">在 RAP 中，一个「业务对象（Business Object）」通常由哪四部分组成？</p>
+            <div class="opts">
+              <div><b>A.</b> 表 + 报表 + 屏幕 + 菜单</div>
+              <div><b>B.</b> 类 + 接口 + 事件 + 字典</div>
+              <div><b>C.</b> 数据模型 + 行为 + 服务 + UI</div>
+              <div><b>D.</b> IDoc + RFC + BAPI + 报表</div>
+            </div>
+          </li>
+          <li><p class="q">Draft（草稿）机制的核心作用是什么？</p>
+            <div class="opts">
+              <div><b>A.</b> 提升数据库查询性能</div>
+              <div><b>B.</b> 编辑过程中的中间状态先落草稿，正式数据不受影响、校验通过后再激活</div>
+              <div><b>C.</b> 替代权限检查</div>
+              <div><b>D.</b> 自动生成界面</div>
+            </div>
+          </li>
+          <li><p class="q">RAP 分层中，「服务定义（Service Definition）与服务绑定（Service Binding）」承担什么角色？</p>
+            <div class="opts">
+              <div><b>A.</b> 数据库存取优化</div>
+              <div><b>B.</b> 把业务对象对外发布为 OData 服务供 Fiori / 外部系统消费</div>
+              <div><b>C.</b> UI 布局管理</div>
+              <div><b>D.</b> 权限角色管理</div>
+            </div>
+          </li>
+          <li><p class="q">在消费视图上写 <code>@UI</code> 注解，主要驱动什么？</p>
+            <div class="opts">
+              <div><b>A.</b> 数据库索引</div>
+              <div><b>B.</b> 输入校验</div>
+              <div><b>C.</b> Fiori Elements 按元数据自动渲染列表 / 详情</div>
+              <div><b>D.</b> 触发后台作业</div>
+            </div>
+          </li>
+          <li><p class="q">RAP 相比传统 ABAP 开发（SE11/SE80 时代）最本质的变化是？</p>
+            <div class="opts">
+              <div><b>A.</b> 语言换成 JavaScript</div>
+              <div><b>B.</b> 去掉数据库层</div>
+              <div><b>C.</b> 用声明式 CDS / BDEF / 服务代替大量手写数据处理与 UI 代码</div>
+              <div><b>D.</b> 只允许云端部署</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">D</td><td class="expl">三支柱是 CDS + Behavior + OData；UI5 属于展示层（通常由 Fiori Elements 承担），不算 RAP 编程模型的支柱。</td></tr>
+              <tr><td>2</td><td class="an">B</td><td class="expl">RAP 用 CDS 声明数据模型、用 BDEF 声明行为、用服务定义/绑定暴露 OData，整件事围绕一个「业务对象」展开。</td></tr>
+              <tr><td>3</td><td class="an">C</td><td class="expl">RAP 业务对象 = 数据（CDS 视图栈）+ 行为（BDEF/实现类）+ 服务（定义/绑定）+ UI（Fiori Elements）。</td></tr>
+              <tr><td>4</td><td class="an">B</td><td class="expl">草稿把未保存的编辑隔离在 Draft 表，支持校验与「激活」语义；这是 RAP/Fiori 编辑体验的关键。</td></tr>
+              <tr><td>5</td><td class="an">B</td><td class="expl">服务定义声明「暴露哪些实体」，绑定选择协议（OData V4 等）并发布 URL——它们处于行为层之上、UI 之下。</td></tr>
+              <tr><td>6</td><td class="an">C</td><td class="expl">@UI 注解进入 OData 元数据，Fiori Elements 据此自动生成页面结构，无需手写 UI5。</td></tr>
+              <tr><td>7</td><td class="an">C</td><td class="expl">范式从「过程式手工建表建屏」转向「声明式模型 + 框架生成」，这是 RAP 的核心价值。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">RAP 可运行在 S/4HANA on-premise 与 BTP ABAP 环境（Steampunk）上，两者在应用层开发上？</p>
+            <div class="opts">
+              <div><b>A.</b> 语法与开发模型基本一致，差异主要在部署 / 基础设施层</div>
+              <div><b>B.</b> 完全是两种编程语言</div>
+              <div><b>C.</b> on-premise 不支持 OData</div>
+              <div><b>D.</b> Steampunk 不支持 CDS</div>
+            </div>
+          </li>
+          <li><p class="q">编辑一个 draft-enabled 的实体（如 Travel）时，数据是如何落库的？</p>
+            <div class="opts">
+              <div><b>A.</b> 直接覆盖正式表</div>
+              <div><b>B.</b> 先写入草稿（新版本），激活 / 保存后再合并到激活数据</div>
+              <div><b>C.</b> 只存在浏览器内存里</div>
+              <div><b>D.</b> 需要手工导出再导入</div>
+            </div>
+          </li>
+          <li><p class="q">RAP 强调「云就绪 / Clean Core」，其含义最接近哪一项？</p>
+            <div class="opts">
+              <div><b>A.</b> 只能在云上运行</div>
+              <div><b>B.</b> 所有代码写进 S/4 标准对象里</div>
+              <div><b>C.</b> 扩展 S/4HANA 时尽量走扩展点与自有对象，不修改标准对象，便于升级迁移</div>
+              <div><b>D.</b> 不使用任何 SAP 标准功能</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">RAP 的卖点之一是「一套模型、两端就绪」：应用层一致，云上主要处理 CF/基础设施差异。</td></tr>
+              <tr><td>9</td><td class="an">B</td><td class="expl">草稿与激活版本并存：编辑写 Draft，提交时校验并「激活」合并——正式数据不会出现半截编辑状态。</td></tr>
+              <tr><td>10</td><td class="an">C</td><td class="expl">Clean Core 指扩展不侵入标准内核，让 on-prem / 云升级都安全——RAP 对象建在自有包与扩展点正是为此。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="../index.html"><small>← 上一步</small><b>回到首页</b></a>

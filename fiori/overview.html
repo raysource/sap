@@ -17,6 +17,7 @@
       <a class="tab" href="../rap/overview.html">RAP 培训</a>
       <a class="tab" href="../cap/overview.html">CAP 培训</a>
       <a class="tab active" href="overview.html">Fiori 培训</a>
+      <a class="tab" href="../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -134,6 +135,122 @@
         <li><a href="step2-object.html">手顺2：Object Page 与 Facets</a><span class="psub">Header + 表单 Facet + 子表</span></li>
         <li><a href="step3-action.html">手顺3：Action 与双线集成</a><span class="psub">submitOrder 按钮 + RAP 侧 @UI 注解 + Draft</span></li>
       </ol>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">Fiori Elements 的核心工作方式是？</p>
+            <div class="opts">
+              <div><b>A.</b> 读 OData 服务的 $metadata 与 @UI 注解，自动生成企业级页面</div>
+              <div><b>B.</b> 手写大量 JS 拼页面</div>
+              <div><b>C.</b> 只做移动端</div>
+              <div><b>D.</b> 后台跑批</div>
+            </div>
+          </li>
+          <li><p class="q">Fiori Elements 页面所需的「数据底座」是？</p>
+            <div class="opts">
+              <div><b>A.</b> 任意 OData V2/V4 服务（RAP 或 CAP 皆可）</div>
+              <div><b>B.</b> 静态 JSON 文件</div>
+              <div><b>C.</b> 关系型数据库直连</div>
+              <div><b>D.</b> CSV 文件</div>
+            </div>
+          </li>
+          <li><p class="q">最常用的「List Report + Object Page」组合解决什么场景？</p>
+            <div class="opts">
+              <div><b>A.</b> 主列表（搜索/筛选）+ 单条详情（编辑/操作）</div>
+              <div><b>B.</b> 仪表盘</div>
+              <div><b>C.</b> 图表分析</div>
+              <div><b>D.</b> 向导录入</div>
+            </div>
+          </li>
+          <li><p class="q">RAP 侧 @UI 注解写在哪里？</p>
+            <div class="opts">
+              <div><b>A.</b> CDS 消费视图 / 元数据扩展（@UI.*）</div>
+              <div><b>B.</b> manifest.json 里</div>
+              <div><b>C.</b> HTML 文件里</div>
+              <div><b>D.</b> 前端 JS 里</div>
+            </div>
+          </li>
+          <li><p class="q">CAP 侧 @UI 注解写在哪个文件？</p>
+            <div class="opts">
+              <div><b>A.</b> app/&lt;页面&gt;/annotate.cds 的 annotate 块</div>
+              <div><b>B.</b> db/schema.cds</div>
+              <div><b>C.</b> package.json</div>
+              <div><b>D.</b> README</div>
+            </div>
+          </li>
+          <li><p class="q">「零代码起步」里，搜索/筛选/分页/CRUD 这些能力从哪来？</p>
+            <div class="opts">
+              <div><b>A.</b> Elements 模板开箱自带（读元数据自动可用）</div>
+              <div><b>B.</b> 每个都要自己写</div>
+              <div><b>C.</b> 第三方库</div>
+              <div><b>D.</b> 浏览器扩展</div>
+            </div>
+          </li>
+          <li><p class="q">Fiori Elements 与 UI5 的关系是？</p>
+            <div class="opts">
+              <div><b>A.</b> Elements 是构建在 UI5 之上的预制模板体系</div>
+              <div><b>B.</b> Elements 与 UI5 无关</div>
+              <div><b>C.</b> UI5 是 Elements 的前身</div>
+              <div><b>D.</b> Elements 不用 JS</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">元数据驱动：后端注解声明页面结构，框架负责渲染，几乎不写 UI5 代码。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">前后端在此汇合：只要服务暴露 OData + 注解，Elements 就能渲染。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">List Report 管列表与筛选，Object Page 管详情，二者是标准业务应用的骨架。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">RAP 的注解属于后端 CDS 模型；与 CAP 在 annotate.cds 叠加是殊途同归。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">CAP 用 annotate 语法在应用层对服务实体加 UI 注解（第 6 章手写过三件套）。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">标准页面能力是模板内置的，注解只负责「定制长什么样」。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">Elements 基于 UI5 框架实现；需要自由扩展时你仍在写 UI5。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">「可渐进扩展」指什么？</p>
+            <div class="opts">
+              <div><b>A.</b> 标准能力不够时，用自定义列/按钮/片段扩展，而不是推翻模板</div>
+              <div><b>B.</b> 必须全量手写</div>
+              <div><b>C.</b> 只能读不能写</div>
+              <div><b>D.</b> 扩展要付费</div>
+            </div>
+          </li>
+          <li><p class="q">manifest.json 与 annotate.cds 的分工是？</p>
+            <div class="opts">
+              <div><b>A.</b> manifest 配置应用/数据源/路由，annotate 声明 UI 注解</div>
+              <div><b>B.</b> 两者重复</div>
+              <div><b>C.</b> annotate 管路由</div>
+              <div><b>D.</b> manifest 写注解</div>
+            </div>
+          </li>
+          <li><p class="q">注解驱动的最大工程收益是？</p>
+            <div class="opts">
+              <div><b>A.</b> UI 与后端模型一致、改注解即改页面、升级自动跟随框架</div>
+              <div><b>B.</b> 页面数量减少</div>
+              <div><b>C.</b> 代码量归零</div>
+              <div><b>D.</b> 不需要测试</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">先标准后扩展：绝大多数页面靠注解，个别特殊点用 UI5 扩展点。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">manifest = 应用骨架与连接；annotate = 页面长什么样的元数据。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">少代码 + 高一致性 + 随框架升级，是 Elements 被选为企业 UI 主路的原因。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="../index.html"><small>← 上一步</small><b>回到首页</b></a>

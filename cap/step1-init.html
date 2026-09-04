@@ -17,6 +17,7 @@
       <a class="tab" href="../rap/overview.html">RAP 培训</a>
       <a class="tab active" href="overview.html">CAP 培训</a>
       <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -277,6 +278,122 @@
           <li><b>包版本</b>：<code>@sap/cds: ^8</code> 会解析为当前最新的 8.x，功能与本教材一致。</li>
         </ul>
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">创建 Bookshop 项目骨架的命令是？</p>
+            <div class="opts">
+              <div><b>A.</b> cds init bookshop</div>
+              <div><b>B.</b> cds new shop</div>
+              <div><b>C.</b> npm init bookshop</div>
+              <div><b>D.</b> cds create app</div>
+            </div>
+          </li>
+          <li><p class="q"><code>cds init bookshop</code> 后，项目骨架默认包含哪些目录？</p>
+            <div class="opts">
+              <div><b>A.</b> db/ srv/ 等基础目录（app/ 通常要在后续步骤生成）</div>
+              <div><b>B.</b> 只有 app/</div>
+              <div><b>C.</b> 没有目录</div>
+              <div><b>D.</b> 只生成一个压缩包</div>
+            </div>
+          </li>
+          <li><p class="q">安装项目依赖的命令是？</p>
+            <div class="opts">
+              <div><b>A.</b> npm install</div>
+              <div><b>B.</b> cds install</div>
+              <div><b>C.</b> npm run setup</div>
+              <div><b>D.</b> yarn global</div>
+            </div>
+          </li>
+          <li><p class="q">启动开发服务器并支持文件改动自动重启（热重载）的是？</p>
+            <div class="opts">
+              <div><b>A.</b> cds watch</div>
+              <div><b>B.</b> cds build --run</div>
+              <div><b>C.</b> npm restart</div>
+              <div><b>D.</b> cds deploy</div>
+            </div>
+          </li>
+          <li><p class="q">cds watch 启动后，默认监听端口是？</p>
+            <div class="opts">
+              <div><b>A.</b> 4004</div>
+              <div><b>B.</b> 3000</div>
+              <div><b>C.</b> 8080</div>
+              <div><b>D.</b> 8000</div>
+            </div>
+          </li>
+          <li><p class="q">package.json 里的 scripts（如 watch/start）作用是？</p>
+            <div class="opts">
+              <div><b>A.</b> 声明可运行的快捷命令</div>
+              <div><b>B.</b> 声明数据库表</div>
+              <div><b>C.</b> 声明 CSS 样式</div>
+              <div><b>D.</b> 声明权限</div>
+            </div>
+          </li>
+          <li><p class="q">首次启动后如何快速确认服务活着？</p>
+            <div class="opts">
+              <div><b>A.</b> 浏览器打开 http://localhost:4004 看到欢迎页/服务文档</div>
+              <div><b>B.</b> 看任务栏图标</div>
+              <div><b>C.</b> ping 127.0.0.1</div>
+              <div><b>D.</b> 打开 Excel</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">cds init 加项目名即生成同名目录骨架；后续章节往 db/ srv/ 里填内容。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">骨架含 db/、srv/ 等基础结构；app/（Fiori 前端）要靠 cds add / 手写产生。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">在项目根目录执行 npm install，读取 package.json 安装 @sap/cds 等依赖。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">cds watch 监视文件变化自动重启，是 CAP 开发主命令。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">CAP 默认 4004（Java 路线为 8080），浏览器访问 http://localhost:4004。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">scripts 把长命令收成短别名：npm run watch 等价于 cds watch 等。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">CAP 启动后在根路径给出欢迎页与可用端点列表，即服务已就绪的信号。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">cds watch 与 cds run 的主要差别是？</p>
+            <div class="opts">
+              <div><b>A.</b> watch 带文件监视与自动重启，run 是一次性启动</div>
+              <div><b>B.</b> run 更快</div>
+              <div><b>C.</b> watch 不能跑服务</div>
+              <div><b>D.</b> run 支持热重载</div>
+            </div>
+          </li>
+          <li><p class="q">为什么 <code>cds init</code> 默认不生成 app/ 目录？</p>
+            <div class="opts">
+              <div><b>A.</b> app/ 不是必须的：没有前端时纯 API 项目也成立，前端按需用 cds add fiori 或手写添加</div>
+              <div><b>B.</b> 目录名写错了</div>
+              <div><b>C.</b> app/ 已被废弃</div>
+              <div><b>D.</b> 需要付费</div>
+            </div>
+          </li>
+          <li><p class="q">package.json 里出现 mta 相关配置（如 mta.yaml/mta 依赖）的目的是？</p>
+            <div class="opts">
+              <div><b>A.</b> 为部署到 BTP 做多目标打包（Cloud MTA）</div>
+              <div><b>B.</b> 装饰用</div>
+              <div><b>C.</b> 定义数据库模型</div>
+              <div><b>D.</b> 配置编辑器主题</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">开发期用 watch：改模型/代码立即生效；CI 或生产式启动用 run/start。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">CAP 项目可有纯后端形态；UI 层按需添加，这与「模型驱动、按需扩展」的思路一致。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">mta（多目标应用）是把 CAP 应用+数据库+路由打成部署包的标准方式，云端章节用到。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="prep.html"><small>← 上一章</small><b>第 2 章：环境准备</b></a>

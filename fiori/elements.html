@@ -17,6 +17,7 @@
       <a class="tab" href="../rap/overview.html">RAP 培训</a>
       <a class="tab" href="../cap/overview.html">CAP 培训</a>
       <a class="tab active" href="overview.html">Fiori 培训</a>
+      <a class="tab" href="../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -255,6 +256,122 @@
           <p>浏览器按 F12 → Elements / 调试器，搜索 <code>smartfilterbar</code>、<code>smarttable</code> 等 DOM 节点，亲眼确认控件真实身份。</p>
         </li>
       </ol>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">Smart Controls（智能控件）最大的特点是？</p>
+            <div class="opts">
+              <div><b>A.</b> 连接 OData 元数据自适应（字段、值帮助自动来）</div>
+              <div><b>B.</b> 完全独立不读服务</div>
+              <div><b>C.</b> 只能在移动端</div>
+              <div><b>D.</b> 没有元数据</div>
+            </div>
+          </li>
+          <li><p class="q">筛选栏对应哪个智能控件/注解组合？</p>
+            <div class="opts">
+              <div><b>A.</b> SmartFilterBar ↔ UI.SelectionFields</div>
+              <div><b>B.</b> SmartTable ↔ LineItem</div>
+              <div><b>C.</b> SmartForm ↔ Facet</div>
+              <div><b>D.</b> DataPoint ↔ 徽标</div>
+            </div>
+          </li>
+          <li><p class="q">表格对应？</p>
+            <div class="opts">
+              <div><b>A.</b> SmartTable ↔ UI.LineItem</div>
+              <div><b>B.</b> SmartFilterBar ↔ LineItem</div>
+              <div><b>C.</b> Input ↔ SelectionFields</div>
+              <div><b>D.</b> Chart ↔ LineItem</div>
+            </div>
+          </li>
+          <li><p class="q">表单区块对应？</p>
+            <div class="opts">
+              <div><b>A.</b> SmartForm ↔ @UI.FieldGroup（elements 列字段）</div>
+              <div><b>B.</b> SmartTable ↔ FieldGroup</div>
+              <div><b>C.</b> Chart ↔ 表单</div>
+              <div><b>D.</b> ValueHelp ↔ 表单</div>
+            </div>
+          </li>
+          <li><p class="q">sap.m 基础控件（Input/Select/Button 等）主要用于？</p>
+            <div class="opts">
+              <div><b>A.</b> Freestyle / 扩展点手写 UI5 时</div>
+              <div><b>B.</b> 标准 Elements 页面的唯一来源</div>
+              <div><b>C.</b> 替换数据库</div>
+              <div><b>D.</b> 不用写代码</div>
+            </div>
+          </li>
+          <li><p class="q">状态颜色（红黄绿）在控件层的呈现依赖？</p>
+            <div class="opts">
+              <div><b>A.</b> DataPoint/状态相关控件 + criticality 字段</div>
+              <div><b>B.</b> CSS 乱设</div>
+              <div><b>C.</b> JS 随机</div>
+              <div><b>D.</b> 用户皮肤</div>
+            </div>
+          </li>
+          <li><p class="q">「注解 → 控件」对照表的用途是？</p>
+            <div class="opts">
+              <div><b>A.</b> 看到页面某个部件，能反查它由哪条注解/控件生成，定位定制点</div>
+              <div><b>B.</b> 代替文档</div>
+              <div><b>C.</b> 只是装饰</div>
+              <div><b>D.</b> 给考官看</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">智能控件消费服务元数据：SmartTable 自动得列与类型，SmartFilterBar 自动得筛选项。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">SelectionFields 注解 → 筛选栏控件，一一对应（速查表主题）。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">LineItem 注解驱动 SmartTable 的列。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">FieldGroup 内的字段在 Object Page 由 SmartForm 呈现。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">基础控件是乐高件：Elements 之外写自定义页面/扩展时手写它们。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">DataPoint 类控件读取 criticality 渲染语义色（与 F4 徽标衔接）。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">定位能力 = 定制能力：知道部件来源，才能改对注解或找到扩展点。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">什么时候需要手写 sap.m 控件？</p>
+            <div class="opts">
+              <div><b>A.</b> 标准模板满足不了（自定义布局/复杂交互），写 Freestyle 或用扩展点</div>
+              <div><b>B.</b> 任何时候都不行</div>
+              <div><b>C.</b> 必须全部手写</div>
+              <div><b>D.</b> 只有列表可以</div>
+            </div>
+          </li>
+          <li><p class="q">页面上某列没按注解出现，排查第一步是？</p>
+            <div class="opts">
+              <div><b>A.</b> 查 $metadata 里注解是否真正下发（服务/annotate 生效了吗）</div>
+              <div><b>B.</b> 重启电脑</div>
+              <div><b>C.</b> 重装 Fiori</div>
+              <div><b>D.</b> 换浏览器</div>
+            </div>
+          </li>
+          <li><p class="q">F12 开发者工具看 Fiori 页面能观察到？</p>
+            <div class="opts">
+              <div><b>A.</b> 实际渲染的 UI5 控件树（可逆向定位控件与注解来源）</div>
+              <div><b>B.</b> 数据库行</div>
+              <div><b>C.</b> 源代码仓库</div>
+              <div><b>D.</b> 网络拓扑</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">Elements 覆盖 80% 标准场景；剩下的定制走 UI5 代码（小例子：inventory.view.xml）。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">UI 由元数据渲染：先确认服务元数据里有注解，再谈页面问题。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">看真实控件树是把「注解→控件」落到实处的观察方法（F5.6 动手环节）。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="step3-action.html"><small>← 上一章</small><b>手顺3：Action 与双线集成</b></a>

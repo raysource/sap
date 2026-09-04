@@ -207,6 +207,122 @@ curl -s -X POST "&lt;URL&gt;" -H 'Content-Type: application/json' \
         </tbody>
       </table>
 
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">本路线共做了哪三个 iFlow？</p>
+            <div class="opts">
+              <div><b>A.</b> hello-echo / order-transform / order-dispatch</div>
+              <div><b>B.</b> 登录/注册/下单</div>
+              <div><b>C.</b> A/B/C</div>
+              <div><b>D.</b> 导入导出打印</div>
+            </div>
+          </li>
+          <li><p class="q">三个 iFlow 的端点 URL 规律是？</p>
+            <div class="opts">
+              <div><b>A.</b> https://&lt;租户域名&gt;/cxf/&lt;Sender Address&gt;（/hello、/order、/dispatch）</div>
+              <div><b>B.</b> 每个都不同且无规律</div>
+              <div><b>C.</b> 等于包名</div>
+              <div><b>D.</b> 随机生成</div>
+            </div>
+          </li>
+          <li><p class="q">order-book.json 输入 <code>qty=2, price=11.11</code>，预期 amount 是？</p>
+            <div class="opts">
+              <div><b>A.</b> 22.22（2×11.11，BigDecimal 舍入到分）</div>
+              <div><b>B.</b> 22.2</div>
+              <div><b>C.</b> 22</div>
+              <div><b>D.</b> 11.11</div>
+            </div>
+          </li>
+          <li><p class="q">给 iFlow 发 XML 文件用 curl 的写法是？</p>
+            <div class="opts">
+              <div><b>A.</b> -H 'Content-Type: text/xml' --data-binary @order-urgent.xml</div>
+              <div><b>B.</b> -F 上传图片</div>
+              <div><b>C.</b> 直接 cat 管道</div>
+              <div><b>D.</b> -d 传 XML 但无类型头</div>
+            </div>
+          </li>
+          <li><p class="q">I6 的素材包位于？</p>
+            <div class="opts">
+              <div><b>A.</b> samples/cpi-iflows/（payloads/ 与 scripts/）</div>
+              <div><b>B.</b> samples/cap-bookshop/</div>
+              <div><b>C.</b> 根目录</div>
+              <div><b>D.</b> downloads/ 内嵌</div>
+            </div>
+          </li>
+          <li><p class="q">MPL 状态 <span class='st x'>Failed</span> 与 <span class='st o'>Retrying</span> 的区别是？</p>
+            <div class="opts">
+              <div><b>A.</b> Failed 已终止需排查；Retrying 是临时失败正在按策略重试</div>
+              <div><b>B.</b> 没区别</div>
+              <div><b>C.</b> Retrying 更严重</div>
+              <div><b>D.</b> Failed 会自动好</div>
+            </div>
+          </li>
+          <li><p class="q">回显服务（postman-echo）偶发不可达时，教学上可？</p>
+            <div class="opts">
+              <div><b>A.</b> 重试或把 Receiver 地址换成 https://httpbin.org/post</div>
+              <div><b>B.</b> 放弃实验</div>
+              <div><b>C.</b> 删除租户</div>
+              <div><b>D.</b> 改 Sender 协议</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">分别覆盖：基础改写（I3）、脚本转换（I4）、内容路由（I5）。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">地址在 Sender 的 Connection 配置；/cxf 为运行时统一前缀。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">脚本计算 11.11×2=22.22，验证转换逻辑与舍入。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">文件发送用 --data-binary + 类型头；响应可 python -m json.tool 美化。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">素材包含载荷与脚本文件，与页面内容一致，见 downloads.html 第 7 节。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">Retrying 常因目标瞬时不可达，等一会可能转 Completed/Failed。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">回显只是镜子：换一个等价公网回显即可，iFlow 逻辑不受影响。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">回显服务验证法的根本局限是？</p>
+            <div class="opts">
+              <div><b>A.</b> 它是第三方教学替身，不代表真实业务系统语义（真实场景需替换为真实端点并处理鉴权/格式）</div>
+              <div><b>B.</b> 没有任何局限</div>
+              <div><b>C.</b> 响应一定对</div>
+              <div><b>D.</b> 速度最快</div>
+            </div>
+          </li>
+          <li><p class="q">排错时正确的依赖顺序是？</p>
+            <div class="opts">
+              <div><b>A.</b> MPL 状态 → 落点组件 → 该组件配置/外网可达性，由内向外</div>
+              <div><b>B.</b> 先删 iFlow</div>
+              <div><b>C.</b> 先重装浏览器</div>
+              <div><b>D.</b> 先改回显</div>
+            </div>
+          </li>
+          <li><p class="q">把「中间计算值」留给后续步骤用的标准做法是？</p>
+            <div class="opts">
+              <div><b>A.</b> 存 Exchange Property（如 computedAmount），下游用 ${property.xxx} 或 getProperties() 读取</div>
+              <div><b>B.</b> 写进数据库</div>
+              <div><b>C.</b> 发邮件保存</div>
+              <div><b>D.</b> 存浏览器</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">镜子只能验证「送达与改写」，真实集成还要面对目标系统的协议、鉴权与错误处理。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">MPL 先定位阶段与组件，再检查对应配置（地址/凭据/外网），避免瞎改。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">Property 是流内共享内存：I4 脚本存、I5 路由/下游读，闭环即整套课程主线。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
+
       <div class="pagenav">
         <a href="step3-router.html"><small>← 上一章</small><b>I5 手顺3：内容路由</b></a>
         <a class="next" href="../index.html"><small>下一步 →</small><b>回到课程首页</b></a>

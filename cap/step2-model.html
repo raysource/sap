@@ -17,6 +17,7 @@
       <a class="tab" href="../rap/overview.html">RAP 培训</a>
       <a class="tab active" href="overview.html">CAP 培训</a>
       <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -284,6 +285,122 @@ service CatalogService {
           <li><b>CSV 编码</b>：保存为 UTF-8（无 BOM），中文描述才能正确导入。</li>
         </ul>
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">领域模型文件 db/schema.cds 顶部常写 <code>namespace sap.capire.bookshop;</code>，作用是？</p>
+            <div class="opts">
+              <div><b>A.</b> 给实体限定命名空间，避免冲突并便于复用</div>
+              <div><b>B.</b> 声明数据库类型</div>
+              <div><b>C.</b> 定义端口</div>
+              <div><b>D.</b> 开启日志</div>
+            </div>
+          </li>
+          <li><p class="q"><code>entity Books : cuid { … }</code> 中的 cuid 提供了什么？</p>
+            <div class="opts">
+              <div><b>A.</b> 自动 UUID 主键 ID</div>
+              <div><b>B.</b> 创建时间</div>
+              <div><b>C.</b> 价格字段</div>
+              <div><b>D.</b> 审计日志</div>
+            </div>
+          </li>
+          <li><p class="q">Books 里 <code>author : Association to Authors;</code> 表示？</p>
+            <div class="opts">
+              <div><b>A.</b> Books 与 Authors 的关联，会自动生成外键 author_ID 并支持导航</div>
+              <div><b>B.</b> 复制一份作者数据</div>
+              <div><b>C.</b> 删除作者时同步删除图书</div>
+              <div><b>D.</b> 作者必须是主键</div>
+            </div>
+          </li>
+          <li><p class="q">服务文件 srv/cat-service.cds 里用 service 块把实体暴露后，OData 端点形如？</p>
+            <div class="opts">
+              <div><b>A.</b> /odata/v4/catalog/Books</div>
+              <div><b>B.</b> /api/v1/books.xml</div>
+              <div><b>C.</b> /soap/catalog</div>
+              <div><b>D.</b> /odata/v2/travel</div>
+            </div>
+          </li>
+          <li><p class="q">CSV 种子数据放在哪个目录、怎么命名才能被自动导入？</p>
+            <div class="opts">
+              <div><b>A.</b> db/data/ 下，文件名 <命名空间>-<实体名>.csv，如 sap.capire.bookshop-Genres.csv</div>
+              <div><b>B.</b> 随便放哪都行</div>
+              <div><b>C.</b> srv/data/ 下按实体名</div>
+              <div><b>D.</b> db/ 根目录固定名 seed.csv</div>
+            </div>
+          </li>
+          <li><p class="q">写完模型与 CSV 后，谁负责在 SQLite 里建表并灌数据？</p>
+            <div class="opts">
+              <div><b>A.</b> cds watch 启动时自动完成</div>
+              <div><b>B.</b> 必须手动执行 CREATE TABLE</div>
+              <div><b>C.</b> Fiori 页面</div>
+              <div><b>D.</b> npm install</div>
+            </div>
+          </li>
+          <li><p class="q">实体字段若使用普通 Integer 主键（非 cuid），手工插入时最需要注意？</p>
+            <div class="opts">
+              <div><b>A.</b> 主键值必须唯一且自行维护（如 Books 用 1、2…10）</div>
+              <div><b>B.</b> 不能指定</div>
+              <div><b>C.</b> 自动从 0 开始</div>
+              <div><b>D.</b> 必须是负数</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">命名空间让实体全名如 sap.capire.bookshop.Books，跨模型引用清晰。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">cuid 来自 cds.common，注入自动生成的 ID 主键，省去手写键。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">Association 是声明式关联：数据层生成外键，服务层可导航（如 author.name）。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">服务名映射为路径段：默认 /odata/v4/&lt;service&gt;/&lt;Entity&gt;。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">CAP 按 db/data/&lt;namespace&gt;-&lt;Entity&gt;.csv 约定自动匹配实体并导入。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">开发服务器启动即自动按模型部署数据库并加载 CSV，无需手工建表。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">非 cuid 实体无自动 ID，CSV/插入要显式给唯一键值（本课图书 ID 为 1–10）。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">CSV 中日期/金额等字段与 CDS 类型如何对应？</p>
+            <div class="opts">
+              <div><b>A.</b> 按 CDS 类型解析：如 date 列给 yyyy-mm-dd 字符串，decimal 列给数字文本即可</div>
+              <div><b>B.</b> CSV 只能存文本</div>
+              <div><b>C.</b> 需要写转换脚本</div>
+              <div><b>D.</b> 类型由列名决定</div>
+            </div>
+          </li>
+          <li><p class="q">服务里写 <code>entity Books as Books;</code>（投影）而不是直接暴露 db 实体的意义是？</p>
+            <div class="opts">
+              <div><b>A.</b> 可裁剪字段、加注解、形成稳定服务面，与底层模型解耦</div>
+              <div><b>B.</b> 必须这么写才能启动</div>
+              <div><b>C.</b> 能提升性能但没别的用</div>
+              <div><b>D.</b> 投影会被禁止</div>
+            </div>
+          </li>
+          <li><p class="q">在另一个文件引用其他模型的实体，用哪种语法？</p>
+            <div class="opts">
+              <div><b>A.</b> using { sap.capire.bookshop as my } from '../db/schema';</div>
+              <div><b>B.</b> import * from db</div>
+              <div><b>C.</b> require schema.cds</div>
+              <div><b>D.</b> 引用即可无需声明</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">CAP 导入时按模型类型做转换；日期写 ISO 格式、数字写纯文本即可正确入库。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">服务投影 = 对消费方的契约：内部模型随便演进，服务面可控。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">using 语句按相对路径引用 cds 文件并起别名（my.Books），是跨文件复用的标准写法。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="step1-init.html"><small>← 上一章</small><b>手顺1：项目初始化</b></a>

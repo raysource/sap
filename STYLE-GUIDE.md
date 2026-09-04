@@ -77,6 +77,7 @@ brand 始终指向 `../index.html`。
 | 折叠 | `details.box` + `summary` + `.box-body` | 可展开补充 |
 | 代码块 | `<pre><code class="language-cds|abap|js|bash|json|console">` | 自动高亮+复制 |
 | 上一页/下一页 | `.pagenav a` + `.next` | 章末 |
+| 章节测评 | `<section id="quiz">` + `.quiz`（`ol.qz`/`.q`/`.opts`）+ `details.box` 答案表 `.qz-ans` + `.qzlist`（首页卡片） | 每章页内、`pagenav` 之前 |
 
 ## 6. Mockup 截图组件（重点）
 
@@ -115,3 +116,11 @@ brand 始终指向 `../index.html`。
 - RAP：`rap/prep.html`、`rap/step1-cds.html`、`rap/step2-behavior.html`、`rap/step3-service.html`、`rap/step4-test.html`、`rap/testdata.html`
 - CAP：`cap/prep.html`、`cap/step1-init.html`、`cap/step2-model.html`、`cap/step3-implement.html`、`cap/step4-test.html`、`cap/testdata.html`
 - 章节内部 pagenav 顺序见侧边导航顺序。
+
+## 9. 章节测评规范
+
+- 每个章节页在 `<div class="pagenav">` 之前放置 `<section id="quiz">`（锚点 `#quiz`）。
+- 每题 = `ol.qz` 内 `<li><p class="q">题干</p><div class="opts"><div><b>A.</b>…` 四选一；题干/选项/解析中如需写 `<...>` 字面量，必须用实体 `&lt;` `&gt;`，禁止裸尖括号。
+- 题量：主手顺章 12 题（基础 8 + 提高 4），概述/准备/测试数据/参考章 10 题（基础 7 + 提高 3），整体须落在 10–20 题区间。
+- 提高题是最后一组（`<ol start="…">`），侧重原理与综合判断；答案 + 一句解析放该组 `details.box` 的 `.qz-ans` 表（答案 `.an` 绿色）。
+- 首页「测评中心」在 `index.html` 的 `#assess` 区（`.qzlist` 卡片），新增/调整测评后同步更新其中的链接与题数。

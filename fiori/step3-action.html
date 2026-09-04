@@ -17,6 +17,7 @@
       <a class="tab" href="../rap/overview.html">RAP 培训</a>
       <a class="tab" href="../cap/overview.html">CAP 培训</a>
       <a class="tab active" href="overview.html">Fiori 培训</a>
+      <a class="tab" href="../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -211,6 +212,140 @@ define view entity ZC_TRAVEL as select from ZI_TRAVEL { ... }
           <p>在 ADT 里给 <code>ZC_TRAVEL</code> 补 <code>@UI.headerInfo</code> / <code>lineItem</code> 注解，重新激活后在 Service Binding 点 Preview，对照 <a href="#compare">F4.3</a> 表格观察同与不同。</p>
         </li>
       </ol>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 12 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–8 题）+ <b>🔶 能力提高</b>（第 9–12 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–8）</h3>
+        <ol class="qz">
+          <li><p class="q">把服务端 Action（submitOrder）变成页面上可点的按钮，需要？</p>
+            <div class="opts">
+              <div><b>A.</b> 服务暴露 Action + 元数据注解声明按钮（文案等），框架调用 Action</div>
+              <div><b>B.</b> 只改前端 JS</div>
+              <div><b>C.</b> 只改数据库</div>
+              <div><b>D.</b> 写死一个 a 标签</div>
+            </div>
+          </li>
+          <li><p class="q">库存状态徽标的颜色（红/黄/绿）由什么驱动？</p>
+            <div class="opts">
+              <div><b>A.</b> 服务端计算的 criticality 字段（Negative/Critical/Positive 语义）</div>
+              <div><b>B.</b> 前端随机色</div>
+              <div><b>C.</b> 浏览器主题</div>
+              <div><b>D.</b> 用户头像</div>
+            </div>
+          </li>
+          <li><p class="q">为什么 criticality 要在服务端（CAP 处理器）计算？</p>
+            <div class="opts">
+              <div><b>A.</b> 数据与规则以服务端为准（单一事实源、权限内计算），前端只消费</div>
+              <div><b>B.</b> 前端算更快</div>
+              <div><b>C.</b> 服务端无法计算</div>
+              <div><b>D.</b> 两者都不行</div>
+            </div>
+          </li>
+          <li><p class="q">RAP 侧的 @UI 注解写在什么语言/位置？</p>
+            <div class="opts">
+              <div><b>A.</b> ABAP CDS（如 @UI: { headerInfo: … }），随 RAP 服务下发</div>
+              <div><b>B.</b> Java 类</div>
+              <div><b>C.</b> JavaScript 文件</div>
+              <div><b>D.</b> manifest</div>
+            </div>
+          </li>
+          <li><p class="q">RAP 的编辑体验默认依赖哪种机制？</p>
+            <div class="opts">
+              <div><b>A.</b> Draft（草稿）</div>
+              <div><b>B.</b> 双写日志</div>
+              <div><b>C.</b> 缓存层</div>
+              <div><b>D.</b> 消息队列</div>
+            </div>
+          </li>
+          <li><p class="q">CAP 侧做同样 UI 需要的关键能力与 RAP 的区别是？</p>
+            <div class="opts">
+              <div><b>A.</b> 机制同为 OData 注解，只是注解书写位置/工具不同（annotate.cds vs ABAP CDS）</div>
+              <div><b>B.</b> 完全不同</div>
+              <div><b>C.</b> CAP 不能用 Fiori</div>
+              <div><b>D.</b> RAP 无注解</div>
+            </div>
+          </li>
+          <li><p class="q">点「下单」成功后页面应？</p>
+            <div class="opts">
+              <div><b>A.</b> 触发 submitOrder、库存变化后刷新显示（数量/徽标更新）</div>
+              <div><b>B.</b> 没有任何变化</div>
+              <div><b>C.</b> 跳到百度</div>
+              <div><b>D.</b> 报 404</div>
+            </div>
+          </li>
+          <li><p class="q">素材包提示 submitOrder 的参数形态是 book+quantity（与页面教材参数写法有差异）说明？</p>
+            <div class="opts">
+              <div><b>A.</b> 以实际 curl/调用签名为准，注解/文档要对齐服务定义</div>
+              <div><b>B.</b> 教材写错没关系</div>
+              <div><b>C.</b> 参数无所谓</div>
+              <div><b>D.</b> 必须用 XML</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–8））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">按钮来自注解声明；点击由框架发 Action 请求，无需手写调用逻辑。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">criticality 数值经 UI 注解映射为状态视觉（如 DataPoint/StatusVisualization）。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">状态规则属业务逻辑：服务端算好后随数据下发，前端只负责呈现。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">RAP 的 UI 元数据与模型同在 CDS 层，绑定 UI 类型后即可预览。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">RAP Fiori 编辑走草稿：RAP 手顺4 曾实测 DraftEntity 的 PATCH 行为。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">F4 收口结论：两条后端线在 UI 层同构，差异只在注解载体。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">Action 调用成功后刷新列表/详情，可看到库存与徽标随服务端数据变化。</td></tr>
+              <tr><td>8</td><td class="an">A</td><td class="expl">参数契约看服务定义与素材 README；前端按钮只是把固定/录入参数传过去。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（9–12）</h3>
+        <ol class="qz" start="9">
+          <li><p class="q">为什么按钮文案/颜色不写死在前端代码里？</p>
+            <div class="opts">
+              <div><b>A.</b> 由注解/服务元数据下发，改文案不用发前端版本</div>
+              <div><b>B.</b> 前端不能写文案</div>
+              <div><b>C.</b> 框架禁止</div>
+              <div><b>D.</b> 必须用数据库</div>
+            </div>
+          </li>
+          <li><p class="q">RAP 草稿编辑时执行 Action，可能遇到的坑是？</p>
+            <div class="opts">
+              <div><b>A.</b> Action 需按 features 在草稿态禁用或作用在 draft 实例上，否则状态流转非法</div>
+              <div><b>B.</b> 没有任何坑</div>
+              <div><b>C.</b> 草稿不能读</div>
+              <div><b>D.</b> Action 更快</div>
+            </div>
+          </li>
+          <li><p class="q">「双线收口」的最终结论是？</p>
+            <div class="opts">
+              <div><b>A.</b> Fiori Elements 消费 RAP/CAP 任一 OData 服务，UI 侧注解机制一致</div>
+              <div><b>B.</b> 必须选 RAP</div>
+              <div><b>C.</b> 必须选 CAP</div>
+              <div><b>D.</b> UI 线独立无共性</div>
+            </div>
+          </li>
+          <li><p class="q">徽标数值从 0/1/2/3 之类变为颜色显示，中间环节是？</p>
+            <div class="opts">
+              <div><b>A.</b> 注解把 criticality 映射到状态显示（如 StatusVisualization 阈值）</div>
+              <div><b>B.</b> 数据库直接存颜色</div>
+              <div><b>C.</b> 前端 if 判断整型</div>
+              <div><b>D.</b> 浏览器转码</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（9–12））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>9</td><td class="an">A</td><td class="expl">UI 声明后置：文案、行为随服务注解变化，前后端职责清晰。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">草稿态的实例操作语义不同：按钮可用性由 get_features 控制，防止在未激活状态上乱流转。</td></tr>
+              <tr><td>11</td><td class="an">A</td><td class="expl">学完 F1–F4：前端是公共门面，后端模型决定注解来源——这正是双线培训的意义。</td></tr>
+              <tr><td>12</td><td class="an">A</td><td class="expl">显示层把服务端数值映射为红/黄/绿视觉，语义仍在服务端。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="step2-object.html"><small>← 上一章</small><b>手顺2：Object Page 与 Facets</b></a>

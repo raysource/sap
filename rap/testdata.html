@@ -17,6 +17,7 @@
       <a class="tab active" href="overview.html">RAP 培训</a>
       <a class="tab" href="../cap/overview.html">CAP 培训</a>
       <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -259,6 +260,122 @@ WRITE: / '插入完成：', lines( lt_travel ), '条旅行，', lines( lt_bookin
           <li>手顺4 的 Fiori 列表页数据与此处一一对应，可直接对照验证。</li>
         </ul>
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">ZTRAVEL 与 ZTRAVEL_BOOKING 的关系是？</p>
+            <div class="opts">
+              <div><b>A.</b> 1 对 1</div>
+              <div><b>B.</b> 1 对 N（主表 + 子表预订）</div>
+              <div><b>C.</b> N 对 N</div>
+              <div><b>D.</b> 无关联</div>
+            </div>
+          </li>
+          <li><p class="q">ZR_INSERT_TESTDATA 是什么？</p>
+            <div class="opts">
+              <div><b>A.</b> CDS 视图</div>
+              <div><b>B.</b> 批量插入测试数据的 ABAP 程序</div>
+              <div><b>C.</b> 服务绑定</div>
+              <div><b>D.</b> 权限角色</div>
+            </div>
+          </li>
+          <li><p class="q">SE16N 是做什么用的？</p>
+            <div class="opts">
+              <div><b>A.</b> 调试器</div>
+              <div><b>B.</b> 数据浏览器：直接查看 / 维护表数据</div>
+              <div><b>C.</b> 报表设计器</div>
+              <div><b>D.</b> 传输工具</div>
+            </div>
+          </li>
+          <li><p class="q">本课 Travel 状态域的四值与含义是？</p>
+            <div class="opts">
+              <div><b>A.</b> N 新 / O 处理中 / A 已批准 / X 已拒绝</div>
+              <div><b>B.</b> A/B/C/D</div>
+              <div><b>C.</b> 1/2/3/4</div>
+              <div><b>D.</b> Open/Close/New/Draft</div>
+            </div>
+          </li>
+          <li><p class="q">测试场景清单覆盖哪类业务流？</p>
+            <div class="opts">
+              <div><b>A.</b> 仅查询</div>
+              <div><b>B.</b> 创建 → 编辑（草稿）→ 批准 / 拒绝 → 删除等完整 CRUD + 状态流转</div>
+              <div><b>C.</b> 仅删除</div>
+              <div><b>D.</b> 仅报表</div>
+            </div>
+          </li>
+          <li><p class="q">用可重复执行的 ABAP 程序灌数据（而非每次手工输）的好处是？</p>
+            <div class="opts">
+              <div><b>A.</b> 程序更慢</div>
+              <div><b>B.</b> 可随时重置环境、保证数据一致，避免手工遗漏</div>
+              <div><b>C.</b> 没有好处</div>
+              <div><b>D.</b> 只能跑一次</div>
+            </div>
+          </li>
+          <li><p class="q">ZTRAVEL_BOOKING 表通过什么与主表建立从属关系？</p>
+            <div class="opts">
+              <div><b>A.</b> 外键 / 关联字段指向主表键（travel_id 等）</div>
+              <div><b>B.</b> 没有任何关系</div>
+              <div><b>C.</b> 通过文件名</div>
+              <div><b>D.</b> 通过用户</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">B</td><td class="expl">一个 Travel 含多条预订：主表存旅行头，子表存其下的预订明细。</td></tr>
+              <tr><td>2</td><td class="an">B</td><td class="expl">一个可重复运行的 ABAP 报告（REPORT zr_insert_testdata），F8 执行即灌入演示数据。</td></tr>
+              <tr><td>3</td><td class="an">B</td><td class="expl">SE16N 是手工查表 / 改表数据的事务码，培训中作为「方式一」插入少量数据。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">状态值 N（新）、O（处理中）、A（已批准）、X（已拒绝）与 Fiori 徽标颜色一一对应。</td></tr>
+              <tr><td>5</td><td class="an">B</td><td class="expl">场景清单把 Fiori 预览里的增删改查与 Action 流转逐条列出，便于按剧本验收。</td></tr>
+              <tr><td>6</td><td class="an">B</td><td class="expl">可重复执行是关键：环境乱了重跑即可，演示与回归都不依赖手工。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">子表以主表键（如 travel_id + client）作为外键字段，形成主从；RAP 侧再用组合映射。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">手工 SE16N 维护与程序批量插入，真实项目里谁更适合做「初始化」？</p>
+            <div class="opts">
+              <div><b>A.</b> SE16N</div>
+              <div><b>B.</b> 可重复执行、带校验 / 清空逻辑的初始化程序（或导入脚本）</div>
+              <div><b>C.</b> 两者都不合适</div>
+              <div><b>D.</b> 看心情</div>
+            </div>
+          </li>
+          <li><p class="q">7 条主数据特意覆盖不同状态（新 / 处理中 / 已批准 / 已拒绝）的目的是？</p>
+            <div class="opts">
+              <div><b>A.</b> 凑数量</div>
+              <div><b>B.</b> 让列表筛选、Action 按钮可用性、状态徽标颜色都能被实测到</div>
+              <div><b>C.</b> 为了美观</div>
+              <div><b>D.</b> 数据库需要</div>
+            </div>
+          </li>
+          <li><p class="q">重复运行插入程序前，最需要防范的问题是？</p>
+            <div class="opts">
+              <div><b>A.</b> 磁盘空间</div>
+              <div><b>B.</b> 主键重复导致插入失败（应先清空或幂等处理）</div>
+              <div><b>C.</b> 颜色显示</div>
+              <div><b>D.</b> 终端编码</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">B</td><td class="expl">初始化数据要求可控、可重放、可追踪，程序化优于手工；SE16N 只适合临时抽查。</td></tr>
+              <tr><td>9</td><td class="an">B</td><td class="expl">状态多样性 = 测试矩阵：批准 / 拒绝按钮在不同状态下的禁用与流转都要能点一遍。</td></tr>
+              <tr><td>10</td><td class="an">B</td><td class="expl">再插入必须处理已存在数据（先删 / 更新或程序内去重），否则会因主键重复报错。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="step4-test.html"><small>← 上一章</small><b>手顺4：Fiori 预览与测试</b></a>

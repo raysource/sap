@@ -17,6 +17,7 @@
       <a class="tab" href="../rap/overview.html">RAP 培训</a>
       <a class="tab active" href="overview.html">CAP 培训</a>
       <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -239,6 +240,122 @@
           <li><b>版本兼容</b>：cds-dk 8.x 要求 Node.js ≥ 18；Node 22 亦可运行，但生产环境推荐 20 LTS。</li>
         </ul>
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">CAP（Node.js 路线）的本地环境三件套是？</p>
+            <div class="opts">
+              <div><b>A.</b> Node.js + @sap/cds-dk + VS Code</div>
+              <div><b>B.</b> Eclipse + ADT + S/4HANA</div>
+              <div><b>C.</b> MySQL + Tomcat + Eclipse</div>
+              <div><b>D.</b> Python + pip + PyCharm</div>
+            </div>
+          </li>
+          <li><p class="q">安装 cds-dk 的命令是？</p>
+            <div class="opts">
+              <div><b>A.</b> npm install -g @sap/cds-dk</div>
+              <div><b>B.</b> apt install cds</div>
+              <div><b>C.</b> brew install cds</div>
+              <div><b>D.</b> curl cds</div>
+            </div>
+          </li>
+          <li><p class="q">本地开发阶段 CAP 默认使用的数据库是？</p>
+            <div class="opts">
+              <div><b>A.</b> SQLite（内置，无需单独安装）</div>
+              <div><b>B.</b> HANA Cloud</div>
+              <div><b>C.</b> MySQL Server</div>
+              <div><b>D.</b> Oracle</div>
+            </div>
+          </li>
+          <li><p class="q">本地做 CAP 开发，必须要有 BTP 账号吗？</p>
+            <div class="opts">
+              <div><b>A.</b> 不需要，本地即可跑通全部开发；部署云端才需要</div>
+              <div><b>B.</b> 必须</div>
+              <div><b>C.</b> 只在启动时需要</div>
+              <div><b>D.</b> 只在安装时需要</div>
+            </div>
+          </li>
+          <li><p class="q">Node.js 版本过旧可能导致什么问题？</p>
+            <div class="opts">
+              <div><b>A.</b> cds 命令无法运行或行为异常（有最低版本要求，如 18+）</div>
+              <div><b>B.</b> 屏幕变花</div>
+              <div><b>C.</b> CSV 乱码</div>
+              <div><b>D.</b> 浏览器打不开</div>
+            </div>
+          </li>
+          <li><p class="q">「先 npm install -g @sap/cds-dk 再在项目里 npm install」两步的区别是？</p>
+            <div class="opts">
+              <div><b>A.</b> 前者装全局脚手架工具，后者装项目依赖（@sap/cds 等）</div>
+              <div><b>B.</b> 没有区别</div>
+              <div><b>C.</b> 前者装数据库</div>
+              <div><b>D.</b> 后者装浏览器</div>
+            </div>
+          </li>
+          <li><p class="q">cds-dk 装好后，验证安装是否成功通常执行？</p>
+            <div class="opts">
+              <div><b>A.</b> cds --version（能看到版本号即成功）</div>
+              <div><b>B.</b> cds watch --check</div>
+              <div><b>C.</b> node --check</div>
+              <div><b>D.</b> npm list -g --json >/dev/null</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">Node 提供运行时，cds-dk 提供命令行脚手架，VS Code 提供编辑器与终端。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">通过 npm 全局安装；装完可用 <code>cds --version</code> 验证。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">CAP 开发默认 SQLite，开箱即用；HANA 在部署/BTP 章节才需要。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">开发-测试全本地完成；BTP 账号用于第 7 章之后的云端部署/数据库内容。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">CAP 对 Node 版本有下限要求，装新 Node LTS 最省事。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">脚手架是全局命令，项目依赖装入 node_modules；缺一步都会报「找不到 cds」。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">最简单直接：运行 cds 命令看是否返回版本信息。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">开发用 SQLite、生产用 HANA，CAP 如何处理两者差异？</p>
+            <div class="opts">
+              <div><b>A.</b> 需要为每个数据库各写一套模型</div>
+              <div><b>B.</b> CAP 在运行时按配置的数据库方言适配，模型只写一遍</div>
+              <div><b>C.</b> 只能二选一</div>
+              <div><b>D.</b> SQLite 数据可手动搬</div>
+            </div>
+          </li>
+          <li><p class="q">团队项目里有人用 <code>npx cds</code> 而不是全局 cds，理由是？</p>
+            <div class="opts">
+              <div><b>A.</b> 避免全局安装污染与版本漂移，按项目锁版本</div>
+              <div><b>B.</b> npx 更快</div>
+              <div><b>C.</b> 全局 cds 必然出错</div>
+              <div><b>D.</b> 没有理由</div>
+            </div>
+          </li>
+          <li><p class="q">Node.js 建议装 LTS 版而不是最新尝鲜版，主要原因是？</p>
+            <div class="opts">
+              <div><b>A.</b> LTS 更稳定且受框架支持</div>
+              <div><b>B.</b> LTS 更小</div>
+              <div><b>C.</b> 最新版不支持 npm</div>
+              <div><b>D.</b> LTS 才能连数据库</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">B</td><td class="expl">可插拔后端是 CAP 核心：<code>.cdsrc.json</code>/环境变量切换数据库，模型与代码不变。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">npx 从项目 node_modules 找 cds，版本随 package.json 锁定；本课为了入门直接用全局安装。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">LTS 有明确维护期与生态兼容，避免依赖工具（cds-dk 等）踩未适配的新语法。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="overview.html"><small>← 上一章</small><b>第 1 章：CAP 概述</b></a>

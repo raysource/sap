@@ -17,6 +17,7 @@
       <a class="tab" href="../../rap/overview.html">RAP 培训</a>
       <a class="tab active" href="../overview.html">CAP 培训</a>
       <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -148,6 +149,122 @@
         <span class="note-title">🎯 终点长什么样</span>
         B8 完成后，你会在 BAS 里跑起一个 Spring Boot 应用，<code>curl http://localhost:8080/api/books</code> 会返回 HANA Cloud 里那 10 本书的 JSON——一条「注册 → 建库 → 写 Java → 连库 → 出数据」的完整云链路。
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">BTP（SAP Business Technology Platform）本质上是什么？</p>
+            <div class="opts">
+              <div><b>A.</b> 企业级 PaaS 云平台</div>
+              <div><b>B.</b> 一套前端组件库</div>
+              <div><b>C.</b> 数据库品牌</div>
+              <div><b>D.</b> 编程语言</div>
+            </div>
+          </li>
+          <li><p class="q">本轨在 BTP 上主要用到哪三样能力？</p>
+            <div class="opts">
+              <div><b>A.</b> Cloud Foundry 运行时 / HANA Cloud / BAS（Business Application Studio）</div>
+              <div><b>B.</b> API 管理 / Event Mesh / 连接器</div>
+              <div><b>C.</b> 报表 / 打印 / 邮件</div>
+              <div><b>D.</b> 机器学习三件套</div>
+            </div>
+          </li>
+          <li><p class="q">Service Marketplace 是什么？</p>
+            <div class="opts">
+              <div><b>A.</b> BTP 上可订阅/创建的所有服务的市场列表</div>
+              <div><b>B.</b> 买软件的商城</div>
+              <div><b>C.</b> 文档中心</div>
+              <div><b>D.</b> 社区论坛</div>
+            </div>
+          </li>
+          <li><p class="q">本轨数据库从「本地 SQLite」换成了？</p>
+            <div class="opts">
+              <div><b>A.</b> HANA Cloud（云上内存数据库实例）</div>
+              <div><b>B.</b> MySQL</div>
+              <div><b>C.</b> PostgreSQL</div>
+              <div><b>D.</b> MongoDB</div>
+            </div>
+          </li>
+          <li><p class="q">BAS 与本地 VS Code 的关系最接近哪句？</p>
+            <div class="opts">
+              <div><b>A.</b> BAS 是跑在浏览器里的云端 IDE（VS Code 风格 + 内置终端/插件）</div>
+              <div><b>B.</b> BAS 是手机 App</div>
+              <div><b>C.</b> BAS 需要另装 Eclipse</div>
+              <div><b>D.</b> BAS 只能写 ABAP</div>
+            </div>
+          </li>
+          <li><p class="q">Java 连 HANA Cloud 走什么标准通道？</p>
+            <div class="opts">
+              <div><b>A.</b> JDBC（ngdbc 驱动，jdbc:sap:// 协议）</div>
+              <div><b>B.</b> ODBC 串口</div>
+              <div><b>C.</b> WebSocket 直连</div>
+              <div><b>D.</b> REST 转发</div>
+            </div>
+          </li>
+          <li><p class="q">trial 免费账号的典型限制是？</p>
+            <div class="opts">
+              <div><b>A.</b> 额度有限且环境会休眠/回收，仅供学习</div>
+              <div><b>B.</b> 无限资源可上生产</div>
+              <div><b>C.</b> 没有限制</div>
+              <div><b>D.</b> 必须绑定信用卡才开</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">BTP 提供运行时、数据库、集成等服务；本轨用它的 Cloud Foundry 运行时、HANA Cloud 与 BAS。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">CF 承载环境、HANA Cloud 存数据、BAS 写代码，形成完整云端开发链路。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">在子账号的 Service Marketplace 里按需创建 HANA Cloud 等实例或订阅服务。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">同一份 Bookshop 数据搬到 HANA Cloud：数据库变了，10 本书长一样。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">BAS 提供 Dev Space，内置终端与 Java/Maven/cf 工具，浏览器即开即用。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">HANA Cloud 提供 JDBC 端点：驱动 ngdbc，URL 以 jdbc:sap:// 开头。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">Trial 免费但有额度与休眠约束；本轨所有手顺在其额度内即可完成。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">本地开发（SQLite）与云端（HANA Cloud）「数据一致」靠什么保证？</p>
+            <div class="opts">
+              <div><b>A.</b> 复用同一份 Bookshop 模型与种子数据（本地 CSV / 云端 SQL 内容一致）</div>
+              <div><b>B.</b> 自动同步工具</div>
+              <div><b>C.</b> 手动拷贝数据库文件</div>
+              <div><b>D.</b> 随机生成</div>
+            </div>
+          </li>
+          <li><p class="q">BTP 上子账号（Subaccount）与 Cloud Foundry org/space 的关系是？</p>
+            <div class="opts">
+              <div><b>A.</b> 子账号是 BTP 层资源容器，CF org/space 是其内的运行时空间层级</div>
+              <div><b>B.</b> 完全没关系</div>
+              <div><b>C.</b> space 在子账号外</div>
+              <div><b>D.</b> org 只能有一个</div>
+            </div>
+          </li>
+          <li><p class="q">为什么本轨刻意「不用 CDS 自动建表、改手写 HANA SQL」？</p>
+            <div class="opts">
+              <div><b>A.</b> 为了看清云端数据库的物理层（DDL/外键/连接），理解 CAP 自动化的底层</div>
+              <div><b>B.</b> 手写更快</div>
+              <div><b>C.</b> CDS 不支持 HANA</div>
+              <div><b>D.</b> 练习打字</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">教学上数据内容一致由「同源种子数据」保证，而非云同步——换的是存储与接入方式。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">两级空间（org/space）用于资源隔离与配额管理，是 CF 模型的一部分。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">前面路线展示了模型驱动的省力，本轨反向展示底层机制，帮你建立完整心智模型。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="../java/step4-test.html"><small>← 上一章</small><b>第 J6 章：CAP Java 运行与测试</b></a>

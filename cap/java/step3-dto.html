@@ -17,6 +17,7 @@
       <a class="tab" href="../../rap/overview.html">RAP 培训</a>
       <a class="tab active" href="../overview.html">CAP 培训</a>
       <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -341,6 +342,122 @@ public class CatalogServiceHandler implements EventHandler {
           <li><b><code>context.getData()</code></b>：action 的入参在 <code>JsonObject</code> 里，<code>data.getInt("book")</code> 取 CDS 里声明的 <code>book</code> 参数。</li>
         </ul>
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">生成的强类型 Books 类（如 sap.capire.bookshop.Books）对应？</p>
+            <div class="opts">
+              <div><b>A.</b> CDS 实体 Books，字段/类型/键与之对应</div>
+              <div><b>B.</b> HTTP 请求封装</div>
+              <div><b>C.</b> 前端组件</div>
+              <div><b>D.</b> CSV 解析器</div>
+            </div>
+          </li>
+          <li><p class="q">生成的服务接口 CatalogService_ 提供什么？</p>
+            <div class="opts">
+              <div><b>A.</b> 服务与实体的事件常量/名称（如 Books 的 CRUD 事件名），供 handler 绑定</div>
+              <div><b>B.</b> 完整业务实现</div>
+              <div><b>C.</b> 数据库连接池</div>
+              <div><b>D.</b> 安全过滤器</div>
+            </div>
+          </li>
+          <li><p class="q">编写事件处理器的核心注解/注册方式是？</p>
+            <div class="opts">
+              <div><b>A.</b> @Component 组件 + 事件注解（@Before/@On/@After 等）</div>
+              <div><b>B.</b> 继承 HttpServlet</div>
+              <div><b>C.</b> 实现 Runnable</div>
+              <div><b>D.</b> 改配置文件</div>
+            </div>
+          </li>
+          <li><p class="q">「畅销标注」（高库存标记）通常挂在哪个事件？</p>
+            <div class="opts">
+              <div><b>A.</b> READ 之后（after READ）</div>
+              <div><b>B.</b> 创建之前</div>
+              <div><b>C.</b> 删除之后</div>
+              <div><b>D.</b> 启动时</div>
+            </div>
+          </li>
+          <li><p class="q">「下单扣库存」应挂在？</p>
+            <div class="opts">
+              <div><b>A.</b> submitOrder Action 的事件处理里</div>
+              <div><b>B.</b> 每次 READ 都执行</div>
+              <div><b>C.</b> 数据库触发器</div>
+              <div><b>D.</b> 前端回调</div>
+            </div>
+          </li>
+          <li><p class="q">超卖（库存不足）时 handler 应？</p>
+            <div class="opts">
+              <div><b>A.</b> 抛业务异常（客户端收到错误，如 4xx）</div>
+              <div><b>B.</b> 把库存减成负数继续</div>
+              <div><b>C.</b> 静默成功</div>
+              <div><b>D.</b> 发警告邮件</div>
+            </div>
+          </li>
+          <li><p class="q">对照 J3.1 的「手写 DTO 全家桶」，CAP Java 只需要写？</p>
+            <div class="opts">
+              <div><b>A.</b> 一个事件处理器（+模型声明）</div>
+              <div><b>B.</b> Controller + DAO + DTO + SQL 全部</div>
+              <div><b>C.</b> DDL + 触发器</div>
+              <div><b>D.</b> 前端三件套</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">模型实体 → Java 类，业务代码里可直接类型安全地读写。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">CatalogService_ 暴露事件与实体常量，处理器据此注册回调，避免魔法字符串。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">Handler 是 Spring Bean，方法用事件注解声明在哪个事件触发。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">列表读取后补计算字段（如 bestseller），不动数据库。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">Action 语义由 handler 实现：校验库存 → 扣减 → 失败抛错。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">校验失败必须终止请求并回滚，客户端看到明确错误。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">手写版要 Controller/DAO/DTO/DDL/转换，CAP 版收敛到模型 + Handler。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">为什么业务逻辑写在 Handler 而不是改生成的 Books 类？</p>
+            <div class="opts">
+              <div><b>A.</b> 生成类随模型重新生成会被覆盖；逻辑应写在扩展点（Handler）里</div>
+              <div><b>B.</b> 生成的类不能编译</div>
+              <div><b>C.</b> Handler 更快</div>
+              <div><b>D.</b> 没有为什么</div>
+            </div>
+          </li>
+          <li><p class="q">after（后置）与 on（主处理）事件的区别是？</p>
+            <div class="opts">
+              <div><b>A.</b> after 在框架处理后追加（补字段/日志），on 可接管/自定义主逻辑</div>
+              <div><b>B.</b> 没有区别</div>
+              <div><b>C.</b> on 在 after 之后</div>
+              <div><b>D.</b> after 只能读</div>
+            </div>
+          </li>
+          <li><p class="q">强类型模型类给开发带来的直接好处是？</p>
+            <div class="opts">
+              <div><b>A.</b> IDE 补全与编译期检查（字段拼错立刻报错）</div>
+              <div><b>B.</b> 运行更快</div>
+              <div><b>C.</b> 少写代码一定更多</div>
+              <div><b>D.</b> 不需要测试</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">生成代码是「产物」，不可手改；Handler 是官方扩展点，模型升级不冲突。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">on 用于自定义/覆写动作主逻辑（如 submitOrder），after 用于结果加工。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">类型即文档：模型字段在代码里可导航、可编译校验，减少运行时低级错误。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="step2-db.html"><small>← 上一章</small><b>手顺2：配置链接与建库建表</b></a>

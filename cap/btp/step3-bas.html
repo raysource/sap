@@ -17,6 +17,7 @@
       <a class="tab" href="../../rap/overview.html">RAP 培训</a>
       <a class="tab active" href="../overview.html">CAP 培训</a>
       <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -216,6 +217,122 @@ ls -la bookshop-dir/lib/
           <li><b>工作区被重置</b>：BAS Dev Space 会随 trial 生命周期回收，重要代码建议提交到 git（BAS 内置 Source Control 支持连 GitHub）。</li>
         </ul>
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">BAS（Business Application Studio）是什么？</p>
+            <div class="opts">
+              <div><b>A.</b> SAP 的云端 IDE：浏览器里的 VS Code 风格开发环境</div>
+              <div><b>B.</b> 本机安装的 Eclipse</div>
+              <div><b>C.</b> 远程桌面</div>
+              <div><b>D.</b> 代码托管仓库</div>
+            </div>
+          </li>
+          <li><p class="q">本课创建 Dev Space 用的模板是？</p>
+            <div class="opts">
+              <div><b>A.</b> Full Stack Cloud Application</div>
+              <div><b>B.</b> Blank</div>
+              <div><b>C.</b> SAP Fiori</div>
+              <div><b>D.</b> ABAP</div>
+            </div>
+          </li>
+          <li><p class="q">BAS 的「内置终端」可以做什么？</p>
+            <div class="opts">
+              <div><b>A.</b> 执行 javac/mvn/java/cf/curl 等命令（与本地终端一致）</div>
+              <div><b>B.</b> 只读浏览</div>
+              <div><b>C.</b> 只能打开浏览器</div>
+              <div><b>D.</b> 发邮件</div>
+            </div>
+          </li>
+          <li><p class="q">BAS 与本地 VS Code 相比，主要差异是？</p>
+            <div class="opts">
+              <div><b>A.</b> BAS 环境预配且在云端（浏览器访问），本质同源 VS Code</div>
+              <div><b>B.</b> 功能完全不同</div>
+              <div><b>C.</b> BAS 不能装扩展</div>
+              <div><b>D.</b> BAS 需要虚拟机</div>
+            </div>
+          </li>
+          <li><p class="q">ngdbc 是什么？</p>
+            <div class="opts">
+              <div><b>A.</b> SAP HANA 的 JDBC 驱动 jar</div>
+              <div><b>B.</b> 数据库</div>
+              <div><b>C.</b> 连接池</div>
+              <div><b>D.</b> IDE 插件</div>
+            </div>
+          </li>
+          <li><p class="q">三种 Java 构建模式按依赖管理程度由简到繁是？</p>
+            <div class="opts">
+              <div><b>A.</b> 目录式 javac → Maven → Spring Boot</div>
+              <div><b>B.</b> Spring → Maven → javac</div>
+              <div><b>C.</b> 都一样</div>
+              <div><b>D.</b> 只有一种</div>
+            </div>
+          </li>
+          <li><p class="q">第一次打开新建的 Dev Space 需要？</p>
+            <div class="opts">
+              <div><b>A.</b> 等待其启动完成再 Open</div>
+              <div><b>B.</b> 点一下就行不用等</div>
+              <div><b>C.</b> 重新创建账号</div>
+              <div><b>D.</b> 重启浏览器</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">BAS 在 BTP 订阅，创建 Dev Space 后浏览器直接写代码、开终端。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">该模板预装 Java/Maven/CF CLI/数据库工具，适合本轨 Java 开发。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">云端终端的意义：编译运行全套命令在浏览器内完成。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">同源体验 + 云端预配 = 开箱即用，是它相比本地的优势。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">Java 连 HANA 靠 ngdbc.jar（版本以 Maven Central 为准），本课先手动下载到 lib/。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">模式一裸 JDBC、模式二 Maven 管理依赖、模式三 Spring Boot 起 Web 服务。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">Dev Space 首次启动需要几分钟就绪，就绪后才能 Open。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">为什么教程让你把 ngdbc 放 lib/ 而不是全局安装？</p>
+            <div class="opts">
+              <div><b>A.</b> 模式一用 classpath 直接引用 jar，演示依赖最小化的 JDBC 本质</div>
+              <div><b>B.</b> jar 不能放别处</div>
+              <div><b>C.</b> 全局会冲突</div>
+              <div><b>D.</b> 必须放系统目录</div>
+            </div>
+          </li>
+          <li><p class="q">BAS 预装 Maven/CF CLI 对三种模式的意义是？</p>
+            <div class="opts">
+              <div><b>A.</b> 三种模式都能直接在云端跑通，不需要本地装 Java 工具链</div>
+              <div><b>B.</b> 只在模式二有用</div>
+              <div><b>C.</b> 没有意义</div>
+              <div><b>D.</b> 反而冲突</div>
+            </div>
+          </li>
+          <li><p class="q">Dev Space 停止后再次使用，工作区文件会？</p>
+            <div class="opts">
+              <div><b>A.</b> 保留（磁盘持久化，重启空间数据仍在）</div>
+              <div><b>B.</b> 全部清空</div>
+              <div><b>C.</b> 需要 git 恢复</div>
+              <div><b>D.</b> 随机丢失</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">模式一刻意不引 Maven：手动 classpath 最能看清驱动如何被加载。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">预装工具链让「零本地安装」成立：浏览器即完整开发环境。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">空间可停止省资源，文件保留；但长期删除空间会丢数据，重要内容记得提交远端。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="step2-sql.html"><small>← 上一章</small><b>第 B4 章：手顺2 HANA SQL 建表与数据</b></a>

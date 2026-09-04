@@ -240,6 +240,140 @@ return message</code></pre>
         脚本有语法/运行时错误时，调用会 <span class="st.x">Failed</span>，MPL 里展开到 Script 步骤能看到异常栈（<code>groovy.lang.MissingMethodException</code>、<code>JsonParseException</code> 等）。八成是三类：JSON 字段名拼错、类型转换失败、忘了 <code>return message</code>。改完脚本 → Save → 重新 Deploy → 再调一次。
       </div>
 
+      <section id="quiz">
+      <h2>🧪 章节测评（共 12 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–8 题）+ <b>🔶 能力提高</b>（第 9–12 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–8）</h3>
+        <ol class="qz">
+          <li><p class="q">Content Modifier 的「三区」是？</p>
+            <div class="opts">
+              <div><b>A.</b> Header / Exchange Property / Body</div>
+              <div><b>B.</b> GET/POST/PUT</div>
+              <div><b>C.</b> 上/中/下</div>
+              <div><b>D.</b> A/B/C</div>
+            </div>
+          </li>
+          <li><p class="q">Content Modifier 里要从入站 XML 抽节点（如 /order/type），Type 选？</p>
+            <div class="opts">
+              <div><b>A.</b> XPath</div>
+              <div><b>B.</b> Constant</div>
+              <div><b>C.</b> Text</div>
+              <div><b>D.</b> JSON</div>
+            </div>
+          </li>
+          <li><p class="q">JSON 的解析/重组/计算（如算金额）应选哪种手段？</p>
+            <div class="opts">
+              <div><b>A.</b> Groovy Script 步骤（groovy.json 库）</div>
+              <div><b>B.</b> Content Modifier 静态文本</div>
+              <div><b>C.</b> Message Mapping 无需结构</div>
+              <div><b>D.</b> 纯 XPath</div>
+            </div>
+          </li>
+          <li><p class="q">Groovy 脚本必须实现的方法签名是？</p>
+            <div class="opts">
+              <div><b>A.</b> def Message processData(Message message)</div>
+              <div><b>B.</b> public static void main</div>
+              <div><b>C.</b> void run()</div>
+              <div><b>D.</b> init()</div>
+            </div>
+          </li>
+          <li><p class="q">读入站正文的推荐写法是？</p>
+            <div class="opts">
+              <div><b>A.</b> message.getBody(java.lang.String) as String</div>
+              <div><b>B.</b> message.getBody() 不加类型</div>
+              <div><b>C.</b> 直接读文件</div>
+              <div><b>D.</b> message.read()</div>
+            </div>
+          </li>
+          <li><p class="q">setProperty 与 setHeader 的区别是？</p>
+            <div class="opts">
+              <div><b>A.</b> Property 只流内可见供后续步骤用；Header 随协议发给接收方</div>
+              <div><b>B.</b> 都一样</div>
+              <div><b>C.</b> Header 不能设</div>
+              <div><b>D.</b> Property 自动外发</div>
+            </div>
+          </li>
+          <li><p class="q">金额计算用 BigDecimal 而非 double 是因为？</p>
+            <div class="opts">
+              <div><b>A.</b> 避免二进制浮点误差（钱必须精确）</div>
+              <div><b>B.</b> BigDecimal 更快</div>
+              <div><b>C.</b> double 会崩</div>
+              <div><b>D.</b> 规范要求字母</div>
+            </div>
+          </li>
+          <li><p class="q">Message Mapping（图形化字段映射）最适合哪种转换？</p>
+            <div class="opts">
+              <div><b>A.</b> XML/结构化数据间大量字段改名/重组/拼串</div>
+              <div><b>B.</b> 一两行 JSON 小改</div>
+              <div><b>C.</b> 固定文本替换</div>
+              <div><b>D.</b> 纯日志</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–8））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">三区对应消息三件套，可同时使用：加头、存属性、改正文。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">XPath 针对 XML 抽取；JSON 消息没有原生 XPath，要走 Groovy。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">JSON 友好与编程灵活性让 Groovy 成为 JSON 转换的主力。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">CPI 按此签名调用脚本；结束时必须 return message。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">显式指定 String 类型读取最稳；直接 getBody() 返回类型不定。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">内部中间结果（如 computedAmount）用 Property；要出站给对方的才放 Header。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">浮点存钱是反模式；金额用 BigDecimal + 舍入模式（HALF_UP）。</td></tr>
+              <tr><td>8</td><td class="an">A</td><td class="expl">结构化搬运可视化最直观；轻量改动用 Content Modifier 更省。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（9–12）</h3>
+        <ol class="qz" start="9">
+          <li><p class="q">「解析 JSON 用 Groovy、小改加头用 Content Modifier、XML 大结构用 Mapping」体现了？</p>
+            <div class="opts">
+              <div><b>A.</b> 按需求选最小合适的转换手段（选型表）</div>
+              <div><b>B.</b> 必须统一用一种</div>
+              <div><b>C.</b> 工具越多越好</div>
+              <div><b>D.</b> 用最贵的</div>
+            </div>
+          </li>
+          <li><p class="q">脚本报 JsonParseException，优先怀疑？</p>
+            <div class="opts">
+              <div><b>A.</b> 入站 body 不是合法 JSON 或字段名/结构不符</div>
+              <div><b>B.</b> Groovy 版本</div>
+              <div><b>C.</b> Receiver 地址</div>
+              <div><b>D.</b> Content Modifier 没保存</div>
+            </div>
+          </li>
+          <li><p class="q">为什么字段映射常需要先有「结构」（XSD/消息类型）？</p>
+            <div class="opts">
+              <div><b>A.</b> 映射器需要源/目标结构才能拖线对应字段</div>
+              <div><b>B.</b> 结构只是装饰</div>
+              <div><b>C.</b> 没有结构也能拖</div>
+              <div><b>D.</b> 结构来自数据库</div>
+            </div>
+          </li>
+          <li><p class="q">手顺2 里脚本把 amount 同时写进 property 和 header，各自的意义是？</p>
+            <div class="opts">
+              <div><b>A.</b> property 供流内后续步骤（如 I5 路由）用；header 让接收方看到</div>
+              <div><b>B.</b> 重复劳动</div>
+              <div><b>C.</b> 都要外发</div>
+              <div><b>D.</b> 都会丢</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（9–12））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>9</td><td class="an">A</td><td class="expl">转换手段选型是 I4 的实操结论：轻改/抽取/JSON/结构化各有主场。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">解析失败九成在输入结构：先打印/核对收到的 body 再改脚本。</td></tr>
+              <tr><td>11</td><td class="an">A</td><td class="expl">图形映射基于类型结构工作：缺结构要先声明消息类型（本课点到为止）。</td></tr>
+              <tr><td>12</td><td class="an">A</td><td class="expl">同一结果两个通道：内部消费走 property，外部可见走 header——衔接 I5 的关键概念。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
+
       <div class="pagenav">
         <a href="step1-hello.html"><small>← 上一章</small><b>I3 手顺1：第一个 iFlow</b></a>
         <a class="next" href="step3-router.html"><small>下一步 →</small><b>手顺3：内容路由</b></a>

@@ -17,6 +17,7 @@
       <a class="tab" href="../../rap/overview.html">RAP 培训</a>
       <a class="tab active" href="../overview.html">CAP 培训</a>
       <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -251,6 +252,122 @@ SELECT 'GENRES',  COUNT(*) FROM BOOKSHOP.GENRES;</code></pre>
         <span class="note-title">📦 素材包</span>
         四段 SQL（01 schema / 02 建表 / 03 数据 / 04 验证）都在素材包 <code>samples/btp-bookshop/sql/</code> 下，可直接复制粘贴执行；后面三个 Java 模式的源码也在包里。
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">在 Database Explorer 里执行 HANA SQL 的入口是？</p>
+            <div class="opts">
+              <div><b>A.</b> SQL Console</div>
+              <div><b>B.</b> 调试器</div>
+              <div><b>C.</b> Shell</div>
+              <div><b>D.</b> 记事本</div>
+            </div>
+          </li>
+          <li><p class="q">本课建的 schema 名是？</p>
+            <div class="opts">
+              <div><b>A.</b> BOOKSHOP</div>
+              <div><b>B.</b> SAP</div>
+              <div><b>C.</b> PUBLIC</div>
+              <div><b>D.</b> TRAINING</div>
+            </div>
+          </li>
+          <li><p class="q">建表的顺序为什么是先父后子？</p>
+            <div class="opts">
+              <div><b>A.</b> 子表（BOOKS）有外键引用父表（GENRES/AUTHORS），父表必须先存在</div>
+              <div><b>B.</b> 随便什么顺序</div>
+              <div><b>C.</b> 先子后父</div>
+              <div><b>D.</b> 与顺序无关</div>
+            </div>
+          </li>
+          <li><p class="q">BOOKS 表与 GENRES/AUTHORS 的关系通过什么表达？</p>
+            <div class="opts">
+              <div><b>A.</b> 外键（FOREIGN KEY REFERENCES）</div>
+              <div><b>B.</b> 行号</div>
+              <div><b>C.</b> 命名</div>
+              <div><b>D.</b> 索引</div>
+            </div>
+          </li>
+          <li><p class="q">HANA 的列式存储建表关键字是？</p>
+            <div class="opts">
+              <div><b>A.</b> CREATE COLUMN TABLE</div>
+              <div><b>B.</b> CREATE ROW TABLE</div>
+              <div><b>C.</b> CREATE STORE</div>
+              <div><b>D.</b> CREATE MEMORY</div>
+            </div>
+          </li>
+          <li><p class="q">灌入的种子数据规模与站点 CAP 路线一致的是？</p>
+            <div class="opts">
+              <div><b>A.</b> 5 分类 / 4 作者 / 10 本书</div>
+              <div><b>B.</b> 3 分类 / 2 作者 / 5 本书</div>
+              <div><b>C.</b> 无数据</div>
+              <div><b>D.</b> 100 万行</div>
+            </div>
+          </li>
+          <li><p class="q">验证数据正确常用的 SQL 是？</p>
+            <div class="opts">
+              <div><b>A.</b> SELECT 联表 + 计数（如 COUNT(*)）核对 10/4/5</div>
+              <div><b>B.</b> SELECT 1</div>
+              <div><b>C.</b> DROP TABLE</div>
+              <div><b>D.</b> 没有任何办法</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">打开 SQL Console 选择你的 HANA 实例即可执行语句。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">CREATE SCHEMA BOOKSHOP; 后续表都以 BOOKSHOP.GENRES 形式引用。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">外键约束要求被引用对象先建；B4 按 GENRES/AUTHORS → BOOKS 执行。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">BOOKS 的 genre_id/author_id 用外键指向父表主键，保障引用完整。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">HANA 面向分析常用列存：CREATE COLUMN TABLE（章节一览亦以 COLUMN TABLE 呈现）。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">云端 SQL 与本地 CSV 内容一致，保证 B6–B8 连上读到同样 10 本书。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">联表查询与计数核对是 B4 的验收方式（数据与 CSV 对得上）。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">INSERT 含外键时，若先插 BOOKS 再插 AUTHORS 会？</p>
+            <div class="opts">
+              <div><b>A.</b> 违反外键约束报错</div>
+              <div><b>B.</b> 自动补插</div>
+              <div><b>C.</b> 静默跳过</div>
+              <div><b>D.</b> 没关系</div>
+            </div>
+          </li>
+          <li><p class="q">SQL 全部执行完，如何快速证明「B6–B8 会读到同一份数据」？</p>
+            <div class="opts">
+              <div><b>A.</b> 在三种 Java 程序里跑相同的 SELECT 并对比行数与关键字段</div>
+              <div><b>B.</b> 看图标</div>
+              <div><b>C.</b> 数文件个数</div>
+              <div><b>D.</b> 重启电脑</div>
+            </div>
+          </li>
+          <li><p class="q">DROP TABLE 与 DELETE FROM 的区别是？</p>
+            <div class="opts">
+              <div><b>A.</b> DROP 删结构（表没了），DELETE 只删行（结构还在）</div>
+              <div><b>B.</b> 没区别</div>
+              <div><b>C.</b> DELETE 删库</div>
+              <div><b>D.</b> DROP 更慢</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">被引用行不存在即外键违例：批量导入要保证父行先就位（或先禁约束再恢复）。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">用同一查询在 Java 侧取数与 SQL 侧对照，闭环验证连接与数据一致性。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">删表 vs 清数据语义不同；误操作 DELETE 可救，DROP 需重建结构。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="step1-hana.html"><small>← 上一章</small><b>第 B3 章：手顺1 创建 HANA Cloud 实例</b></a>

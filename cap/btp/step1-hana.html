@@ -17,6 +17,7 @@
       <a class="tab" href="../../rap/overview.html">RAP 培训</a>
       <a class="tab active" href="../overview.html">CAP 培训</a>
       <a class="tab" href="../../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -209,6 +210,122 @@
           <li><b>口令忘了</b>：无法找回，只能删实例重建（建表数据也随之丢失）。务必记在密码管理器里。</li>
         </ul>
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 10 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–7 题）+ <b>🔶 能力提高</b>（第 8–10 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–7）</h3>
+        <ol class="qz">
+          <li><p class="q">HANA Cloud 实例从哪里创建？</p>
+            <div class="opts">
+              <div><b>A.</b> BTP Service Marketplace → SAP HANA Cloud → Create</div>
+              <div><b>B.</b> 手机 App</div>
+              <div><b>C.</b> BAS 里手动建目录</div>
+              <div><b>D.</b> 本机安装包</div>
+            </div>
+          </li>
+          <li><p class="q">实例从创建到 RUNNING 通常要等多久？</p>
+            <div class="opts">
+              <div><b>A.</b> 十几分钟到半小时（期间可并行做 BAS 部分）</div>
+              <div><b>B.</b> 几秒钟</div>
+              <div><b>C.</b> 一天</div>
+              <div><b>D.</b> 一小时必好</div>
+            </div>
+          </li>
+          <li><p class="q">实例就绪后要记下的「连接三件套」是？</p>
+            <div class="opts">
+              <div><b>A.</b> SQL End Point 主机 / 端口 / DBADMIN 口令</div>
+              <div><b>B.</b> IP 网关/路由器/子网掩码</div>
+              <div><b>C.</b> 用户名/密码/验证码</div>
+              <div><b>D.</b> 公司/部门/职位</div>
+            </div>
+          </li>
+          <li><p class="q">Database Explorer 是？</p>
+            <div class="opts">
+              <div><b>A.</b> HANA 的数据库工具（SQL Console、表浏览器）</div>
+              <div><b>B.</b> 文件管理器</div>
+              <div><b>C.</b> 邮件客户端</div>
+              <div><b>D.</b> 终端模拟器</div>
+            </div>
+          </li>
+          <li><p class="q">DBADMIN 口令是何时设置的？</p>
+            <div class="opts">
+              <div><b>A.</b> 创建实例时设置（需妥善保管）</div>
+              <div><b>B.</b> 随机生成且无法查看</div>
+              <div><b>C.</b> 每次登录重新发</div>
+              <div><b>D.</b> 用手机短信</div>
+            </div>
+          </li>
+          <li><p class="q">连接 JDBC URL 里 <code>encrypt=true&amp;validateCertificate=true</code> 表示？</p>
+            <div class="opts">
+              <div><b>A.</b> 启用 TLS 加密并校验证书（生产推荐）</div>
+              <div><b>B.</b> 关闭加密更快</div>
+              <div><b>C.</b> 设置字符集</div>
+              <div><b>D.</b> 开启缓存</div>
+            </div>
+          </li>
+          <li><p class="q">Trial 的 HANA Cloud 实例长时间不用会？</p>
+            <div class="opts">
+              <div><b>A.</b> 自动暂停/休眠，需要时手动唤醒</div>
+              <div><b>B.</b> 自动删除所有数据</div>
+              <div><b>C.</b> 持续计费不停</div>
+              <div><b>D.</b> 变慢而已</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–7））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">A</td><td class="expl">实例化在 BTP：Service Marketplace 找到 HANA Cloud 服务创建。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">HANA Cloud 实例化较慢，教程特意安排等待期间先做 B5。</td></tr>
+              <tr><td>3</td><td class="an">A</td><td class="expl">Java 连库全靠这三样：JDBC 主机、端口（443 等）与管理员口令。</td></tr>
+              <tr><td>4</td><td class="an">A</td><td class="expl">Database Explorer 可打开 SQL Console 执行 HANA SQL、查看表结构。</td></tr>
+              <tr><td>5</td><td class="an">A</td><td class="expl">管理员口令在创建向导里指定；忘记只能重置流程（工程上要放密钥管理）。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">HANA Cloud 默认要求加密连接；去掉 validateCertificate 有安全风险。</td></tr>
+              <tr><td>7</td><td class="an">A</td><td class="expl">trial/低成本实例会休眠以省资源；唤醒后连接信息不变。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（8–10）</h3>
+        <ol class="qz" start="8">
+          <li><p class="q">为什么密码/端点要放密钥管理或环境变量，而不是写死在代码里？</p>
+            <div class="opts">
+              <div><b>A.</b> 避免凭据泄露与版本库事故，生产必须机密管理</div>
+              <div><b>B.</b> 代码不能有字符串</div>
+              <div><b>C.</b> 为了运行更快</div>
+              <div><b>D.</b> 没这个要求</div>
+            </div>
+          </li>
+          <li><p class="q">实例状态 STOPPED 时 Java 程序连接会？</p>
+            <div class="opts">
+              <div><b>A.</b> 连接失败/超时（先到 Cockpit 启动实例再试）</div>
+              <div><b>B.</b> 自动启动实例</div>
+              <div><b>C.</b> 返回空数据</div>
+              <div><b>D.</b> 无影响</div>
+            </div>
+          </li>
+          <li><p class="q">删除 HANA Cloud 实例前，最需要注意？</p>
+            <div class="opts">
+              <div><b>A.</b> 数据不可恢复（先导出/确认不再需要）</div>
+              <div><b>B.</b> 删除会自动备份到本地</div>
+              <div><b>C.</b> 删除会退款</div>
+              <div><b>D.</b> 无法删除</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（8–10））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>8</td><td class="an">A</td><td class="expl">连接串含口令属敏感信息：教程为了展示写进配置，工程上应收进环境变量/密钥仓。</td></tr>
+              <tr><td>9</td><td class="an">A</td><td class="expl">停着的实例无服务可连：报错先查实例状态与主机可及性。</td></tr>
+              <tr><td>10</td><td class="an">A</td><td class="expl">删实例即删数据且不可逆，教学环境无所谓，真实环境务必先确认。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="prep.html"><small>← 上一章</small><b>第 B2 章：环境准备（BTP 账号）</b></a>

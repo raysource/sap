@@ -493,6 +493,59 @@ pre { padding-top: 38px; }
 .pm-res .pm-rhead { width: 200px; background: #fff; border-right: 1px solid #e2e2e2; padding: 10px 12px; font-size: 11px; color: #666; }
 .pm-res pre { margin: 0; }
 
+/* --- SAP Integration Suite / Cloud Integration (CPI) --- */
+.cpi { background: var(--bg); font-family: var(--font); font-size: 12.5px; }
+.cpi .cpi-nav { display: flex; gap: 2px; padding: 0 14px; background: var(--surface); border-bottom: 1px solid var(--border); font-size: 12px; overflow-x: auto; }
+.cpi .cpi-nav span { padding: 9px 13px; color: var(--text-soft); border-bottom: 2px solid transparent; white-space: nowrap; display: inline-flex; gap: 6px; align-items: center; }
+.cpi .cpi-nav span.on { color: var(--blue); border-bottom-color: var(--blue); font-weight: 600; }
+.cpi .cpi-body { padding: 14px 16px; }
+
+/* iFlow 画布（sender → steps → receiver 垂直流程） */
+.cflow { display: flex; flex-direction: column; align-items: center; padding: 20px 14px; background: linear-gradient(180deg, #ffffff, #eef3f9 160%); min-height: 100%; }
+.cflow .cline { width: 0; flex: 0 0 22px; border-left: 2px dashed #9db4c8; }
+.cflow .cnode { width: 300px; max-width: 92%; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); overflow: hidden; text-align: left; }
+.cflow .cnode .ch { display: flex; align-items: center; gap: 8px; padding: 7px 12px; font-weight: 700; font-size: 12px; }
+.cflow .cnode.send .ch { background: var(--blue-soft); color: var(--blue); }
+.cflow .cnode.recv .ch { background: var(--teal-soft); color: var(--teal); }
+.cflow .cnode .cs { display: flex; flex-wrap: wrap; gap: 6px 12px; padding: 8px 12px; font-size: 11px; color: var(--text-faint); font-family: var(--mono); }
+.cflow .cnode .cs b { color: var(--text-soft); font-family: var(--font); font-weight: 600; }
+.cflow .cnode.step { width: 320px; }
+.cflow .cnode.step .ch { background: var(--surface-2); color: var(--navy); border-bottom: 1px solid var(--border-soft); }
+.cflow .cnode.step .ch .si { width: 20px; height: 20px; border-radius: 6px; background: var(--blue); color: #fff; display: grid; place-items: center; font-size: 11px; }
+
+/* 适配器 / 步骤配置面板（Configure 表单） */
+.cfg { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.cfg .crow { display: grid; grid-template-columns: 168px 1fr; gap: 8px 12px; padding: 7px 12px; border-bottom: 1px solid var(--border-soft); align-items: center; }
+.cfg .crow:last-child { border-bottom: none; }
+.cfg .crow label { font-size: 11.5px; color: var(--text-soft); }
+.cfg .crow .v { background: var(--surface-2); border: 1px solid var(--border); border-radius: 5px; padding: 3px 9px; font-family: var(--mono); font-size: 11.5px; color: var(--text); white-space: nowrap; overflow-x: auto; }
+.cfg .crow .v.sel { border-color: var(--blue); box-shadow: 0 0 0 2px var(--blue-soft); }
+.cfg.cfg-sec { margin-top: 0; border-top: none; border-radius: 0; }
+
+/* 首页 track 卡：Integration Suite 用琥珀色边 */
+.track-card.is { border-top: 4px solid var(--amber); }
+
+/* ---------- 章节测评（quiz） ---------- */
+.quiz { margin: 6px 0 4px; }
+.quiz h3 { margin: 26px 0 4px; }
+.quiz ol.qz { margin: 8px 0 16px; padding-left: 26px; }
+.quiz ol.qz > li { margin: 14px 0; padding-left: 2px; }
+.quiz .q { font-weight: 600; color: var(--navy); margin: 0 0 3px; }
+.quiz .q code { font-size: .9em; }
+.quiz .opts { list-style: none; padding: 0; margin: 0; }
+.quiz .opts div { padding: 1px 0 1px 22px; text-indent: -22px; font-size: 13.5px; }
+.quiz .opts b { color: var(--text-faint); font-weight: 600; }
+.quiz .qz-ans td { font-size: 13px; }
+.quiz .qz-ans .an { font-weight: 700; color: var(--green); white-space: nowrap; }
+.quiz .qz-ans .expl { color: var(--text-soft); }
+
+/* 测评中心（首页）卡片列表 */
+ol.qzlist { list-style: none; margin: 8px 0 0; padding: 0; }
+ol.qzlist li { display: flex; align-items: baseline; gap: 8px; padding: 5px 0; border-bottom: 1px dashed var(--border-soft); }
+ol.qzlist li:last-child { border-bottom: none; }
+ol.qzlist a { font-weight: 600; color: var(--blue); }
+ol.qzlist .qcount { margin-left: auto; color: var(--text-faint); font-size: 11.5px; white-space: nowrap; font-family: var(--mono); }
+
 /* ---------- 首页专属 ---------- */
 .hero {
   background: linear-gradient(135deg, #14202e 0%, #1b2a3a 55%, #14486e 100%);

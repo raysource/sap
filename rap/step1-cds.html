@@ -17,6 +17,7 @@
       <a class="tab active" href="overview.html">RAP 培训</a>
       <a class="tab" href="../cap/overview.html">CAP 培训</a>
       <a class="tab" href="../fiori/overview.html">Fiori 培训</a>
+      <a class="tab" href="../cpi/overview.html">Integration Suite 培训</a>
     </nav>
   </div>
 </header>
@@ -314,6 +315,140 @@ define root view entity ZI_TRAVEL_BOOKING as select from ztravel_booking
           <li><b>CURR / CUKY 配对</b>：每个 CURR 字段必须有对应的 CUKY 参考字段，否则金额无法按币种小数位换算。</li>
         </ul>
       </div>
+
+      <section id="quiz">
+      <h2>🧪 章节测评（共 12 题 · 单选）</h2>
+      <p class="lead">自测本章掌握度：<b>🟢 基础巩固</b>（第 1–8 题）+ <b>🔶 能力提高</b>（第 9–12 题）。全部为单选题：先独立作答，再展开各组「答案与解析」逐题对照；答错的题回到对应小节复习。</p>
+      <div class="quiz">
+        <h3>🟢 基础巩固（1–8）</h3>
+        <ol class="qz">
+          <li><p class="q">RAP 数据模型构建的起点是什么？</p>
+            <div class="opts">
+              <div><b>A.</b> 直接写 Fiori 页面</div>
+              <div><b>B.</b> 先建底层数据库表（如 ZTRAVEL）</div>
+              <div><b>C.</b> 先发布 OData</div>
+              <div><b>D.</b> 先配权限角色</div>
+            </div>
+          </li>
+          <li><p class="q">本课业务对象 Travel 的两张物理表是？</p>
+            <div class="opts">
+              <div><b>A.</b> ZTRAVEL 与 ZTRAVEL_BOOKING</div>
+              <div><b>B.</b> ZRAP_TRAINING 与 ZTRAVEL</div>
+              <div><b>C.</b> ZTRAVEL 与 ZTRAVEL_DRAFT</div>
+              <div><b>D.</b> ZTRAVEL_HDR 与 ZTRAVEL_ITM</div>
+            </div>
+          </li>
+          <li><p class="q">「接口视图 + 消费视图」的视图栈中，消费视图 ZC_TRAVEL 的作用是？</p>
+            <div class="opts">
+              <div><b>A.</b> 直接读数据库表</div>
+              <div><b>B.</b> 投影自接口视图，做裁剪、加注解、供消费</div>
+              <div><b>C.</b> 生成行为</div>
+              <div><b>D.</b> 发送邮件</div>
+            </div>
+          </li>
+          <li><p class="q">为什么要把接口视图与消费视图分开？</p>
+            <div class="opts">
+              <div><b>A.</b> 纯粹为了多写代码</div>
+              <div><b>B.</b> 接口视图语义稳定可复用；消费视图可按场景裁剪字段、加 @UI/权限，避免污染接口层</div>
+              <div><b>C.</b> 分开才能用 SQL</div>
+              <div><b>D.</b> 为了绕开权限</div>
+            </div>
+          </li>
+          <li><p class="q">CDS 中 composition（组合）与 association（关联）的区别是？</p>
+            <div class="opts">
+              <div><b>A.</b> 没有区别</div>
+              <div><b>B.</b> composition 是包含 / 生命周期关系（子随父删），association 是普通引用</div>
+              <div><b>C.</b> composition 只用于数据库表</div>
+              <div><b>D.</b> association 不生成 SQL</div>
+            </div>
+          </li>
+          <li><p class="q">Travel 与其预订（Booking）的关系应建模为？</p>
+            <div class="opts">
+              <div><b>A.</b> composition（组合）</div>
+              <div><b>B.</b> 普通 association</div>
+              <div><b>C.</b> 无关系</div>
+              <div><b>D.</b> 视图联合</div>
+            </div>
+          </li>
+          <li><p class="q">建好 CDS 视图后用 <b>SQL Preview</b> 的目的是什么？</p>
+            <div class="opts">
+              <div><b>A.</b> 发布 OData</div>
+              <div><b>B.</b> 立刻看到视图能查出的数据，验证模型正确性</div>
+              <div><b>C.</b> 创建传输请求</div>
+              <div><b>D.</b> 格式化代码</div>
+            </div>
+          </li>
+          <li><p class="q">在 ADT 中创建 CDS 视图，使用的对象类型 / 模板是？</p>
+            <div class="opts">
+              <div><b>A.</b> Data Definition（DDL Source）</div>
+              <div><b>B.</b> Behavior Definition</div>
+              <div><b>C.</b> Service Definition</div>
+              <div><b>D.</b> ABAP Class</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🟢 基础巩固（1–8））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>1</td><td class="an">B</td><td class="expl">业务对象的一切从物理表开始：ZTRAVEL 与子表 ZTRAVEL_BOOKING 是视图栈的地基。</td></tr>
+              <tr><td>2</td><td class="an">A</td><td class="expl">主表 ZTRAVEL + 子表 ZTRAVEL_BOOKING（预订）；其余是包名 / 视图名的干扰项。</td></tr>
+              <tr><td>3</td><td class="an">B</td><td class="expl">消费视图基于接口视图做投影（UI 注解、字段裁剪等），接口视图保持稳定的业务语义。</td></tr>
+              <tr><td>4</td><td class="an">B</td><td class="expl">分层让「业务语义」与「消费场景」解耦：多个消费视图可共享同一接口视图。</td></tr>
+              <tr><td>5</td><td class="an">B</td><td class="expl">组合表达「父—子」整体部分关系；关联表达可导航的引用。Travel 对预订用组合语义。</td></tr>
+              <tr><td>6</td><td class="an">A</td><td class="expl">预订随 Travel 一起创建 / 删除，生命周期由父承载，用组合最贴切。</td></tr>
+              <tr><td>7</td><td class="an">B</td><td class="expl">SQL Preview 直接执行视图语句看结果，是建模阶段的快速验证手段。</td></tr>
+              <tr><td>8</td><td class="an">A</td><td class="expl">视图用「Data Definition」建，语法是 <code>define view / entity</code>。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+        <h3>🔶 能力提高（9–12）</h3>
+        <ol class="qz" start="9">
+          <li><p class="q">ZTRAVEL 这类表通常包含 client 字段且主键含 client，原因是？</p>
+            <div class="opts">
+              <div><b>A.</b> 历史遗留</div>
+              <div><b>B.</b> SAP 多客户端（Client）架构：同一系统按 Client 隔离数据</div>
+              <div><b>C.</b> 方便排序</div>
+              <div><b>D.</b> 表名必须</div>
+            </div>
+          </li>
+          <li><p class="q">CDS 视图注解 <code>@AccessControl.authorizationCheck: #CHECK</code> 的作用是？</p>
+            <div class="opts">
+              <div><b>A.</b> 加速查询</div>
+              <div><b>B.</b> 启用该视图的权限（DCL）检查</div>
+              <div><b>C.</b> 生成索引</div>
+              <div><b>D.</b> 跳过客户端过滤</div>
+            </div>
+          </li>
+          <li><p class="q">本课视图命名 ZI_TRAVEL / ZC_TRAVEL 中 I 与 C 的含义是？</p>
+            <div class="opts">
+              <div><b>A.</b> Index / Cache</div>
+              <div><b>B.</b> Interface（接口视图）/ Consumption（消费视图）</div>
+              <div><b>C.</b> Internal / Common</div>
+              <div><b>D.</b> Invoice / Customer</div>
+            </div>
+          </li>
+          <li><p class="q">把业务校验写进 CDS 视图而不是行为层，为什么不推荐？</p>
+            <div class="opts">
+              <div><b>A.</b> 视图里写不了代码</div>
+              <div><b>B.</b> 校验属于行为语义（保存时机、跨字段规则），应放在 Behavior；视图只负责读</div>
+              <div><b>C.</b> SQL Preview 会失败</div>
+              <div><b>D.</b> 校验会降低视图复用</div>
+            </div>
+          </li>
+        </ol>
+        <details class="box"><summary>答案与解析（🔶 能力提高（9–12））</summary>
+          <div class="box-body">
+            <table class="doc qz-ans"><thead><tr><th style="width:52px">题号</th><th style="width:60px">答案</th><th>解析</th></tr></thead><tbody>
+              <tr><td>9</td><td class="an">B</td><td class="expl">client 是 SAP 数据隔离的一等公民，主键默认含 client 才能跨客户端安全操作。</td></tr>
+              <tr><td>10</td><td class="an">B</td><td class="expl">#CHECK 表示该视图受权限检查约束，无授权时查不到数据；#NOT_REQUIRED 则跳过。</td></tr>
+              <tr><td>11</td><td class="an">B</td><td class="expl">命名用 I/C 区分接口视图与消费视图，是便于读懂视图栈层次的社区约定。</td></tr>
+              <tr><td>12</td><td class="an">B</td><td class="expl">CDS 视图是声明式读模型；规则与写逻辑归属 Behavior，职责分离才能让所有入口行为一致。</td></tr>
+            </tbody></table>
+          </div>
+        </details>
+      </div>
+      </section>
+
 
       <div class="pagenav">
         <a href="prep.html"><small>← 上一章</small><b>第 2 章：环境准备</b></a>
